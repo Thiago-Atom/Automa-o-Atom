@@ -1,17 +1,20 @@
 // Testes da lógica determinística (simulação, sem rede). Execute: npm test
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const U = require('../lib/util');
-const C = require('../lib/config');
-const J = require('../lib/cnpj');
-const S = require('../lib/site');
-const E = require('../lib/evidencias');
-const D = require('../lib/diagnostico');
-const P = require('../lib/pipedrive');
-const F = require('../lib/formalizacao');
-const R = require('../lib/regras');
-const A = require('../lib/agenda');
-const Z = require('../lib/zayra');
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { DateTime } from 'luxon';
+import * as U from '../lib/util.js';
+import * as C from '../lib/config.js';
+import * as J from '../lib/cnpj.js';
+import * as S from '../lib/site.js';
+import * as E from '../lib/evidencias.js';
+import * as D from '../lib/diagnostico.js';
+import * as P from '../lib/pipedrive.js';
+import * as F from '../lib/formalizacao.js';
+import * as R from '../lib/regras.js';
+import * as A from '../lib/agenda.js';
+import * as Z from '../lib/zayra.js';
+
+A.usarLuxon(DateTime);
 
 const cfgRows = (o) => Object.entries(o).map(([chave, valor]) => ({ chave, valor, status: 'CONFIGURADO' }));
 // Dados 100% fictícios.

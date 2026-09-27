@@ -1,0 +1,1022 @@
+{
+  "name": "ATOM_11_Erros_Reconciliacao",
+  "nodes": [
+    {
+      "id": "4080f6b6-5b20-4f91-8d55-9d158db66e33",
+      "name": "Erro em workflow ATOM",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "3307a98f-b030-4845-af90-e98ed62fb00f",
+      "name": "Normalizar alerta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#alerta_normalizar + lib/{util}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token)\"?\\s*[:=]\\s*\"?[^\",\\s]+/gi, \"$1: ***\"), 500);\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const e = $input.first().json;\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  let a;\n  if (e.execution && e.workflow) {\n    a = {\n      tipo: \"ERRO_WORKFLOW\",\n      severidade: \"ALTA\",\n      workflow: String(e.workflow.name || \"\"),\n      no: String(e.execution.lastNodeExecuted || \"\"),\n      mensagem: errorSummary(e.execution.error || \"\"),\n      execucao_id: String(e.execution.id || \"\"),\n      url: String(e.execution.url || \"\"),\n      deal_id: \"\"\n    };\n  } else {\n    a = {\n      tipo: String(e.tipo || \"ALERTA\"),\n      severidade: String(e.severidade || \"MEDIA\"),\n      workflow: String(e.workflow || \"\"),\n      no: \"\",\n      mensagem: truncate(errorSummary(String(e.mensagem || \"\")), 800),\n      execucao_id: String(e.execucao_id || \"\"),\n      url: \"\",\n      deal_id: String(e.deal_id || \"\")\n    };\n  }\n  const chave = \"alerta:\" + fingerprint([a.tipo, a.workflow, a.no, a.deal_id, a.mensagem, a.execucao_id]);\n  const resumo = truncate(\"[\" + a.severidade + \"] \" + a.tipo + \" — \" + a.workflow + (a.no ? \" / \" + a.no : \"\") + (a.deal_id ? \" — negócio \" + a.deal_id : \"\") + \": \" + a.mensagem, 900);\n  return [{ json: { alerta: a, resumo, row: {\n    event_key: chave,\n    origem: \"n8n\",\n    tipo: a.tipo,\n    entidade_id: a.execucao_id,\n    deal_id: a.deal_id,\n    status: \"ALERTA_REGISTRADO\",\n    tentativas: 0,\n    ultimo_erro: \"\",\n    resumo,\n    evento_em: agora,\n    recebido_em: agora,\n    processado_em: null\n  } } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "ec29fbcf-c162-4ea9-a6ad-ff5f12190028",
+      "name": "Alerta interno",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        450
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "id": "07c99dbf-93ee-4364-9524-1baad81015f7",
+      "name": "Alerta já registrado?",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "nzO3BvmxmGXY6hZT",
+          "cachedResultName": "atom_eventos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "event_key",
+              "condition": "eq",
+              "keyValue": "={{ $json.row.event_key }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "f91e5130-3b28-4f82-8505-8a7e4cbde50c",
+      "name": "Alerta novo?",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#alerta_novo. Edite a fonte no repositório, não este nó.\nconst n = $('Normalizar alerta').first().json;\nconst existe = $('Alerta já registrado?').all().some((i) => i.json && i.json.event_key);\nreturn existe ? [] : [{ json: n }];"
+      }
+    },
+    {
+      "id": "4f2ae3e2-0035-43c5-a418-375656f42089",
+      "name": "Registrar alerta",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "nzO3BvmxmGXY6hZT",
+          "cachedResultName": "atom_eventos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event_key": "={{ $json.row.event_key }}",
+            "origem": "={{ $json.row.origem }}",
+            "tipo": "={{ $json.row.tipo }}",
+            "entidade_id": "={{ $json.row.entidade_id }}",
+            "deal_id": "={{ $json.row.deal_id }}",
+            "status": "={{ $json.row.status }}",
+            "tentativas": "={{ $json.row.tentativas }}",
+            "ultimo_erro": "={{ $json.row.ultimo_erro }}",
+            "resumo": "={{ $json.row.resumo }}",
+            "evento_em": "={{ $json.row.evento_em }}",
+            "recebido_em": "={{ $json.row.recebido_em }}",
+            "processado_em": "={{ $json.row.processado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event_key",
+              "displayName": "event_key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "origem",
+              "displayName": "origem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "entidade_id",
+              "displayName": "entidade_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resumo",
+              "displayName": "resumo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "evento_em",
+              "displayName": "evento_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processado_em",
+              "displayName": "processado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "92b97bd9-222e-48a4-97b4-edea250a2f72",
+      "name": "Ler configuração (alerta)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "d944f9ad-2d46-4045-862b-4e2e0505debe",
+      "name": "Canal de alerta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#alerta_canal + lib/{config}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (alerta)\").all());\n  const n = $(\"Normalizar alerta\").first().json;\n  const canal = valor(cfg, \"ALERTA_CANAL\", \"NENHUM\");\n  const hoje = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);\n  return [{ json: {\n    canal,\n    webhook_url: valor(cfg, \"ALERTA_WEBHOOK_URL\", \"\"),\n    atividade: {\n      subject: (\"ATOM alerta: \" + n.alerta.tipo).slice(0, 250),\n      type: \"task\",\n      due_date: hoje,\n      owner_id: Number(valor(cfg, \"PD_ALERTA_USER_ID\", \"0\")) || void 0,\n      deal_id: n.alerta.deal_id ? Number(n.alerta.deal_id) : void 0,\n      note: n.resumo\n    },\n    texto: n.resumo\n  } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "105d18eb-fb48-4520-92b1-c248e2a71526",
+      "name": "Rotear canal de alerta",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1500,
+        300
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "pipedrive",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.canal }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "PIPEDRIVE_ATIVIDADE"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "webhook",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.canal }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "WEBHOOK"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "11166afe-6381-4f6a-8683-644e0817f135",
+      "name": "Alerta como atividade no Pipedrive",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1700,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pipedrive.com/api/v2/activities",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.atividade) }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "eb283f35-68a5-4b39-befd-2c62ab1cfbfa",
+      "name": "Alerta por webhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1700,
+        450
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.webhook_url }}",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.texto }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "820a7776-6579-4d0a-965f-289a4065974d",
+      "name": "A cada hora",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        100,
+        600
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1,
+              "triggerAtMinute": 7
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b5812210-4212-4d3c-843f-f6f937e8d0c7",
+      "name": "Ler configuração (reconciliação)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "b0f4b4fe-3f5c-48df-bf3d-a503488d80e7",
+      "name": "Liberar locks expirados",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "4JWPJuuhMrWIhad4",
+          "cachedResultName": "atom_negocios"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "liberacao_status",
+              "condition": "eq",
+              "keyValue": "={{ \"CRIANDO_CARTAO\" }}"
+            },
+            {
+              "keyName": "lock_ate",
+              "condition": "lt",
+              "keyValue": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "liberacao_status": "LOCK_EXPIRADO",
+            "lock_owner": ""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "liberacao_status",
+              "displayName": "liberacao_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lock_owner",
+              "displayName": "lock_owner",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "a1dcbb05-3ae3-44f4-907e-9c454de52d90",
+      "name": "Ações com falha",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "={{ \"FALHA\" }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "c41124f4-2fd8-4028-a133-6d68c58c77a0",
+      "name": "Negócios aguardando liberação",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "4JWPJuuhMrWIhad4",
+          "cachedResultName": "atom_negocios"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "contrato_status",
+              "condition": "eq",
+              "keyValue": "={{ \"ASSINADO_TODOS\" }}"
+            },
+            {
+              "keyName": "liberacao_status",
+              "condition": "neq",
+              "keyValue": "={{ \"LIBERADO\" }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "8b7189f5-3c06-4442-a39c-4af21f161908",
+      "name": "Cobranças iniciais pendentes",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"ASAAS\" }}"
+            },
+            {
+              "keyName": "tipo",
+              "condition": "eq",
+              "keyValue": "={{ \"PAYMENT\" }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "0fab1e2c-f8db-45ea-bd19-19d26d3c582c",
+      "name": "Planejar reprocessamento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#reconciliar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (reconciliação)\").all());\n  const agora = Date.now();\n  const MAX = Number(valor(cfg, \"RETENTATIVAS_MAX\", \"6\")) || 6;\n  const wf = (k) => valor(cfg, k, \"\");\n  const out = [];\n  const vistos = /* @__PURE__ */ new Set();\n  const add = (chaveWf, payload, motivo) => {\n    const id = wf(chaveWf);\n    if (!id) return;\n    const k = chaveWf + \":\" + JSON.stringify(payload);\n    if (vistos.has(k)) return;\n    vistos.add(k);\n    out.push({ json: Object.assign({}, payload, { _workflow_id: id, _origem: \"RECONCILIACAO\", _motivo: motivo }) });\n  };\n  for (const i of $(\"Ações com falha\").all()) {\n    const r = i.json;\n    if (!r || !r.request_id) continue;\n    if (Number(r.tentativas || 0) >= MAX) continue;\n    if (r.proxima_tentativa && Date.parse(r.proxima_tentativa) > agora) continue;\n    const alvo = { ZAYRA: \"WF_ATOM_10\", CLICKSIGN: \"WF_ATOM_05\", ASAAS: \"WF_ATOM_06\", TRELLO: \"WF_ATOM_08\" }[r.sistema];\n    if (!alvo) continue;\n    let p = safeJsonParse(r.payload, {});\n    if (r.sistema === \"ZAYRA\") {\n      p = {\n        action: p.action,\n        deal_id: p.pipedrive_deal_id,\n        org_id: p.pipedrive_organization_id,\n        phone: p.recipient_phone,\n        conversation_id: p.conversation_id,\n        missing_fields: p.missing_fields,\n        message_context: p.message_context,\n        scheduled_at: p.scheduled_at,\n        retry_request_id: r.request_id\n      };\n    }\n    add(alvo, p, \"RETENTATIVA \" + r.sistema + \" \" + r.acao);\n  }\n  for (const i of $(\"Negócios aguardando liberação\").all()) {\n    const r = i.json;\n    if (!r || !r.deal_id || r.cancelado === true) continue;\n    if (r.liberacao_status === \"LIBERADO\" || r.liberacao_status === \"CRIANDO_CARTAO\") continue;\n    add(\"WF_ATOM_08\", { acao: \"REAVALIAR_LIBERACAO\", deal_id: String(r.deal_id) }, \"RECONCILIAR_LIBERACAO\");\n  }\n  for (const i of $(\"Cobranças iniciais pendentes\").all()) {\n    const r = i.json;\n    if (!r || !r.id_externo || !/^INICIAL/.test(String(r.papel || \"\"))) continue;\n    if ([\"PAGAMENTO_CONFIRMADO\", \"RECEBIDO_DISPONIVEL\", \"CANCELADO\", \"ESTORNADO\"].includes(r.status)) continue;\n    add(\"WF_ATOM_06\", { acao: \"RECONCILIAR_PAGAMENTO\", payment_id: String(r.id_externo), deal_id: String(r.deal_id) }, \"RECONCILIAR_PAGAMENTO\");\n  }\n  return out;\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "b7ebea9a-eb55-41a5-9cbf-a8bad6bc02ff",
+      "name": "Despachar reprocessamento",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1500,
+        600
+      ],
+      "parameters": {
+        "mode": "each",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json._workflow_id }}"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "d3923ed9-d0da-4c88-96a1-f41a6f3bab35",
+      "name": "Painel (GET)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        750
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "atom/painel",
+        "authentication": "headerAuth",
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "webhookId": "ff81cab2-0c36-40e0-803f-d9be4f74595a",
+      "credentials": {}
+    },
+    {
+      "id": "1516fd1e-ff2b-4c40-82ca-43877c1326a3",
+      "name": "Painel: negócios",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        750
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "4JWPJuuhMrWIhad4",
+          "cachedResultName": "atom_negocios"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "71feb473-2db1-400d-9809-6ef261ccf379",
+      "name": "Painel: agendamentos",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        750
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "UqXpO8duZ4cqVbo3",
+          "cachedResultName": "atom_agendamentos"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "a1d9b4ad-3d6d-43ef-92e0-61f8f525b072",
+      "name": "Painel: financeiro",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        750
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "eUuPU4mvLlWICal7",
+          "cachedResultName": "atom_financeiro"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "12a05de7-c151-4197-8500-6bf3480fbced",
+      "name": "Painel: ações",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        750
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "76e7541e-a202-4747-9f2d-47132a3a921f",
+      "name": "Montar painel",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        750
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#painel. Edite a fonte no repositório, não este nó.\nconst pegar = (n, k) => $(n).all().map((i) => i.json).filter((r) => r && r[k]);\nconst neg = pegar('Painel: negócios', 'deal_id');\nconst ag = pegar('Painel: agendamentos', 'chave_campanha');\nconst fin = pegar('Painel: financeiro', 'event_key');\nconst acoes = pegar('Painel: ações', 'request_id');\nconst resumoNeg = (r) => ({ deal_id: r.deal_id, org_id: r.org_id, site: r.site_status || null, diagnostico: r.diag_status || null,\n  formalizacao: r.formalizacao_status || null, contrato: r.contrato_status || null, pagamento_inicial: r.pagamento_inicial_status || null,\n  liberacao: r.liberacao_status || null, trello: r.trello_card_url || null, pendencias: r.pendencias || null });\nconst f = (pred) => neg.filter(pred).map(resumoNeg);\nreturn [{ json: {\n  gerado_em: new Date().toISOString(),\n  negocios_aguardando_dados: f((r) => r.formalizacao_status === 'PENDENTE_DADOS' || r.cnpj_status === 'DIVERGENTE' || r.site_status === 'PENDENTE'),\n  diagnosticos_pendentes: f((r) => r.site_status === 'VALIDADO' && r.diag_status !== 'CONCLUIDO'),\n  contratos_aguardando_assinatura: f((r) => ['ENVIADO', 'PENDENTE', 'PARCIALMENTE_ASSINADO', 'AGUARDANDO_ENCERRAMENTO'].includes(r.contrato_status)),\n  cobrancas_aguardando_pagamento: f((r) => ['AGUARDANDO_PAGAMENTO', 'PENDENTE', 'VENCIDO', 'EM_ANALISE'].includes(r.pagamento_inicial_status)),\n  sincronizacao_financeira_pendente: fin.filter((r) => r.status_sync !== 'SINCRONIZADO').map((r) => ({ deal_id: r.deal_id, operacao: r.operacao, status_sync: r.status_sync, pagamento: r.asaas_payment_id })),\n  projetos_liberados: f((r) => r.liberacao_status === 'LIBERADO'),\n  avaliacoes_agendadas: ag.filter((r) => r.status === 'AGENDADO').map((r) => ({ deal_id: r.deal_id, org_id: r.org_id, agendado_para: r.agendado_para })),\n  avaliacoes_enviadas: ag.filter((r) => r.status === 'ENVIADO').map((r) => ({ deal_id: r.deal_id, org_id: r.org_id, enviado_em: r.enviado_em, status_entrega: r.status_entrega })),\n  avaliacoes_com_pendencia: ag.filter((r) => ['PENDENCIA_CONFIG', 'FALHA'].includes(r.status)).map((r) => ({ deal_id: r.deal_id, erro: r.erro })),\n  acoes_bloqueadas_por_configuracao: acoes.filter((r) => r.status === 'BLOQUEADO_CONFIG').map((r) => ({ sistema: r.sistema, acao: r.acao, deal_id: r.deal_id, motivo: r.ultimo_erro })),\n  acoes_com_falha: acoes.filter((r) => r.status === 'FALHA').map((r) => ({ sistema: r.sistema, acao: r.acao, deal_id: r.deal_id, tentativas: r.tentativas, erro: r.ultimo_erro })),\n} }];"
+      }
+    },
+    {
+      "id": "20794888-9264-49c6-9f9a-2a3d29b1c5f2",
+      "name": "Sticky Note 20794888",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        900
+      ],
+      "parameters": {
+        "content": "## ATOM_11 — Erros, reconciliação e painel\n- **Error Trigger**: defina este workflow como *Error workflow* dos ATOM_01..10.\n- Alertas deduplicados (atom_eventos) e enviados ao canal `ALERTA_CANAL` (PIPEDRIVE_ATIVIDADE ou WEBHOOK). Sem canal configurado, ficam só registrados.\n- **Reconciliação horária**: retentativas com backoff (atom_acoes), liberações pendentes, pagamentos iniciais sem webhook, locks expirados.\n- **Painel**: GET /webhook/atom/painel (autenticado) com negócios aguardando dados, diagnósticos, contratos, cobranças, financeiro, projetos e avaliações.",
+        "color": 5
+      }
+    }
+  ],
+  "connections": {
+    "Erro em workflow ATOM": {
+      "main": [
+        [
+          {
+            "node": "Normalizar alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar alerta": {
+      "main": [
+        [
+          {
+            "node": "Alerta já registrado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerta interno": {
+      "main": [
+        [
+          {
+            "node": "Normalizar alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerta já registrado?": {
+      "main": [
+        [
+          {
+            "node": "Alerta novo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerta novo?": {
+      "main": [
+        [
+          {
+            "node": "Registrar alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar alerta": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração (alerta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração (alerta)": {
+      "main": [
+        [
+          {
+            "node": "Canal de alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Canal de alerta": {
+      "main": [
+        [
+          {
+            "node": "Rotear canal de alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rotear canal de alerta": {
+      "main": [
+        [
+          {
+            "node": "Alerta como atividade no Pipedrive",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alerta por webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "A cada hora": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração (reconciliação)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração (reconciliação)": {
+      "main": [
+        [
+          {
+            "node": "Liberar locks expirados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Liberar locks expirados": {
+      "main": [
+        [
+          {
+            "node": "Ações com falha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ações com falha": {
+      "main": [
+        [
+          {
+            "node": "Negócios aguardando liberação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Negócios aguardando liberação": {
+      "main": [
+        [
+          {
+            "node": "Cobranças iniciais pendentes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cobranças iniciais pendentes": {
+      "main": [
+        [
+          {
+            "node": "Planejar reprocessamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planejar reprocessamento": {
+      "main": [
+        [
+          {
+            "node": "Despachar reprocessamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Painel (GET)": {
+      "main": [
+        [
+          {
+            "node": "Painel: negócios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Painel: negócios": {
+      "main": [
+        [
+          {
+            "node": "Painel: agendamentos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Painel: agendamentos": {
+      "main": [
+        [
+          {
+            "node": "Painel: financeiro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Painel: financeiro": {
+      "main": [
+        [
+          {
+            "node": "Painel: ações",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Painel: ações": {
+      "main": [
+        [
+          {
+            "node": "Montar painel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "atomBuild": "2026-09-27"
+  }
+}

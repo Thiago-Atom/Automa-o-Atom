@@ -1,0 +1,138 @@
+const entrada = trigger({
+  type: 'n8n-nodes-base.executeWorkflowTrigger', version: 1.2,
+  config: { name: 'Entrada', parameters: { inputSource: 'passthrough' } },
+  output: [{ tipo: 'CNPJ_ALTERADO', org_id: '7', forcar: false }]
+});
+
+const lerConfig = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: { name: 'Ler configuração', executeOnce: true, parameters: { resource: 'row', operation: 'get', dataTableId: {"__rl":true,"mode":"id","value":"rlZWp7gPKiB6xzw3","cachedResultName":"atom_config"}, returnAll: true } },
+  output: [{ chave: 'CNPJ_PROVEDOR', valor: 'PENDENTE', status: 'PENDENTE' }]
+});
+
+const buscarOrg = node({
+  type: 'n8n-nodes-base.httpRequest', version: 4.5,
+  config: {
+    name: 'Buscar organização', retryOnFail: true, maxTries: 3, waitBetweenTries: 3000,
+    parameters: { method: 'GET', url: expr("https://api.pipedrive.com/api/v2/organizations/{{ $('Entrada').first().json.org_id || 0 }}"), authentication: 'predefinedCredentialType', nodeCredentialType: 'pipedriveApi', options: { timeout: 20000, response: { response: { neverError: true } } } },
+    credentials: { pipedriveApi: newCredential('ATOM Pipedrive API') }
+  },
+  output: [{ success: true, data: { id: 7, name: 'Empresa Fictícia', custom_fields: {} } }]
+});
+
+const consultaAnterior = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: {
+    name: 'Consulta anterior', alwaysOutputData: true,
+    parameters: { resource: 'row', operation: 'get', dataTableId: {"__rl":true,"mode":"id","value":"jNlKdIaPXcS7cEhF","cachedResultName":"atom_vinculos"}, matchType: 'allConditions', filters: {"conditions":[{"keyName":"sistema","condition":"eq","keyValue":"={{ \"CNPJ\" }}"},{"keyName":"org_id","condition":"eq","keyValue":"={{ String($('Entrada').first().json.org_id) }}"}]}, limit: 1 }
+  },
+  output: [{}]
+});
+
+const validar = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Validar CNPJ', parameters: { mode: 'runOnceForAllItems', jsCode: "// Gerado por n8n/build.js a partir de n8n/code/wf03.js#validar + lib/{util,config,cnpj,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\n\n// lib/cnpj.js\nvar P1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\nvar P2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\nfunction limpar(valor2) {\n  if (valor2 === null || valor2 === void 0) return \"\";\n  return String(valor2).toUpperCase().replace(/[\\s.\\-\\/]/g, \"\");\n}\nfunction dv(base, pesos) {\n  let soma = 0;\n  for (let i = 0; i < pesos.length; i++) soma += (base.charCodeAt(i) - 48) * pesos[i];\n  const resto = soma % 11;\n  return resto < 2 ? 0 : 11 - resto;\n}\nfunction validar(valor2) {\n  const c = limpar(valor2);\n  if (c.length !== 14) return { valido: false, cnpj: c, motivo: \"TAMANHO_INVALIDO\" };\n  if (!/^[0-9A-Z]{12}[0-9]{2}$/.test(c)) return { valido: false, cnpj: c, motivo: \"CARACTERE_INVALIDO\" };\n  if (/^(\\d)\\1{13}$/.test(c)) return { valido: false, cnpj: c, motivo: \"SEQUENCIA_REPETIDA\" };\n  const d1 = dv(c.slice(0, 12), P1);\n  const d2 = dv(c.slice(0, 12) + d1, P2);\n  if (c.slice(12) !== String(d1) + String(d2)) return { valido: false, cnpj: c, motivo: \"DV_INVALIDO\" };\n  return { valido: true, cnpj: c, alfanumerico: /[A-Z]/.test(c), motivo: \"\" };\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const org = ($(\"Buscar organização\").first().json || {}).data || {};\n  if (!org.id) return [{ json: { acao: \"NADA\", motivo: \"ORGANIZACAO_NAO_ENCONTRADA\" } }];\n  const bruto = lerCfg(org, cfg, \"PD_ORG_CNPJ\");\n  const v = validar(bruto);\n  const ant = $(\"Consulta anterior\").all().map((i) => i.json).find((r) => r && r.id_externo) || null;\n  const base = { org_id: String(org.id), cnpj: v.cnpj, org_nome: org.name || \"\", alfanumerico: !!v.alfanumerico };\n  if (!idCampo(cfg, \"PD_ORG_CNPJ\")) return [{ json: Object.assign(base, { acao: \"NADA\", motivo: \"CAMPO_CNPJ_NAO_MAPEADO\" }) }];\n  if (!bruto) return [{ json: Object.assign(base, { acao: \"NADA\", motivo: \"SEM_CNPJ\" }) }];\n  if (!v.valido) return [{ json: Object.assign(base, { acao: \"REGISTRAR\", status: \"CNPJ_INVALIDO\", motivo: v.motivo }) }];\n  if (!e.forcar && ant && ant.id_externo === v.cnpj && [\"OK\", \"OK_COM_DIVERGENCIAS\"].includes(ant.status)) {\n    return [{ json: Object.assign(base, { acao: \"NADA\", motivo: \"CNPJ_JA_CONSULTADO\" }) }];\n  }\n  const provedor = valor(cfg, \"CNPJ_PROVEDOR\", \"\");\n  const url = valor(cfg, \"CNPJ_PROVEDOR_URL\", \"\");\n  if (!provedor || !url || !url.includes(\"{cnpj}\")) {\n    return [{ json: Object.assign(base, { acao: \"REGISTRAR\", status: \"PROVEDOR_PENDENTE\", motivo: \"CNPJ_PROVEDOR e CNPJ_PROVEDOR_URL (com {cnpj}) não configurados\" }) }];\n  }\n  if (v.alfanumerico && !booleano(cfg, \"CNPJ_PROVEDOR_ACEITA_ALFANUMERICO\")) {\n    return [{ json: Object.assign(base, { acao: \"REGISTRAR\", status: \"PROVEDOR_SEM_SUPORTE_ALFANUMERICO\", motivo: \"Suporte do provedor a CNPJ alfanumérico não confirmado\" }) }];\n  }\n  return [{ json: Object.assign(base, { acao: \"CONSULTAR\", provedor, url_consulta: url.replace(\"{cnpj}\", encodeURIComponent(v.cnpj)) }) }];\n})();\nreturn __resultado;" } },
+  output: [{ acao: 'CONSULTAR', org_id: '7', cnpj: '11222333000181', provedor: 'BRASILAPI', url_consulta: 'https://brasilapi.com.br/api/cnpj/v1/11222333000181' }]
+});
+
+const acao = switchCase({
+  version: 3.2,
+  config: {
+    name: 'Ação',
+    parameters: {
+      rules: { values: [
+        { outputKey: 'consultar', conditions: { options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' }, conditions: [{ leftValue: expr('{{ $json.acao }}'), operator: { type: 'string', operation: 'equals' }, rightValue: 'CONSULTAR' }], combinator: 'and' } },
+        { outputKey: 'registrar', conditions: { options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' }, conditions: [{ leftValue: expr('{{ $json.acao }}'), operator: { type: 'string', operation: 'equals' }, rightValue: 'REGISTRAR' }], combinator: 'and' } }
+      ] },
+      options: {}
+    }
+  }
+});
+
+const consultar = node({
+  type: 'n8n-nodes-base.httpRequest', version: 4.5,
+  config: {
+    name: 'Consultar provedor de CNPJ', onError: 'continueErrorOutput', retryOnFail: true, maxTries: 3, waitBetweenTries: 5000,
+    notes: 'Provedor configurável (CNPJ_PROVEDOR / CNPJ_PROVEDOR_URL). Sem autenticação: adequado a provedores públicos. Provedores pagos (ex.: Serpro) exigem credencial e mapeamento próprios.',
+    parameters: { method: 'GET', url: expr('{{ $json.url_consulta }}'), sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'User-Agent', value: 'AtomDigital-n8n/1.0' }] }, options: { timeout: 20000, response: { response: { fullResponse: true, neverError: true } } } }
+  },
+  output: [{ statusCode: 200, body: { cnpj: '11222333000181', razao_social: 'EMPRESA FICTICIA LTDA' } }]
+});
+
+const comparar = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Normalizar e comparar', parameters: { mode: 'runOnceForAllItems', jsCode: "// Gerado por n8n/build.js a partir de n8n/code/wf03.js#comparar + lib/{util,config,cnpj,pipedrive,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction isBlank(v) {\n  return v === null || v === void 0 || typeof v === \"string\" && v.trim() === \"\" || Array.isArray(v) && v.length === 0;\n}\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token)\"?\\s*[:=]\\s*\"?[^\",\\s]+/gi, \"$1: ***\"), 500);\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/cnpj.js\nfunction limpar(valor2) {\n  if (valor2 === null || valor2 === void 0) return \"\";\n  return String(valor2).toUpperCase().replace(/[\\s.\\-\\/]/g, \"\");\n}\nfunction formatar(valor2) {\n  const c = limpar(valor2);\n  if (c.length !== 14) return c;\n  return c.slice(0, 2) + \".\" + c.slice(2, 5) + \".\" + c.slice(5, 8) + \"/\" + c.slice(8, 12) + \"-\" + c.slice(12);\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// lib/site.js\nfunction semAcentos(s) {\n  return String(s || \"\").normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").toLowerCase();\n}\nvar STOPWORDS = [\n  \"ltda\",\n  \"me\",\n  \"epp\",\n  \"eireli\",\n  \"sa\",\n  \"s/a\",\n  \"de\",\n  \"da\",\n  \"do\",\n  \"das\",\n  \"dos\",\n  \"e\",\n  \"the\",\n  \"and\",\n  \"comercio\",\n  \"servicos\",\n  \"industria\",\n  \"grupo\",\n  \"empresa\",\n  \"cia\",\n  \"companhia\",\n  \"brasil\",\n  \"br\",\n  \"com\"\n];\nfunction tokensEmpresa(nome) {\n  return uniq(semAcentos(nome).replace(/[^a-z0-9 ]/g, \" \").split(/\\s+/).filter((t) => t.length >= 3 && !STOPWORDS.includes(t)));\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const b = $(\"Validar CNPJ\").first().json;\n  const org = ($(\"Buscar organização\").first().json || {}).data || {};\n  const r = $input.first().json;\n  const hoje = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);\n  const pend = [];\n  let status = \"OK\";\n  let dados = null;\n  if (r.error || typeof r.statusCode !== \"number\") {\n    status = \"ERRO_PROVEDOR\";\n    pend.push(\"Falha ao consultar o provedor: \" + errorSummary(r.error || \"sem resposta\"));\n  } else if (r.statusCode === 404) {\n    status = \"NAO_ENCONTRADO\";\n    pend.push(\"CNPJ não encontrado no provedor \" + b.provedor);\n  } else if (r.statusCode < 200 || r.statusCode >= 300) {\n    status = \"ERRO_PROVEDOR\";\n    pend.push(\"Provedor respondeu HTTP \" + r.statusCode);\n  } else {\n    const d = r.body || {};\n    if (b.provedor !== \"BRASILAPI\") {\n      status = \"PROVEDOR_SEM_MAPEAMENTO\";\n      pend.push(\"Mapeamento de campos do provedor \" + b.provedor + \" não implementado\");\n    } else {\n      dados = {\n        cnpj: limpar(d.cnpj),\n        razao_social: d.razao_social || \"\",\n        nome_fantasia: d.nome_fantasia || \"\",\n        logradouro: [d.descricao_tipo_de_logradouro, d.logradouro].filter(Boolean).join(\" \"),\n        numero: d.numero || \"\",\n        complemento: d.complemento || \"\",\n        bairro: d.bairro || \"\",\n        cidade: d.municipio || \"\",\n        uf: d.uf || \"\",\n        cep: String(d.cep || \"\").replace(/\\D/g, \"\"),\n        situacao: d.descricao_situacao_cadastral || \"\"\n      };\n    }\n  }\n  const valores = {};\n  if (dados) {\n    if (dados.cnpj && dados.cnpj !== b.cnpj) {\n      status = \"DIVERGENTE\";\n      pend.push(\"O provedor retornou outro CNPJ (\" + dados.cnpj + \"). Nenhum dado foi gravado.\");\n      dados = null;\n    }\n  }\n  if (dados) {\n    const tOrg = tokensEmpresa(b.org_nome);\n    const tRec = tokensEmpresa(dados.razao_social + \" \" + dados.nome_fantasia);\n    if (tOrg.length && !tOrg.some((t) => tRec.includes(t))) {\n      status = \"DIVERGENTE\";\n      pend.push('Nome da organização no CRM (\"' + b.org_nome + '\") não corresponde à razão social/nome fantasia retornados (\"' + dados.razao_social + '\" / \"' + dados.nome_fantasia + '\"). Nenhum dado cadastral foi gravado; confirme o CNPJ.');\n    } else {\n      const mapa = {\n        PD_ORG_RAZAO_SOCIAL: \"razao_social\",\n        PD_ORG_NOME_FANTASIA: \"nome_fantasia\",\n        PD_ORG_LOGRADOURO: \"logradouro\",\n        PD_ORG_NUMERO: \"numero\",\n        PD_ORG_COMPLEMENTO: \"complemento\",\n        PD_ORG_BAIRRO: \"bairro\",\n        PD_ORG_CIDADE: \"cidade\",\n        PD_ORG_UF: \"uf\",\n        PD_ORG_CEP: \"cep\",\n        PD_ORG_SITUACAO_CADASTRAL: \"situacao\"\n      };\n      const norm = (x) => semAcentos(String(x || \"\")).replace(/[^a-z0-9]/g, \"\");\n      for (const [chave, campo] of Object.entries(mapa)) {\n        if (!idCampo(cfg, chave) || !dados[campo]) continue;\n        const atual = lerCfg(org, cfg, chave);\n        if (isBlank(atual)) valores[chave] = dados[campo];\n        else if (norm(atual) !== norm(dados[campo]) && chave !== \"PD_ORG_SITUACAO_CADASTRAL\") pend.push(\"Divergência em \" + campo + ': CRM=\"' + atual + '\" x consulta=\"' + dados[campo] + '\" (mantido o valor do CRM)');\n        else if (chave === \"PD_ORG_SITUACAO_CADASTRAL\") valores[chave] = dados[campo];\n      }\n      if (dados.situacao && !/^ATIVA$/i.test(dados.situacao)) pend.push(\"Situação cadastral: \" + dados.situacao);\n      if (pend.length) status = \"OK_COM_DIVERGENCIAS\";\n    }\n  }\n  valores.PD_ORG_CADASTRO_ORIGEM = b.provedor;\n  valores.PD_ORG_CADASTRO_DATA = hoje;\n  valores.PD_ORG_CADASTRO_STATUS = status;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: {\n    org_id: b.org_id,\n    status,\n    corpo: at.corpo,\n    atualizar: !at.vazio,\n    pendencias: pend,\n    nota: pend.length ? { org_id: Number(b.org_id), content: \"<b>Cadastro pelo CNPJ \" + formatar(b.cnpj) + \" — \" + status + \"</b><br>\" + pend.map((p) => \"• \" + ATOM_DIAG_ESC(p)).join(\"<br>\") + \"<br><small>Origem: \" + b.provedor + \" em \" + hoje + \". Gerado automaticamente (ATOM_03).</small>\" } : null,\n    vinculo: { sistema: \"CNPJ\", tipo: \"CONSULTA\", id_externo: b.cnpj, deal_id: \"\", org_id: b.org_id, papel: b.provedor, status, referencia: hoje, atualizado_em: (/* @__PURE__ */ new Date()).toISOString() }\n  } }];\n  function ATOM_DIAG_ESC(s) {\n    return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");\n  }\n})();\nreturn __resultado;" } },
+  output: [{ org_id: '7', status: 'OK', corpo: {}, atualizar: false, pendencias: [], nota: null, vinculo: {} }]
+});
+
+const semConsulta = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Resultado sem consulta', parameters: { mode: 'runOnceForAllItems', jsCode: "// Gerado por n8n/build.js a partir de n8n/code/wf03.js#sem_consulta + lib/{config,cnpj,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const b = $(\"Validar CNPJ\").first().json;\n  const hoje = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);\n  const at = corpoAtualizacao(cfg, { PD_ORG_CADASTRO_STATUS: b.status, PD_ORG_CADASTRO_DATA: hoje });\n  const txt = b.status === \"CNPJ_INVALIDO\" ? \"O CNPJ informado é inválido (\" + b.motivo + \"). Verifique o número. Nenhuma consulta foi feita.\" : \"Consulta cadastral não realizada: \" + b.motivo + \".\";\n  return [{ json: {\n    org_id: b.org_id,\n    status: b.status,\n    corpo: at.corpo,\n    atualizar: !at.vazio,\n    pendencias: [txt],\n    nota: { org_id: Number(b.org_id), content: \"<b>Cadastro pelo CNPJ — \" + b.status + \"</b><br>\" + txt + \"<br><small>Gerado automaticamente (ATOM_03).</small>\" },\n    vinculo: { sistema: \"CNPJ\", tipo: \"CONSULTA\", id_externo: b.cnpj, deal_id: \"\", org_id: b.org_id, papel: \"SEM_CONSULTA\", status: b.status, referencia: hoje, atualizado_em: (/* @__PURE__ */ new Date()).toISOString() }\n  } }];\n})();\nreturn __resultado;" } },
+  output: [{ org_id: '7', status: 'PROVEDOR_PENDENTE', corpo: {}, atualizar: false, pendencias: ['x'], nota: {}, vinculo: {} }]
+});
+
+const resultado = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Resultado CNPJ', parameters: { mode: 'runOnceForAllItems', jsCode: 'return $input.all();' } },
+  output: [{ org_id: '7', status: 'OK', atualizar: false }]
+});
+
+const atualizar = ifElse({
+  version: 2.3,
+  config: { name: 'Atualizar organização?', parameters: { conditions: { options: { caseSensitive: true, leftValue: '', typeValidation: 'loose', version: 2 }, conditions: [{ leftValue: expr('{{ $json.atualizar }}'), rightValue: true, operator: { type: 'boolean', operation: 'true', singleValue: true } }], combinator: 'and' } } }
+});
+
+const patchOrg = node({
+  type: 'n8n-nodes-base.httpRequest', version: 4.5,
+  config: {
+    name: 'Atualizar organização (campos vazios)', onError: 'continueRegularOutput',
+    parameters: { method: 'PATCH', url: expr('https://api.pipedrive.com/api/v2/organizations/{{ $json.org_id }}'), authentication: 'predefinedCredentialType', nodeCredentialType: 'pipedriveApi', sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr('{{ JSON.stringify($json.corpo) }}'), options: { timeout: 20000 } },
+    credentials: { pipedriveApi: newCredential('ATOM Pipedrive API') }
+  },
+  output: [{ success: true }]
+});
+
+const temPendencia = ifElse({
+  version: 2.3,
+  config: { name: 'Registrar pendência?', parameters: { conditions: { options: { caseSensitive: true, leftValue: '', typeValidation: 'loose', version: 2 }, conditions: [{ leftValue: expr("{{ !!$('Resultado CNPJ').first().json.nota && $('Resultado CNPJ').first().json.status !== ($('Consulta anterior').first().json.status || '') }}"), rightValue: true, operator: { type: 'boolean', operation: 'true', singleValue: true } }], combinator: 'and' } } }
+});
+
+const notaPendencia = node({
+  type: 'n8n-nodes-base.httpRequest', version: 4.5,
+  config: {
+    name: 'Nota de conferência cadastral', onError: 'continueRegularOutput',
+    parameters: { method: 'POST', url: 'https://api.pipedrive.com/v1/notes', authentication: 'predefinedCredentialType', nodeCredentialType: 'pipedriveApi', sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Resultado CNPJ').first().json.nota) }}"), options: { timeout: 20000 } },
+    credentials: { pipedriveApi: newCredential('ATOM Pipedrive API') }
+  },
+  output: [{ success: true }]
+});
+
+const salvar = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: {
+    name: 'Salvar consulta cadastral',
+    parameters: { resource: 'row', operation: 'upsert', dataTableId: {"__rl":true,"mode":"id","value":"jNlKdIaPXcS7cEhF","cachedResultName":"atom_vinculos"}, matchType: 'allConditions', filters: {"conditions":[{"keyName":"sistema","condition":"eq","keyValue":"={{ \"CNPJ\" }}"},{"keyName":"org_id","condition":"eq","keyValue":"={{ $('Resultado CNPJ').first().json.org_id }}"}]}, columns: {"mappingMode":"defineBelow","value":{"sistema":"={{ $('Resultado CNPJ').first().json.vinculo.sistema }}","tipo":"={{ $('Resultado CNPJ').first().json.vinculo.tipo }}","id_externo":"={{ $('Resultado CNPJ').first().json.vinculo.id_externo }}","deal_id":"={{ $('Resultado CNPJ').first().json.vinculo.deal_id }}","org_id":"={{ $('Resultado CNPJ').first().json.vinculo.org_id }}","papel":"={{ $('Resultado CNPJ').first().json.vinculo.papel }}","status":"={{ $('Resultado CNPJ').first().json.vinculo.status }}","referencia":"={{ $('Resultado CNPJ').first().json.vinculo.referencia }}","atualizado_em":"={{ $('Resultado CNPJ').first().json.vinculo.atualizado_em }}"},"matchingColumns":[],"schema":[{"id":"sistema","displayName":"sistema","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"tipo","displayName":"tipo","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"id_externo","displayName":"id_externo","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"deal_id","displayName":"deal_id","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"org_id","displayName":"org_id","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"papel","displayName":"papel","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"status","displayName":"status","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"referencia","displayName":"referencia","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"atualizado_em","displayName":"atualizado_em","required":false,"defaultMatch":false,"display":true,"type":"dateTime","canBeUsedToMatch":true}]} }
+  },
+  output: [{ org_id: '7' }]
+});
+
+const nota = sticky('## ATOM_03 — Cadastro pelo CNPJ\n- Gatilho: CNPJ incluído/alterado manualmente na organização (ATOM_01).\n- Validação oficial (IN RFB 2.229/2024), inclusive CNPJ **alfanumérico**.\n- Provedor configurável (`CNPJ_PROVEDOR`, `CNPJ_PROVEDOR_URL`). Sem provedor → `PROVEDOR_PENDENTE`.\n- Só preenche campos **vazios**; divergências preservam o CRM e geram nota de conferência.\n- CNPJ diferente do consultado ou nome sem correspondência → `DIVERGENTE`, nada é gravado.\n- A Claude não é usada aqui (dados cadastrais só da consulta estruturada).', [], { color: 4 });
+
+export default workflow('atom-03', 'ATOM_03_Cadastro_CNPJ', { settings: { timezone: 'America/Sao_Paulo', executionOrder: 'v1', callerPolicy: 'workflowsFromSameOwner' } })
+  .add(entrada)
+  .to(lerConfig)
+  .to(buscarOrg)
+  .to(consultaAnterior)
+  .to(validar)
+  .to(acao
+    .onCase(0, consultar.to(comparar).to(resultado))
+    .onCase(1, semConsulta.to(resultado)))
+  .add(consultar.onError(comparar))
+  .add(resultado)
+  .to(atualizar
+    .onTrue(patchOrg.to(temPendencia))
+    .onFalse(temPendencia))
+  .add(temPendencia
+    .onTrue(notaPendencia.to(salvar))
+    .onFalse(salvar))
+  .add(nota);

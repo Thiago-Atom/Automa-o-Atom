@@ -1,0 +1,150 @@
+{
+  "projectId": "FZmsxQxLoksix7rb",
+  "tables": {
+    "atom_config": {
+      "id": "rlZWp7gPKiB6xzw3",
+      "columns": {
+        "chave": "string",
+        "valor": "string",
+        "status": "string",
+        "descricao": "string",
+        "usado_por": "string"
+      }
+    },
+    "atom_eventos": {
+      "id": "nzO3BvmxmGXY6hZT",
+      "columns": {
+        "event_key": "string",
+        "origem": "string",
+        "tipo": "string",
+        "entidade_id": "string",
+        "deal_id": "string",
+        "status": "string",
+        "tentativas": "number",
+        "ultimo_erro": "string",
+        "resumo": "string",
+        "evento_em": "date",
+        "recebido_em": "date",
+        "processado_em": "date"
+      }
+    },
+    "atom_negocios": {
+      "id": "4JWPJuuhMrWIhad4",
+      "columns": {
+        "deal_id": "string",
+        "org_id": "string",
+        "person_id": "string",
+        "email_fp": "string",
+        "site_url": "string",
+        "site_status": "string",
+        "site_motivo": "string",
+        "site_verificado_em": "date",
+        "diag_status": "string",
+        "diag_versao": "string",
+        "diag_entrada_fp": "string",
+        "diag_data": "date",
+        "cnpj": "string",
+        "cnpj_status": "string",
+        "cnpj_consultado_em": "date",
+        "formalizacao_status": "string",
+        "pendencias": "string",
+        "pendencias_fp": "string",
+        "pendencias_solicitadas_em": "date",
+        "snapshot_versao": "number",
+        "contrato_status": "string",
+        "contrato_concluido_em": "date",
+        "pagamento_inicial_status": "string",
+        "liberacao_status": "string",
+        "trello_card_id": "string",
+        "trello_card_url": "string",
+        "execucao_inicio": "date",
+        "cancelado": "boolean",
+        "lock_owner": "string",
+        "lock_ate": "date",
+        "ultimo_evento_em": "date"
+      }
+    },
+    "atom_vinculos": {
+      "id": "jNlKdIaPXcS7cEhF",
+      "columns": {
+        "sistema": "string",
+        "tipo": "string",
+        "id_externo": "string",
+        "deal_id": "string",
+        "org_id": "string",
+        "snapshot_versao": "number",
+        "papel": "string",
+        "valor_previsto": "number",
+        "vencimento": "string",
+        "status": "string",
+        "link": "string",
+        "atualizado_em": "date",
+        "referencia": "string"
+      }
+    },
+    "atom_snapshots": {
+      "id": "xEk09M9Zn7SCVz1n",
+      "columns": {
+        "deal_id": "string",
+        "versao": "number",
+        "hash": "string",
+        "dados": "string",
+        "status": "string",
+        "criado_em": "date"
+      }
+    },
+    "atom_acoes": {
+      "id": "g4eyHC7N33XttLZH",
+      "columns": {
+        "request_id": "string",
+        "sistema": "string",
+        "acao": "string",
+        "deal_id": "string",
+        "status": "string",
+        "tentativas": "number",
+        "proxima_tentativa": "date",
+        "ultimo_erro": "string",
+        "payload": "string",
+        "resultado": "string",
+        "criado_em": "date",
+        "atualizado_em": "date"
+      }
+    },
+    "atom_agendamentos": {
+      "id": "UqXpO8duZ4cqVbo3",
+      "columns": {
+        "chave_campanha": "string",
+        "tipo": "string",
+        "deal_id": "string",
+        "org_id": "string",
+        "inicio_execucao": "date",
+        "agendado_para": "date",
+        "status": "string",
+        "request_id": "string",
+        "message_id": "string",
+        "enviado_em": "date",
+        "status_entrega": "string",
+        "erro": "string",
+        "atualizado_em": "date"
+      }
+    },
+    "atom_financeiro": {
+      "id": "eUuPU4mvLlWICal7",
+      "columns": {
+        "event_key": "string",
+        "asaas_payment_id": "string",
+        "deal_id": "string",
+        "operacao": "string",
+        "valor_bruto": "number",
+        "valor_liquido": "number",
+        "data_referencia": "string",
+        "status_sync": "string",
+        "controlle_id": "string",
+        "tentativas": "number",
+        "ultimo_erro": "string",
+        "dados": "string",
+        "atualizado_em": "date"
+      }
+    }
+  }
+}

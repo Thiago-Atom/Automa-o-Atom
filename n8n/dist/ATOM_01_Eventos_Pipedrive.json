@@ -1,0 +1,461 @@
+{
+  "name": "ATOM_01_Eventos_Pipedrive",
+  "nodes": [
+    {
+      "id": "f7db44e3-c808-485a-a218-64d4f732838e",
+      "name": "Webhook Pipedrive",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atom/pipedrive",
+        "authentication": "basicAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "534c2b0b-c570-4cc8-b222-3256cf40caa7",
+      "credentials": {}
+    },
+    {
+      "id": "dc494a6a-2984-4a19-9da3-4ebe76052fae",
+      "name": "Ler configuração",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "d60acc83-9753-4bcd-99d2-06fda591a4a1",
+      "name": "Classificar evento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf01.js#classificar + lib/{util,config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\n\n// lib/pipedrive.js\nvar CAMPOS_SAIDA_N8N = [\n  \"PD_ORG_RAZAO_SOCIAL\",\n  \"PD_ORG_NOME_FANTASIA\",\n  \"PD_ORG_LOGRADOURO\",\n  \"PD_ORG_NUMERO\",\n  \"PD_ORG_COMPLEMENTO\",\n  \"PD_ORG_BAIRRO\",\n  \"PD_ORG_CIDADE\",\n  \"PD_ORG_UF\",\n  \"PD_ORG_CEP\",\n  \"PD_ORG_SITUACAO_CADASTRAL\",\n  \"PD_ORG_CADASTRO_ORIGEM\",\n  \"PD_ORG_CADASTRO_DATA\",\n  \"PD_ORG_CADASTRO_STATUS\",\n  \"PD_ORG_SITE_STATUS\",\n  \"PD_DEAL_DIAG_STATUS\",\n  \"PD_DEAL_DIAG_LINK\",\n  \"PD_DEAL_DIAG_DATA\",\n  \"PD_DEAL_DIAG_VERSAO\",\n  \"PD_DEAL_PENDENCIAS\",\n  \"PD_DEAL_CONTRATO_STATUS\",\n  \"PD_DEAL_CLICKSIGN_ID\",\n  \"PD_DEAL_CLICKSIGN_LINK\",\n  \"PD_DEAL_PAGAMENTO_STATUS\",\n  \"PD_DEAL_ASAAS_IDS\",\n  \"PD_DEAL_CONTROLLE_STATUS\",\n  \"PD_DEAL_TRELLO_ID\",\n  \"PD_DEAL_TRELLO_LINK\",\n  \"PD_DEAL_EXECUCAO_INICIO\",\n  \"PD_DEAL_AVALIACAO_STATUS\"\n];\nvar CAMPOS_CONDICOES = [\n  \"PD_DEAL_SERVICO\",\n  \"PD_DEAL_ESCOPO\",\n  \"PD_DEAL_VALOR_TOTAL\",\n  \"PD_DEAL_TIPO_COBRANCA\",\n  \"PD_DEAL_VALOR_ENTRADA\",\n  \"PD_DEAL_NUM_PARCELAS\",\n  \"PD_DEAL_VALOR_PARCELA\",\n  \"PD_DEAL_MENSALIDADE\",\n  \"PD_DEAL_DURACAO_MESES\",\n  \"PD_DEAL_PRIMEIRO_VENCIMENTO\",\n  \"PD_DEAL_VENCIMENTO_ENTRADA\",\n  \"PD_DEAL_FORMA_PAGAMENTO\",\n  \"PD_DEAL_MODELO_CONTRATO\",\n  \"PD_DEAL_PRAZO_EXECUCAO\",\n  \"PD_DEAL_CONDICOES_APROVADAS\",\n  \"PD_DEAL_EMAIL_ASSINATURA\",\n  \"PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO\",\n  \"PD_DEAL_NOME_SIGNATARIO\",\n  \"PD_ORG_EMAIL_FINANCEIRO\",\n  \"PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO\"\n];\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction alterados(previous) {\n  if (!previous || typeof previous !== \"object\") return [];\n  const out = [];\n  for (const k of Object.keys(previous)) {\n    if (k === \"custom_fields\" && previous.custom_fields && typeof previous.custom_fields === \"object\") {\n      out.push(...Object.keys(previous.custom_fields));\n    } else out.push(\"nativo:\" + k);\n  }\n  return out;\n}\nfunction mudou(evento, id) {\n  if (!id) return false;\n  return alterados(evento.previous).includes(id);\n}\nfunction chaveEvento(meta) {\n  return \"pipedrive:\" + (meta.id || [meta.entity, meta.entity_id, meta.timestamp, meta.action].join(\":\"));\n}\nfunction truthy(v) {\n  if (v === true) return true;\n  if (v === null || v === void 0) return false;\n  return /^(sim|true|1|yes|x|ok)$/i.test(String(v && v.label ? v.label : v).trim());\n}\nfunction classificar(body, cfg) {\n  const meta = body && body.meta || {};\n  const data = body && body.data || {};\n  const ev = { meta, data, previous: body && body.previous || {} };\n  const r = { valido: false, ignorar: false, motivo: \"\", chave: \"\", intents: [], meta: {} };\n  if (!meta.entity || !meta.action || !meta.entity_id) {\n    r.motivo = \"PAYLOAD_INVALIDO\";\n    return r;\n  }\n  if (String(meta.version || \"\") !== \"2.0\") {\n    r.motivo = \"VERSAO_WEBHOOK_NAO_SUPORTADA: \" + meta.version;\n    return r;\n  }\n  r.valido = true;\n  r.chave = chaveEvento(meta);\n  r.meta = {\n    entity: meta.entity,\n    action: meta.action,\n    entity_id: String(meta.entity_id),\n    timestamp: meta.timestamp || null,\n    user_id: meta.user_id || null,\n    change_source: meta.change_source || null,\n    is_bulk_edit: !!meta.is_bulk_edit\n  };\n  const mudancas = alterados(ev.previous);\n  const saidas = CAMPOS_SAIDA_N8N.map((k) => idCampo(cfg, k)).filter(Boolean);\n  const usuarioIntegracao = valor(cfg, \"PD_INTEGRACAO_USER_ID\", \"\");\n  const doProprioN8n = usuarioIntegracao && String(meta.user_id) === usuarioIntegracao;\n  const soCamposN8n = mudancas.length > 0 && mudancas.every((m) => saidas.includes(m) || m === \"nativo:update_time\");\n  if (meta.action === \"change\" && soCamposN8n) {\n    r.ignorar = true;\n    r.motivo = \"ALTERACAO_SOMENTE_EM_CAMPOS_DO_N8N\";\n    return r;\n  }\n  const add = (tipo, extra) => r.intents.push(Object.assign({ tipo, entidade: meta.entity, entidade_id: String(meta.entity_id) }, extra || {}));\n  const criado = meta.action === \"create\";\n  const idEmail = idCampo(cfg, \"PD_EMAIL_REUNIAO\");\n  if (meta.entity === \"deal\") {\n    const dealId = String(meta.entity_id);\n    if (meta.action === \"delete\" || mudou(ev, \"nativo:status\") && [\"lost\", \"deleted\"].includes(String(data.status))) {\n      add(\"CANCELAMENTO\", { deal_id: dealId });\n      return r;\n    }\n    const estagiosReuniao = lista(cfg, \"PD_STAGES_REUNIAO_IDS\");\n    const estagioAceita = valor(cfg, \"PD_STAGE_PROPOSTA_ACEITA_ID\", \"\");\n    const estagioMudou = mudou(ev, \"nativo:stage_id\") || criado;\n    if (estagioMudou && estagiosReuniao.includes(String(data.stage_id))) add(\"ETAPA_REUNIAO\", { deal_id: dealId });\n    if (estagioMudou && estagioAceita && String(data.stage_id) === estagioAceita) add(\"PROPOSTA_ACEITA\", { deal_id: dealId });\n    if (idEmail && !idEmail.startsWith(\"nativo:\") && (mudou(ev, idEmail) || criado && ler(data, idEmail))) add(\"EMAIL_ALTERADO\", { deal_id: dealId });\n    const idsCond = CAMPOS_CONDICOES.map((k) => idCampo(cfg, k)).filter(Boolean);\n    if (!criado && idsCond.some((id) => mudou(ev, id)) && !r.intents.some((i) => i.tipo === \"PROPOSTA_ACEITA\")) add(\"CONDICOES_ALTERADAS\", { deal_id: dealId });\n    const idReexec = idCampo(cfg, \"PD_DEAL_DIAG_REEXECUTAR\");\n    if (idReexec && mudou(ev, idReexec) && truthy(ler(data, idReexec))) add(\"DIAGNOSTICO_REEXECUTAR\", { deal_id: dealId });\n  }\n  if (meta.entity === \"person\") {\n    if (idEmail === \"nativo:emails\" || idEmail === \"\") {\n      const atual = primeiroEmail(data.emails);\n      const antes = primeiroEmail((ev.previous || {}).emails);\n      if (atual && (criado || mudou(ev, \"nativo:emails\") && atual !== antes)) add(\"EMAIL_ALTERADO\", { person_id: String(meta.entity_id) });\n    }\n  }\n  if (meta.entity === \"organization\") {\n    const idSite = idCampo(cfg, \"PD_ORG_SITE\") || \"nativo:website\";\n    if (mudou(ev, idSite) || criado && ler(data, idSite)) add(\"SITE_ALTERADO\", { org_id: String(meta.entity_id) });\n    const idCnpj = idCampo(cfg, \"PD_ORG_CNPJ\");\n    if (idCnpj && (mudou(ev, idCnpj) || criado && ler(data, idCnpj))) add(\"CNPJ_ALTERADO\", { org_id: String(meta.entity_id) });\n    const idsAdm = [\"PD_ORG_EMAIL_FINANCEIRO\", \"PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO\"].map((k) => idCampo(cfg, k)).filter(Boolean);\n    if (!criado && idsAdm.some((id) => mudou(ev, id))) add(\"CONDICOES_ALTERADAS\", { org_id: String(meta.entity_id) });\n  }\n  if (!r.intents.length) {\n    r.ignorar = true;\n    r.motivo = \"SEM_GATILHO_RELEVANTE\";\n  }\n  if (doProprioN8n && r.intents.length) r.meta.origem_integracao = true;\n  return r;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const w = $(\"Webhook Pipedrive\").first().json;\n  const body = w.body || {};\n  const meta = body.meta || {};\n  const r = classificar(body, cfg);\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const chave = r.chave || \"pipedrive:invalido:\" + fingerprint(body).slice(0, 12);\n  return [{ json: { r, row: {\n    event_key: chave,\n    origem: \"pipedrive\",\n    tipo: (meta.entity || \"?\") + \".\" + (meta.action || \"?\"),\n    entidade_id: String(meta.entity_id || \"\"),\n    deal_id: meta.entity === \"deal\" ? String(meta.entity_id) : \"\",\n    status: !r.valido ? \"INVALIDO\" : r.ignorar ? \"IGNORADO\" : \"RECEBIDO\",\n    tentativas: 0,\n    ultimo_erro: r.valido ? \"\" : r.motivo,\n    resumo: truncate((r.ignorar || !r.valido ? r.motivo : r.intents.map((i) => i.tipo).join(\",\")) + (meta.change_source ? \" | origem=\" + meta.change_source : \"\") + (meta.user_id ? \" | usuario=\" + meta.user_id : \"\") + (meta.is_bulk_edit ? \" | edicao_em_massa\" : \"\"), 500),\n    evento_em: meta.timestamp || agora,\n    recebido_em: agora,\n    processado_em: null\n  } } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "8787919f-5291-477b-9ee8-9c9cddef3dda",
+      "name": "Evento já recebido?",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "nzO3BvmxmGXY6hZT",
+          "cachedResultName": "atom_eventos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "event_key",
+              "condition": "eq",
+              "keyValue": "={{ $json.row.event_key }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "a56ac94f-63c7-4677-ba66-01af91b7f33e",
+      "name": "Deduplicar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf01.js#deduplicar. Edite a fonte no repositório, não este nó.\nconst c = $('Classificar evento').first().json;\nconst existe = $('Evento já recebido?').all().some((i) => i.json && i.json.event_key);\n// Reenvio do mesmo evento (meta.id igual): nada a fazer.\nreturn existe ? [] : [{ json: c }];"
+      }
+    },
+    {
+      "id": "0c13e6ff-c8cc-4b24-95ec-2ebfa2702301",
+      "name": "Registrar evento",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "nzO3BvmxmGXY6hZT",
+          "cachedResultName": "atom_eventos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event_key": "={{ $json.row.event_key }}",
+            "origem": "={{ $json.row.origem }}",
+            "tipo": "={{ $json.row.tipo }}",
+            "entidade_id": "={{ $json.row.entidade_id }}",
+            "deal_id": "={{ $json.row.deal_id }}",
+            "status": "={{ $json.row.status }}",
+            "tentativas": "={{ $json.row.tentativas }}",
+            "ultimo_erro": "={{ $json.row.ultimo_erro }}",
+            "resumo": "={{ $json.row.resumo }}",
+            "evento_em": "={{ $json.row.evento_em }}",
+            "recebido_em": "={{ $json.row.recebido_em }}",
+            "processado_em": "={{ $json.row.processado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event_key",
+              "displayName": "event_key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "origem",
+              "displayName": "origem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "entidade_id",
+              "displayName": "entidade_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resumo",
+              "displayName": "resumo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "evento_em",
+              "displayName": "evento_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processado_em",
+              "displayName": "processado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "311f04b4-ea65-4cad-9ce4-82c7d0153db8",
+      "name": "Separar gatilhos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf01.js#gatilhos + lib/{config}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const c = $(\"Deduplicar\").first().json;\n  if (!c.r.valido || c.r.ignorar) return [];\n  const MAPA = {\n    EMAIL_ALTERADO: \"WF_ATOM_02\",\n    ETAPA_REUNIAO: \"WF_ATOM_02\",\n    SITE_ALTERADO: \"WF_ATOM_02\",\n    DIAGNOSTICO_REEXECUTAR: \"WF_ATOM_02\",\n    CNPJ_ALTERADO: \"WF_ATOM_03\",\n    PROPOSTA_ACEITA: \"WF_ATOM_04\",\n    CONDICOES_ALTERADAS: \"WF_ATOM_04\",\n    CANCELAMENTO: \"WF_ATOM_04\"\n  };\n  const out = [];\n  for (const i of c.r.intents) {\n    const id = valor(cfg, MAPA[i.tipo], \"\");\n    if (!id) continue;\n    out.push({ json: Object.assign({}, i, { forcar: i.tipo === \"DIAGNOSTICO_REEXECUTAR\", event_key: c.row.event_key, _workflow_id: id }) });\n  }\n  return out;\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "82732e49-3a98-4c4d-83a7-47aa1b181eed",
+      "name": "Despachar gatilho",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1500,
+        300
+      ],
+      "parameters": {
+        "mode": "each",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json._workflow_id }}"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      }
+    },
+    {
+      "id": "8a9cea8b-e854-4763-b7e3-98418af3ee86",
+      "name": "Marcar despachado",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "nzO3BvmxmGXY6hZT",
+          "cachedResultName": "atom_eventos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "event_key",
+              "condition": "eq",
+              "keyValue": "={{ $('Deduplicar').first().json.row.event_key }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "DESPACHADO",
+            "processado_em": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processado_em",
+              "displayName": "processado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "ab5f4373-66fe-4846-a769-176b956a4b55",
+      "name": "Sticky Note ab5f4373",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        450
+      ],
+      "parameters": {
+        "content": "## ATOM_01 — Eventos do Pipedrive (webhooks v2)\n- Autenticação Basic Auth (http_auth_user/password do webhook).\n- Deduplicação por `meta.id` (atom_eventos).\n- Gatilhos específicos: e-mail, etapa de reunião, site, CNPJ, proposta aceita, condições alteradas, cancelamento, reexecução explícita do diagnóstico.\n- Anti-loop: alterações somente em campos escritos pelo n8n são ignoradas.\n- Cada filho busca o registro atualizado antes de agir (eventos antigos fora de ordem não sobrescrevem estado).\n- IDs dos filhos vêm de atom_config (WF_ATOM_02/03/04).",
+        "color": 4
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Pipedrive": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração": {
+      "main": [
+        [
+          {
+            "node": "Classificar evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificar evento": {
+      "main": [
+        [
+          {
+            "node": "Evento já recebido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evento já recebido?": {
+      "main": [
+        [
+          {
+            "node": "Deduplicar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicar": {
+      "main": [
+        [
+          {
+            "node": "Registrar evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar evento": {
+      "main": [
+        [
+          {
+            "node": "Separar gatilhos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar gatilhos": {
+      "main": [
+        [
+          {
+            "node": "Despachar gatilho",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Despachar gatilho": {
+      "main": [
+        [
+          {
+            "node": "Marcar despachado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "atomBuild": "2026-09-27"
+  }
+}

@@ -1,0 +1,730 @@
+{
+  "name": "ATOM_10_Zayra_Interface",
+  "nodes": [
+    {
+      "id": "94496f4d-df97-4da4-937b-79df0260009a",
+      "name": "Entrada",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        300
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "id": "469210c7-8ef7-40c4-91e3-a26930671a09",
+      "name": "Ler configuração",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "709bd049-4669-4f14-8d44-ea94f5258ebf",
+      "name": "Montar pedido",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf10.js#montar + lib/{util,config,validate,zayra}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// lib/validate.js\nfunction tipoDe(v) {\n  if (v === null) return \"null\";\n  if (Array.isArray(v)) return \"array\";\n  if (typeof v === \"number\") return Number.isInteger(v) ? \"integer\" : \"number\";\n  return typeof v;\n}\nfunction confereTipo(v, esperado) {\n  const t = tipoDe(v);\n  const lista = Array.isArray(esperado) ? esperado : [esperado];\n  return lista.some((e) => e === t || e === \"number\" && t === \"integer\");\n}\nfunction validar(valor2, schema, caminho, erros) {\n  caminho = caminho || \"$\";\n  erros = erros || [];\n  if (!schema || typeof schema !== \"object\") return erros;\n  if (schema.type && !confereTipo(valor2, schema.type)) {\n    erros.push(caminho + \": tipo esperado \" + JSON.stringify(schema.type) + \", recebido \" + tipoDe(valor2));\n    return erros;\n  }\n  if (schema.enum && !schema.enum.includes(valor2)) erros.push(caminho + \": valor fora do enum\");\n  if (typeof valor2 === \"string\") {\n    if (schema.minLength !== void 0 && valor2.length < schema.minLength) erros.push(caminho + \": texto curto\");\n    if (schema.maxLength !== void 0 && valor2.length > schema.maxLength) erros.push(caminho + \": texto longo\");\n    if (schema.pattern && !new RegExp(schema.pattern).test(valor2)) erros.push(caminho + \": formato inválido\");\n  }\n  if (Array.isArray(valor2)) {\n    if (schema.minItems !== void 0 && valor2.length < schema.minItems) erros.push(caminho + \": itens insuficientes\");\n    if (schema.maxItems !== void 0 && valor2.length > schema.maxItems) erros.push(caminho + \": itens em excesso\");\n    if (schema.items) valor2.forEach((v, i) => validar(v, schema.items, caminho + \"[\" + i + \"]\", erros));\n  }\n  if (tipoDe(valor2) === \"object\") {\n    const props = schema.properties || {};\n    for (const r of schema.required || []) {\n      if (!(r in valor2)) erros.push(caminho + \".\" + r + \": obrigatório\");\n    }\n    for (const k of Object.keys(valor2)) {\n      if (props[k]) validar(valor2[k], props[k], caminho + \".\" + k, erros);\n      else if (schema.additionalProperties === false) erros.push(caminho + \".\" + k + \": propriedade não permitida\");\n    }\n  }\n  return erros;\n}\n\n// lib/zayra.js\nvar ACOES = [\"SOLICITAR_SITE\", \"COMPLETAR_DADOS\", \"SOLICITAR_AVALIACAO_GOOGLE\"];\nvar SCHEMA = {\n  type: \"object\",\n  additionalProperties: false,\n  required: [\n    \"request_id\",\n    \"action\",\n    \"pipedrive_deal_id\",\n    \"pipedrive_organization_id\",\n    \"conversation_id\",\n    \"recipient_phone\",\n    \"missing_fields\",\n    \"message_context\",\n    \"scheduled_at\"\n  ],\n  properties: {\n    request_id: { type: \"string\", minLength: 8 },\n    action: { type: \"string\", enum: ACOES },\n    pipedrive_deal_id: { type: \"string\", minLength: 1 },\n    pipedrive_organization_id: { type: \"string\" },\n    conversation_id: { type: \"string\" },\n    recipient_phone: { type: \"string\" },\n    missing_fields: { type: \"array\", items: { type: \"string\" } },\n    message_context: { type: \"object\" },\n    scheduled_at: { type: \"string\" }\n  }\n};\nvar CAMPOS_PERMITIDOS_CLIENTE = [\n  \"site\",\n  \"email_financeiro\",\n  \"email_assinatura\",\n  \"nome_signatario\",\n  \"endereco.logradouro\",\n  \"endereco.numero\",\n  \"endereco.complemento\",\n  \"endereco.bairro\",\n  \"endereco.cidade\",\n  \"endereco.uf\",\n  \"endereco.cep\"\n];\nfunction montar2(p) {\n  const faltantes = (p.missing_fields || []).filter((c) => CAMPOS_PERMITIDOS_CLIENTE.includes(c)).sort();\n  const idBase = p.action + \":\" + p.deal_id + \":\" + (p.chaveIdempotencia || fingerprint(faltantes));\n  const req = {\n    request_id: \"zr-\" + fingerprint(idBase),\n    action: p.action,\n    pipedrive_deal_id: String(p.deal_id || \"\"),\n    pipedrive_organization_id: String(p.org_id || \"\"),\n    conversation_id: String(p.conversation_id || \"\"),\n    recipient_phone: String(p.phone || \"\").replace(/[^\\d+]/g, \"\"),\n    missing_fields: faltantes,\n    message_context: p.message_context || {},\n    scheduled_at: p.scheduled_at || \"\"\n  };\n  const erros = validar(req, SCHEMA);\n  if (p.action === \"COMPLETAR_DADOS\" && !faltantes.length) erros.push(\"COMPLETAR_DADOS sem campos permitidos\");\n  if (!req.recipient_phone && !req.conversation_id) erros.push(\"sem telefone nem conversation_id\");\n  return { ok: erros.length === 0, erros, req };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const m = montar2({\n    action: e.action,\n    deal_id: e.deal_id,\n    org_id: e.org_id,\n    phone: e.phone,\n    conversation_id: e.conversation_id,\n    missing_fields: e.missing_fields || [],\n    message_context: e.message_context || {},\n    scheduled_at: e.scheduled_at || \"\",\n    chaveIdempotencia: e.chave_idempotencia\n  });\n  if (e.retry_request_id) m.req.request_id = String(e.retry_request_id);\n  const mecanismo = valor(cfg, \"ZAYRA_MECANISMO\", \"\");\n  const gate = portao(cfg, [\"ZAYRA_MECANISMO\", \"ZAYRA_ENDPOINT_URL\"]);\n  if (gate.liberado && mecanismo !== \"HTTP_WEBHOOK\") {\n    gate.liberado = false;\n    gate.motivo = \"MECANISMO_NAO_IMPLEMENTADO: \" + mecanismo;\n  }\n  return [{ json: { req: m.req, valido: m.ok, erros: m.erros, gate, endpoint: valor(cfg, \"ZAYRA_ENDPOINT_URL\", \"\") } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "a39c5663-3a0a-411a-b5ac-2059dc0fdcc5",
+      "name": "Buscar pedido existente",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.req.request_id }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "c19fa151-b692-4dc9-be7d-0e72cfd0e775",
+      "name": "Decidir envio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf10.js#decidir. Edite a fonte no repositório, não este nó.\nconst p = $('Montar pedido').first().json;\nconst existente = $('Buscar pedido existente').all().map((i) => i.json).find((r) => r && r.request_id);\nconst agora = new Date().toISOString();\nlet status;\nif (existente && ['ENVIADO', 'ENTREGUE', 'LIDO', 'CONFIRMADO'].includes(existente.status)) status = 'JA_ENVIADO';\nelse if (!p.valido) status = 'INVALIDO';\nelse if (!p.gate.liberado) status = 'BLOQUEADO_CONFIG';\nelse status = 'PENDENTE_ENVIO';\nconst row = {\n  request_id: p.req.request_id, sistema: 'ZAYRA', acao: p.req.action, deal_id: p.req.pipedrive_deal_id,\n  status: status === 'JA_ENVIADO' ? existente.status : status,\n  tentativas: existente ? Number(existente.tentativas || 0) : 0,\n  proxima_tentativa: existente ? existente.proxima_tentativa || null : null,\n  ultimo_erro: status === 'INVALIDO' ? p.erros.join('; ') : (status === 'BLOQUEADO_CONFIG' ? p.gate.motivo : ''),\n  payload: JSON.stringify(p.req), resultado: existente ? existente.resultado || '' : '',\n  criado_em: existente ? existente.criado_em : agora, atualizado_em: agora,\n};\nreturn [{ json: { row, enviar: status === 'PENDENTE_ENVIO', req: p.req, endpoint: p.endpoint } }];"
+      }
+    },
+    {
+      "id": "7f8fee93-cbff-4abb-8ed6-31f07cbd5ba2",
+      "name": "Registrar pedido",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.row.request_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "request_id": "={{ $json.row.request_id }}",
+            "sistema": "={{ $json.row.sistema }}",
+            "acao": "={{ $json.row.acao }}",
+            "deal_id": "={{ $json.row.deal_id }}",
+            "status": "={{ $json.row.status }}",
+            "tentativas": "={{ $json.row.tentativas }}",
+            "proxima_tentativa": "={{ $json.row.proxima_tentativa }}",
+            "ultimo_erro": "={{ $json.row.ultimo_erro }}",
+            "payload": "={{ $json.row.payload }}",
+            "resultado": "={{ $json.row.resultado }}",
+            "criado_em": "={{ $json.row.criado_em }}",
+            "atualizado_em": "={{ $json.row.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "request_id",
+              "displayName": "request_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "acao",
+              "displayName": "acao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proxima_tentativa",
+              "displayName": "proxima_tentativa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "payload",
+              "displayName": "payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resultado",
+              "displayName": "resultado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "criado_em",
+              "displayName": "criado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "213b5dc4-fd21-4e64-b23e-cff24c5f2ade",
+      "name": "Enviar à Zayra?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1300,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Decidir envio').first().json.enviar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "efafba76-ad72-47bc-af87-f609bb065fd0",
+      "name": "Zayra — adaptador HTTP (contrato proposto)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1500,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Decidir envio').first().json.endpoint }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "value": "={{ $('Decidir envio').first().json.req.request_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Decidir envio').first().json.req) }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "credentials": {},
+      "notes": "Contrato interno PROPOSTO. Só executa com ZAYRA_MECANISMO=HTTP_WEBHOOK e ZAYRA_ENDPOINT_URL CONFIGURADOS e MODO_EXECUCAO diferente de SIMULACAO.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "dce72342-c221-4574-8849-f991644acedd",
+      "name": "Interpretar resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf10.js#interpretar. Edite a fonte no repositório, não este nó.\nconst d = $('Decidir envio').first().json;\nconst r = $input.first().json;\nconst agora = new Date();\nconst row = Object.assign({}, d.row, { atualizado_em: agora.toISOString() });\nconst ok = r && typeof r.statusCode === 'number' && r.statusCode >= 200 && r.statusCode < 300;\nconst corpo = (r && r.body && typeof r.body === 'object') ? r.body : {};\nif (ok) {\n  row.status = 'ENVIADO';\n  row.resultado = JSON.stringify({ http: r.statusCode, message_id: corpo.message_id || corpo.id || null, status: corpo.status || null });\n  row.ultimo_erro = '';\n  row.proxima_tentativa = null;\n} else {\n  row.tentativas = Number(row.tentativas || 0) + 1;\n  row.status = 'FALHA';\n  const msg = String(r && r.error ? (r.error.message || JSON.stringify(r.error)) : ('HTTP ' + (r && r.statusCode)));\n  row.ultimo_erro = msg.replace(/(token|key|secret|password|authorization)[^,\\s]*/gi, '$1=***').slice(0, 300);\n  row.proxima_tentativa = new Date(agora.getTime() + Math.min(Math.pow(2, row.tentativas), 720) * 60000).toISOString();\n}\nreturn [{ json: { row } }];"
+      }
+    },
+    {
+      "id": "6876ef57-f841-4fae-a52b-7f40d1abcb60",
+      "name": "Atualizar pedido",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1900,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.row.request_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.row.status }}",
+            "tentativas": "={{ $json.row.tentativas }}",
+            "proxima_tentativa": "={{ $json.row.proxima_tentativa }}",
+            "ultimo_erro": "={{ $json.row.ultimo_erro }}",
+            "resultado": "={{ $json.row.resultado }}",
+            "atualizado_em": "={{ $json.row.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proxima_tentativa",
+              "displayName": "proxima_tentativa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resultado",
+              "displayName": "resultado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "db21f259-a91f-4ebb-b438-c1b561c983b8",
+      "name": "Resultado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf10.js#resultado. Edite a fonte no repositório, não este nó.\nconst r = $input.first().json;\nlet messageId = null;\ntry { messageId = JSON.parse(r.resultado || '{}').message_id || null; } catch (e) { messageId = null; }\nreturn [{ json: { request_id: r.request_id, status: r.status, message_id: messageId, ultimo_erro: r.ultimo_erro || '' } }];"
+      }
+    },
+    {
+      "id": "9c761a87-a1d4-408a-9c8e-8099688f65c6",
+      "name": "Status de entrega (Zayra)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        450
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atom/zayra/status",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "fb5aea40-6177-4968-938e-4211baf486df",
+      "credentials": {}
+    },
+    {
+      "id": "80c9ffbc-8605-4daa-b701-1845783eec01",
+      "name": "Normalizar status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf10.js#status_entrega. Edite a fonte no repositório, não este nó.\nconst b = $input.first().json.body || {};\nconst permitidos = ['ENVIADO', 'ENTREGUE', 'LIDO', 'FALHA'];\nconst st = String(b.status || '').toUpperCase();\nif (!b.request_id || !permitidos.includes(st)) return [];\nreturn [{ json: {\n  request_id: String(b.request_id), status_entrega: st, message_id: b.message_id ? String(b.message_id) : '',\n  erro: String(b.error || '').slice(0, 300), atualizado_em: new Date().toISOString(),\n} }];"
+      }
+    },
+    {
+      "id": "06e3066d-54d5-4c00-b26b-4918c37699a1",
+      "name": "Atualizar entrega no agendamento",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "UqXpO8duZ4cqVbo3",
+          "cachedResultName": "atom_agendamentos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.request_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status_entrega": "={{ $json.status_entrega }}",
+            "erro": "={{ $json.erro }}",
+            "atualizado_em": "={{ $json.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status_entrega",
+              "displayName": "status_entrega",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "erro",
+              "displayName": "erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1d8b149a-86cf-4c82-b463-29fc86b4e822",
+      "name": "Sticky Note 1d8b149a",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        600
+      ],
+      "parameters": {
+        "content": "## ATOM_10 — Interface com a Zayra\nContrato interno **proposto** (não é API existente da Zayra). Ações: SOLICITAR_SITE, COMPLETAR_DADOS, SOLICITAR_AVALIACAO_GOOGLE.\n\n- Idempotência por `request_id` (tabela atom_acoes).\n- Sem mecanismo configurado → `BLOQUEADO_CONFIG` (nada é enviado nem simulado).\n- Nunca envia pela Meta diretamente.\n- Retentativas: ATOM_11 relê `FALHA` com `proxima_tentativa` vencida.",
+        "color": 4
+      }
+    }
+  ],
+  "connections": {
+    "Entrada": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração": {
+      "main": [
+        [
+          {
+            "node": "Montar pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar pedido": {
+      "main": [
+        [
+          {
+            "node": "Buscar pedido existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar pedido existente": {
+      "main": [
+        [
+          {
+            "node": "Decidir envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decidir envio": {
+      "main": [
+        [
+          {
+            "node": "Registrar pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar pedido": {
+      "main": [
+        [
+          {
+            "node": "Enviar à Zayra?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar à Zayra?": {
+      "main": [
+        [
+          {
+            "node": "Zayra — adaptador HTTP (contrato proposto)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resultado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zayra — adaptador HTTP (contrato proposto)": {
+      "main": [
+        [
+          {
+            "node": "Interpretar resposta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Interpretar resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interpretar resposta": {
+      "main": [
+        [
+          {
+            "node": "Atualizar pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar pedido": {
+      "main": [
+        [
+          {
+            "node": "Resultado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Status de entrega (Zayra)": {
+      "main": [
+        [
+          {
+            "node": "Normalizar status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar status": {
+      "main": [
+        [
+          {
+            "node": "Atualizar entrega no agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "atomBuild": "2026-09-27"
+  }
+}

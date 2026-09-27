@@ -1,0 +1,89 @@
+const agenda = trigger({
+  type: 'n8n-nodes-base.scheduleTrigger', version: 1.4,
+  config: { name: 'A cada 30 minutos', parameters: { rule: { interval: [{ field: 'minutes', minutesInterval: 30 }] } } },
+  output: [{}]
+});
+
+const reprocessar = trigger({
+  type: 'n8n-nodes-base.executeWorkflowTrigger', version: 1.2,
+  config: { name: 'Reprocessar agora', parameters: { inputSource: 'passthrough' } },
+  output: [{}]
+});
+
+const lerConfig = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: { name: 'Ler configuração', executeOnce: true, parameters: { resource: 'row', operation: 'get', dataTableId: @@{TABLE('atom_config')}@@, returnAll: true } },
+  output: [{ chave: 'CONTROLLE_API_HABILITADA', valor: 'false', status: 'CONFIGURADO' }]
+});
+
+const fila = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: {
+    name: 'Fila financeira', executeOnce: true,
+    parameters: {
+      resource: 'row', operation: 'get', dataTableId: @@{TABLE('atom_financeiro')}@@, matchType: 'anyCondition',
+      filters: @@{FILTER([['status_sync', 'eq', '"PENDENTE"'], ['status_sync', 'eq', '"FALHA"'], ['status_sync', 'eq', '"AGUARDANDO_API"'], ['status_sync', 'eq', '"NAO_ENVIADO_ADAPTADOR_DESATIVADO"']])}@@,
+      returnAll: true
+    }
+  },
+  output: [{ event_key: 'asaas:pay_1:PAGAMENTO_CONFIRMADO', status_sync: 'PENDENTE' }]
+});
+
+const preparar = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Preparar lançamentos', parameters: { mode: 'runOnceForAllItems', jsCode: @@{CODE('wf07', 'preparar')}@@ } },
+  output: [{ enviar: false, row: { event_key: 'x', status_sync: 'AGUARDANDO_API' } }]
+});
+
+const enviar = @@{IFB('Enviar ao Controlle?', '$json.enviar')}@@;
+
+const adaptador = node({
+  type: 'n8n-nodes-base.httpRequest', version: 4.5,
+  config: {
+    name: 'Controlle — adaptador (DESATIVADO até a API ser fornecida)',
+    disabled: true,
+    onError: 'continueRegularOutput',
+    notes: 'Endpoint, autenticação e formato NÃO definidos. Ativar somente após mapear a API real do Controlle (docs/). Enquanto desativado, nenhum item é marcado como sincronizado.',
+    parameters: {
+      method: 'POST', url: expr('{{ $json.url }}'),
+      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'Idempotency-Key', value: expr('{{ $json.corpo.chave_idempotencia }}') }] },
+      sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr('{{ JSON.stringify($json.corpo) }}'),
+      options: { timeout: 20000, response: { response: { fullResponse: true, neverError: true } } }
+    },
+    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Controlle (PENDENTE)') }
+  },
+  output: [{ statusCode: 201, body: { id: 'x' } }]
+});
+
+const interpretar = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Interpretar resposta do Controlle', parameters: { mode: 'runOnceForEachItem', jsCode: @@{CODE('wf07', 'interpretar')}@@ } },
+  output: [{ row: { event_key: 'x', status_sync: 'NAO_ENVIADO_ADAPTADOR_DESATIVADO' } }]
+});
+
+const atualizar = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: { name: 'Atualizar fila financeira', parameters: { resource: 'row', operation: 'update', dataTableId: @@{TABLE('atom_financeiro')}@@, matchType: 'allConditions', filters: @@{FILTER([['event_key', 'eq', '$json.row.event_key']])}@@, columns: @@{COLS('atom_financeiro', 'row', 'status_sync,tentativas,ultimo_erro,atualizado_em')}@@ } },
+  output: [{}]
+});
+
+const atualizarEnviado = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: { name: 'Atualizar lançamento enviado', parameters: { resource: 'row', operation: 'update', dataTableId: @@{TABLE('atom_financeiro')}@@, matchType: 'allConditions', filters: @@{FILTER([['event_key', 'eq', '$json.row.event_key']])}@@, columns: @@{COLS('atom_financeiro', 'row', 'status_sync,controlle_id,tentativas,ultimo_erro,atualizado_em')}@@ } },
+  output: [{}]
+});
+
+const nota = sticky('## ATOM_07 — Controlle (módulo independente)\n- Fila persistente `atom_financeiro`, alimentada pelo ATOM_06 (conta a receber, confirmação, recebimento com bruto/líquido/taxas, vencimento, cancelamento, estorno, chargeback).\n- **API do Controlle ainda não fornecida**: adaptador HTTP desativado; itens ficam `AGUARDANDO_API` (nunca "sincronizado" sem 2xx real).\n- Origem única: `CONTROLLE_ORIGEM_LANCAMENTOS` = ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (não lança, evita duplicidade).\n- Pagamento confirmado ≠ dinheiro disponível: operações distintas (REGISTRAR_CONFIRMACAO x REGISTRAR_RECEBIMENTO).\n- Reprocessamento: a cada 30 min ou pelo gatilho "Reprocessar agora".', [], { color: 6 });
+
+export default workflow('atom-07', 'ATOM_07_Controlle', { settings: { timezone: 'America/Sao_Paulo', executionOrder: 'v1', callerPolicy: 'workflowsFromSameOwner' } })
+  .add(agenda)
+  .to(lerConfig)
+  .add(reprocessar)
+  .to(lerConfig)
+  .to(fila)
+  .to(preparar)
+  .to(enviar
+    .onTrue(adaptador.to(interpretar).to(atualizarEnviado))
+    .onFalse(atualizar))
+  .add(nota);

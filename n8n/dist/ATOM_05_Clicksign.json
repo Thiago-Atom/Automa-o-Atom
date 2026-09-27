@@ -1,0 +1,4174 @@
+{
+  "name": "ATOM_05_Clicksign",
+  "nodes": [
+    {
+      "id": "12a0c897-e196-47b4-9b3b-a456759651be",
+      "name": "Entrada",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        300
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "id": "4246ee8e-216d-4c35-8fe7-e0a749b2aa58",
+      "name": "Ler configuração",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "eec63a13-ba59-4b5d-a773-6643c75725f5",
+      "name": "Snapshot",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "xEk09M9Zn7SCVz1n",
+          "cachedResultName": "atom_snapshots"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ String($('Entrada').first().json.deal_id) }}"
+            },
+            {
+              "keyName": "versao",
+              "condition": "eq",
+              "keyValue": "={{ Number($('Entrada').first().json.versao) }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "fc7269d4-719d-4351-9768-f313c43a5881",
+      "name": "Vínculos Clicksign",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"CLICKSIGN\" }}"
+            },
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ String($('Entrada').first().json.deal_id) }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "e4bc173b-715f-4754-a047-a421a14e5f45",
+      "name": "Planejar envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#planejar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos Clicksign\").all().map((i) => i.json).filter((r) => r && r.id_externo && Number(r.snapshot_versao) === Number(e.versao));\n  const reqId = \"clicksign:envelope:\" + e.deal_id + \":v\" + e.versao;\n  const base = { request_id: reqId, deal_id: String(e.deal_id), versao: Number(e.versao) };\n  if (!snap || ![\"ATIVO\", \"ENVIADO\"].includes(snap.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE_OU_INATIVO\" }) }];\n  const env = vincs.find((v) => v.tipo === \"ENVELOPE\");\n  if (env && [\"ENVIADO\", \"ASSINADO_TODOS\"].includes(env.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"ENVELOPE_JA_ENVIADO\" }) }];\n  const d = safeJsonParse(snap.dados, {});\n  const modelo = String(d.comercial && d.comercial.modelo_contrato || \"\").toUpperCase().replace(/[^A-Z0-9]+/g, \"_\");\n  const chaveModelo = \"CLICKSIGN_MODELO_\" + modelo;\n  const chaveMapa = \"CLICKSIGN_MAPA_\" + modelo;\n  const gate = portao(cfg, [\"CLICKSIGN_BASE_URL\", chaveModelo, chaveMapa, \"CLICKSIGN_SIGNATARIO_ATOM_NOME\", \"CLICKSIGN_SIGNATARIO_ATOM_EMAIL\", \"CLICKSIGN_AUTENTICACAO\", \"CLICKSIGN_VALIDADO_SANDBOX\"]);\n  if (!gate.liberado) return [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo: gate.motivo }) }];\n  const mapa = safeJsonParse(valor(cfg, chaveMapa, \"\"), null);\n  if (!mapa || typeof mapa !== \"object\") return [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo: chaveMapa + \" inválido (JSON)\" }) }];\n  const ler = (o, cam) => cam.split(\".\").reduce((a, k) => a && a[k] !== void 0 ? a[k] : void 0, o);\n  const dadosModelo = {};\n  const semValor = [];\n  for (const [variavel, caminho] of Object.entries(mapa)) {\n    const v = ler(d, String(caminho));\n    if (v === void 0 || v === null || v === \"\") semValor.push(variavel);\n    else dadosModelo[variavel] = String(v);\n  }\n  if (semValor.length) return [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo: \"Variáveis do modelo sem valor no snapshot: \" + semValor.join(\", \") }) }];\n  const doc = vincs.find((v) => v.tipo === \"DOCUMENTO\");\n  const sigC = vincs.find((v) => v.tipo === \"SIGNATARIO\" && v.papel === \"CLIENTE\");\n  const sigA = vincs.find((v) => v.tipo === \"SIGNATARIO\" && v.papel === \"ATOM\");\n  const reqs = vincs.find((v) => v.tipo === \"REQUISITOS\");\n  const nomeEnv = (\"ATOM-D\" + e.deal_id + \"-V\" + e.versao + \" — \" + (d.empresa && d.empresa.razao_social || \"\")).slice(0, 250);\n  const url = valor(cfg, \"CLICKSIGN_BASE_URL\", \"\").replace(/\\/$/, \"\");\n  const auth = valor(cfg, \"CLICKSIGN_AUTENTICACAO\", \"email\");\n  const signer = (nome, email) => ({ data: { type: \"signers\", attributes: {\n    name: nome,\n    email,\n    has_documentation: false,\n    refusable: true,\n    communicate_events: { signature_request: \"email\", signature_reminder: \"email\", document_signed: \"email\" }\n  } } });\n  return [{ json: Object.assign(base, {\n    executar: true,\n    url,\n    org_id: String(d.org_id || \"\"),\n    etapas: { envelope: !env, documento: !doc, cliente: !sigC, atom: !sigA, requisitos: !reqs },\n    ids: { envelope: env ? env.id_externo : \"\", documento: doc ? doc.id_externo : \"\", cliente: sigC ? sigC.id_externo : \"\", atom: sigA ? sigA.id_externo : \"\" },\n    corpos: {\n      envelope: { data: { type: \"envelopes\", attributes: { name: nomeEnv, locale: \"pt-BR\", auto_close: true, block_after_refusal: true } } },\n      documento: { data: { type: \"documents\", attributes: { filename: \"Contrato ATOM-D\" + e.deal_id + \"-V\" + e.versao + \".docx\", template: { key: valor(cfg, chaveModelo, \"\"), data: dadosModelo } } } },\n      cliente: signer(d.contatos.nome_signatario, d.contatos.email_assinatura),\n      atom: signer(valor(cfg, \"CLICKSIGN_SIGNATARIO_ATOM_NOME\", \"\"), valor(cfg, \"CLICKSIGN_SIGNATARIO_ATOM_EMAIL\", \"\")),\n      ativar: { data: { type: \"envelopes\", attributes: { status: \"running\" } } }\n    },\n    autenticacao: auth,\n    modelo,\n    disparo_cobranca: valor(cfg, \"COBRANCA_DISPARO\", \"\")\n  }) }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "2605a333-6390-4984-98bb-d39c8592e34d",
+      "name": "Executar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1100,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.executar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "53a3d29b-a634-4b22-b3a2-54caa3fa7b8b",
+      "name": "Criar envelope?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1300,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Planejar envelope').first().json.etapas.envelope }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "07782c34-f9f8-4535-aacf-9219d8a09d7d",
+      "name": "Clicksign — criar envelope",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1500,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.api+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/vnd.api+json",
+        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.envelope) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "712d92ba-2395-448b-8a31-13c030bb49ed",
+      "name": "Guardar envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+      }
+    },
+    {
+      "id": "9720b324-55cd-470e-9fc4-e60f54d7177b",
+      "name": "Registrar envelope",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1900,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sistema": "={{ $('Guardar envelope').first().json.row.sistema }}",
+            "tipo": "={{ $('Guardar envelope').first().json.row.tipo }}",
+            "id_externo": "={{ $('Guardar envelope').first().json.row.id_externo }}",
+            "deal_id": "={{ $('Guardar envelope').first().json.row.deal_id }}",
+            "org_id": "={{ $('Guardar envelope').first().json.row.org_id }}",
+            "snapshot_versao": "={{ $('Guardar envelope').first().json.row.snapshot_versao }}",
+            "papel": "={{ $('Guardar envelope').first().json.row.papel }}",
+            "status": "={{ $('Guardar envelope').first().json.row.status }}",
+            "link": "={{ $('Guardar envelope').first().json.row.link }}",
+            "referencia": "={{ $('Guardar envelope').first().json.row.referencia }}",
+            "atualizado_em": "={{ $('Guardar envelope').first().json.row.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_externo",
+              "displayName": "id_externo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "org_id",
+              "displayName": "org_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "snapshot_versao",
+              "displayName": "snapshot_versao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "papel",
+              "displayName": "papel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "referencia",
+              "displayName": "referencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "7e413fce-f498-4bfa-a884-f1cb65458ba1",
+      "name": "Criar documento?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1500,
+        450
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Planejar envelope').first().json.etapas.documento }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "b76aedb4-c859-4ebc-8ba0-107cb171597e",
+      "name": "Registrar bloqueio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#bloqueio. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar envelope').first().json;\nif (p.fim) return []; // já enviado ou snapshot inativo: nada a fazer\nconst agora = new Date().toISOString();\nreturn [{ json: {\n  acao: { request_id: p.request_id, sistema: 'CLICKSIGN', acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, status: 'BLOQUEADO_CONFIG',\n    tentativas: 0, proxima_tentativa: null, ultimo_erro: String(p.motivo || '').slice(0, 480),\n    payload: JSON.stringify({ acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, versao: p.versao }), resultado: '', criado_em: agora, atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'AGUARDANDO_CONFIGURACAO', ultimo_evento_em: agora },\n} }];"
+      }
+    },
+    {
+      "id": "9d708d87-f70a-4eba-adf0-b7da8183617b",
+      "name": "Salvar ação bloqueada",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1500,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.acao.request_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "request_id": "={{ $json.acao.request_id }}",
+            "sistema": "={{ $json.acao.sistema }}",
+            "acao": "={{ $json.acao.acao }}",
+            "deal_id": "={{ $json.acao.deal_id }}",
+            "status": "={{ $json.acao.status }}",
+            "tentativas": "={{ $json.acao.tentativas }}",
+            "proxima_tentativa": "={{ $json.acao.proxima_tentativa }}",
+            "ultimo_erro": "={{ $json.acao.ultimo_erro }}",
+            "payload": "={{ $json.acao.payload }}",
+            "resultado": "={{ $json.acao.resultado }}",
+            "criado_em": "={{ $json.acao.criado_em }}",
+            "atualizado_em": "={{ $json.acao.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "request_id",
+              "displayName": "request_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "acao",
+              "displayName": "acao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proxima_tentativa",
+              "displayName": "proxima_tentativa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "payload",
+              "displayName": "payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resultado",
+              "displayName": "resultado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "criado_em",
+              "displayName": "criado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "33e91289-0eb3-43df-aaaf-4ebfb5978c19",
+      "name": "Salvar contrato aguardando configuração",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "4JWPJuuhMrWIhad4",
+          "cachedResultName": "atom_negocios"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Registrar bloqueio').first().json.negocio.deal_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "deal_id": "={{ $('Registrar bloqueio').first().json.negocio.deal_id }}",
+            "contrato_status": "={{ $('Registrar bloqueio').first().json.negocio.contrato_status }}",
+            "ultimo_evento_em": "={{ $('Registrar bloqueio').first().json.negocio.ultimo_evento_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contrato_status",
+              "displayName": "contrato_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_evento_em",
+              "displayName": "ultimo_evento_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "497f13d5-f0bf-4a7c-8b95-9bbe32f3a9cc",
+      "name": "Clicksign — criar documento do modelo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1700,
+        450
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ ($('Guardar envelope').isExecuted ? $('Guardar envelope').first().json.id : $('Planejar envelope').first().json.ids.envelope) }}/documents",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.api+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/vnd.api+json",
+        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.documento) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {},
+      "notes": "Atributos de documento por modelo (template.key/template.data) NÃO confirmados na documentação: validar no sandbox.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "095f8b92-7f91-4e6f-afc3-0e0449e4e3a8",
+      "name": "Guardar documento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+      }
+    },
+    {
+      "id": "7d05bad9-4b57-437a-9294-abed338604e1",
+      "name": "Registrar documento",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2100,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sistema": "={{ $('Guardar documento').first().json.row.sistema }}",
+            "tipo": "={{ $('Guardar documento').first().json.row.tipo }}",
+            "id_externo": "={{ $('Guardar documento').first().json.row.id_externo }}",
+            "deal_id": "={{ $('Guardar documento').first().json.row.deal_id }}",
+            "org_id": "={{ $('Guardar documento').first().json.row.org_id }}",
+            "snapshot_versao": "={{ $('Guardar documento').first().json.row.snapshot_versao }}",
+            "papel": "={{ $('Guardar documento').first().json.row.papel }}",
+            "status": "={{ $('Guardar documento').first().json.row.status }}",
+            "link": "={{ $('Guardar documento').first().json.row.link }}",
+            "referencia": "={{ $('Guardar documento').first().json.row.referencia }}",
+            "atualizado_em": "={{ $('Guardar documento').first().json.row.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_externo",
+              "displayName": "id_externo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "org_id",
+              "displayName": "org_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "snapshot_versao",
+              "displayName": "snapshot_versao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "papel",
+              "displayName": "papel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "referencia",
+              "displayName": "referencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "e61281ce-c3fa-4e4a-9161-f6903013a116",
+      "name": "Criar signatário cliente?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1700,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Planejar envelope').first().json.etapas.cliente }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "a8905ec8-9cb4-435e-af7f-90b1bb678bcb",
+      "name": "Clicksign — signatário cliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1900,
+        600
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ ($('Guardar envelope').isExecuted ? $('Guardar envelope').first().json.id : $('Planejar envelope').first().json.ids.envelope) }}/signers",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.api+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/vnd.api+json",
+        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.cliente) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {},
+      "notes": "Obrigatoriedade de nome/CPF (has_documentation:false) NÃO confirmada na API v3: validar no sandbox.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "2bde4a3e-68d2-4720-947f-891e1230a462",
+      "name": "Guardar signatário cliente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2100,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+      }
+    },
+    {
+      "id": "995a6b19-caf4-48c2-9517-492aa715cbee",
+      "name": "Registrar signatário cliente",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2300,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sistema": "={{ $('Guardar signatário cliente').first().json.row.sistema }}",
+            "tipo": "={{ $('Guardar signatário cliente').first().json.row.tipo }}",
+            "id_externo": "={{ $('Guardar signatário cliente').first().json.row.id_externo }}",
+            "deal_id": "={{ $('Guardar signatário cliente').first().json.row.deal_id }}",
+            "org_id": "={{ $('Guardar signatário cliente').first().json.row.org_id }}",
+            "snapshot_versao": "={{ $('Guardar signatário cliente').first().json.row.snapshot_versao }}",
+            "papel": "={{ $('Guardar signatário cliente').first().json.row.papel }}",
+            "status": "={{ $('Guardar signatário cliente').first().json.row.status }}",
+            "link": "={{ $('Guardar signatário cliente').first().json.row.link }}",
+            "referencia": "={{ $('Guardar signatário cliente').first().json.row.referencia }}",
+            "atualizado_em": "={{ $('Guardar signatário cliente').first().json.row.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_externo",
+              "displayName": "id_externo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "org_id",
+              "displayName": "org_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "snapshot_versao",
+              "displayName": "snapshot_versao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "papel",
+              "displayName": "papel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "referencia",
+              "displayName": "referencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "d72e704e-1ed9-4625-9b74-43dc1c0a2429",
+      "name": "Criar signatário Atom?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1900,
+        750
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Planejar envelope').first().json.etapas.atom }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "edc7ccae-cb65-48a0-8f26-8b9b2c7b93e9",
+      "name": "Clicksign — signatário Atom",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2100,
+        750
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ ($('Guardar envelope').isExecuted ? $('Guardar envelope').first().json.id : $('Planejar envelope').first().json.ids.envelope) }}/signers",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.api+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/vnd.api+json",
+        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.atom) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "e33aac3e-cc88-4fbf-8c97-5e884c7241b9",
+      "name": "Guardar signatário Atom",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2300,
+        750
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+      }
+    },
+    {
+      "id": "6ad3535a-8bcd-41f6-a1e9-b91011cb6609",
+      "name": "Registrar signatário Atom",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2500,
+        750
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sistema": "={{ $('Guardar signatário Atom').first().json.row.sistema }}",
+            "tipo": "={{ $('Guardar signatário Atom').first().json.row.tipo }}",
+            "id_externo": "={{ $('Guardar signatário Atom').first().json.row.id_externo }}",
+            "deal_id": "={{ $('Guardar signatário Atom').first().json.row.deal_id }}",
+            "org_id": "={{ $('Guardar signatário Atom').first().json.row.org_id }}",
+            "snapshot_versao": "={{ $('Guardar signatário Atom').first().json.row.snapshot_versao }}",
+            "papel": "={{ $('Guardar signatário Atom').first().json.row.papel }}",
+            "status": "={{ $('Guardar signatário Atom').first().json.row.status }}",
+            "link": "={{ $('Guardar signatário Atom').first().json.row.link }}",
+            "referencia": "={{ $('Guardar signatário Atom').first().json.row.referencia }}",
+            "atualizado_em": "={{ $('Guardar signatário Atom').first().json.row.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_externo",
+              "displayName": "id_externo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "org_id",
+              "displayName": "org_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "snapshot_versao",
+              "displayName": "snapshot_versao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "papel",
+              "displayName": "papel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "referencia",
+              "displayName": "referencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "e5190f6c-f25d-4e84-9f68-3d4f8c3bb608",
+      "name": "IDs atuais",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2100,
+        900
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#ids_atuais. Edite a fonte no repositório, não este nó.\n// IDs efetivos (criados nesta execução ou recuperados de execuções anteriores).\nconst p = $('Planejar envelope').first().json;\nconst pega = (no, padrao) => ($(no).isExecuted ? $(no).first().json.id : padrao);\nreturn [{ json: {\n  envelope: pega('Guardar envelope', p.ids.envelope),\n  documento: pega('Guardar documento', p.ids.documento),\n  cliente: pega('Guardar signatário cliente', p.ids.cliente),\n  atom: pega('Guardar signatário Atom', p.ids.atom),\n} }];"
+      }
+    },
+    {
+      "id": "fd6ed6e9-aadb-4422-9b5a-221267a704a9",
+      "name": "Criar requisitos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2300,
+        900
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Planejar envelope').first().json.etapas.requisitos }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "a2c45e39-bc56-47e5-9b01-a55e6ece2776",
+      "name": "Montar requisitos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2500,
+        900
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#requisitos. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar envelope').first().json;\nconst ids = $('IDs atuais').first().json;\nconst rel = (s) => ({ document: { data: { type: 'documents', id: ids.documento } }, signer: { data: { type: 'signers', id: s } } });\nconst out = [];\nfor (const s of [ids.cliente, ids.atom]) {\n  out.push({ json: { corpo: { data: { type: 'requirements', attributes: { action: 'agree', role: 'sign' }, relationships: rel(s) } } } });\n  out.push({ json: { corpo: { data: { type: 'requirements', attributes: { action: 'provide_evidence', auth: p.autenticacao }, relationships: rel(s) } } } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "03e301b1-fdb6-42a4-b443-7fa2690d74c7",
+      "name": "Clicksign — requisitos (qualificação e autenticação)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2700,
+        900
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ $('IDs atuais').first().json.envelope }}/requirements",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.api+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/vnd.api+json",
+        "body": "={{ JSON.stringify($json.corpo) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "4c4cd54e-b832-4357-818c-08b7d85af4a9",
+      "name": "Requisitos criados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2900,
+        900
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#requisitos_ok. Edite a fonte no repositório, não este nó.\n// Só segue para a ativação se os 4 requisitos (2 por signatário) foram criados; falhas vão para \"Falha na criação\".\nif ($input.all().length < 4) return [];\nconst p = $('Planejar envelope').first().json;\nconst ids = $('IDs atuais').first().json;\nreturn [{ json: { row: { sistema: 'CLICKSIGN', tipo: 'REQUISITOS', id_externo: ids.envelope, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: '', status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+      }
+    },
+    {
+      "id": "673de96a-068a-4152-8101-4ca291f31c95",
+      "name": "Registrar requisitos",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3100,
+        900
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sistema": "={{ $json.row.sistema }}",
+            "tipo": "={{ $json.row.tipo }}",
+            "id_externo": "={{ $json.row.id_externo }}",
+            "deal_id": "={{ $json.row.deal_id }}",
+            "org_id": "={{ $json.row.org_id }}",
+            "snapshot_versao": "={{ $json.row.snapshot_versao }}",
+            "papel": "={{ $json.row.papel }}",
+            "status": "={{ $json.row.status }}",
+            "link": "={{ $json.row.link }}",
+            "referencia": "={{ $json.row.referencia }}",
+            "atualizado_em": "={{ $json.row.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_externo",
+              "displayName": "id_externo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "org_id",
+              "displayName": "org_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "snapshot_versao",
+              "displayName": "snapshot_versao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "papel",
+              "displayName": "papel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "referencia",
+              "displayName": "referencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "49fff31f-1502-4374-ad65-ec57dc7e2ef7",
+      "name": "Clicksign — ativar envelope (envia convites)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2500,
+        1050
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ $('IDs atuais').first().json.envelope }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.api+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/vnd.api+json",
+        "body": "={{ JSON.stringify({ data: { id: $('IDs atuais').first().json.envelope, type: 'envelopes', attributes: { status: 'running' } } }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {},
+      "notes": "Convites por e-mail conforme communicate_events dos signatários (signature_request: email).",
+      "executeOnce": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "6f29ba20-005e-49dd-87a6-714df36b4308",
+      "name": "Envelope enviado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2700,
+        1050
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#enviado. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar envelope').first().json;\nconst ids = $('IDs atuais').first().json;\nconst agora = new Date().toISOString();\nconst base = p.url.replace(/\\/api\\/v3$/, '');\nreturn [{ json: {\n  deal_id: p.deal_id, versao: p.versao, envelope_id: ids.envelope,\n  vinculo: { status: 'ENVIADO', link: base + '/envelopes/' + ids.envelope, atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'ENVIADO', ultimo_evento_em: agora },\n  acao: { request_id: p.request_id, sistema: 'CLICKSIGN', acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, status: 'CONCLUIDO', tentativas: 0,\n    proxima_tentativa: null, ultimo_erro: '', payload: JSON.stringify({ acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, versao: p.versao }),\n    resultado: JSON.stringify(ids), criado_em: agora, atualizado_em: agora },\n  cobrar_agora: p.disparo_cobranca === 'JUNTO_COM_CONTRATO',\n  cobranca: { acao: 'CRIAR_COBRANCAS', deal_id: p.deal_id, versao: p.versao, origem: 'CONTRATO_ENVIADO' },\n} }];"
+      }
+    },
+    {
+      "id": "7de1f1c6-615b-43f5-857a-596d5943aa97",
+      "name": "Atualizar vínculo do envelope",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2900,
+        1050
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"CLICKSIGN\" }}"
+            },
+            {
+              "keyName": "tipo",
+              "condition": "eq",
+              "keyValue": "={{ \"ENVELOPE\" }}"
+            },
+            {
+              "keyName": "id_externo",
+              "condition": "eq",
+              "keyValue": "={{ $('Envelope enviado').first().json.envelope_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $('Envelope enviado').first().json.vinculo.status }}",
+            "link": "={{ $('Envelope enviado').first().json.vinculo.link }}",
+            "atualizado_em": "={{ $('Envelope enviado').first().json.vinculo.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "2fcb2c18-7fee-4e4b-8243-e00bc60e3862",
+      "name": "Snapshot enviado",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3100,
+        1050
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "xEk09M9Zn7SCVz1n",
+          "cachedResultName": "atom_snapshots"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Envelope enviado').first().json.deal_id }}"
+            },
+            {
+              "keyName": "versao",
+              "condition": "eq",
+              "keyValue": "={{ $('Envelope enviado').first().json.versao }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "ENVIADO"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "d1cf4f23-cb8a-472f-b2cb-2a1b5b978c2d",
+      "name": "Salvar contrato enviado",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3300,
+        1050
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "4JWPJuuhMrWIhad4",
+          "cachedResultName": "atom_negocios"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Envelope enviado').first().json.deal_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "deal_id": "={{ $('Envelope enviado').first().json.negocio.deal_id }}",
+            "contrato_status": "={{ $('Envelope enviado').first().json.negocio.contrato_status }}",
+            "ultimo_evento_em": "={{ $('Envelope enviado').first().json.negocio.ultimo_evento_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contrato_status",
+              "displayName": "contrato_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_evento_em",
+              "displayName": "ultimo_evento_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "3748bbc9-9941-4aff-aa00-1053f644d872",
+      "name": "Registrar ação concluída",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3500,
+        1050
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Envelope enviado').first().json.acao.request_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "request_id": "={{ $('Envelope enviado').first().json.acao.request_id }}",
+            "sistema": "={{ $('Envelope enviado').first().json.acao.sistema }}",
+            "acao": "={{ $('Envelope enviado').first().json.acao.acao }}",
+            "deal_id": "={{ $('Envelope enviado').first().json.acao.deal_id }}",
+            "status": "={{ $('Envelope enviado').first().json.acao.status }}",
+            "tentativas": "={{ $('Envelope enviado').first().json.acao.tentativas }}",
+            "proxima_tentativa": "={{ $('Envelope enviado').first().json.acao.proxima_tentativa }}",
+            "ultimo_erro": "={{ $('Envelope enviado').first().json.acao.ultimo_erro }}",
+            "payload": "={{ $('Envelope enviado').first().json.acao.payload }}",
+            "resultado": "={{ $('Envelope enviado').first().json.acao.resultado }}",
+            "criado_em": "={{ $('Envelope enviado').first().json.acao.criado_em }}",
+            "atualizado_em": "={{ $('Envelope enviado').first().json.acao.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "request_id",
+              "displayName": "request_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "acao",
+              "displayName": "acao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proxima_tentativa",
+              "displayName": "proxima_tentativa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "payload",
+              "displayName": "payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resultado",
+              "displayName": "resultado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "criado_em",
+              "displayName": "criado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "8a49ee1f-96f4-40fe-9e56-0f2f01838526",
+      "name": "Campos do contrato (envio)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3700,
+        1050
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : Object.assign({ status_contrato: \"ENVIADO\", link: $(\"Envelope enviado\").first().json.vinculo.link }, $(\"Envelope enviado\").first().json);\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.envelope_id) valores.PD_DEAL_CLICKSIGN_ID = x.envelope_id;\n  if (x.link) valores.PD_DEAL_CLICKSIGN_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "8e0dbf96-2527-4c62-8be9-fcf987894b2b",
+      "name": "Atualizar negócio (envio)?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3900,
+        1050
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.atualizar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "13c3ecfb-2553-43c8-a7a8-bce9b260a76f",
+      "name": "Atualizar negócio (contrato enviado)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        4100,
+        1050
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.corpo) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "341df56d-9dbd-47d4-a16b-89992a9f7289",
+      "name": "Cobrar junto com o contrato?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4100,
+        1200
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Envelope enviado').first().json.cobrar_agora }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "dd521a57-ed65-4965-9d2c-6f039b52a793",
+      "name": "Pedido de cobrança (junto)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4300,
+        1200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $('Envelope enviado').first().json.cobranca }];"
+      }
+    },
+    {
+      "id": "0539d622-be03-4406-ac3d-47707eeaa699",
+      "name": "ATOM_06 — cobranças (junto com contrato)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        4500,
+        1200
+      ],
+      "parameters": {
+        "mode": "once",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_06' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "087a920d-8b8d-4533-93fa-5335b862319e",
+      "name": "Falha na criação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#falha. Edite a fonte no repositório, não este nó.\n// Falha em etapa de criação: 4xx => não criado (pode repetir); rede/5xx/timeout => pode ter sido criado:\n// exige conferência manual antes de repetir (evita envelope/documento duplicado).\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = (typeof $prevNode !== 'undefined' && $prevNode.name) ? $prevNode.name : 'etapa';\nconst codigo = Number((r.error && (r.error.httpCode || r.error.status)) || r.statusCode || 0);\nconst ambigua = !(codigo >= 400 && codigo < 500);\nconst msg = String((r.error && (r.error.message || r.error.description)) || ('HTTP ' + codigo)).replace(/(token|authorization)[^,\\s]*/gi, '$1=***').slice(0, 300);\nconst agora = new Date();\nreturn [{ json: {\n  acao: { request_id: p.request_id, sistema: 'CLICKSIGN', acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id,\n    status: ambigua ? 'FALHA_VERIFICAR_MANUAL' : 'FALHA', tentativas: 1,\n    proxima_tentativa: new Date(agora.getTime() + 30 * 60000).toISOString(), ultimo_erro: etapa + ': ' + msg,\n    payload: JSON.stringify({ acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, versao: p.versao }), resultado: '', criado_em: agora.toISOString(), atualizado_em: agora.toISOString() },\n  alerta: { tipo: 'CLICKSIGN_FALHA', severidade: 'ALTA', workflow: 'ATOM_05_Clicksign', deal_id: p.deal_id,\n    mensagem: 'Falha em \"' + etapa + '\" (' + msg + '). ' + (ambigua ? 'Resultado incerto (rede/timeout/5xx): confira no Clicksign se o recurso foi criado antes de reprocessar.' : 'Requisição rejeitada; corrija a configuração e reprocesse.') },\n} }];"
+      }
+    },
+    {
+      "id": "e5fa8391-fcd0-45a8-b21c-1759c1dde689",
+      "name": "Registrar falha",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1900,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.acao.request_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "request_id": "={{ $json.acao.request_id }}",
+            "sistema": "={{ $json.acao.sistema }}",
+            "acao": "={{ $json.acao.acao }}",
+            "deal_id": "={{ $json.acao.deal_id }}",
+            "status": "={{ $json.acao.status }}",
+            "tentativas": "={{ $json.acao.tentativas }}",
+            "proxima_tentativa": "={{ $json.acao.proxima_tentativa }}",
+            "ultimo_erro": "={{ $json.acao.ultimo_erro }}",
+            "payload": "={{ $json.acao.payload }}",
+            "resultado": "={{ $json.acao.resultado }}",
+            "criado_em": "={{ $json.acao.criado_em }}",
+            "atualizado_em": "={{ $json.acao.atualizado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "request_id",
+              "displayName": "request_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sistema",
+              "displayName": "sistema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "acao",
+              "displayName": "acao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proxima_tentativa",
+              "displayName": "proxima_tentativa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "payload",
+              "displayName": "payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resultado",
+              "displayName": "resultado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "criado_em",
+              "displayName": "criado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dbf9ddeb-7558-4088-beb5-7359fefccfef",
+      "name": "Alerta de falha",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2100,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $('Falha na criação').first().json.alerta }];"
+      }
+    },
+    {
+      "id": "6ef18750-0f38-4702-afb8-32e402ccff6a",
+      "name": "ATOM_11 — alerta Clicksign",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2300,
+        450
+      ],
+      "parameters": {
+        "mode": "once",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_11' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "69654be1-fe69-4cda-a9b5-d6e411bd6d3d",
+      "name": "Webhook Clicksign",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        450
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atom/clicksign",
+        "responseMode": "onReceived",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "webhookId": "cd56da67-f9fb-4c11-a6e0-085dcd048ca4"
+    },
+    {
+      "id": "bf4a0dfa-4cae-487f-80d9-558902d09a37",
+      "name": "Calcular HMAC",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        300,
+        450
+      ],
+      "parameters": {
+        "action": "hmac",
+        "type": "SHA256",
+        "binaryData": true,
+        "binaryPropertyName": "data",
+        "dataPropertyName": "hmac_calculado",
+        "encoding": "hex"
+      },
+      "credentials": {}
+    },
+    {
+      "id": "f1fa2403-9aa2-447b-bee8-369a27bc9f2f",
+      "name": "Ler configuração (webhook)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "69a44c26-cfec-4d2b-a6ec-6f16a1c2edc2",
+      "name": "Validar evento Clicksign",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#webhook_validar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (webhook)\").all());\n  const w = $(\"Webhook Clicksign\").first().json;\n  const calc = String($(\"Calcular HMAC\").first().json.hmac_calculado || \"\").toLowerCase();\n  const nomeCab = valor(cfg, \"CLICKSIGN_HMAC_CABECALHO\", \"content-hmac\").toLowerCase();\n  const recebido = String((w.headers || {})[nomeCab] || \"\").replace(/^sha256=/i, \"\").trim().toLowerCase();\n  let igual = recebido.length === calc.length && calc.length > 0;\n  for (let i = 0; i < Math.max(recebido.length, calc.length); i++) igual = igual && recebido.charCodeAt(i) === calc.charCodeAt(i);\n  const b = w.body || {};\n  const pega = (o, caminhos) => {\n    for (const c of caminhos) {\n      const v = c.split(\".\").reduce((a, k) => a && a[k] !== void 0 ? a[k] : void 0, o);\n      if (v !== void 0 && v !== null && v !== \"\") return String(v);\n    }\n    return \"\";\n  };\n  const evento = pega(b, [\"event.name\", \"event\", \"data.attributes.name\", \"name\"]).toLowerCase();\n  const envelope = pega(b, [\"envelope.id\", \"event.data.envelope.id\", \"data.envelope.id\", \"data.relationships.envelope.data.id\", \"document.envelope_id\", \"envelope_id\"]);\n  const signatario = pega(b, [\"event.data.signer.id\", \"event.data.signer.key\", \"signer.id\", \"signer.key\", \"data.relationships.signer.data.id\"]);\n  const idEvento = pega(b, [\"event.id\", \"id\", \"data.id\"]) || fingerprint(b);\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  return [{ json: {\n    valido: igual && !!envelope,\n    assinatura_valida: igual,\n    evento,\n    envelope,\n    signatario,\n    row: {\n      event_key: \"clicksign:\" + idEvento + \":\" + evento,\n      origem: \"clicksign\",\n      tipo: evento || \"?\",\n      entidade_id: envelope,\n      deal_id: \"\",\n      status: igual ? envelope ? \"RECEBIDO\" : \"INVALIDO\" : \"ASSINATURA_INVALIDA\",\n      tentativas: 0,\n      ultimo_erro: igual ? \"\" : \"HMAC não confere\",\n      resumo: truncate(evento + (signatario ? \" | signatario=\" + signatario : \"\"), 300),\n      evento_em: agora,\n      recebido_em: agora,\n      processado_em: null\n    }\n  } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "808d04c5-5952-4bdb-b361-681d3c208d8c",
+      "name": "Evento Clicksign já recebido?",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "nzO3BvmxmGXY6hZT",
+          "cachedResultName": "atom_eventos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "event_key",
+              "condition": "eq",
+              "keyValue": "={{ $json.row.event_key }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "0a3687fe-9d56-4957-a794-90fb496ba84f",
+      "name": "Deduplicar evento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#webhook_dedup. Edite a fonte no repositório, não este nó.\nconst v = $('Validar evento Clicksign').first().json;\nconst existe = $('Evento Clicksign já recebido?').all().some((i) => i.json && i.json.event_key);\nreturn existe ? [] : [{ json: v }];"
+      }
+    },
+    {
+      "id": "83b211aa-64db-4b60-a343-492d0091c9c4",
+      "name": "Registrar evento Clicksign",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1300,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "nzO3BvmxmGXY6hZT",
+          "cachedResultName": "atom_eventos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event_key": "={{ $json.row.event_key }}",
+            "origem": "={{ $json.row.origem }}",
+            "tipo": "={{ $json.row.tipo }}",
+            "entidade_id": "={{ $json.row.entidade_id }}",
+            "deal_id": "={{ $json.row.deal_id }}",
+            "status": "={{ $json.row.status }}",
+            "tentativas": "={{ $json.row.tentativas }}",
+            "ultimo_erro": "={{ $json.row.ultimo_erro }}",
+            "resumo": "={{ $json.row.resumo }}",
+            "evento_em": "={{ $json.row.evento_em }}",
+            "recebido_em": "={{ $json.row.recebido_em }}",
+            "processado_em": "={{ $json.row.processado_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event_key",
+              "displayName": "event_key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "origem",
+              "displayName": "origem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "entidade_id",
+              "displayName": "entidade_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tentativas",
+              "displayName": "tentativas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_erro",
+              "displayName": "ultimo_erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resumo",
+              "displayName": "resumo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "evento_em",
+              "displayName": "evento_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processado_em",
+              "displayName": "processado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "f98889fa-af97-4408-ae88-b19b0c2b11b5",
+      "name": "Evento válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1500,
+        450
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Validar evento Clicksign').first().json.valido }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "e8967321-6641-45de-8dab-8c061d2c45a4",
+      "name": "Vínculo do envelope",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"CLICKSIGN\" }}"
+            },
+            {
+              "keyName": "tipo",
+              "condition": "eq",
+              "keyValue": "={{ \"ENVELOPE\" }}"
+            },
+            {
+              "keyName": "id_externo",
+              "condition": "eq",
+              "keyValue": "={{ $('Validar evento Clicksign').first().json.envelope }}"
+            }
+          ]
+        },
+        "limit": 1
+      }
+    },
+    {
+      "id": "cbb18a8e-d452-434a-878f-dc51dcb9f89d",
+      "name": "Resolver envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#webhook_resolver. Edite a fonte no repositório, não este nó.\nconst v = $('Validar evento Clicksign').first().json;\nconst env = $input.all().map((i) => i.json).find((r) => r && r.tipo === 'ENVELOPE' && r.id_externo === v.envelope);\nif (!env) return [];\nreturn [{ json: { deal_id: env.deal_id, versao: Number(env.snapshot_versao), envelope: v.envelope, evento: v.evento, signatario: v.signatario } }];"
+      }
+    },
+    {
+      "id": "e05c44fb-7e50-4623-b73b-def86c3f2c7d",
+      "name": "Evento de assinatura?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2100,
+        450
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.evento === 'sign' && !!$json.signatario }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "a4c82155-bb85-4827-be79-cd76247dd782",
+      "name": "Registrar assinatura do signatário",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2300,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"CLICKSIGN\" }}"
+            },
+            {
+              "keyName": "tipo",
+              "condition": "eq",
+              "keyValue": "={{ \"SIGNATARIO\" }}"
+            },
+            {
+              "keyName": "id_externo",
+              "condition": "eq",
+              "keyValue": "={{ $('Resolver envelope').first().json.signatario }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "ASSINOU",
+            "atualizado_em": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atualizado_em",
+              "displayName": "atualizado_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "0cd5d7b0-c621-42f3-90b6-d1b0135674a3",
+      "name": "Consultar envelope",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2300,
+        600
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'CLICKSIGN_BASE_URL') || {}).valor }}/envelopes/{{ $('Resolver envelope').first().json.envelope }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.api+json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "credentials": {},
+      "executeOnce": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000
+    },
+    {
+      "id": "5f0e3ef8-33b8-4534-b75c-5f4c6572300f",
+      "name": "Signatários do envelope",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2500,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"CLICKSIGN\" }}"
+            },
+            {
+              "keyName": "tipo",
+              "condition": "eq",
+              "keyValue": "={{ \"SIGNATARIO\" }}"
+            },
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Resolver envelope').first().json.deal_id }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "7fc94ad9-fc69-44af-834d-dbb7b62078af",
+      "name": "Consolidar contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2700,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#consolidar + lib/{util,config,regras}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/regras.js\nfunction statusContrato(e) {\n  const envStatus = String(e.envelopeStatus || \"\").toLowerCase();\n  const exigidos = uniq((e.signatariosExigidos || []).map(String));\n  const assinaram = uniq((e.signatariosQueAssinaram || []).map(String));\n  const faltam = exigidos.filter((s) => !assinaram.includes(s));\n  const eventos = (e.eventos || []).map((x) => String(x).toLowerCase());\n  if (eventos.includes(\"refusal\")) return { status: \"RECUSADO\", faltam };\n  if (envStatus === \"canceled\" || envStatus === \"cancelled\" || eventos.includes(\"cancel\")) return { status: \"CANCELADO\", faltam };\n  if (eventos.includes(\"deadline\") && faltam.length) return { status: \"EXPIRADO\", faltam };\n  if (!exigidos.length) return { status: \"FALHA\", faltam, motivo: \"SEM_SIGNATARIOS_REGISTRADOS\" };\n  if (faltam.length === 0 && [\"closed\", \"finished\", \"completed\"].includes(envStatus)) return { status: \"ASSINADO_TODOS\", faltam };\n  if (faltam.length === 0) return { status: \"AGUARDANDO_ENCERRAMENTO\", faltam };\n  if ([\"closed\", \"finished\", \"completed\"].includes(envStatus)) return { status: \"ENCERRADO_SEM_TODAS_ASSINATURAS\", faltam };\n  if (assinaram.length > 0) return { status: \"PARCIALMENTE_ASSINADO\", faltam };\n  return { status: \"PENDENTE\", faltam };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (webhook)\").all());\n  const x = $(\"Resolver envelope\").first().json;\n  const envResp = $(\"Consultar envelope\").first().json || {};\n  const sigs = $(\"Signatários do envelope\").all().map((i) => i.json).filter((r) => r && r.tipo === \"SIGNATARIO\" && Number(r.snapshot_versao) === x.versao);\n  const assinaram = sigs.filter((s) => s.status === \"ASSINOU\" || x.evento === \"sign\" && s.id_externo === x.signatario).map((s) => s.id_externo);\n  const statusEnv = envResp.data && envResp.data.attributes ? envResp.data.attributes.status : \"\";\n  const st = statusContrato({ envelopeStatus: statusEnv, signatariosExigidos: sigs.map((s) => s.id_externo), signatariosQueAssinaram: assinaram, eventos: [x.evento] });\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const concluido = st.status === \"ASSINADO_TODOS\";\n  const alertar = [\"RECUSADO\", \"EXPIRADO\", \"CANCELADO\", \"ENCERRADO_SEM_TODAS_ASSINATURAS\", \"FALHA\"].includes(st.status);\n  return [{ json: {\n    deal_id: x.deal_id,\n    versao: x.versao,\n    status_contrato: st.status,\n    envelope_id: x.envelope,\n    concluido,\n    negocio: { deal_id: x.deal_id, contrato_status: st.status, contrato_concluido_em: concluido ? agora : null, ultimo_evento_em: agora },\n    cobrar_agora: concluido && valor(cfg, \"COBRANCA_DISPARO\", \"\") === \"APOS_ASSINATURAS\",\n    cobranca: { acao: \"CRIAR_COBRANCAS\", deal_id: x.deal_id, versao: x.versao, origem: \"ASSINATURAS_CONCLUIDAS\" },\n    liberacao: { acao: \"REAVALIAR_LIBERACAO\", deal_id: x.deal_id },\n    alertar,\n    alerta: {\n      tipo: \"CONTRATO_\" + st.status,\n      severidade: \"ALTA\",\n      workflow: \"ATOM_05_Clicksign\",\n      deal_id: x.deal_id,\n      mensagem: \"Contrato (envelope \" + x.envelope + \") ficou \" + st.status + (st.faltam && st.faltam.length ? \"; faltam assinaturas de: \" + st.faltam.join(\", \") : \"\") + \". Verifique no Clicksign.\"\n    }\n  } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "5297855e-9042-4b7a-8d78-715e6b442b7f",
+      "name": "Salvar situação do contrato",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2900,
+        600
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "4JWPJuuhMrWIhad4",
+          "cachedResultName": "atom_negocios"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.negocio.deal_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "deal_id": "={{ $json.negocio.deal_id }}",
+            "contrato_status": "={{ $json.negocio.contrato_status }}",
+            "contrato_concluido_em": "={{ $json.negocio.contrato_concluido_em }}",
+            "ultimo_evento_em": "={{ $json.negocio.ultimo_evento_em }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "deal_id",
+              "displayName": "deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contrato_status",
+              "displayName": "contrato_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contrato_concluido_em",
+              "displayName": "contrato_concluido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_evento_em",
+              "displayName": "ultimo_evento_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "f612345a-d6d3-4690-aad5-2326dd34b690",
+      "name": "Campos do contrato (webhook)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3100,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : Object.assign({ status_contrato: \"ENVIADO\", link: $(\"Envelope enviado\").first().json.vinculo.link }, $(\"Envelope enviado\").first().json);\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.envelope_id) valores.PD_DEAL_CLICKSIGN_ID = x.envelope_id;\n  if (x.link) valores.PD_DEAL_CLICKSIGN_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "47e344f6-83d7-4a92-829f-36ede77f4602",
+      "name": "Atualizar negócio (contrato)?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3300,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.atualizar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "702c4eca-502e-46b6-87e5-e83412abb938",
+      "name": "Atualizar negócio (situação do contrato)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        3500,
+        600
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.corpo) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "25728544-3952-4112-8406-2c2fc4345964",
+      "name": "Assinado por todos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3500,
+        750
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Consolidar contrato').first().json.concluido }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "72af4cab-5f58-41c7-93ef-c76d2c8bd707",
+      "name": "Snapshot assinado",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3700,
+        750
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "xEk09M9Zn7SCVz1n",
+          "cachedResultName": "atom_snapshots"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Consolidar contrato').first().json.deal_id }}"
+            },
+            {
+              "keyName": "versao",
+              "condition": "eq",
+              "keyValue": "={{ $('Consolidar contrato').first().json.versao }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "ASSINADO"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "0920e5d7-11fa-4629-8f7c-bab06177baaf",
+      "name": "Cobrar após assinaturas?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3900,
+        750
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Consolidar contrato').first().json.cobrar_agora }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "b2a2a5c7-5f82-42ab-80dd-2848dbde7224",
+      "name": "Pedido de cobrança (após assinaturas)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4100,
+        750
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $('Consolidar contrato').first().json.cobranca }];"
+      }
+    },
+    {
+      "id": "1be21f99-036c-4ed6-a868-892eed5a691b",
+      "name": "ATOM_06 — cobranças (após assinaturas)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        4300,
+        750
+      ],
+      "parameters": {
+        "mode": "once",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_06' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "aae64946-b4b0-43cb-9830-d1addd8bf863",
+      "name": "Pedido de reavaliação da liberação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4100,
+        900
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $('Consolidar contrato').first().json.liberacao }];"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "63ea2a11-bdbf-4024-9ae0-20ff7280170e",
+      "name": "Alertar situação do contrato?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3700,
+        900
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Consolidar contrato').first().json.alertar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "3e6d988e-a889-4198-930f-029a992da095",
+      "name": "Alerta do contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3900,
+        900
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $('Consolidar contrato').first().json.alerta }];"
+      }
+    },
+    {
+      "id": "a4baacbe-fcc9-4cae-8fca-df1a5d4bd4f5",
+      "name": "ATOM_11 — alerta contrato",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        4100,
+        900
+      ],
+      "parameters": {
+        "mode": "once",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_11' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "0784c9af-18b5-4028-9421-87c25b1324da",
+      "name": "ATOM_08 — reavaliar liberação",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        4300,
+        900
+      ],
+      "parameters": {
+        "mode": "once",
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_08' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "35823493-6853-44f3-b7a5-a710eb8dadeb",
+      "name": "Sticky Note 35823493",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        600
+      ],
+      "parameters": {
+        "content": "## ATOM_05 — Clicksign (API v3)\n- Envelope a partir de modelo aprovado (`CLICKSIGN_MODELO_<MODELO>` + mapa `CLICKSIGN_MAPA_<MODELO>`), signatários cliente e Atom, requisitos de qualificação e autenticação, ativação (convites por e-mail).\n- Cada ID é gravado logo após a criação: uma falha parcial retoma só o que falta.\n- Falha de rede/5xx em criação → `FALHA_VERIFICAR_MANUAL` (não repete sozinho, evita duplicar).\n- Webhook validado por HMAC-SHA256 (segredo na credencial Crypto). Assinatura completa exige envelope encerrado **e** registro de assinatura de todos os signatários.\n- **Bloqueado** até `CLICKSIGN_VALIDADO_SANDBOX` = CONFIGURADO (atributos não confirmados na documentação).",
+        "color": 3
+      }
+    }
+  ],
+  "connections": {
+    "Entrada": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração": {
+      "main": [
+        [
+          {
+            "node": "Snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Snapshot": {
+      "main": [
+        [
+          {
+            "node": "Vínculos Clicksign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vínculos Clicksign": {
+      "main": [
+        [
+          {
+            "node": "Planejar envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planejar envelope": {
+      "main": [
+        [
+          {
+            "node": "Executar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar?": {
+      "main": [
+        [
+          {
+            "node": "Criar envelope?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar bloqueio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar envelope?": {
+      "main": [
+        [
+          {
+            "node": "Clicksign — criar envelope",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar documento?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clicksign — criar envelope": {
+      "main": [
+        [
+          {
+            "node": "Guardar envelope",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Falha na criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar envelope": {
+      "main": [
+        [
+          {
+            "node": "Registrar envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar envelope": {
+      "main": [
+        [
+          {
+            "node": "Criar documento?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar documento?": {
+      "main": [
+        [
+          {
+            "node": "Clicksign — criar documento do modelo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar signatário cliente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar bloqueio": {
+      "main": [
+        [
+          {
+            "node": "Salvar ação bloqueada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar ação bloqueada": {
+      "main": [
+        [
+          {
+            "node": "Salvar contrato aguardando configuração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clicksign — criar documento do modelo": {
+      "main": [
+        [
+          {
+            "node": "Guardar documento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Falha na criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar documento": {
+      "main": [
+        [
+          {
+            "node": "Registrar documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar documento": {
+      "main": [
+        [
+          {
+            "node": "Criar signatário cliente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar signatário cliente?": {
+      "main": [
+        [
+          {
+            "node": "Clicksign — signatário cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar signatário Atom?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clicksign — signatário cliente": {
+      "main": [
+        [
+          {
+            "node": "Guardar signatário cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Falha na criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar signatário cliente": {
+      "main": [
+        [
+          {
+            "node": "Registrar signatário cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar signatário cliente": {
+      "main": [
+        [
+          {
+            "node": "Criar signatário Atom?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar signatário Atom?": {
+      "main": [
+        [
+          {
+            "node": "Clicksign — signatário Atom",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IDs atuais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clicksign — signatário Atom": {
+      "main": [
+        [
+          {
+            "node": "Guardar signatário Atom",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Falha na criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar signatário Atom": {
+      "main": [
+        [
+          {
+            "node": "Registrar signatário Atom",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar signatário Atom": {
+      "main": [
+        [
+          {
+            "node": "IDs atuais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IDs atuais": {
+      "main": [
+        [
+          {
+            "node": "Criar requisitos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar requisitos?": {
+      "main": [
+        [
+          {
+            "node": "Montar requisitos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Clicksign — ativar envelope (envia convites)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar requisitos": {
+      "main": [
+        [
+          {
+            "node": "Clicksign — requisitos (qualificação e autenticação)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clicksign — requisitos (qualificação e autenticação)": {
+      "main": [
+        [
+          {
+            "node": "Requisitos criados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Falha na criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requisitos criados": {
+      "main": [
+        [
+          {
+            "node": "Registrar requisitos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar requisitos": {
+      "main": [
+        [
+          {
+            "node": "Clicksign — ativar envelope (envia convites)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clicksign — ativar envelope (envia convites)": {
+      "main": [
+        [
+          {
+            "node": "Envelope enviado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Falha na criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envelope enviado": {
+      "main": [
+        [
+          {
+            "node": "Atualizar vínculo do envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar vínculo do envelope": {
+      "main": [
+        [
+          {
+            "node": "Snapshot enviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Snapshot enviado": {
+      "main": [
+        [
+          {
+            "node": "Salvar contrato enviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar contrato enviado": {
+      "main": [
+        [
+          {
+            "node": "Registrar ação concluída",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar ação concluída": {
+      "main": [
+        [
+          {
+            "node": "Campos do contrato (envio)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos do contrato (envio)": {
+      "main": [
+        [
+          {
+            "node": "Atualizar negócio (envio)?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar negócio (envio)?": {
+      "main": [
+        [
+          {
+            "node": "Atualizar negócio (contrato enviado)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cobrar junto com o contrato?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar negócio (contrato enviado)": {
+      "main": [
+        [
+          {
+            "node": "Cobrar junto com o contrato?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cobrar junto com o contrato?": {
+      "main": [
+        [
+          {
+            "node": "Pedido de cobrança (junto)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedido de cobrança (junto)": {
+      "main": [
+        [
+          {
+            "node": "ATOM_06 — cobranças (junto com contrato)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Falha na criação": {
+      "main": [
+        [
+          {
+            "node": "Registrar falha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar falha": {
+      "main": [
+        [
+          {
+            "node": "Alerta de falha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerta de falha": {
+      "main": [
+        [
+          {
+            "node": "ATOM_11 — alerta Clicksign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Clicksign": {
+      "main": [
+        [
+          {
+            "node": "Calcular HMAC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular HMAC": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração (webhook)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração (webhook)": {
+      "main": [
+        [
+          {
+            "node": "Validar evento Clicksign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar evento Clicksign": {
+      "main": [
+        [
+          {
+            "node": "Evento Clicksign já recebido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evento Clicksign já recebido?": {
+      "main": [
+        [
+          {
+            "node": "Deduplicar evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicar evento": {
+      "main": [
+        [
+          {
+            "node": "Registrar evento Clicksign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar evento Clicksign": {
+      "main": [
+        [
+          {
+            "node": "Evento válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evento válido?": {
+      "main": [
+        [
+          {
+            "node": "Vínculo do envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vínculo do envelope": {
+      "main": [
+        [
+          {
+            "node": "Resolver envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolver envelope": {
+      "main": [
+        [
+          {
+            "node": "Evento de assinatura?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evento de assinatura?": {
+      "main": [
+        [
+          {
+            "node": "Registrar assinatura do signatário",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consultar envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar assinatura do signatário": {
+      "main": [
+        [
+          {
+            "node": "Consultar envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar envelope": {
+      "main": [
+        [
+          {
+            "node": "Signatários do envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signatários do envelope": {
+      "main": [
+        [
+          {
+            "node": "Consolidar contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidar contrato": {
+      "main": [
+        [
+          {
+            "node": "Salvar situação do contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar situação do contrato": {
+      "main": [
+        [
+          {
+            "node": "Campos do contrato (webhook)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos do contrato (webhook)": {
+      "main": [
+        [
+          {
+            "node": "Atualizar negócio (contrato)?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar negócio (contrato)?": {
+      "main": [
+        [
+          {
+            "node": "Atualizar negócio (situação do contrato)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Assinado por todos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar negócio (situação do contrato)": {
+      "main": [
+        [
+          {
+            "node": "Assinado por todos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assinado por todos?": {
+      "main": [
+        [
+          {
+            "node": "Snapshot assinado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alertar situação do contrato?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Snapshot assinado": {
+      "main": [
+        [
+          {
+            "node": "Cobrar após assinaturas?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cobrar após assinaturas?": {
+      "main": [
+        [
+          {
+            "node": "Pedido de cobrança (após assinaturas)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pedido de reavaliação da liberação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedido de cobrança (após assinaturas)": {
+      "main": [
+        [
+          {
+            "node": "ATOM_06 — cobranças (após assinaturas)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ATOM_06 — cobranças (após assinaturas)": {
+      "main": [
+        [
+          {
+            "node": "Pedido de reavaliação da liberação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedido de reavaliação da liberação": {
+      "main": [
+        [
+          {
+            "node": "ATOM_08 — reavaliar liberação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alertar situação do contrato?": {
+      "main": [
+        [
+          {
+            "node": "Alerta do contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerta do contrato": {
+      "main": [
+        [
+          {
+            "node": "ATOM_11 — alerta contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "atomBuild": "2026-09-27"
+  }
+}
