@@ -1,765 +1,842 @@
 [
- {
-  "chave": "MODO_EXECUCAO",
-  "valor": "SIMULACAO",
-  "status": "CONFIGURADO",
-  "descricao": "SIMULACAO (nenhuma escrita externa), SANDBOX ou PRODUCAO. Portão global das ações com efeito.",
-  "usado_por": "todos"
- },
- {
-  "chave": "RETENTATIVAS_MAX",
-  "valor": "6",
-  "status": "PROPOSTO",
-  "descricao": "Máximo de retentativas automáticas (backoff exponencial em minutos).",
-  "usado_por": "ATOM_07, ATOM_11"
- },
- {
-  "chave": "ALERTA_CANAL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "PIPEDRIVE_ATIVIDADE (tarefa para PD_ALERTA_USER_ID) ou WEBHOOK (ALERTA_WEBHOOK_URL). Sem canal: alertas só ficam em atom_eventos.",
-  "usado_por": "ATOM_11"
- },
- {
-  "chave": "ALERTA_WEBHOOK_URL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "URL de webhook interno para alertas (ex.: Google Chat/Slack). Contém segredo: restrinja o acesso ao n8n.",
-  "usado_por": "ATOM_11"
- },
- {
-  "chave": "PD_ALERTA_USER_ID",
-  "valor": "26712787",
-  "status": "PROPOSTO",
-  "descricao": "Usuário Pipedrive que recebe tarefas de alerta (26712787 = proprietário dos negócios inspecionados).",
-  "usado_por": "ATOM_11"
- },
- {
-  "chave": "PD_APP_URL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "URL da conta Pipedrive (ex.: https://<empresa>.pipedrive.com) para links nos cartões e diagnósticos.",
-  "usado_por": "ATOM_02, ATOM_08"
- },
- {
-  "chave": "PD_INTEGRACAO_USER_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "ID do usuário Pipedrive dono do token do n8n (recomendado: usuário dedicado) — anti-loop.",
-  "usado_por": "ATOM_01"
- },
- {
-  "chave": "PD_STAGES_REUNIAO_IDS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "IDs das etapas em que o lead avançou para reunião (lista separada por vírgula). Funil 2 atual: 6 Novo negócio, 7 Contactado, 8 Proposta Enviada, 9 Reunião concluída, 11 Contrato assinado. Não há etapa \"reunião agendada\".",
-  "usado_por": "ATOM_01, ATOM_02"
- },
- {
-  "chave": "PD_STAGE_PROPOSTA_ACEITA_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "ID da etapa \"Proposta aceita\". NÃO EXISTE no funil atual: criar a etapa e informar o ID.",
-  "usado_por": "ATOM_01, ATOM_04"
- },
- {
-  "chave": "PD_EMAIL_REUNIAO",
-  "valor": "nativo:emails",
-  "status": "PROPOSTO",
-  "descricao": "Origem do e-mail da reunião: nativo:emails (e-mail principal da pessoa) ou hash de campo do negócio.",
-  "usado_por": "ATOM_01, ATOM_02, ATOM_04"
- },
- {
-  "chave": "PD_ORG_SITE",
-  "valor": "nativo:website",
-  "status": "PROPOSTO",
-  "descricao": "Campo do site da organização (nativo:website é o campo padrão do Pipedrive).",
-  "usado_por": "ATOM_01, ATOM_02"
- },
- {
-  "chave": "PD_ORG_SEM_SITE",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Sim/Não: cliente informou que não tem site. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_SITE_STATUS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Status da validação do site. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_CNPJ",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — CNPJ (informado manualmente). Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_RAZAO_SOCIAL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Razão social. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_NOME_FANTASIA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Nome fantasia. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_LOGRADOURO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Logradouro. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_NUMERO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Número. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_COMPLEMENTO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Complemento. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_BAIRRO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Bairro. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_CIDADE",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Cidade. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_UF",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — UF. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_CEP",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — CEP. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_SITUACAO_CADASTRAL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Situação cadastral. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_CADASTRO_ORIGEM",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Origem da consulta cadastral. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_CADASTRO_DATA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Data da consulta cadastral. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_CADASTRO_STATUS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Status da consulta cadastral (OK, DIVERGENTE...). Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_EMAIL_FINANCEIRO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — E-mail financeiro. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado da ORGANIZAÇÃO (hash de 40 caracteres) — Sim/Não: e-mail financeiro confirmado pelo cliente. Organizações hoje não têm campos personalizados.",
-  "usado_por": "ATOM_02..ATOM_05"
- },
- {
-  "chave": "PD_DEAL_SERVICO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Serviço aprovado. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_ESCOPO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Escopo aprovado. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_MODELO_CONTRATO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Modelo contratual (código). Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_PRAZO_EXECUCAO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Prazo acordado (texto ou AAAA-MM-DD). Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_DURACAO_MESES",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Duração contratual em meses. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_CONDICOES_APROVADAS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Sim/Não: condições comerciais aprovadas. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_TIPO_COBRANCA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — AVULSA, PARCELADA, ENTRADA_MAIS_PARCELAS, RECORRENTE, ENTRADA_MAIS_RECORRENTE. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_FORMA_PAGAMENTO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — BOLETO, PIX, CREDIT_CARD ou UNDEFINED. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_VALOR_TOTAL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Valor total. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_VALOR_ENTRADA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Valor da entrada. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_NUM_PARCELAS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Número de parcelas. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_VALOR_PARCELA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Valor da parcela. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_MENSALIDADE",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Valor da mensalidade. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_VENCIMENTO_ENTRADA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Vencimento da entrada. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_PRIMEIRO_VENCIMENTO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Primeiro vencimento. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_EMAIL_ASSINATURA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — E-mail para assinatura. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Sim/Não: e-mail de assinatura confirmado. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_NOME_SIGNATARIO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Nome do signatário (somente se a Clicksign exigir). Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_PROPOSTA_LINK",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Link da proposta. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_DIAG_STATUS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Status do diagnóstico. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_DIAG_LINK",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Link do diagnóstico. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_DIAG_DATA",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Data do diagnóstico. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_DIAG_VERSAO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Versão do modelo de diagnóstico. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_DIAG_REEXECUTAR",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Sim/Não: pedir nova execução do diagnóstico. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_PENDENCIAS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Pendências cadastrais. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_CONTRATO_STATUS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Status do contrato. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_CLICKSIGN_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — ID do envelope Clicksign. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_CLICKSIGN_LINK",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Link do envelope. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_PAGAMENTO_STATUS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Status do pagamento inicial. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_ASAAS_IDS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — IDs Asaas. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_CONTROLLE_STATUS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Status de sincronização Controlle. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_TRELLO_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — ID do cartão Trello. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_TRELLO_LINK",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Link do cartão Trello. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_EXECUCAO_INICIO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Data de início efetivo da execução. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_DEAL_AVALIACAO_STATUS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo do NEGÓCIO (hash de 40 caracteres ou nativo:<campo>) — Status do pedido de avaliação. Existem 19 campos de negócio sem nome identificado: mapear ou criar.",
-  "usado_por": "ATOM_02..ATOM_09"
- },
- {
-  "chave": "PD_PERSON_NAO_CONTATAR",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo da PESSOA com preferência de não ser contatada (Sim/Não).",
-  "usado_por": "ATOM_09"
- },
- {
-  "chave": "DIAGNOSTICO_MODO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "PADRAO_ATOM (modelo aprovado — não fornecido), ROTINA_EXISTENTE (workflow \"Análise de Sites\" — não acessível via MCP) ou PROVISORIO (proposta).",
-  "usado_por": "ATOM_02"
- },
- {
-  "chave": "DIAGNOSTICO_PERMITIR_PROVISORIO",
-  "valor": "false",
-  "status": "PROPOSTO",
-  "descricao": "true permite usar o modelo PROVISÓRIO (identificado como proposta no CRM).",
-  "usado_por": "ATOM_02"
- },
- {
-  "chave": "DIAGNOSTICO_PADRAO_VERSAO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Versão do diagnóstico padrão aprovado da Atom (quando fornecido).",
-  "usado_por": "ATOM_02"
- },
- {
-  "chave": "ANTHROPIC_MODEL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "ID do modelo compatível com a conta (ex.: claude-opus-5-5, claude-sonnet-5, claude-haiku-4-5). Confirmar disponibilidade.",
-  "usado_por": "ATOM_02, ATOM_08"
- },
- {
-  "chave": "ANTHROPIC_MAX_TOKENS",
-  "valor": "4000",
-  "status": "PROPOSTO",
-  "descricao": "Limite de tokens de saída do diagnóstico.",
-  "usado_por": "ATOM_02"
- },
- {
-  "chave": "BRIEFING_USAR_CLAUDE",
-  "valor": "false",
-  "status": "PROPOSTO",
-  "descricao": "true usa a Claude para organizar o briefing do cartão (somente dados aprovados).",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "CNPJ_PROVEDOR",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Provedor autorizado de consulta: BRASILAPI (público) ou outro com mapeamento implementado.",
-  "usado_por": "ATOM_03"
- },
- {
-  "chave": "CNPJ_PROVEDOR_URL",
-  "valor": "https://brasilapi.com.br/api/cnpj/v1/{cnpj}",
-  "status": "PROPOSTO",
-  "descricao": "URL com {cnpj}. Endpoint documentado da BrasilAPI; uso depende de autorização.",
-  "usado_por": "ATOM_03"
- },
- {
-  "chave": "CNPJ_PROVEDOR_ACEITA_ALFANUMERICO",
-  "valor": "false",
-  "status": "PROPOSTO",
-  "descricao": "true somente após confirmar suporte do provedor a CNPJ alfanumérico.",
-  "usado_por": "ATOM_03"
- },
- {
-  "chave": "CLICKSIGN_BASE_URL",
-  "valor": "https://sandbox.clicksign.com/api/v3",
-  "status": "PROPOSTO",
-  "descricao": "Sandbox (testes) ou https://app.clicksign.com/api/v3 (produção).",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "CLICKSIGN_VALIDADO_SANDBOX",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Marcar CONFIGURADO (valor SIM) após validar no sandbox: documento por modelo, signatário sem CPF, cabeçalho HMAC e payload do webhook.",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "CLICKSIGN_AUTENTICACAO",
-  "valor": "email",
-  "status": "PROPOSTO",
-  "descricao": "Autenticação do signatário no requisito provide_evidence (ex.: email).",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "CLICKSIGN_SIGNATARIO_ATOM_NOME",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Nome do signatário da Atom.",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "CLICKSIGN_SIGNATARIO_ATOM_EMAIL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "E-mail do signatário da Atom.",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "CLICKSIGN_EXIGE_NOME_SIGNATARIO",
-  "valor": "true",
-  "status": "PROPOSTO",
-  "descricao": "Se a Clicksign exigir nome do signatário, ele é pedido explicitamente ao cliente (não é coletado em silêncio).",
-  "usado_por": "ATOM_04"
- },
- {
-  "chave": "CLICKSIGN_HMAC_CABECALHO",
-  "valor": "content-hmac",
-  "status": "PROPOSTO",
-  "descricao": "Cabeçalho com a assinatura HMAC do webhook (fontes divergem: Content-Hmac ou x-clicksign-signature).",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "CLICKSIGN_MODELO_EXEMPLO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Chave do modelo aprovado para PD_DEAL_MODELO_CONTRATO=EXEMPLO. Criar uma linha CLICKSIGN_MODELO_<CODIGO> por modelo.",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "CLICKSIGN_MAPA_EXEMPLO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "JSON {\"VARIAVEL_DO_MODELO\":\"caminho.no.snapshot\"}, ex.: {\"RAZAO_SOCIAL\":\"empresa.razao_social\",\"VALOR_TOTAL\":\"financeiro.valor_total\"}.",
-  "usado_por": "ATOM_05"
- },
- {
-  "chave": "COBRANCA_DISPARO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "JUNTO_COM_CONTRATO ou APOS_ASSINATURAS. Decisão não tomada: nenhuma cobrança é criada até definir.",
-  "usado_por": "ATOM_05, ATOM_06"
- },
- {
-  "chave": "ASAAS_BASE_URL",
-  "valor": "https://api-sandbox.asaas.com/v3",
-  "status": "PROPOSTO",
-  "descricao": "Sandbox (testes) ou https://api.asaas.com/v3 (produção).",
-  "usado_por": "ATOM_06, ATOM_08"
- },
- {
-  "chave": "ASAAS_VALIDADO_SANDBOX",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Marcar CONFIGURADO (valor SIM) após validar cobranças e webhooks no sandbox.",
-  "usado_por": "ATOM_06"
- },
- {
-  "chave": "ASAAS_NOTIFICACOES_DESATIVADAS",
-  "valor": "false",
-  "status": "PROPOSTO",
-  "descricao": "true desativa as notificações do próprio Asaas ao cliente (notificationDisabled).",
-  "usado_por": "ATOM_06"
- },
- {
-  "chave": "CONTROLLE_API_HABILITADA",
-  "valor": "false",
-  "status": "CONFIGURADO",
-  "descricao": "API do Controlle ainda não fornecida: chamadas reais desativadas.",
-  "usado_por": "ATOM_07"
- },
- {
-  "chave": "CONTROLLE_BASE_URL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "URL base da API Controlle (a fornecer).",
-  "usado_por": "ATOM_07"
- },
- {
-  "chave": "CONTROLLE_MAPEAMENTO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "JSON de mapeamento (categorias, conta bancária, centro de custo) — a definir com a API real.",
-  "usado_por": "ATOM_07"
- },
- {
-  "chave": "CONTROLLE_ORIGEM_LANCAMENTOS",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade.",
-  "usado_por": "ATOM_07"
- },
- {
-  "chave": "LIBERACAO_REGRA",
-  "valor": "CONTRATO_ASSINADO_E_PAGAMENTO_INICIAL",
-  "status": "PROPOSTO",
-  "descricao": "Regra proposta: contrato assinado por todos + pagamento inicial confirmado/recebido + negócio não cancelado.",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "LIBERACAO_ACEITA_RECEBIDO_EM_DINHEIRO",
-  "valor": "false",
-  "status": "PROPOSTO",
-  "descricao": "true considera RECEIVED_IN_CASH (baixa manual no Asaas) como pagamento inicial.",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_BOARD_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Quadro de execução (quadros existentes: ATOM, DEMANDAS, Comercial, Gear, etc. — definir).",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_LIST_ENTRADA_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Lista onde o cartão inicial é criado.",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_REGRA_INICIO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "LISTA (mover para TRELLO_LIST_INICIO_EXECUCAO_ID) ou CAMPO (data em TRELLO_CAMPO_INICIO_ID).",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_LIST_INICIO_EXECUCAO_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Lista que registra o início efetivo da execução.",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_CAMPO_INICIO_ID",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Campo personalizado (data) que registra o início efetivo.",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_RESPONSAVEL_PADRAO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "IDs de membros Trello (vírgula). Por serviço: TRELLO_RESPONSAVEL_<SERVICO>.",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_CHECKLIST_PADRAO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Itens separados por \";\". Por serviço: TRELLO_CHECKLIST_<SERVICO>.",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "TRELLO_WEBHOOK_CALLBACK_URL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "URL de produção do webhook atom/trello (exatamente como cadastrada no Trello).",
-  "usado_por": "ATOM_08"
- },
- {
-  "chave": "AVALIACAO_CAMPANHA",
-  "valor": "AVALIACAO_GOOGLE_V1",
-  "status": "PROPOSTO",
-  "descricao": "Identificador da campanha (um pedido por empresa por campanha).",
-  "usado_por": "ATOM_09"
- },
- {
-  "chave": "AVALIACAO_DIAS_APOS_INICIO",
-  "valor": "7",
-  "status": "CONFIGURADO",
-  "descricao": "Dias corridos após o início efetivo (definido no escopo).",
-  "usado_por": "ATOM_09"
- },
- {
-  "chave": "HORARIO_COMERCIAL",
-  "valor": "09:00-18:00;1,2,3,4,5",
-  "status": "PROPOSTO",
-  "descricao": "Formato HH:MM-HH:MM;dias (1=segunda ... 7=domingo), fuso America/Sao_Paulo.",
-  "usado_por": "ATOM_09"
- },
- {
-  "chave": "GOOGLE_AVALIACAO_LINK",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Link direto de avaliação do Perfil da Empresa no Google (https).",
-  "usado_por": "ATOM_09"
- },
- {
-  "chave": "WHATSAPP_TEMPLATE_AVALIACAO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Nome do template aprovado na Meta para o pedido de avaliação (categoria definida pela Meta).",
-  "usado_por": "ATOM_09"
- },
- {
-  "chave": "WHATSAPP_TEMPLATE_IDIOMA",
-  "valor": "pt_BR",
-  "status": "PROPOSTO",
-  "descricao": "Código de idioma do template.",
-  "usado_por": "ATOM_09"
- },
- {
-  "chave": "ZAYRA_MECANISMO",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Mecanismo real de acionamento da Zayra. Implementado: HTTP_WEBHOOK (contrato proposto).",
-  "usado_por": "ATOM_10"
- },
- {
-  "chave": "ZAYRA_ENDPOINT_URL",
-  "valor": "",
-  "status": "PENDENTE",
-  "descricao": "Endpoint da Zayra para tarefas externas (a confirmar com quem mantém a Zayra).",
-  "usado_por": "ATOM_10"
- }
+  {
+    "chave": "MODO_EXECUCAO",
+    "valor": "SIMULACAO",
+    "status": "CONFIGURADO",
+    "descricao": "SIMULACAO (nenhuma escrita externa), SANDBOX ou PRODUCAO. Portão global das ações com efeito.",
+    "usado_por": "todos"
+  },
+  {
+    "chave": "RETENTATIVAS_MAX",
+    "valor": "6",
+    "status": "PROPOSTO",
+    "descricao": "Máximo de retentativas automáticas (backoff exponencial em minutos).",
+    "usado_por": "ATOM_07, ATOM_11"
+  },
+  {
+    "chave": "ALERTA_CANAL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "PIPEDRIVE_ATIVIDADE (tarefa para PD_ALERTA_USER_ID) ou WEBHOOK (ALERTA_WEBHOOK_URL). Sem canal: alertas só ficam em atom_eventos.",
+    "usado_por": "ATOM_11"
+  },
+  {
+    "chave": "ALERTA_WEBHOOK_URL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "URL de webhook interno para alertas (ex.: Google Chat/Slack). Contém segredo: restrinja o acesso ao n8n.",
+    "usado_por": "ATOM_11"
+  },
+  {
+    "chave": "PD_ALERTA_USER_ID",
+    "valor": "26712787",
+    "status": "PROPOSTO",
+    "descricao": "Usuário Pipedrive que recebe tarefas de alerta (26712787 = proprietário dos negócios inspecionados).",
+    "usado_por": "ATOM_11"
+  },
+  {
+    "chave": "PD_APP_URL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "URL da conta Pipedrive (ex.: https://<empresa>.pipedrive.com) para links nos cartões e diagnósticos.",
+    "usado_por": "ATOM_02, ATOM_08"
+  },
+  {
+    "chave": "PD_INTEGRACAO_USER_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "ID do usuário Pipedrive dono do token do n8n (recomendado: usuário dedicado) — anti-loop.",
+    "usado_por": "ATOM_01"
+  },
+  {
+    "chave": "PD_STAGES_REUNIAO_IDS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "IDs das etapas em que o lead avançou para reunião (lista separada por vírgula). Funil 2 atual: 6 Novo negócio, 7 Contactado, 8 Proposta Enviada, 9 Reunião concluída, 11 Contrato assinado. Não há etapa \"reunião agendada\".",
+    "usado_por": "ATOM_01, ATOM_02"
+  },
+  {
+    "chave": "PD_STAGE_PROPOSTA_ACEITA_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "ID da etapa \"Proposta aceita\". NÃO EXISTE no funil atual: criar a etapa e informar o ID.",
+    "usado_por": "ATOM_01, ATOM_04"
+  },
+  {
+    "chave": "PD_EMAIL_REUNIAO",
+    "valor": "nativo:emails",
+    "status": "PROPOSTO",
+    "descricao": "Origem do e-mail da reunião: nativo:emails (e-mail principal da pessoa) ou hash de campo do negócio.",
+    "usado_por": "ATOM_01, ATOM_02, ATOM_04"
+  },
+  {
+    "chave": "PD_ORG_SITE",
+    "valor": "nativo:website",
+    "status": "PROPOSTO",
+    "descricao": "Campo do site da organização (nativo:website é o campo padrão do Pipedrive).",
+    "usado_por": "ATOM_01, ATOM_02"
+  },
+  {
+    "chave": "PD_ORG_SEM_SITE",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Sim/Não: cliente informou que não tem site",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_SITE_STATUS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Status da validação do site",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_CNPJ",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): CNPJ (informado manualmente)",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_RAZAO_SOCIAL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Razão social",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_NOME_FANTASIA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Nome fantasia",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_LOGRADOURO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Logradouro",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_NUMERO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Número",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_COMPLEMENTO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Complemento",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_BAIRRO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Bairro",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_CIDADE",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Cidade",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_UF",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): UF",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_CEP",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): CEP",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_SITUACAO_CADASTRAL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Situação cadastral",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_CADASTRO_ORIGEM",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Origem da consulta cadastral",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_CADASTRO_DATA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Data da consulta cadastral",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_CADASTRO_STATUS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Status da consulta cadastral (OK, DIVERGENTE...)",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_EMAIL_FINANCEIRO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): E-mail financeiro",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da organização (hash de 40 caracteres): Sim/Não: e-mail financeiro confirmado pelo cliente",
+    "usado_por": "ATOM_02-05"
+  },
+  {
+    "chave": "PD_DEAL_SERVICO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Serviço aprovado",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_ESCOPO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Escopo aprovado",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_MODELO_CONTRATO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Modelo contratual (código)",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_PRAZO_EXECUCAO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Prazo acordado (texto ou AAAA-MM-DD)",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_DURACAO_MESES",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Duração contratual em meses",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_CONDICOES_APROVADAS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Sim/Não: condições comerciais aprovadas",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_TIPO_COBRANCA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): AVULSA, PARCELADA, ENTRADA_MAIS_PARCELAS, RECORRENTE, ENTRADA_MAIS_RECORRENTE",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_FORMA_PAGAMENTO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): BOLETO, PIX, CREDIT_CARD ou UNDEFINED",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_VALOR_TOTAL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor total",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_VALOR_ENTRADA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor da entrada",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_NUM_PARCELAS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Número de parcelas",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_VALOR_PARCELA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor da parcela",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_MENSALIDADE",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor da mensalidade",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_VENCIMENTO_ENTRADA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Vencimento da entrada",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_PRIMEIRO_VENCIMENTO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Primeiro vencimento",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_EMAIL_ASSINATURA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): E-mail para assinatura",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Sim/Não: e-mail de assinatura confirmado",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_NOME_SIGNATARIO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Nome do signatário (somente se a Clicksign exigir)",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_PROPOSTA_LINK",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Link da proposta",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_DIAG_STATUS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do diagnóstico",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_DIAG_LINK",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Link do diagnóstico",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_DIAG_DATA",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Data do diagnóstico",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_DIAG_VERSAO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Versão do modelo de diagnóstico",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_DIAG_REEXECUTAR",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Sim/Não: pedir nova execução do diagnóstico",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_PENDENCIAS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Pendências cadastrais",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_CONTRATO_STATUS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do contrato",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_CLICKSIGN_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): ID do envelope Clicksign",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_CLICKSIGN_LINK",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Link do envelope",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_PAGAMENTO_STATUS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do pagamento inicial",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_ASAAS_IDS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): IDs Asaas",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_CONTROLLE_STATUS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Status de sincronização Controlle",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_TRELLO_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): ID do cartão Trello",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_TRELLO_LINK",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Link do cartão Trello",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_EXECUCAO_INICIO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Data de início efetivo da execução",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_DEAL_AVALIACAO_STATUS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do pedido de avaliação",
+    "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "PD_PERSON_NAO_CONTATAR",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo da PESSOA com preferência de não ser contatada (Sim/Não).",
+    "usado_por": "ATOM_09"
+  },
+  {
+    "chave": "DIAGNOSTICO_MODO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "PADRAO_ATOM (modelo aprovado — não fornecido), ROTINA_EXISTENTE (workflow \"Análise de Sites\" — não acessível via MCP) ou PROVISORIO (proposta).",
+    "usado_por": "ATOM_02"
+  },
+  {
+    "chave": "DIAGNOSTICO_PERMITIR_PROVISORIO",
+    "valor": "false",
+    "status": "PROPOSTO",
+    "descricao": "true permite usar o modelo PROVISÓRIO (identificado como proposta no CRM).",
+    "usado_por": "ATOM_02"
+  },
+  {
+    "chave": "DIAGNOSTICO_PADRAO_VERSAO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Versão do diagnóstico padrão aprovado da Atom (quando fornecido).",
+    "usado_por": "ATOM_02"
+  },
+  {
+    "chave": "ANTHROPIC_MODEL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "ID do modelo compatível com a conta (ex.: claude-opus-5-5, claude-sonnet-5, claude-haiku-4-5). Confirmar disponibilidade.",
+    "usado_por": "ATOM_02, ATOM_08"
+  },
+  {
+    "chave": "ANTHROPIC_MAX_TOKENS",
+    "valor": "4000",
+    "status": "PROPOSTO",
+    "descricao": "Limite de tokens de saída do diagnóstico.",
+    "usado_por": "ATOM_02"
+  },
+  {
+    "chave": "BRIEFING_USAR_CLAUDE",
+    "valor": "false",
+    "status": "PROPOSTO",
+    "descricao": "true usa a Claude para organizar o briefing do cartão (somente dados aprovados).",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "CNPJ_PROVEDOR",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Provedor autorizado de consulta: BRASILAPI (público) ou outro com mapeamento implementado.",
+    "usado_por": "ATOM_03"
+  },
+  {
+    "chave": "CNPJ_PROVEDOR_URL",
+    "valor": "https://brasilapi.com.br/api/cnpj/v1/{cnpj}",
+    "status": "PROPOSTO",
+    "descricao": "URL com {cnpj}. Endpoint documentado da BrasilAPI; uso depende de autorização.",
+    "usado_por": "ATOM_03"
+  },
+  {
+    "chave": "CNPJ_PROVEDOR_ACEITA_ALFANUMERICO",
+    "valor": "false",
+    "status": "PROPOSTO",
+    "descricao": "true somente após confirmar suporte do provedor a CNPJ alfanumérico.",
+    "usado_por": "ATOM_03"
+  },
+  {
+    "chave": "CLICKSIGN_BASE_URL",
+    "valor": "https://sandbox.clicksign.com/api/v3",
+    "status": "PROPOSTO",
+    "descricao": "Sandbox (testes) ou https://app.clicksign.com/api/v3 (produção).",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CLICKSIGN_VALIDADO_SANDBOX",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Marcar CONFIGURADO (valor SIM) após validar no sandbox: documento por modelo, signatário sem CPF, cabeçalho HMAC e payload do webhook.",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CLICKSIGN_AUTENTICACAO",
+    "valor": "email",
+    "status": "PROPOSTO",
+    "descricao": "Autenticação do signatário no requisito provide_evidence (ex.: email).",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CLICKSIGN_SIGNATARIO_ATOM_NOME",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Nome do signatário da Atom.",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CLICKSIGN_SIGNATARIO_ATOM_EMAIL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "E-mail do signatário da Atom.",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CLICKSIGN_EXIGE_NOME_SIGNATARIO",
+    "valor": "true",
+    "status": "PROPOSTO",
+    "descricao": "Se a Clicksign exigir nome do signatário, ele é pedido explicitamente ao cliente (não é coletado em silêncio).",
+    "usado_por": "ATOM_04"
+  },
+  {
+    "chave": "CLICKSIGN_HMAC_CABECALHO",
+    "valor": "content-hmac",
+    "status": "PROPOSTO",
+    "descricao": "Cabeçalho com a assinatura HMAC do webhook (fontes divergem: Content-Hmac ou x-clicksign-signature).",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CLICKSIGN_MODELO_EXEMPLO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Chave do modelo aprovado para PD_DEAL_MODELO_CONTRATO=EXEMPLO. Criar uma linha CLICKSIGN_MODELO_<CODIGO> por modelo.",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CLICKSIGN_MAPA_EXEMPLO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "JSON {\"VARIAVEL_DO_MODELO\":\"caminho.no.snapshot\"}, ex.: {\"RAZAO_SOCIAL\":\"empresa.razao_social\",\"VALOR_TOTAL\":\"financeiro.valor_total\"}.",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "COBRANCA_DISPARO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "JUNTO_COM_CONTRATO ou APOS_ASSINATURAS. Decisão não tomada: nenhuma cobrança é criada até definir.",
+    "usado_por": "ATOM_05, ATOM_06"
+  },
+  {
+    "chave": "ASAAS_BASE_URL",
+    "valor": "https://api-sandbox.asaas.com/v3",
+    "status": "PROPOSTO",
+    "descricao": "Sandbox (testes) ou https://api.asaas.com/v3 (produção).",
+    "usado_por": "ATOM_06, ATOM_08"
+  },
+  {
+    "chave": "ASAAS_VALIDADO_SANDBOX",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Marcar CONFIGURADO (valor SIM) após validar cobranças e webhooks no sandbox.",
+    "usado_por": "ATOM_06"
+  },
+  {
+    "chave": "ASAAS_NOTIFICACOES_DESATIVADAS",
+    "valor": "false",
+    "status": "PROPOSTO",
+    "descricao": "true desativa as notificações do próprio Asaas ao cliente (notificationDisabled).",
+    "usado_por": "ATOM_06"
+  },
+  {
+    "chave": "CONTROLLE_API_HABILITADA",
+    "valor": "false",
+    "status": "CONFIGURADO",
+    "descricao": "API do Controlle ainda não fornecida: chamadas reais desativadas.",
+    "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "CONTROLLE_BASE_URL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "URL base da API Controlle (a fornecer).",
+    "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "CONTROLLE_MAPEAMENTO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "JSON de mapeamento (categorias, conta bancária, centro de custo) — a definir com a API real.",
+    "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "CONTROLLE_ORIGEM_LANCAMENTOS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade.",
+    "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "LIBERACAO_REGRA",
+    "valor": "CONTRATO_ASSINADO_E_PAGAMENTO_INICIAL",
+    "status": "PROPOSTO",
+    "descricao": "Regra proposta: contrato assinado por todos + pagamento inicial confirmado/recebido + negócio não cancelado.",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "LIBERACAO_ACEITA_RECEBIDO_EM_DINHEIRO",
+    "valor": "false",
+    "status": "PROPOSTO",
+    "descricao": "true considera RECEIVED_IN_CASH (baixa manual no Asaas) como pagamento inicial.",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_BOARD_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Quadro de execução (quadros existentes: ATOM, DEMANDAS, Comercial, Gear, etc. — definir).",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_LIST_ENTRADA_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Lista onde o cartão inicial é criado.",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_REGRA_INICIO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "LISTA (mover para TRELLO_LIST_INICIO_EXECUCAO_ID) ou CAMPO (data em TRELLO_CAMPO_INICIO_ID).",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_LIST_INICIO_EXECUCAO_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Lista que registra o início efetivo da execução.",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_CAMPO_INICIO_ID",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Campo personalizado (data) que registra o início efetivo.",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_RESPONSAVEL_PADRAO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "IDs de membros Trello (vírgula). Por serviço: TRELLO_RESPONSAVEL_<SERVICO>.",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_CHECKLIST_PADRAO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Itens separados por \";\". Por serviço: TRELLO_CHECKLIST_<SERVICO>.",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "TRELLO_WEBHOOK_CALLBACK_URL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "URL de produção do webhook atom/trello (exatamente como cadastrada no Trello).",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "AVALIACAO_CAMPANHA",
+    "valor": "AVALIACAO_GOOGLE_V1",
+    "status": "PROPOSTO",
+    "descricao": "Identificador da campanha (um pedido por empresa por campanha).",
+    "usado_por": "ATOM_09"
+  },
+  {
+    "chave": "AVALIACAO_DIAS_APOS_INICIO",
+    "valor": "7",
+    "status": "CONFIGURADO",
+    "descricao": "Dias corridos após o início efetivo (definido no escopo).",
+    "usado_por": "ATOM_09"
+  },
+  {
+    "chave": "HORARIO_COMERCIAL",
+    "valor": "09:00-18:00;1,2,3,4,5",
+    "status": "PROPOSTO",
+    "descricao": "Formato HH:MM-HH:MM;dias (1=segunda ... 7=domingo), fuso America/Sao_Paulo.",
+    "usado_por": "ATOM_09"
+  },
+  {
+    "chave": "GOOGLE_AVALIACAO_LINK",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Link direto de avaliação do Perfil da Empresa no Google (https).",
+    "usado_por": "ATOM_09"
+  },
+  {
+    "chave": "WHATSAPP_TEMPLATE_AVALIACAO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Nome do template aprovado na Meta para o pedido de avaliação (categoria definida pela Meta).",
+    "usado_por": "ATOM_09"
+  },
+  {
+    "chave": "WHATSAPP_TEMPLATE_IDIOMA",
+    "valor": "pt_BR",
+    "status": "PROPOSTO",
+    "descricao": "Código de idioma do template.",
+    "usado_por": "ATOM_09"
+  },
+  {
+    "chave": "ZAYRA_MECANISMO",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Mecanismo real de acionamento da Zayra. Implementado: HTTP_WEBHOOK (contrato proposto).",
+    "usado_por": "ATOM_10"
+  },
+  {
+    "chave": "ZAYRA_ENDPOINT_URL",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "Endpoint da Zayra para tarefas externas (a confirmar com quem mantém a Zayra).",
+    "usado_por": "ATOM_10"
+  },
+  {
+    "chave": "WF_ATOM_01",
+    "valor": "TvKVsmL0ZWMuEb2S",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_01_Eventos_Pipedrive",
+    "usado_por": "ATOM_11"
+  },
+  {
+    "chave": "WF_ATOM_02",
+    "valor": "87n6QYXZBijXZPTl",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_02_Site_Diagnostico",
+    "usado_por": "ATOM_01, ATOM_02"
+  },
+  {
+    "chave": "WF_ATOM_03",
+    "valor": "KDVf93dE4xuyPLg4",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_03_Cadastro_CNPJ",
+    "usado_por": "ATOM_01"
+  },
+  {
+    "chave": "WF_ATOM_04",
+    "valor": "lvvOD7G5O8ym33m8",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_04_Conferencia_Formalizacao",
+    "usado_por": "ATOM_01, ATOM_04"
+  },
+  {
+    "chave": "WF_ATOM_05",
+    "valor": "t88mptq0VysxNiKd",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_05_Clicksign",
+    "usado_por": "ATOM_04, ATOM_11"
+  },
+  {
+    "chave": "WF_ATOM_06",
+    "valor": "BlrMhSwF0m6y2s9z",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_06_Asaas",
+    "usado_por": "ATOM_05, ATOM_11"
+  },
+  {
+    "chave": "WF_ATOM_07",
+    "valor": "eyLqBdUcfmq9hzeS",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_07_Controlle",
+    "usado_por": "ATOM_11"
+  },
+  {
+    "chave": "WF_ATOM_08",
+    "valor": "86LFoss4Pzbj4cQy",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_08_Trello",
+    "usado_por": "ATOM_05, ATOM_06, ATOM_11"
+  },
+  {
+    "chave": "WF_ATOM_09",
+    "valor": "mz3IlkB8UjriSQzO",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_09_Avaliacao_Google",
+    "usado_por": "ATOM_08"
+  },
+  {
+    "chave": "WF_ATOM_10",
+    "valor": "D0MWED51LMZE4FU7",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_10_Zayra_Interface",
+    "usado_por": "ATOM_02, ATOM_04, ATOM_09"
+  },
+  {
+    "chave": "WF_ATOM_11",
+    "valor": "vd4MLxMjp8SlGgRh",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_11_Erros_Reconciliacao",
+    "usado_por": "ATOM_02-09"
+  }
 ]

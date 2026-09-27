@@ -164,7 +164,7 @@ const txt = '<b>Site — conferência necessária</b><br>Situação: ' + s.estad
 return [{ json: { corpo: { deal_id: Number(s.ctx.deal_id), content: txt }, pedir_cliente: s.ctx.origem === 'EMAIL_DOMINIO', registrar_nota: s.mudou } }];
 //#endregion
 
-//#region diag_necessario @include util,config,versoes
+//#region diag_necessario @include util,config,versoes,site
 const cfg = ATOM_CONFIG.montar($('Ler configuração').all());
 const s = $('Estado do site').first().json;
 const modoDiag = ATOM_CONFIG.valor(cfg, 'DIAGNOSTICO_MODO', '');
@@ -179,7 +179,7 @@ else if (!provisorio) decisao = 'MODELO_DIAGNOSTICO_PENDENTE';
 else if (ATOM_CONFIG.faltando(cfg, ['ANTHROPIC_MODEL', 'ANTHROPIC_MAX_TOKENS']).length) decisao = 'CONFIG_IA_PENDENTE';
 else decisao = 'EXECUTAR';
 if (decisao === 'NADA') return [];
-const origem = new URL(s.url).origin;
+const origem = ATOM_SITE.parsearUrl(s.url).origin;
 return [
   { json: { modo: 'BUSCA_SEGURA', url: origem + '/robots.txt', hop: 0, url_inicial: origem + '/robots.txt', decisao, versao, fp } },
   { json: { modo: 'BUSCA_SEGURA', url: origem + '/sitemap.xml', hop: 0, url_inicial: origem + '/sitemap.xml', decisao, versao, fp } },

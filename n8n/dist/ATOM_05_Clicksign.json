@@ -2,7 +2,7 @@
   "name": "ATOM_05_Clicksign",
   "nodes": [
     {
-      "id": "12a0c897-e196-47b4-9b3b-a456759651be",
+      "id": "c01e1ad6-e11a-44f7-a34f-7e8f2717cd03",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "4246ee8e-216d-4c35-8fe7-e0a749b2aa58",
+      "id": "ac2708de-84fa-438a-b949-dc5c137dc9b4",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "eec63a13-ba59-4b5d-a773-6643c75725f5",
+      "id": "764cc5b1-3216-4830-9a2c-75a04d64d253",
       "name": "Snapshot",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -74,7 +74,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "fc7269d4-719d-4351-9768-f313c43a5881",
+      "id": "5e45cc84-ec54-4b40-9551-ad9b7b879541",
       "name": "Vínculos Clicksign",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -112,7 +112,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "e4bc173b-715f-4754-a047-a421a14e5f45",
+      "id": "f8a1f1eb-2cea-4f29-b503-7f00eb62b6e4",
       "name": "Planejar envelope",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -126,7 +126,7 @@
       }
     },
     {
-      "id": "2605a333-6390-4984-98bb-d39c8592e34d",
+      "id": "536b2b50-1176-4046-8fa5-4518c3da5fb1",
       "name": "Executar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -158,7 +158,7 @@
       }
     },
     {
-      "id": "53a3d29b-a634-4b22-b3a2-54caa3fa7b8b",
+      "id": "9dec58f7-bd5c-4d6a-abc3-ea5ddfc8c316",
       "name": "Criar envelope?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -190,7 +190,7 @@
       }
     },
     {
-      "id": "07782c34-f9f8-4535-aacf-9219d8a09d7d",
+      "id": "58945f20-0fae-429b-a168-c3215baf43c9",
       "name": "Clicksign — criar envelope",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -225,7 +225,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "712d92ba-2395-448b-8a31-13c030bb49ed",
+      "id": "0631d4dd-e070-45d8-b989-faa80193ea19",
       "name": "Guardar envelope",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -239,7 +239,7 @@
       }
     },
     {
-      "id": "9720b324-55cd-470e-9fc4-e60f54d7177b",
+      "id": "4f63a475-fdae-4462-8222-4805221677c9",
       "name": "Registrar envelope",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -377,7 +377,7 @@
       }
     },
     {
-      "id": "7e413fce-f498-4bfa-a884-f1cb65458ba1",
+      "id": "1426bb27-4f74-4ee4-a19b-a495654ad5ef",
       "name": "Criar documento?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -409,7 +409,7 @@
       }
     },
     {
-      "id": "b76aedb4-c859-4ebc-8ba0-107cb171597e",
+      "id": "a3967a25-77e0-4947-ba12-7c796fbe6c82",
       "name": "Registrar bloqueio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -423,7 +423,7 @@
       }
     },
     {
-      "id": "9d708d87-f70a-4eba-adf0-b7da8183617b",
+      "id": "24764218-08c9-46d1-824a-4f9ed57affdf",
       "name": "Salvar ação bloqueada",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -581,7 +581,7 @@
       }
     },
     {
-      "id": "33e91289-0eb3-43df-aaaf-4ebfb5978c19",
+      "id": "14c08a05-1e46-4b7c-a54a-8f2b24a9d61b",
       "name": "Salvar contrato aguardando configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -649,7 +649,7 @@
       }
     },
     {
-      "id": "497f13d5-f0bf-4a7c-8b95-9bbe32f3a9cc",
+      "id": "1cfcc702-0010-4ec4-a119-feaa2a97dd1b",
       "name": "Clicksign — criar documento do modelo",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -685,7 +685,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "095f8b92-7f91-4e6f-afc3-0e0449e4e3a8",
+      "id": "d3cbb86c-33b7-41cb-9ce2-a11513375e55",
       "name": "Guardar documento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -699,7 +699,7 @@
       }
     },
     {
-      "id": "7d05bad9-4b57-437a-9294-abed338604e1",
+      "id": "c8f7a272-83ae-4039-ae46-e10d1838178d",
       "name": "Registrar documento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -837,7 +837,7 @@
       }
     },
     {
-      "id": "e61281ce-c3fa-4e4a-9161-f6903013a116",
+      "id": "5e208036-e7d9-4b5a-b709-92b40dad5df8",
       "name": "Criar signatário cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -869,7 +869,7 @@
       }
     },
     {
-      "id": "a8905ec8-9cb4-435e-af7f-90b1bb678bcb",
+      "id": "addd0057-6fb6-4ea9-9699-dac7c81e6083",
       "name": "Clicksign — signatário cliente",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -905,7 +905,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "2bde4a3e-68d2-4720-947f-891e1230a462",
+      "id": "1e49661c-5106-4c0d-ac71-d669d80e8e9c",
       "name": "Guardar signatário cliente",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -919,7 +919,7 @@
       }
     },
     {
-      "id": "995a6b19-caf4-48c2-9517-492aa715cbee",
+      "id": "8230cabd-9830-4b6f-a9b2-64c1f3ee31ec",
       "name": "Registrar signatário cliente",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1057,7 +1057,7 @@
       }
     },
     {
-      "id": "d72e704e-1ed9-4625-9b74-43dc1c0a2429",
+      "id": "e67a9e07-80f8-4ea7-a07c-e7f25e5b28ab",
       "name": "Criar signatário Atom?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1089,7 +1089,7 @@
       }
     },
     {
-      "id": "edc7ccae-cb65-48a0-8f26-8b9b2c7b93e9",
+      "id": "7f5fef1d-8463-4382-9a59-03415799ecc8",
       "name": "Clicksign — signatário Atom",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1124,7 +1124,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "e33aac3e-cc88-4fbf-8c97-5e884c7241b9",
+      "id": "e6eaa981-23a7-41c0-9d97-9cf8b83dc58c",
       "name": "Guardar signatário Atom",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1138,7 +1138,7 @@
       }
     },
     {
-      "id": "6ad3535a-8bcd-41f6-a1e9-b91011cb6609",
+      "id": "df358ebc-8c6a-4e00-86d4-d437e7ecd00e",
       "name": "Registrar signatário Atom",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1276,7 +1276,7 @@
       }
     },
     {
-      "id": "e5190f6c-f25d-4e84-9f68-3d4f8c3bb608",
+      "id": "84ee9792-9172-42d2-afd0-e1c3cddf0060",
       "name": "IDs atuais",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1290,7 +1290,7 @@
       }
     },
     {
-      "id": "fd6ed6e9-aadb-4422-9b5a-221267a704a9",
+      "id": "223de4ae-a1f0-4e97-b4a2-0c5967d02a9e",
       "name": "Criar requisitos?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1322,7 +1322,7 @@
       }
     },
     {
-      "id": "a2c45e39-bc56-47e5-9b01-a55e6ece2776",
+      "id": "9605327d-6186-4ca0-9bd0-0857a637436c",
       "name": "Montar requisitos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1336,7 +1336,7 @@
       }
     },
     {
-      "id": "03e301b1-fdb6-42a4-b443-7fa2690d74c7",
+      "id": "c4acde9b-c502-4e4d-8987-f891ccc07ff1",
       "name": "Clicksign — requisitos (qualificação e autenticação)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1371,7 +1371,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "4c4cd54e-b832-4357-818c-08b7d85af4a9",
+      "id": "97949f54-bed3-4b12-97aa-a0da228d1f3a",
       "name": "Requisitos criados",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1385,7 +1385,7 @@
       }
     },
     {
-      "id": "673de96a-068a-4152-8101-4ca291f31c95",
+      "id": "3e89605e-441b-4e03-a238-97c1c46614e3",
       "name": "Registrar requisitos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1523,7 +1523,7 @@
       }
     },
     {
-      "id": "49fff31f-1502-4374-ad65-ec57dc7e2ef7",
+      "id": "3bd556af-c6e2-4daa-a936-16511bec7ad1",
       "name": "Clicksign — ativar envelope (envia convites)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1560,7 +1560,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "6f29ba20-005e-49dd-87a6-714df36b4308",
+      "id": "0c450020-0f25-4a39-84f8-a3738a65c481",
       "name": "Envelope enviado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1574,7 +1574,7 @@
       }
     },
     {
-      "id": "7de1f1c6-615b-43f5-857a-596d5943aa97",
+      "id": "0d8a3a58-002c-46fe-b47b-a8d695ad95a1",
       "name": "Atualizar vínculo do envelope",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1652,7 +1652,7 @@
       }
     },
     {
-      "id": "2fcb2c18-7fee-4e4b-8243-e00bc60e3862",
+      "id": "3acf2c6f-bba1-4a01-b345-2c9cf554ca4e",
       "name": "Snapshot enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1706,7 +1706,7 @@
       "executeOnce": true
     },
     {
-      "id": "d1cf4f23-cb8a-472f-b2cb-2a1b5b978c2d",
+      "id": "5d2b24d0-faf3-4059-9309-de4fbadba56d",
       "name": "Salvar contrato enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1775,7 +1775,7 @@
       "executeOnce": true
     },
     {
-      "id": "3748bbc9-9941-4aff-aa00-1053f644d872",
+      "id": "510d7894-1bc3-4bfe-bb33-69c1d251f32b",
       "name": "Registrar ação concluída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1934,7 +1934,7 @@
       "executeOnce": true
     },
     {
-      "id": "8a49ee1f-96f4-40fe-9e56-0f2f01838526",
+      "id": "4a0f4d50-eae3-4ec3-a4e0-7f89bbb2662c",
       "name": "Campos do contrato (envio)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1948,7 +1948,7 @@
       }
     },
     {
-      "id": "8e0dbf96-2527-4c62-8be9-fcf987894b2b",
+      "id": "d5c1a5b7-e81f-4893-acc2-ffe19bcc5478",
       "name": "Atualizar negócio (envio)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1980,7 +1980,7 @@
       }
     },
     {
-      "id": "13c3ecfb-2553-43c8-a7a8-bce9b260a76f",
+      "id": "46232b14-8307-4110-9219-1655fe90bff5",
       "name": "Atualizar negócio (contrato enviado)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2005,7 +2005,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "341df56d-9dbd-47d4-a16b-89992a9f7289",
+      "id": "32d43217-90fd-498b-99d5-3a1566c99d35",
       "name": "Cobrar junto com o contrato?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2037,7 +2037,7 @@
       }
     },
     {
-      "id": "dd521a57-ed65-4965-9d2c-6f039b52a793",
+      "id": "b9780185-39ca-4d14-a6da-5a806bf63639",
       "name": "Pedido de cobrança (junto)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2051,7 +2051,7 @@
       }
     },
     {
-      "id": "0539d622-be03-4406-ac3d-47707eeaa699",
+      "id": "578f5dfe-2bf5-46ba-b760-c8fa0488fc18",
       "name": "ATOM_06 — cobranças (junto com contrato)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2074,7 +2074,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "087a920d-8b8d-4533-93fa-5335b862319e",
+      "id": "f3a22f34-bc36-4982-9598-bb1d65497e9a",
       "name": "Falha na criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2088,7 +2088,7 @@
       }
     },
     {
-      "id": "e5fa8391-fcd0-45a8-b21c-1759c1dde689",
+      "id": "2cee5dcf-22d6-4471-88de-afc97329a732",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2246,7 +2246,7 @@
       }
     },
     {
-      "id": "dbf9ddeb-7558-4088-beb5-7359fefccfef",
+      "id": "3a5e29df-022d-4111-8b8b-e94b8b516a14",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2260,7 +2260,7 @@
       }
     },
     {
-      "id": "6ef18750-0f38-4702-afb8-32e402ccff6a",
+      "id": "f8c9d353-25ca-47ad-af21-a21808128642",
       "name": "ATOM_11 — alerta Clicksign",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2283,7 +2283,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "69654be1-fe69-4cda-a9b5-d6e411bd6d3d",
+      "id": "fb206861-ecd8-4b20-9b52-b644aeef5096",
       "name": "Webhook Clicksign",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -2299,10 +2299,10 @@
           "rawBody": true
         }
       },
-      "webhookId": "cd56da67-f9fb-4c11-a6e0-085dcd048ca4"
+      "webhookId": "d2098dd7-085d-4644-a4f2-024a4d0d7f4f"
     },
     {
-      "id": "bf4a0dfa-4cae-487f-80d9-558902d09a37",
+      "id": "e7e6c45f-79be-4f63-bae6-97e617abf335",
       "name": "Calcular HMAC",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -2321,7 +2321,7 @@
       "credentials": {}
     },
     {
-      "id": "f1fa2403-9aa2-447b-bee8-369a27bc9f2f",
+      "id": "71aaee85-82b0-4d54-9ce8-9d017f0e8a02",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2343,7 +2343,7 @@
       "executeOnce": true
     },
     {
-      "id": "69a44c26-cfec-4d2b-a6ec-6f16a1c2edc2",
+      "id": "2e0b1688-2c15-4d98-8bfd-986892c98570",
       "name": "Validar evento Clicksign",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2357,7 +2357,7 @@
       }
     },
     {
-      "id": "808d04c5-5952-4bdb-b361-681d3c208d8c",
+      "id": "bd6a1018-1f2c-427b-a106-2f73b2b57430",
       "name": "Evento Clicksign já recebido?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2389,7 +2389,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0a3687fe-9d56-4957-a794-90fb496ba84f",
+      "id": "6294316d-a1dd-4f43-a0be-69bb001480d6",
       "name": "Deduplicar evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2403,7 +2403,7 @@
       }
     },
     {
-      "id": "83b211aa-64db-4b60-a343-492d0091c9c4",
+      "id": "84b2b44a-1656-41c6-baa4-5f1f6a977660",
       "name": "Registrar evento Clicksign",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2551,7 +2551,7 @@
       }
     },
     {
-      "id": "f98889fa-af97-4408-ae88-b19b0c2b11b5",
+      "id": "1998fee0-14a7-4ffb-9a9a-ff8df0c305f4",
       "name": "Evento válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2583,7 +2583,7 @@
       }
     },
     {
-      "id": "e8967321-6641-45de-8dab-8c061d2c45a4",
+      "id": "a5d9ea9c-6a43-4559-bf30-207bd26a1156",
       "name": "Vínculo do envelope",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2624,7 +2624,7 @@
       }
     },
     {
-      "id": "cbb18a8e-d452-434a-878f-dc51dcb9f89d",
+      "id": "602f3d7e-6467-4601-b378-c8de9a6888c0",
       "name": "Resolver envelope",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2638,7 +2638,7 @@
       }
     },
     {
-      "id": "e05c44fb-7e50-4623-b73b-def86c3f2c7d",
+      "id": "420eb6de-5b5d-46bd-9db0-a27e2d9a98a9",
       "name": "Evento de assinatura?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2670,7 +2670,7 @@
       }
     },
     {
-      "id": "a4c82155-bb85-4827-be79-cd76247dd782",
+      "id": "f8d7f55a-c8bf-421f-9410-75ec2054d425",
       "name": "Registrar assinatura do signatário",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2739,7 +2739,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0cd5d7b0-c621-42f3-90b6-d1b0135674a3",
+      "id": "ce7813cb-b96e-4e03-8218-8e037172c359",
       "name": "Consultar envelope",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2778,7 +2778,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "5f0e3ef8-33b8-4534-b75c-5f4c6572300f",
+      "id": "00f6eff7-678e-4a2d-bb84-7894c0451230",
       "name": "Signatários do envelope",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2821,7 +2821,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "7fc94ad9-fc69-44af-834d-dbb7b62078af",
+      "id": "6370f815-3cba-4443-8b0c-46189724de3b",
       "name": "Consolidar contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2835,7 +2835,7 @@
       }
     },
     {
-      "id": "5297855e-9042-4b7a-8d78-715e6b442b7f",
+      "id": "6d965346-36fe-4720-bf08-1923f982576e",
       "name": "Salvar situação do contrato",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2913,7 +2913,7 @@
       }
     },
     {
-      "id": "f612345a-d6d3-4690-aad5-2326dd34b690",
+      "id": "a0007cfe-1e4b-49ca-8de5-3f8e44b9ecc6",
       "name": "Campos do contrato (webhook)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2927,7 +2927,7 @@
       }
     },
     {
-      "id": "47e344f6-83d7-4a92-829f-36ede77f4602",
+      "id": "03494e37-1a03-4ebd-9e0f-40f66c435df3",
       "name": "Atualizar negócio (contrato)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2959,7 +2959,7 @@
       }
     },
     {
-      "id": "702c4eca-502e-46b6-87e5-e83412abb938",
+      "id": "6bde37f0-49fc-478d-aa4d-77df8a932ed6",
       "name": "Atualizar negócio (situação do contrato)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2984,7 +2984,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "25728544-3952-4112-8406-2c2fc4345964",
+      "id": "1dcd2b22-3b24-4f2d-93fd-e1786a94997d",
       "name": "Assinado por todos?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -3016,7 +3016,7 @@
       }
     },
     {
-      "id": "72af4cab-5f58-41c7-93ef-c76d2c8bd707",
+      "id": "65665b06-5c0b-443a-b761-a6f38a74a278",
       "name": "Snapshot assinado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -3070,7 +3070,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0920e5d7-11fa-4629-8f7c-bab06177baaf",
+      "id": "3054d000-3979-48b5-9a01-770fb292fe0f",
       "name": "Cobrar após assinaturas?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -3102,7 +3102,7 @@
       }
     },
     {
-      "id": "b2a2a5c7-5f82-42ab-80dd-2848dbde7224",
+      "id": "78666f9b-1ea8-4467-a65d-08b31123f1b5",
       "name": "Pedido de cobrança (após assinaturas)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -3116,7 +3116,7 @@
       }
     },
     {
-      "id": "1be21f99-036c-4ed6-a868-892eed5a691b",
+      "id": "a55c8dca-ec17-4777-bee1-a3a122c83f63",
       "name": "ATOM_06 — cobranças (após assinaturas)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -3139,7 +3139,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "aae64946-b4b0-43cb-9830-d1addd8bf863",
+      "id": "f3e3564e-0406-42b6-b2c6-180c0fac57be",
       "name": "Pedido de reavaliação da liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -3154,7 +3154,7 @@
       "executeOnce": true
     },
     {
-      "id": "63ea2a11-bdbf-4024-9ae0-20ff7280170e",
+      "id": "7fc8afaf-7973-440e-b114-a805f983756e",
       "name": "Alertar situação do contrato?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -3186,7 +3186,7 @@
       }
     },
     {
-      "id": "3e6d988e-a889-4198-930f-029a992da095",
+      "id": "5b684fc9-5636-448a-adf5-398f998bdeb5",
       "name": "Alerta do contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -3200,7 +3200,7 @@
       }
     },
     {
-      "id": "a4baacbe-fcc9-4cae-8fca-df1a5d4bd4f5",
+      "id": "4741dfe9-b855-4e22-87b0-d24b1770ebb9",
       "name": "ATOM_11 — alerta contrato",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -3223,7 +3223,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "0784c9af-18b5-4028-9421-87c25b1324da",
+      "id": "018eb471-60bc-4cb7-b6dd-a05627041343",
       "name": "ATOM_08 — reavaliar liberação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -3246,8 +3246,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "35823493-6853-44f3-b7a5-a710eb8dadeb",
-      "name": "Sticky Note 35823493",
+      "id": "25ff382a-de04-4ea9-babd-f1d917463645",
+      "name": "Sticky Note 25ff382a",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

@@ -38,7 +38,7 @@ for (const r of pend) if (!r.atualizado_em || agora - Date.parse(r.atualizado_em
 return out.map((r) => ({ json: { modo: 'PROCESSAR', chave_campanha: r.chave_campanha } }));
 //#endregion
 
-//#region checagens @include util,config,agenda,pipedrive
+//#region checagens @include util,config,agenda,pipedrive,site
 const cfg = ATOM_CONFIG.montar($('Ler configuração').all());
 const ag = $('Reivindicar agendamento').first().json;
 const deal = ($('Buscar negócio').first().json || {}).data || {};
@@ -57,8 +57,9 @@ if (idPref && ATOM_PD.truthy(ATOM_PD.ler(pessoa, idPref))) return res('CANCELAR'
 // 3) Configurações obrigatórias (sem elas: pendência, nunca simulação nem outro canal)
 const falta = ATOM_CONFIG.faltando(cfg, ['GOOGLE_AVALIACAO_LINK', 'WHATSAPP_TEMPLATE_AVALIACAO', 'WHATSAPP_TEMPLATE_IDIOMA', 'HORARIO_COMERCIAL', 'WF_ATOM_10']);
 const link = ATOM_CONFIG.valor(cfg, 'GOOGLE_AVALIACAO_LINK', '');
-let linkOk = false;
-try { const u = new URL(link); linkOk = u.protocol === 'https:' && /(^|\.)(google\.com|g\.page|goo\.gl)$/.test(u.hostname); } catch (e) { linkOk = false; }
+let linkOk;
+const u = ATOM_SITE.parsearUrl(link);
+linkOk = !!u && u.protocol === 'https:' && !u.username && !u.password && !u.port && /(^|\.)(google\.com|g\.page|goo\.gl)$/.test(u.hostname);
 if (link && !linkOk) falta.push('GOOGLE_AVALIACAO_LINK (link direto inválido)');
 if (falta.length) return res('PENDENCIA', { motivo: 'CONFIGURACAO_PENDENTE: ' + falta.join(', ') });
 // 4) Janela comercial

@@ -2,7 +2,7 @@
   "name": "ATOM_02_Site_Diagnostico",
   "nodes": [
     {
-      "id": "2161b5f5-b830-433e-af61-de6b62bf23d3",
+      "id": "3dc502da-be08-4dda-ad8e-93bca337983a",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "d00797d9-d098-41c8-a876-cb5ffbe0f856",
+      "id": "cb1a016d-a39d-4445-a17e-0a0bbbac3895",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "8f3ab73b-a9a6-453d-879b-027dcedaf818",
+      "id": "0393ef4c-06f1-42a2-a298-bc2b5940021c",
       "name": "Modo",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -78,7 +78,7 @@
       }
     },
     {
-      "id": "d3976297-110d-4199-9419-1e74719e5045",
+      "id": "6ee1f54e-b0a9-4bc1-a0e6-afc890448056",
       "name": "Preparar busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -88,11 +88,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#busca_preparar + lib/{util,site}. Edite a fonte no repositório, não este nó.\n// lib/site.js\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  let u;\n  try {\n    u = new URL(s);\n  } catch (e) {\n    return { ok: false, motivo: \"URL_INVALIDA\" };\n  }\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  u.hash = \"\";\n  return { ok: true, url: u.toString(), host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const e = $(\"Entrada\").first().json;\n  const n = normalizarUrl(e.url);\n  if (!n.ok) return [{ json: { fim: true, resultado: { ok: false, bloqueado: true, motivo: \"URL_BLOQUEADA: \" + n.motivo, url: String(e.url || \"\") } } }];\n  const hop = Number(e.hop || 0);\n  if (hop > 5) return [{ json: { fim: true, resultado: { ok: false, status: 310, motivo: \"REDIRECIONAMENTOS_EXCESSIVOS\", url: n.url } } }];\n  return [{ json: { fim: false, url: n.url, host: n.host, hop } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#busca_preparar + lib/{util,site}. Edite a fonte no repositório, não este nó.\n// lib/site.js\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  const u = parsearUrl(s);\n  if (!u) return { ok: false, motivo: \"URL_INVALIDA\" };\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  return { ok: true, url: u.protocol + \"//\" + u.host + u.pathname + u.search, host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const e = $(\"Entrada\").first().json;\n  const n = normalizarUrl(e.url);\n  if (!n.ok) return [{ json: { fim: true, resultado: { ok: false, bloqueado: true, motivo: \"URL_BLOQUEADA: \" + n.motivo, url: String(e.url || \"\") } } }];\n  const hop = Number(e.hop || 0);\n  if (hop > 5) return [{ json: { fim: true, resultado: { ok: false, status: 310, motivo: \"REDIRECIONAMENTOS_EXCESSIVOS\", url: n.url } } }];\n  return [{ json: { fim: false, url: n.url, host: n.host, hop } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "08718f67-295d-497f-a62c-8cbb7b8a5479",
+      "id": "a19a9972-af9d-4cf2-bec5-a62f3e6dc0c8",
       "name": "Busca permitida?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -124,7 +124,7 @@
       }
     },
     {
-      "id": "346cd84d-50b0-49d6-aab0-7bc29c1d7800",
+      "id": "7a2f92e2-7ed1-4902-818d-66fbfe5d69ad",
       "name": "DNS (A)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -158,7 +158,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "37bb1a59-015f-45b9-bd3d-e89f857f6dfc",
+      "id": "aac67fe3-eaf5-46c2-b197-42c875722ab6",
       "name": "DNS (AAAA)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -192,7 +192,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "d2a29eeb-2d76-4efb-868c-7aaeffdf127d",
+      "id": "b0f4ffc5-fa8a-4929-874a-1ad79fb8313a",
       "name": "Avaliar DNS",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -206,7 +206,7 @@
       }
     },
     {
-      "id": "aef6fb8e-ea10-4b60-8dbb-971a844cdb44",
+      "id": "9ce9b8aa-cdf1-4c0c-9c24-54540e597c4c",
       "name": "DNS seguro?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -238,7 +238,7 @@
       }
     },
     {
-      "id": "b8fb6ed5-cdb1-4db5-a3aa-c09e280d034d",
+      "id": "6f5939e6-16e6-4c8f-9e9c-01c80cbd333a",
       "name": "Acessar URL (sem seguir redirecionamento)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -282,7 +282,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "d4591eaf-f5ac-4b07-a085-63e1c1b6bb3d",
+      "id": "421b3770-9bab-4c84-b2c2-d745ff55492d",
       "name": "Avaliar resposta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -292,11 +292,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#busca_resposta + lib/{util,site}. Edite a fonte no repositório, não este nó.\n// lib/site.js\nfunction resolverRedirect(base, location) {\n  try {\n    return new URL(location, base).toString();\n  } catch (e) {\n    return \"\";\n  }\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Preparar busca\").first().json;\n  const e = $(\"Entrada\").first().json;\n  const r = $input.first().json;\n  const coletado = (/* @__PURE__ */ new Date()).toISOString();\n  if (r.error || typeof r.statusCode !== \"number\") {\n    const msg = r.error ? r.error.message || String(r.error) : \"SEM_RESPOSTA\";\n    return [{ json: { redirecionar: false, resultado: { ok: false, erro: String(msg).slice(0, 200), url: e.url_inicial || p.url, urlFinal: p.url, coletado_em: coletado, hops: p.hop } } }];\n  }\n  const h = r.headers || {};\n  const loc = Array.isArray(h.location) ? h.location[0] : h.location;\n  if (r.statusCode >= 300 && r.statusCode < 400 && loc) {\n    const prox = resolverRedirect(p.url, loc);\n    return [{ json: { redirecionar: true, modo: \"BUSCA_SEGURA\", url: prox, hop: p.hop + 1, url_inicial: e.url_inicial || e.url } }];\n  }\n  const bruto = r.body !== void 0 ? r.body : r.data;\n  const corpo = typeof bruto === \"string\" ? bruto : bruto ? JSON.stringify(bruto) : \"\";\n  return [{ json: { redirecionar: false, resultado: {\n    ok: r.statusCode >= 200 && r.statusCode < 300,\n    status: r.statusCode,\n    contentType: String(h[\"content-type\"] || \"\"),\n    html: corpo.slice(0, 15e5),\n    url: e.url_inicial || p.url,\n    urlFinal: p.url,\n    coletado_em: coletado,\n    hops: p.hop\n  } } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#busca_resposta + lib/{util,site}. Edite a fonte no repositório, não este nó.\n// lib/site.js\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\nfunction resolverRedirect(base, location) {\n  const b = parsearUrl(base);\n  const loc = String(location || \"\").trim();\n  if (!loc) return \"\";\n  if (/^[a-z][a-z0-9+.-]*:/i.test(loc)) {\n    const a = parsearUrl(loc);\n    return a ? a.href : \"\";\n  }\n  if (!b) return \"\";\n  let alvo;\n  if (loc.startsWith(\"//\")) alvo = b.protocol + loc;\n  else if (loc.startsWith(\"/\")) alvo = b.origin + loc;\n  else if (loc.startsWith(\"?\")) alvo = b.origin + b.pathname + loc;\n  else if (loc.startsWith(\"#\")) alvo = b.origin + b.pathname + b.search + loc;\n  else alvo = b.origin + b.pathname.replace(/[^/]*$/, \"\") + loc;\n  const r = parsearUrl(alvo);\n  return r ? r.href : \"\";\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Preparar busca\").first().json;\n  const e = $(\"Entrada\").first().json;\n  const r = $input.first().json;\n  const coletado = (/* @__PURE__ */ new Date()).toISOString();\n  if (r.error || typeof r.statusCode !== \"number\") {\n    const msg = r.error ? r.error.message || String(r.error) : \"SEM_RESPOSTA\";\n    return [{ json: { redirecionar: false, resultado: { ok: false, erro: String(msg).slice(0, 200), url: e.url_inicial || p.url, urlFinal: p.url, coletado_em: coletado, hops: p.hop } } }];\n  }\n  const h = r.headers || {};\n  const loc = Array.isArray(h.location) ? h.location[0] : h.location;\n  if (r.statusCode >= 300 && r.statusCode < 400 && loc) {\n    const prox = resolverRedirect(p.url, loc);\n    return [{ json: { redirecionar: true, modo: \"BUSCA_SEGURA\", url: prox, hop: p.hop + 1, url_inicial: e.url_inicial || e.url } }];\n  }\n  const bruto = r.body !== void 0 ? r.body : r.data;\n  const corpo = typeof bruto === \"string\" ? bruto : bruto ? JSON.stringify(bruto) : \"\";\n  return [{ json: { redirecionar: false, resultado: {\n    ok: r.statusCode >= 200 && r.statusCode < 300,\n    status: r.statusCode,\n    contentType: String(h[\"content-type\"] || \"\"),\n    html: corpo.slice(0, 15e5),\n    url: e.url_inicial || p.url,\n    urlFinal: p.url,\n    coletado_em: coletado,\n    hops: p.hop\n  } } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "f3b8eec7-b114-485f-b043-e97fe0d9f359",
+      "id": "1d8ca9ce-6618-4650-89cd-0074be4ab7b1",
       "name": "Redirecionar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -328,7 +328,7 @@
       }
     },
     {
-      "id": "9aed9c1f-137f-4417-875b-a6c178ca5c23",
+      "id": "82b056a1-a4fe-4c11-b802-8f2c7c378c6e",
       "name": "Próximo salto (validação repetida)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -350,7 +350,7 @@
       }
     },
     {
-      "id": "66a32c35-2670-40de-8b94-e60e9951c432",
+      "id": "460ed253-7c07-449e-b65a-95f31522d997",
       "name": "Resultado da busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -364,7 +364,7 @@
       }
     },
     {
-      "id": "5552f7ec-9472-4135-b3bf-46eee3888751",
+      "id": "3a5b1804-6f03-41ad-9896-6eb99e64abf1",
       "name": "Preparar consulta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -378,7 +378,7 @@
       }
     },
     {
-      "id": "0eb0de0b-1613-48b5-9b12-30560d5e3bbb",
+      "id": "2e97b40a-bcab-44f5-a375-fd4f55d36bc3",
       "name": "Buscar negócios (atualizados)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -404,7 +404,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "004a8d6c-9e78-4270-984f-ce457dab27b7",
+      "id": "a7e24bc6-4912-4ec8-9430-a7ea90bc5892",
       "name": "Selecionar negócios",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -418,7 +418,7 @@
       }
     },
     {
-      "id": "18c0d6b6-b21b-41bf-9216-b4dfdc6c41bb",
+      "id": "680e6383-e839-417f-95d9-4d7aacb99dfd",
       "name": "Redespachar por negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -450,7 +450,7 @@
       }
     },
     {
-      "id": "f1b3a8be-21e3-44db-9c77-70622a996e2b",
+      "id": "c477a4ce-93f8-4d93-996e-105c7a63d4ff",
       "name": "Redespachar negócio",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -472,7 +472,7 @@
       }
     },
     {
-      "id": "b591bc6a-4704-43ef-ae13-aed3ef5836f7",
+      "id": "10399f95-65a5-4eeb-a503-3058427e271f",
       "name": "Buscar organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -500,7 +500,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "cfb4c711-a8c4-4d0a-aaba-f2c01d491179",
+      "id": "fd7561f1-06c8-4438-8b25-4be32ca46acb",
       "name": "Buscar pessoa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -528,7 +528,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "9b91b524-c0bf-4c86-9e6f-a729e9702372",
+      "id": "b078850d-1977-4d33-b23b-3b522877ce21",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -560,7 +560,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "46cff0bf-635e-408f-8b98-754b243f4736",
+      "id": "e99590d8-583b-4694-ae90-d4ec15302b28",
       "name": "Escolher site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -570,11 +570,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#escolher_site + lib/{util,config,pipedrive,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\nfunction truthy(v) {\n  if (v === true) return true;\n  if (v === null || v === void 0) return false;\n  return /^(sim|true|1|yes|x|ok)$/i.test(String(v && v.label ? v.label : v).trim());\n}\n\n// lib/site.js\nvar PROVEDORES_GENERICOS = [\n  \"gmail.com\",\n  \"googlemail.com\",\n  \"outlook.com\",\n  \"outlook.com.br\",\n  \"hotmail.com\",\n  \"hotmail.com.br\",\n  \"live.com\",\n  \"live.com.br\",\n  \"msn.com\",\n  \"yahoo.com\",\n  \"yahoo.com.br\",\n  \"ymail.com\",\n  \"icloud.com\",\n  \"me.com\",\n  \"mac.com\",\n  \"bol.com.br\",\n  \"uol.com.br\",\n  \"terra.com.br\",\n  \"ig.com.br\",\n  \"globo.com\",\n  \"globomail.com\",\n  \"r7.com\",\n  \"zipmail.com.br\",\n  \"oi.com.br\",\n  \"protonmail.com\",\n  \"proton.me\",\n  \"aol.com\",\n  \"gmx.com\",\n  \"gmx.net\",\n  \"zoho.com\",\n  \"yandex.com\",\n  \"mail.com\",\n  \"tutanota.com\",\n  \"tuta.io\",\n  \"fastmail.com\"\n];\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioDoEmail(email) {\n  const e = normalizeEmail(email);\n  return e ? e.split(\"@\")[1] : \"\";\n}\nfunction ehProvedorGenerico(dominio) {\n  const d = String(dominio || \"\").toLowerCase().replace(/^www\\./, \"\");\n  return PROVEDORES_GENERICOS.includes(d);\n}\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  let u;\n  try {\n    u = new URL(s);\n  } catch (e) {\n    return { ok: false, motivo: \"URL_INVALIDA\" };\n  }\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  u.hash = \"\";\n  return { ok: true, url: u.toString(), host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\nfunction escolherCandidato(e) {\n  if (e.clienteInformouSemSite) return { acao: \"NENHUMA\", estado: \"CLIENTE_INFORMOU_SEM_SITE\" };\n  const crm = e.siteCrm ? normalizarUrl(e.siteCrm) : null;\n  if (crm && crm.ok) {\n    const atual = e.siteUrlAtual ? normalizarUrl(e.siteUrlAtual) : null;\n    if (e.siteStatusAtual === \"VALIDADO\" && atual && atual.ok && atual.dominio === crm.dominio) {\n      return { acao: \"REUTILIZAR\", estado: \"VALIDADO\", url: atual.url, origem: \"CRM\" };\n    }\n    return { acao: \"VERIFICAR\", url: crm.url, origem: \"CRM\" };\n  }\n  const dominio = dominioDoEmail(e.email);\n  if (!dominio) return { acao: \"SOLICITAR_SITE\", estado: \"PENDENTE\", motivo: \"SEM_EMAIL_E_SEM_SITE\" };\n  if (ehProvedorGenerico(dominio)) return { acao: \"SOLICITAR_SITE\", estado: \"PENDENTE\", motivo: \"EMAIL_GENERICO\" };\n  const cand = normalizarUrl(\"https://\" + dominio);\n  if (!cand.ok) return { acao: \"SOLICITAR_SITE\", estado: \"PENDENTE\", motivo: \"DOMINIO_EMAIL_INVALIDO: \" + cand.motivo };\n  return { acao: \"VERIFICAR\", url: cand.url, origem: \"EMAIL_DOMINIO\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const item = $(\"Selecionar negócios\").first().json;\n  const deal = item.deal;\n  const org = ($(\"Buscar organização\").first().json || {}).data || {};\n  const pessoa = ($(\"Buscar pessoa\").first().json || {}).data || {};\n  const est = $(\"Estado do negócio\").all().map((i) => i.json).find((r) => r && r.deal_id) || {};\n  const idEmail = idCampo(cfg, \"PD_EMAIL_REUNIAO\") || \"nativo:emails\";\n  const email = idEmail.startsWith(\"nativo:\") ? primeiroEmail(pessoa.emails) : normalizeEmail(String(ler(deal, idEmail) || \"\"));\n  const idSite = idCampo(cfg, \"PD_ORG_SITE\") || \"nativo:website\";\n  const siteCrm = ler(org, idSite);\n  const semSite = truthy(lerCfg(org, cfg, \"PD_ORG_SEM_SITE\"));\n  const tel = Array.isArray(pessoa.phones) ? (pessoa.phones.find((p) => p && p.primary) || pessoa.phones[0] || {}).value : \"\";\n  const esc = escolherCandidato({ siteCrm, siteStatusAtual: est.site_status, siteUrlAtual: est.site_url, email, clienteInformouSemSite: semSite });\n  const ctx = {\n    deal_id: String(deal.id),\n    org_id: String(deal.org_id || \"\"),\n    person_id: String(deal.person_id || \"\"),\n    empresa: org.name || deal.title || \"\",\n    email_fp: email ? fingerprint(email) : \"\",\n    telefone: tel || \"\",\n    forcar: !!item.forcar,\n    org_website_vazio: !org.website,\n    estado_anterior: { site_status: est.site_status || \"\", site_url: est.site_url || \"\", diag_status: est.diag_status || \"\", diag_entrada_fp: est.diag_entrada_fp || \"\" }\n  };\n  if (!ctx.forcar && esc.acao === \"REUTILIZAR\" && est.diag_status === \"CONCLUIDO\") {\n    return [{ json: Object.assign(ctx, { acao: \"NADA\", motivo: \"DIAGNOSTICO_JA_EXISTENTE\" }) }];\n  }\n  return [{ json: Object.assign(ctx, esc, { modo: \"BUSCA_SEGURA\", hop: 0, url_inicial: esc.url || \"\" }) }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#escolher_site + lib/{util,config,pipedrive,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\nfunction truthy(v) {\n  if (v === true) return true;\n  if (v === null || v === void 0) return false;\n  return /^(sim|true|1|yes|x|ok)$/i.test(String(v && v.label ? v.label : v).trim());\n}\n\n// lib/site.js\nvar PROVEDORES_GENERICOS = [\n  \"gmail.com\",\n  \"googlemail.com\",\n  \"outlook.com\",\n  \"outlook.com.br\",\n  \"hotmail.com\",\n  \"hotmail.com.br\",\n  \"live.com\",\n  \"live.com.br\",\n  \"msn.com\",\n  \"yahoo.com\",\n  \"yahoo.com.br\",\n  \"ymail.com\",\n  \"icloud.com\",\n  \"me.com\",\n  \"mac.com\",\n  \"bol.com.br\",\n  \"uol.com.br\",\n  \"terra.com.br\",\n  \"ig.com.br\",\n  \"globo.com\",\n  \"globomail.com\",\n  \"r7.com\",\n  \"zipmail.com.br\",\n  \"oi.com.br\",\n  \"protonmail.com\",\n  \"proton.me\",\n  \"aol.com\",\n  \"gmx.com\",\n  \"gmx.net\",\n  \"zoho.com\",\n  \"yandex.com\",\n  \"mail.com\",\n  \"tutanota.com\",\n  \"tuta.io\",\n  \"fastmail.com\"\n];\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioDoEmail(email) {\n  const e = normalizeEmail(email);\n  return e ? e.split(\"@\")[1] : \"\";\n}\nfunction ehProvedorGenerico(dominio) {\n  const d = String(dominio || \"\").toLowerCase().replace(/^www\\./, \"\");\n  return PROVEDORES_GENERICOS.includes(d);\n}\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  const u = parsearUrl(s);\n  if (!u) return { ok: false, motivo: \"URL_INVALIDA\" };\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  return { ok: true, url: u.protocol + \"//\" + u.host + u.pathname + u.search, host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\nfunction escolherCandidato(e) {\n  if (e.clienteInformouSemSite) return { acao: \"NENHUMA\", estado: \"CLIENTE_INFORMOU_SEM_SITE\" };\n  const crm = e.siteCrm ? normalizarUrl(e.siteCrm) : null;\n  if (crm && crm.ok) {\n    const atual = e.siteUrlAtual ? normalizarUrl(e.siteUrlAtual) : null;\n    if (e.siteStatusAtual === \"VALIDADO\" && atual && atual.ok && atual.dominio === crm.dominio) {\n      return { acao: \"REUTILIZAR\", estado: \"VALIDADO\", url: atual.url, origem: \"CRM\" };\n    }\n    return { acao: \"VERIFICAR\", url: crm.url, origem: \"CRM\" };\n  }\n  const dominio = dominioDoEmail(e.email);\n  if (!dominio) return { acao: \"SOLICITAR_SITE\", estado: \"PENDENTE\", motivo: \"SEM_EMAIL_E_SEM_SITE\" };\n  if (ehProvedorGenerico(dominio)) return { acao: \"SOLICITAR_SITE\", estado: \"PENDENTE\", motivo: \"EMAIL_GENERICO\" };\n  const cand = normalizarUrl(\"https://\" + dominio);\n  if (!cand.ok) return { acao: \"SOLICITAR_SITE\", estado: \"PENDENTE\", motivo: \"DOMINIO_EMAIL_INVALIDO: \" + cand.motivo };\n  return { acao: \"VERIFICAR\", url: cand.url, origem: \"EMAIL_DOMINIO\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const item = $(\"Selecionar negócios\").first().json;\n  const deal = item.deal;\n  const org = ($(\"Buscar organização\").first().json || {}).data || {};\n  const pessoa = ($(\"Buscar pessoa\").first().json || {}).data || {};\n  const est = $(\"Estado do negócio\").all().map((i) => i.json).find((r) => r && r.deal_id) || {};\n  const idEmail = idCampo(cfg, \"PD_EMAIL_REUNIAO\") || \"nativo:emails\";\n  const email = idEmail.startsWith(\"nativo:\") ? primeiroEmail(pessoa.emails) : normalizeEmail(String(ler(deal, idEmail) || \"\"));\n  const idSite = idCampo(cfg, \"PD_ORG_SITE\") || \"nativo:website\";\n  const siteCrm = ler(org, idSite);\n  const semSite = truthy(lerCfg(org, cfg, \"PD_ORG_SEM_SITE\"));\n  const tel = Array.isArray(pessoa.phones) ? (pessoa.phones.find((p) => p && p.primary) || pessoa.phones[0] || {}).value : \"\";\n  const esc = escolherCandidato({ siteCrm, siteStatusAtual: est.site_status, siteUrlAtual: est.site_url, email, clienteInformouSemSite: semSite });\n  const ctx = {\n    deal_id: String(deal.id),\n    org_id: String(deal.org_id || \"\"),\n    person_id: String(deal.person_id || \"\"),\n    empresa: org.name || deal.title || \"\",\n    email_fp: email ? fingerprint(email) : \"\",\n    telefone: tel || \"\",\n    forcar: !!item.forcar,\n    org_website_vazio: !org.website,\n    estado_anterior: { site_status: est.site_status || \"\", site_url: est.site_url || \"\", diag_status: est.diag_status || \"\", diag_entrada_fp: est.diag_entrada_fp || \"\" }\n  };\n  if (!ctx.forcar && esc.acao === \"REUTILIZAR\" && est.diag_status === \"CONCLUIDO\") {\n    return [{ json: Object.assign(ctx, { acao: \"NADA\", motivo: \"DIAGNOSTICO_JA_EXISTENTE\" }) }];\n  }\n  return [{ json: Object.assign(ctx, esc, { modo: \"BUSCA_SEGURA\", hop: 0, url_inicial: esc.url || \"\" }) }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "944fc244-3982-4088-b92f-1180222cea51",
+      "id": "e7d3e68f-1a95-4042-830b-e1b7e63235a9",
       "name": "Ação do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -662,7 +662,7 @@
       }
     },
     {
-      "id": "9082a26e-d460-4512-8468-b46195128c98",
+      "id": "3962ccd6-18e5-4171-a958-9ea2898d981c",
       "name": "Buscar página (segura)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -684,7 +684,7 @@
       }
     },
     {
-      "id": "e4db2672-29f4-4ca1-8c4a-9ca78de2f5ce",
+      "id": "b0ce5031-727b-4b08-8277-a2d94e4bc638",
       "name": "Estado do site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -694,11 +694,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#estado_site + lib/{util,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/site.js\nvar PLATAFORMAS_TERCEIRAS = [\n  \"instagram.com\",\n  \"facebook.com\",\n  \"fb.com\",\n  \"linktr.ee\",\n  \"wa.me\",\n  \"whatsapp.com\",\n  \"api.whatsapp.com\",\n  \"linkedin.com\",\n  \"tiktok.com\",\n  \"youtube.com\",\n  \"twitter.com\",\n  \"x.com\",\n  \"google.com\",\n  \"g.page\",\n  \"goo.gl\",\n  \"bit.ly\",\n  \"beacons.ai\",\n  \"linkbio.co\",\n  \"ifood.com.br\",\n  \"mercadolivre.com.br\"\n];\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehPlataformaTerceira(host) {\n  const reg = dominioRegistravel(host);\n  return PLATAFORMAS_TERCEIRAS.includes(reg) || PLATAFORMAS_TERCEIRAS.includes(String(host).toLowerCase());\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  let u;\n  try {\n    u = new URL(s);\n  } catch (e) {\n    return { ok: false, motivo: \"URL_INVALIDA\" };\n  }\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  u.hash = \"\";\n  return { ok: true, url: u.toString(), host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\nfunction semAcentos(s) {\n  return String(s || \"\").normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").toLowerCase();\n}\nvar ASSINATURAS_ESTACIONADO = [\n  \"this domain is for sale\",\n  \"domain is for sale\",\n  \"buy this domain\",\n  \"this domain may be for sale\",\n  \"domain is parked\",\n  \"parked free\",\n  \"parkingcrew\",\n  \"sedoparking\",\n  \"sedo domain parking\",\n  \"bodis.com\",\n  \"dan.com\",\n  \"afternic\",\n  \"hugedomains\",\n  \"domain parking\",\n  \"este dominio esta a venda\",\n  \"este dominio pode estar a venda\",\n  \"dominio a venda\",\n  \"compre este dominio\",\n  \"godaddy.com/domainsearch\"\n];\nvar ASSINATURAS_SEM_CONTEUDO = [\n  \"site em construcao\",\n  \"under construction\",\n  \"coming soon\",\n  \"em breve novo site\",\n  \"default web site page\",\n  \"apache2 ubuntu default page\",\n  \"apache2 debian default page\",\n  \"welcome to nginx\",\n  \"it works!\",\n  \"index of /\",\n  \"hostgator\",\n  \"account suspended\",\n  \"conta suspensa\",\n  \"this account has been suspended\",\n  \"website is no longer available\",\n  \"dominio registrado\",\n  \"future home of something quite cool\"\n];\nvar ASSINATURAS_ERRO = [\n  \"404 not found\",\n  \"page not found\",\n  \"pagina nao encontrada\",\n  \"erro 404\",\n  \"500 internal server error\",\n  \"502 bad gateway\",\n  \"503 service unavailable\",\n  \"error establishing a database connection\"\n];\nfunction textoVisivel(html) {\n  return String(html || \"\").replace(/<script[\\s\\S]*?<\\/script>/gi, \" \").replace(/<style[\\s\\S]*?<\\/style>/gi, \" \").replace(/<noscript[\\s\\S]*?<\\/noscript>/gi, \" \").replace(/<!--[\\s\\S]*?-->/g, \" \").replace(/<[^>]+>/g, \" \").replace(/&nbsp;/g, \" \").replace(/&amp;/g, \"&\").replace(/&#?\\w+;/g, \" \").replace(/\\s+/g, \" \").trim();\n}\nfunction titulo(html) {\n  const m = String(html || \"\").match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i);\n  return m ? m[1].replace(/\\s+/g, \" \").trim() : \"\";\n}\nfunction meta(html, nome) {\n  const re = new RegExp(`<meta[^>]+(?:name|property)=[\"']` + nome.replace(/[:.]/g, \"\\\\$&\") + `[\"'][^>]*>`, \"i\");\n  const tag = String(html || \"\").match(re);\n  if (!tag) return \"\";\n  const c = tag[0].match(/content=[\"']([^\"']*)[\"']/i);\n  return c ? c[1].trim() : \"\";\n}\nvar STOPWORDS = [\n  \"ltda\",\n  \"me\",\n  \"epp\",\n  \"eireli\",\n  \"sa\",\n  \"s/a\",\n  \"de\",\n  \"da\",\n  \"do\",\n  \"das\",\n  \"dos\",\n  \"e\",\n  \"the\",\n  \"and\",\n  \"comercio\",\n  \"servicos\",\n  \"industria\",\n  \"grupo\",\n  \"empresa\",\n  \"cia\",\n  \"companhia\",\n  \"brasil\",\n  \"br\",\n  \"com\"\n];\nfunction tokensEmpresa(nome) {\n  return uniq(semAcentos(nome).replace(/[^a-z0-9 ]/g, \" \").split(/\\s+/).filter((t) => t.length >= 3 && !STOPWORDS.includes(t)));\n}\nfunction correspondeEmpresa(nomesEmpresa, host, html) {\n  const nomes = (Array.isArray(nomesEmpresa) ? nomesEmpresa : [nomesEmpresa]).filter(Boolean);\n  const tokens = uniq(nomes.flatMap(tokensEmpresa));\n  if (!tokens.length) return { nivel: \"SEM_REFERENCIA\", tokens: [], onde: [] };\n  const rotuloDominio = semAcentos(dominioRegistravel(host).split(\".\")[0]).replace(/[^a-z0-9]/g, \"\");\n  const cabecalho = semAcentos([\n    titulo(html),\n    meta(html, \"og:site_name\"),\n    meta(html, \"og:title\"),\n    (String(html).match(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/i) || [])[1] || \"\"\n  ].join(\" \"));\n  const corpo = semAcentos(textoVisivel(html)).slice(0, 2e4);\n  const onde = [];\n  const noDominio = tokens.filter((t) => rotuloDominio.includes(t));\n  const noCabecalho = tokens.filter((t) => cabecalho.includes(t));\n  const noCorpo = tokens.filter((t) => corpo.includes(t));\n  if (noDominio.length) onde.push(\"dominio\");\n  if (noCabecalho.length) onde.push(\"titulo\");\n  if (noCorpo.length) onde.push(\"conteudo\");\n  const forte = noCabecalho.length > 0 || noDominio.length > 0 && noCorpo.length > 0;\n  const nivel = forte ? \"CORRESPONDE\" : onde.length ? \"PARCIAL\" : \"NAO_CORRESPONDE\";\n  return { nivel, tokens, onde };\n}\nfunction contem(texto, lista) {\n  return lista.filter((s) => texto.includes(s));\n}\nfunction classificar(e) {\n  const motivos = [];\n  if (e.erro) return { estado: \"INDISPONIVEL\", motivos: [\"SEM_RESPOSTA: \" + truncate(String(e.erro), 120)] };\n  const status = Number(e.status || 0);\n  if (status >= 400 || status === 0) return { estado: \"INDISPONIVEL\", motivos: [\"HTTP_\" + status] };\n  if (status >= 300) return { estado: \"INCONCLUSIVO\", motivos: [\"REDIRECIONAMENTOS_EXCESSIVOS\"] };\n  const ct = String(e.contentType || \"\").toLowerCase();\n  if (ct && !ct.includes(\"html\")) return { estado: \"INCONCLUSIVO\", motivos: [\"CONTEUDO_NAO_HTML: \" + ct] };\n  const html = String(e.html || \"\");\n  const txt = semAcentos(textoVisivel(html) + \" \" + titulo(html));\n  const estac = contem(txt, ASSINATURAS_ESTACIONADO);\n  if (estac.length) return { estado: \"INDISPONIVEL\", motivos: [\"DOMINIO_ESTACIONADO: \" + estac[0]] };\n  const vazio = contem(txt, ASSINATURAS_SEM_CONTEUDO);\n  if (vazio.length) return { estado: \"INDISPONIVEL\", motivos: [\"PAGINA_SEM_CONTEUDO_PROPRIO: \" + vazio[0]] };\n  const erro = contem(semAcentos(titulo(html)), ASSINATURAS_ERRO).concat(txt.length < 300 ? contem(txt, ASSINATURAS_ERRO) : []);\n  if (erro.length) return { estado: \"INDISPONIVEL\", motivos: [\"PAGINA_DE_ERRO: \" + erro[0]] };\n  if (txt.length < 80 && !/<script/i.test(html)) motivos.push(\"POUCO_CONTEUDO\");\n  const ini = normalizarUrl(e.urlInicial);\n  const fim = normalizarUrl(e.urlFinal || e.urlInicial);\n  if (!fim.ok) return { estado: \"INCONCLUSIVO\", motivos: [\"URL_FINAL_INVALIDA\"] };\n  if (ehPlataformaTerceira(fim.host)) return { estado: \"INCONCLUSIVO\", motivos: [\"REDIRECIONA_PARA_PLATAFORMA: \" + fim.dominio] };\n  if (ini.ok && ini.dominio !== fim.dominio) motivos.push(\"REDIRECIONA_PARA_OUTRO_DOMINIO: \" + fim.dominio);\n  const corr = correspondeEmpresa(e.nomesEmpresa, fim.host, html);\n  motivos.push(\"CORRESPONDENCIA_\" + corr.nivel + (corr.onde.length ? \" (\" + corr.onde.join(\",\") + \")\" : \"\"));\n  const informado = e.origem === \"CRM\" || e.origem === \"CLIENTE\";\n  let estado;\n  if (corr.nivel === \"CORRESPONDE\") estado = \"VALIDADO\";\n  else if (corr.nivel === \"PARCIAL\" && informado) estado = \"VALIDADO\";\n  else if (corr.nivel === \"SEM_REFERENCIA\" && informado) estado = \"VALIDADO\";\n  else estado = \"INCONCLUSIVO\";\n  if (motivos.includes(\"POUCO_CONTEUDO\") && estado === \"VALIDADO\" && !informado) estado = \"INCONCLUSIVO\";\n  return { estado, motivos, urlFinal: fim.url, correspondencia: corr };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const ctx = $(\"Escolher site\").first().json;\n  const r = $input.first().json;\n  const c = classificar({\n    erro: r.ok || r.status ? null : r.erro || r.motivo || \"FALHA\",\n    status: r.status,\n    contentType: r.contentType,\n    html: r.html,\n    urlInicial: ctx.url,\n    urlFinal: r.urlFinal,\n    nomesEmpresa: [ctx.empresa],\n    origem: ctx.origem\n  });\n  if (r.bloqueado) {\n    c.estado = \"INCONCLUSIVO\";\n    c.motivos = [\"BLOQUEIO_DE_SEGURANCA: \" + r.motivo];\n  }\n  const url = c.urlFinal || r.urlFinal || ctx.url;\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const mudou = c.estado !== ctx.estado_anterior.site_status || url !== ctx.estado_anterior.site_url;\n  return [{ json: {\n    ctx,\n    estado: c.estado,\n    motivos: c.motivos,\n    mudou,\n    url,\n    row: {\n      deal_id: ctx.deal_id,\n      org_id: ctx.org_id,\n      person_id: ctx.person_id,\n      email_fp: ctx.email_fp,\n      site_url: url,\n      site_status: c.estado,\n      site_motivo: truncate(c.motivos.join(\" | \"), 480),\n      site_verificado_em: agora\n    },\n    pagina: c.estado === \"VALIDADO\" ? { html: r.html, status: r.status, url, coletado_em: r.coletado_em } : null\n  } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#estado_site + lib/{util,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/site.js\nvar PLATAFORMAS_TERCEIRAS = [\n  \"instagram.com\",\n  \"facebook.com\",\n  \"fb.com\",\n  \"linktr.ee\",\n  \"wa.me\",\n  \"whatsapp.com\",\n  \"api.whatsapp.com\",\n  \"linkedin.com\",\n  \"tiktok.com\",\n  \"youtube.com\",\n  \"twitter.com\",\n  \"x.com\",\n  \"google.com\",\n  \"g.page\",\n  \"goo.gl\",\n  \"bit.ly\",\n  \"beacons.ai\",\n  \"linkbio.co\",\n  \"ifood.com.br\",\n  \"mercadolivre.com.br\"\n];\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehPlataformaTerceira(host) {\n  const reg = dominioRegistravel(host);\n  return PLATAFORMAS_TERCEIRAS.includes(reg) || PLATAFORMAS_TERCEIRAS.includes(String(host).toLowerCase());\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  const u = parsearUrl(s);\n  if (!u) return { ok: false, motivo: \"URL_INVALIDA\" };\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  return { ok: true, url: u.protocol + \"//\" + u.host + u.pathname + u.search, host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\nfunction semAcentos(s) {\n  return String(s || \"\").normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").toLowerCase();\n}\nvar ASSINATURAS_ESTACIONADO = [\n  \"this domain is for sale\",\n  \"domain is for sale\",\n  \"buy this domain\",\n  \"this domain may be for sale\",\n  \"domain is parked\",\n  \"parked free\",\n  \"parkingcrew\",\n  \"sedoparking\",\n  \"sedo domain parking\",\n  \"bodis.com\",\n  \"dan.com\",\n  \"afternic\",\n  \"hugedomains\",\n  \"domain parking\",\n  \"este dominio esta a venda\",\n  \"este dominio pode estar a venda\",\n  \"dominio a venda\",\n  \"compre este dominio\",\n  \"godaddy.com/domainsearch\"\n];\nvar ASSINATURAS_SEM_CONTEUDO = [\n  \"site em construcao\",\n  \"under construction\",\n  \"coming soon\",\n  \"em breve novo site\",\n  \"default web site page\",\n  \"apache2 ubuntu default page\",\n  \"apache2 debian default page\",\n  \"welcome to nginx\",\n  \"it works!\",\n  \"index of /\",\n  \"hostgator\",\n  \"account suspended\",\n  \"conta suspensa\",\n  \"this account has been suspended\",\n  \"website is no longer available\",\n  \"dominio registrado\",\n  \"future home of something quite cool\"\n];\nvar ASSINATURAS_ERRO = [\n  \"404 not found\",\n  \"page not found\",\n  \"pagina nao encontrada\",\n  \"erro 404\",\n  \"500 internal server error\",\n  \"502 bad gateway\",\n  \"503 service unavailable\",\n  \"error establishing a database connection\"\n];\nfunction textoVisivel(html) {\n  return String(html || \"\").replace(/<script[\\s\\S]*?<\\/script>/gi, \" \").replace(/<style[\\s\\S]*?<\\/style>/gi, \" \").replace(/<noscript[\\s\\S]*?<\\/noscript>/gi, \" \").replace(/<!--[\\s\\S]*?-->/g, \" \").replace(/<[^>]+>/g, \" \").replace(/&nbsp;/g, \" \").replace(/&amp;/g, \"&\").replace(/&#?\\w+;/g, \" \").replace(/\\s+/g, \" \").trim();\n}\nfunction titulo(html) {\n  const m = String(html || \"\").match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i);\n  return m ? m[1].replace(/\\s+/g, \" \").trim() : \"\";\n}\nfunction meta(html, nome) {\n  const re = new RegExp(`<meta[^>]+(?:name|property)=[\"']` + nome.replace(/[:.]/g, \"\\\\$&\") + `[\"'][^>]*>`, \"i\");\n  const tag = String(html || \"\").match(re);\n  if (!tag) return \"\";\n  const c = tag[0].match(/content=[\"']([^\"']*)[\"']/i);\n  return c ? c[1].trim() : \"\";\n}\nvar STOPWORDS = [\n  \"ltda\",\n  \"me\",\n  \"epp\",\n  \"eireli\",\n  \"sa\",\n  \"s/a\",\n  \"de\",\n  \"da\",\n  \"do\",\n  \"das\",\n  \"dos\",\n  \"e\",\n  \"the\",\n  \"and\",\n  \"comercio\",\n  \"servicos\",\n  \"industria\",\n  \"grupo\",\n  \"empresa\",\n  \"cia\",\n  \"companhia\",\n  \"brasil\",\n  \"br\",\n  \"com\"\n];\nfunction tokensEmpresa(nome) {\n  return uniq(semAcentos(nome).replace(/[^a-z0-9 ]/g, \" \").split(/\\s+/).filter((t) => t.length >= 3 && !STOPWORDS.includes(t)));\n}\nfunction correspondeEmpresa(nomesEmpresa, host, html) {\n  const nomes = (Array.isArray(nomesEmpresa) ? nomesEmpresa : [nomesEmpresa]).filter(Boolean);\n  const tokens = uniq(nomes.flatMap(tokensEmpresa));\n  if (!tokens.length) return { nivel: \"SEM_REFERENCIA\", tokens: [], onde: [] };\n  const rotuloDominio = semAcentos(dominioRegistravel(host).split(\".\")[0]).replace(/[^a-z0-9]/g, \"\");\n  const cabecalho = semAcentos([\n    titulo(html),\n    meta(html, \"og:site_name\"),\n    meta(html, \"og:title\"),\n    (String(html).match(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/i) || [])[1] || \"\"\n  ].join(\" \"));\n  const corpo = semAcentos(textoVisivel(html)).slice(0, 2e4);\n  const onde = [];\n  const noDominio = tokens.filter((t) => rotuloDominio.includes(t));\n  const noCabecalho = tokens.filter((t) => cabecalho.includes(t));\n  const noCorpo = tokens.filter((t) => corpo.includes(t));\n  if (noDominio.length) onde.push(\"dominio\");\n  if (noCabecalho.length) onde.push(\"titulo\");\n  if (noCorpo.length) onde.push(\"conteudo\");\n  const forte = noCabecalho.length > 0 || noDominio.length > 0 && noCorpo.length > 0;\n  const nivel = forte ? \"CORRESPONDE\" : onde.length ? \"PARCIAL\" : \"NAO_CORRESPONDE\";\n  return { nivel, tokens, onde };\n}\nfunction contem(texto, lista) {\n  return lista.filter((s) => texto.includes(s));\n}\nfunction classificar(e) {\n  const motivos = [];\n  if (e.erro) return { estado: \"INDISPONIVEL\", motivos: [\"SEM_RESPOSTA: \" + truncate(String(e.erro), 120)] };\n  const status = Number(e.status || 0);\n  if (status >= 400 || status === 0) return { estado: \"INDISPONIVEL\", motivos: [\"HTTP_\" + status] };\n  if (status >= 300) return { estado: \"INCONCLUSIVO\", motivos: [\"REDIRECIONAMENTOS_EXCESSIVOS\"] };\n  const ct = String(e.contentType || \"\").toLowerCase();\n  if (ct && !ct.includes(\"html\")) return { estado: \"INCONCLUSIVO\", motivos: [\"CONTEUDO_NAO_HTML: \" + ct] };\n  const html = String(e.html || \"\");\n  const txt = semAcentos(textoVisivel(html) + \" \" + titulo(html));\n  const estac = contem(txt, ASSINATURAS_ESTACIONADO);\n  if (estac.length) return { estado: \"INDISPONIVEL\", motivos: [\"DOMINIO_ESTACIONADO: \" + estac[0]] };\n  const vazio = contem(txt, ASSINATURAS_SEM_CONTEUDO);\n  if (vazio.length) return { estado: \"INDISPONIVEL\", motivos: [\"PAGINA_SEM_CONTEUDO_PROPRIO: \" + vazio[0]] };\n  const erro = contem(semAcentos(titulo(html)), ASSINATURAS_ERRO).concat(txt.length < 300 ? contem(txt, ASSINATURAS_ERRO) : []);\n  if (erro.length) return { estado: \"INDISPONIVEL\", motivos: [\"PAGINA_DE_ERRO: \" + erro[0]] };\n  if (txt.length < 80 && !/<script/i.test(html)) motivos.push(\"POUCO_CONTEUDO\");\n  const ini = normalizarUrl(e.urlInicial);\n  const fim = normalizarUrl(e.urlFinal || e.urlInicial);\n  if (!fim.ok) return { estado: \"INCONCLUSIVO\", motivos: [\"URL_FINAL_INVALIDA\"] };\n  if (ehPlataformaTerceira(fim.host)) return { estado: \"INCONCLUSIVO\", motivos: [\"REDIRECIONA_PARA_PLATAFORMA: \" + fim.dominio] };\n  if (ini.ok && ini.dominio !== fim.dominio) motivos.push(\"REDIRECIONA_PARA_OUTRO_DOMINIO: \" + fim.dominio);\n  const corr = correspondeEmpresa(e.nomesEmpresa, fim.host, html);\n  motivos.push(\"CORRESPONDENCIA_\" + corr.nivel + (corr.onde.length ? \" (\" + corr.onde.join(\",\") + \")\" : \"\"));\n  const informado = e.origem === \"CRM\" || e.origem === \"CLIENTE\";\n  let estado;\n  if (corr.nivel === \"CORRESPONDE\") estado = \"VALIDADO\";\n  else if (corr.nivel === \"PARCIAL\" && informado) estado = \"VALIDADO\";\n  else if (corr.nivel === \"SEM_REFERENCIA\" && informado) estado = \"VALIDADO\";\n  else estado = \"INCONCLUSIVO\";\n  if (motivos.includes(\"POUCO_CONTEUDO\") && estado === \"VALIDADO\" && !informado) estado = \"INCONCLUSIVO\";\n  return { estado, motivos, urlFinal: fim.url, correspondencia: corr };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const ctx = $(\"Escolher site\").first().json;\n  const r = $input.first().json;\n  const c = classificar({\n    erro: r.ok || r.status ? null : r.erro || r.motivo || \"FALHA\",\n    status: r.status,\n    contentType: r.contentType,\n    html: r.html,\n    urlInicial: ctx.url,\n    urlFinal: r.urlFinal,\n    nomesEmpresa: [ctx.empresa],\n    origem: ctx.origem\n  });\n  if (r.bloqueado) {\n    c.estado = \"INCONCLUSIVO\";\n    c.motivos = [\"BLOQUEIO_DE_SEGURANCA: \" + r.motivo];\n  }\n  const url = c.urlFinal || r.urlFinal || ctx.url;\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const mudou = c.estado !== ctx.estado_anterior.site_status || url !== ctx.estado_anterior.site_url;\n  return [{ json: {\n    ctx,\n    estado: c.estado,\n    motivos: c.motivos,\n    mudou,\n    url,\n    row: {\n      deal_id: ctx.deal_id,\n      org_id: ctx.org_id,\n      person_id: ctx.person_id,\n      email_fp: ctx.email_fp,\n      site_url: url,\n      site_status: c.estado,\n      site_motivo: truncate(c.motivos.join(\" | \"), 480),\n      site_verificado_em: agora\n    },\n    pagina: c.estado === \"VALIDADO\" ? { html: r.html, status: r.status, url, coletado_em: r.coletado_em } : null\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "141e1da2-dc6c-49e2-8780-48bc3c5aacac",
+      "id": "eafd82b3-8487-41f2-877f-53e65c4680e3",
       "name": "Salvar estado do site",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -816,7 +816,7 @@
       }
     },
     {
-      "id": "e0fab7c2-961f-4f6a-81c0-56c701f951c9",
+      "id": "fb67ef3b-cdc3-4c96-ac79-78199eb0b3e6",
       "name": "Atualização da organização",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -830,7 +830,7 @@
       }
     },
     {
-      "id": "7ce72da6-c482-4982-9508-ed6cfb69deaf",
+      "id": "318f4bc2-e5d7-42cb-9595-68d609ed0e62",
       "name": "Atualizar organização?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -862,7 +862,7 @@
       }
     },
     {
-      "id": "174b19b0-3d0e-464d-8024-96cdc5992185",
+      "id": "2e7b7d5e-a329-4f5b-a693-67d4e2afddc0",
       "name": "Atualizar organização no Pipedrive",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -887,7 +887,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "aade6337-e3ea-455f-a868-9f617e258f73",
+      "id": "24fd5cc4-a639-4b3f-86ed-c84ef95e5d00",
       "name": "Resultado do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -928,7 +928,7 @@
       }
     },
     {
-      "id": "7adcdb73-be6e-4880-830f-49881f24384b",
+      "id": "1f5a40b4-4c54-4de6-8c6a-c21bb861b7b6",
       "name": "Pedido de site à Zayra",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -942,7 +942,7 @@
       }
     },
     {
-      "id": "bacddffe-d575-40e1-a474-57478a0cb33e",
+      "id": "b3139a09-d492-43e7-a198-4cd33c69893f",
       "name": "Estado: cliente sem site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -956,7 +956,7 @@
       }
     },
     {
-      "id": "a61ec9bc-72e0-4ca1-b7dc-a8d73b1054b6",
+      "id": "367e1a3a-f253-4568-966e-feed0c301e22",
       "name": "Salvar estado (site pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1074,7 +1074,7 @@
       }
     },
     {
-      "id": "d81e0ca2-872a-489d-9ed8-e181655a9c90",
+      "id": "451853cc-a639-4e00-9b12-dc1d70446fdf",
       "name": "Diagnóstico necessário?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1084,11 +1084,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#diag_necessario + lib/{util,config,versoes}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\n\n// lib/versoes.js\nvar DIAGNOSTICO_PROVISORIO_VERSAO = \"PROPOSTA-PROVISORIA-0.1\";\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const s = $(\"Estado do site\").first().json;\n  const modoDiag = valor(cfg, \"DIAGNOSTICO_MODO\", \"\");\n  const provisorio = modoDiag === \"PROVISORIO\" && booleano(cfg, \"DIAGNOSTICO_PERMITIR_PROVISORIO\");\n  const versao = modoDiag === \"PADRAO_ATOM\" ? valor(cfg, \"DIAGNOSTICO_PADRAO_VERSAO\", \"PADRAO-SEM-VERSAO\") : DIAGNOSTICO_PROVISORIO_VERSAO;\n  const fp = fingerprint([s.url, versao]);\n  let decisao;\n  if (!s.ctx.forcar && s.ctx.estado_anterior.diag_status === \"CONCLUIDO\" && s.ctx.estado_anterior.diag_entrada_fp === fp) decisao = \"NADA\";\n  else if (modoDiag === \"ROTINA_EXISTENTE\") decisao = \"INTEGRACAO_ROTINA_EXISTENTE_PENDENTE\";\n  else if (modoDiag === \"PADRAO_ATOM\") decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (!provisorio) decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (faltando(cfg, [\"ANTHROPIC_MODEL\", \"ANTHROPIC_MAX_TOKENS\"]).length) decisao = \"CONFIG_IA_PENDENTE\";\n  else decisao = \"EXECUTAR\";\n  if (decisao === \"NADA\") return [];\n  const origem = new URL(s.url).origin;\n  return [\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/robots.txt\", hop: 0, url_inicial: origem + \"/robots.txt\", decisao, versao, fp } },\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/sitemap.xml\", hop: 0, url_inicial: origem + \"/sitemap.xml\", decisao, versao, fp } }\n  ];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#diag_necessario + lib/{util,config,versoes,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\n\n// lib/versoes.js\nvar DIAGNOSTICO_PROVISORIO_VERSAO = \"PROPOSTA-PROVISORIA-0.1\";\n\n// lib/site.js\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const s = $(\"Estado do site\").first().json;\n  const modoDiag = valor(cfg, \"DIAGNOSTICO_MODO\", \"\");\n  const provisorio = modoDiag === \"PROVISORIO\" && booleano(cfg, \"DIAGNOSTICO_PERMITIR_PROVISORIO\");\n  const versao = modoDiag === \"PADRAO_ATOM\" ? valor(cfg, \"DIAGNOSTICO_PADRAO_VERSAO\", \"PADRAO-SEM-VERSAO\") : DIAGNOSTICO_PROVISORIO_VERSAO;\n  const fp = fingerprint([s.url, versao]);\n  let decisao;\n  if (!s.ctx.forcar && s.ctx.estado_anterior.diag_status === \"CONCLUIDO\" && s.ctx.estado_anterior.diag_entrada_fp === fp) decisao = \"NADA\";\n  else if (modoDiag === \"ROTINA_EXISTENTE\") decisao = \"INTEGRACAO_ROTINA_EXISTENTE_PENDENTE\";\n  else if (modoDiag === \"PADRAO_ATOM\") decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (!provisorio) decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (faltando(cfg, [\"ANTHROPIC_MODEL\", \"ANTHROPIC_MAX_TOKENS\"]).length) decisao = \"CONFIG_IA_PENDENTE\";\n  else decisao = \"EXECUTAR\";\n  if (decisao === \"NADA\") return [];\n  const origem = parsearUrl(s.url).origin;\n  return [\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/robots.txt\", hop: 0, url_inicial: origem + \"/robots.txt\", decisao, versao, fp } },\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/sitemap.xml\", hop: 0, url_inicial: origem + \"/sitemap.xml\", decisao, versao, fp } }\n  ];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "bf1a0e68-3112-4ef2-b0e8-d5ac66ef20bc",
+      "id": "7880c54f-37a7-4982-8dba-a65bd1ea1760",
       "name": "Buscar robots e sitemap",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1110,7 +1110,7 @@
       }
     },
     {
-      "id": "ea7302a4-4701-444c-b1f2-2301d9f00d19",
+      "id": "f74a6a77-7bbe-4a54-96d3-6b7102400eb2",
       "name": "Extrair evidências",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1120,11 +1120,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#evidencias + lib/{util,site,evidencias}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/site.js\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  let u;\n  try {\n    u = new URL(s);\n  } catch (e) {\n    return { ok: false, motivo: \"URL_INVALIDA\" };\n  }\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  u.hash = \"\";\n  return { ok: true, url: u.toString(), host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\nfunction resolverRedirect(base, location) {\n  try {\n    return new URL(location, base).toString();\n  } catch (e) {\n    return \"\";\n  }\n}\nfunction textoVisivel(html) {\n  return String(html || \"\").replace(/<script[\\s\\S]*?<\\/script>/gi, \" \").replace(/<style[\\s\\S]*?<\\/style>/gi, \" \").replace(/<noscript[\\s\\S]*?<\\/noscript>/gi, \" \").replace(/<!--[\\s\\S]*?-->/g, \" \").replace(/<[^>]+>/g, \" \").replace(/&nbsp;/g, \" \").replace(/&amp;/g, \"&\").replace(/&#?\\w+;/g, \" \").replace(/\\s+/g, \" \").trim();\n}\nfunction titulo(html) {\n  const m = String(html || \"\").match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i);\n  return m ? m[1].replace(/\\s+/g, \" \").trim() : \"\";\n}\nfunction meta(html, nome) {\n  const re = new RegExp(`<meta[^>]+(?:name|property)=[\"']` + nome.replace(/[:.]/g, \"\\\\$&\") + `[\"'][^>]*>`, \"i\");\n  const tag = String(html || \"\").match(re);\n  if (!tag) return \"\";\n  const c = tag[0].match(/content=[\"']([^\"']*)[\"']/i);\n  return c ? c[1].trim() : \"\";\n}\n\n// lib/evidencias.js\nfunction todos(html, re, grupo) {\n  const out = [];\n  let m;\n  const r = new RegExp(re.source, re.flags.includes(\"g\") ? re.flags : re.flags + \"g\");\n  while ((m = r.exec(html)) !== null && out.length < 200) out.push(m[grupo || 1]);\n  return out;\n}\nfunction limparTexto(s) {\n  return textoVisivel(String(s || \"\")).slice(0, 200);\n}\nfunction extrair(entrada) {\n  const html = String(entrada.html || \"\");\n  const url = entrada.url;\n  const base = normalizarUrl(url);\n  const hrefs = todos(html, /<a\\b[^>]*href=[\"']([^\"'#]+)[\"']/i);\n  let internos = 0;\n  let externos = 0;\n  for (const h of hrefs) {\n    if (/^(mailto:|tel:|javascript:)/i.test(h)) continue;\n    const abs = resolverRedirect(url, h);\n    if (!abs) continue;\n    try {\n      new URL(abs).hostname.replace(/^www\\./, \"\") === base.host.replace(/^www\\./, \"\") ? internos++ : externos++;\n    } catch (e) {\n    }\n  }\n  const imgs = todos(html, /<img\\b([^>]*)>/i);\n  const semAlt = imgs.filter((a) => !/\\balt=[\"'][^\"']+[\"']/i.test(a)).length;\n  const jsonld = todos(html, /<script[^>]+application\\/ld\\+json[^>]*>([\\s\\S]*?)<\\/script>/i);\n  const tiposSchema = [];\n  for (const bloco of jsonld) {\n    const j = safeJsonParse(bloco.trim(), null);\n    const coletar = (o) => {\n      if (!o || typeof o !== \"object\") return;\n      if (Array.isArray(o)) return o.forEach(coletar);\n      if (o[\"@type\"]) [].concat(o[\"@type\"]).forEach((t) => tiposSchema.push(String(t)));\n      if (o[\"@graph\"]) coletar(o[\"@graph\"]);\n    };\n    coletar(j);\n  }\n  const texto = textoVisivel(html);\n  const palavras = texto ? texto.split(\" \").length : 0;\n  const canonical = (html.match(/<link[^>]+rel=[\"']canonical[\"'][^>]*href=[\"']([^\"']+)[\"']/i) || [])[1] || \"\";\n  const lang = (html.match(/<html[^>]*\\blang=[\"']([^\"']+)[\"']/i) || [])[1] || \"\";\n  const sitemapTxt = String(entrada.sitemap || \"\");\n  return {\n    url_analisada: url,\n    coletado_em: entrada.coletadoEm,\n    http_status: entrada.status,\n    https: base.ok ? base.https : null,\n    titulo: titulo(html).slice(0, 200),\n    meta_description: meta(html, \"description\").slice(0, 300),\n    meta_robots: meta(html, \"robots\").slice(0, 100),\n    canonical: canonical.slice(0, 300),\n    idioma: lang,\n    viewport_mobile: /<meta[^>]+name=[\"']viewport[\"']/i.test(html),\n    open_graph: { titulo: meta(html, \"og:title\").slice(0, 200), site_name: meta(html, \"og:site_name\").slice(0, 100) },\n    h1: todos(html, /<h1[^>]*>([\\s\\S]*?)<\\/h1>/i).map(limparTexto).filter(Boolean).slice(0, 5),\n    h2: todos(html, /<h2[^>]*>([\\s\\S]*?)<\\/h2>/i).map(limparTexto).filter(Boolean).slice(0, 15),\n    schema_org_tipos: uniq(tiposSchema).slice(0, 20),\n    links_internos: internos,\n    links_externos: externos,\n    imagens_total: imgs.length,\n    imagens_sem_alt: semAlt,\n    formularios: (html.match(/<form\\b/gi) || []).length,\n    link_whatsapp: /(wa\\.me\\/|api\\.whatsapp\\.com|whatsapp:\\/\\/)/i.test(html),\n    link_telefone: /href=[\"']tel:/i.test(html),\n    rastreamento: {\n      google_tag_manager: /googletagmanager\\.com\\/gtm\\.js|GTM-[A-Z0-9]+/.test(html),\n      google_analytics_4: /gtag\\/js\\?id=G-|['\"]G-[A-Z0-9]{6,}['\"]/.test(html),\n      meta_pixel: /connect\\.facebook\\.net\\/[^\"']*fbevents\\.js|fbq\\(/.test(html)\n    },\n    quantidade_palavras: palavras,\n    robots_txt: entrada.robotsStatus ? { http_status: entrada.robotsStatus, bloqueia_tudo: /disallow:\\s*\\/\\s*$/im.test(String(entrada.robots || \"\")) && /user-agent:\\s*\\*/i.test(String(entrada.robots || \"\")) } : null,\n    sitemap_xml: entrada.sitemapStatus ? { http_status: entrada.sitemapStatus, urls_listadas: (sitemapTxt.match(/<loc>/gi) || []).length } : null,\n    // Amostra de texto: dado não confiável, truncado.\n    amostra_texto: truncate(texto, 4e3)\n  };\n}\nfunction urlsColetadas(ev) {\n  return uniq([ev.url_analisada].concat(ev.urls_extras || []).filter(Boolean));\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const s = $(\"Estado do site\").first().json;\n  const d = $(\"Diagnóstico necessário?\").first().json;\n  const extras = $(\"Buscar robots e sitemap\").all().map((i) => i.json);\n  const robots = extras[0] || {};\n  const sitemap = extras[1] || {};\n  const ev = extrair({\n    html: s.pagina.html,\n    url: s.pagina.url,\n    status: s.pagina.status,\n    coletadoEm: s.pagina.coletado_em,\n    robots: robots.ok ? robots.html : \"\",\n    robotsStatus: robots.status || null,\n    sitemap: sitemap.ok ? sitemap.html : \"\",\n    sitemapStatus: sitemap.status || null\n  });\n  ev.urls_extras = [robots.ok ? robots.urlFinal : null, sitemap.ok ? sitemap.urlFinal : null].filter(Boolean);\n  const urls = urlsColetadas(ev);\n  return [{ json: { ev, urls, decisao: d.decisao, versao: d.versao, fp: d.fp } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#evidencias + lib/{util,site,evidencias}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/site.js\nvar SUFIXOS_BR_2NIVEL = [\n  \"com\",\n  \"net\",\n  \"org\",\n  \"gov\",\n  \"edu\",\n  \"art\",\n  \"adv\",\n  \"eng\",\n  \"med\",\n  \"ind\",\n  \"inf\",\n  \"agr\",\n  \"arq\",\n  \"eco\",\n  \"emp\",\n  \"far\",\n  \"imb\",\n  \"jor\",\n  \"odo\",\n  \"psi\",\n  \"rec\",\n  \"srv\",\n  \"tur\",\n  \"tv\",\n  \"app\",\n  \"dev\",\n  \"log\",\n  \"mus\",\n  \"nom\",\n  \"ong\",\n  \"pro\",\n  \"seg\",\n  \"vet\",\n  \"tec\",\n  \"coop\",\n  \"esp\",\n  \"etc\",\n  \"fot\",\n  \"leg\",\n  \"mp\",\n  \"radio\"\n];\nvar HOSTS_BLOQUEADOS = /(^|\\.)(localhost|local|internal|intranet|lan|home|corp|localdomain|home\\.arpa|in-addr\\.arpa|ip6\\.arpa)$/i;\nfunction dominioRegistravel(host) {\n  const h = String(host || \"\").toLowerCase().replace(/\\.$/, \"\").replace(/^www\\./, \"\");\n  const partes = h.split(\".\");\n  if (partes.length <= 2) return h;\n  const tld = partes[partes.length - 1];\n  const sld = partes[partes.length - 2];\n  if (tld === \"br\" && SUFIXOS_BR_2NIVEL.includes(sld)) return partes.slice(-3).join(\".\");\n  return partes.slice(-2).join(\".\");\n}\nfunction ehIpLiteral(host) {\n  return /^\\d{1,3}(\\.\\d{1,3}){3}$/.test(host) || host.includes(\":\") || /^\\[.*\\]$/.test(host) || /^0x[0-9a-f]+$/i.test(host) || /^\\d+$/.test(host);\n}\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\nfunction normalizarUrl(entrada) {\n  let s = String(entrada || \"\").trim();\n  if (!s) return { ok: false, motivo: \"URL_VAZIA\" };\n  if (!/^[a-z][a-z0-9+.-]*:\\/\\//i.test(s)) s = \"https://\" + s;\n  const u = parsearUrl(s);\n  if (!u) return { ok: false, motivo: \"URL_INVALIDA\" };\n  if (![\"http:\", \"https:\"].includes(u.protocol)) return { ok: false, motivo: \"PROTOCOLO_NAO_PERMITIDO\" };\n  if (u.username || u.password) return { ok: false, motivo: \"CREDENCIAIS_NA_URL\" };\n  if (u.port && ![\"80\", \"443\"].includes(u.port)) return { ok: false, motivo: \"PORTA_NAO_PERMITIDA\" };\n  const host = u.hostname.toLowerCase().replace(/\\.$/, \"\");\n  if (ehIpLiteral(host)) return { ok: false, motivo: \"IP_LITERAL_NAO_PERMITIDO\" };\n  if (HOSTS_BLOQUEADOS.test(host)) return { ok: false, motivo: \"HOST_INTERNO\" };\n  if (!/^[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$/.test(host) && !/^xn--/.test(host.split(\".\").pop())) {\n    return { ok: false, motivo: \"HOST_INVALIDO\" };\n  }\n  return { ok: true, url: u.protocol + \"//\" + u.host + u.pathname + u.search, host, dominio: dominioRegistravel(host), https: u.protocol === \"https:\" };\n}\nfunction resolverRedirect(base, location) {\n  const b = parsearUrl(base);\n  const loc = String(location || \"\").trim();\n  if (!loc) return \"\";\n  if (/^[a-z][a-z0-9+.-]*:/i.test(loc)) {\n    const a = parsearUrl(loc);\n    return a ? a.href : \"\";\n  }\n  if (!b) return \"\";\n  let alvo;\n  if (loc.startsWith(\"//\")) alvo = b.protocol + loc;\n  else if (loc.startsWith(\"/\")) alvo = b.origin + loc;\n  else if (loc.startsWith(\"?\")) alvo = b.origin + b.pathname + loc;\n  else if (loc.startsWith(\"#\")) alvo = b.origin + b.pathname + b.search + loc;\n  else alvo = b.origin + b.pathname.replace(/[^/]*$/, \"\") + loc;\n  const r = parsearUrl(alvo);\n  return r ? r.href : \"\";\n}\nfunction textoVisivel(html) {\n  return String(html || \"\").replace(/<script[\\s\\S]*?<\\/script>/gi, \" \").replace(/<style[\\s\\S]*?<\\/style>/gi, \" \").replace(/<noscript[\\s\\S]*?<\\/noscript>/gi, \" \").replace(/<!--[\\s\\S]*?-->/g, \" \").replace(/<[^>]+>/g, \" \").replace(/&nbsp;/g, \" \").replace(/&amp;/g, \"&\").replace(/&#?\\w+;/g, \" \").replace(/\\s+/g, \" \").trim();\n}\nfunction titulo(html) {\n  const m = String(html || \"\").match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i);\n  return m ? m[1].replace(/\\s+/g, \" \").trim() : \"\";\n}\nfunction meta(html, nome) {\n  const re = new RegExp(`<meta[^>]+(?:name|property)=[\"']` + nome.replace(/[:.]/g, \"\\\\$&\") + `[\"'][^>]*>`, \"i\");\n  const tag = String(html || \"\").match(re);\n  if (!tag) return \"\";\n  const c = tag[0].match(/content=[\"']([^\"']*)[\"']/i);\n  return c ? c[1].trim() : \"\";\n}\n\n// lib/evidencias.js\nfunction todos(html, re, grupo) {\n  const out = [];\n  let m;\n  const r = new RegExp(re.source, re.flags.includes(\"g\") ? re.flags : re.flags + \"g\");\n  while ((m = r.exec(html)) !== null && out.length < 200) out.push(m[grupo || 1]);\n  return out;\n}\nfunction limparTexto(s) {\n  return textoVisivel(String(s || \"\")).slice(0, 200);\n}\nfunction extrair(entrada) {\n  const html = String(entrada.html || \"\");\n  const url = entrada.url;\n  const base = normalizarUrl(url);\n  const hrefs = todos(html, /<a\\b[^>]*href=[\"']([^\"'#]+)[\"']/i);\n  let internos = 0;\n  let externos = 0;\n  for (const h of hrefs) {\n    if (/^(mailto:|tel:|javascript:)/i.test(h)) continue;\n    const abs = resolverRedirect(url, h);\n    if (!abs) continue;\n    const pa = parsearUrl(abs);\n    if (pa) pa.hostname.replace(/^www\\./, \"\") === base.host.replace(/^www\\./, \"\") ? internos++ : externos++;\n  }\n  const imgs = todos(html, /<img\\b([^>]*)>/i);\n  const semAlt = imgs.filter((a) => !/\\balt=[\"'][^\"']+[\"']/i.test(a)).length;\n  const jsonld = todos(html, /<script[^>]+application\\/ld\\+json[^>]*>([\\s\\S]*?)<\\/script>/i);\n  const tiposSchema = [];\n  for (const bloco of jsonld) {\n    const j = safeJsonParse(bloco.trim(), null);\n    const coletar = (o) => {\n      if (!o || typeof o !== \"object\") return;\n      if (Array.isArray(o)) return o.forEach(coletar);\n      if (o[\"@type\"]) [].concat(o[\"@type\"]).forEach((t) => tiposSchema.push(String(t)));\n      if (o[\"@graph\"]) coletar(o[\"@graph\"]);\n    };\n    coletar(j);\n  }\n  const texto = textoVisivel(html);\n  const palavras = texto ? texto.split(\" \").length : 0;\n  const canonical = (html.match(/<link[^>]+rel=[\"']canonical[\"'][^>]*href=[\"']([^\"']+)[\"']/i) || [])[1] || \"\";\n  const lang = (html.match(/<html[^>]*\\blang=[\"']([^\"']+)[\"']/i) || [])[1] || \"\";\n  const sitemapTxt = String(entrada.sitemap || \"\");\n  return {\n    url_analisada: url,\n    coletado_em: entrada.coletadoEm,\n    http_status: entrada.status,\n    https: base.ok ? base.https : null,\n    titulo: titulo(html).slice(0, 200),\n    meta_description: meta(html, \"description\").slice(0, 300),\n    meta_robots: meta(html, \"robots\").slice(0, 100),\n    canonical: canonical.slice(0, 300),\n    idioma: lang,\n    viewport_mobile: /<meta[^>]+name=[\"']viewport[\"']/i.test(html),\n    open_graph: { titulo: meta(html, \"og:title\").slice(0, 200), site_name: meta(html, \"og:site_name\").slice(0, 100) },\n    h1: todos(html, /<h1[^>]*>([\\s\\S]*?)<\\/h1>/i).map(limparTexto).filter(Boolean).slice(0, 5),\n    h2: todos(html, /<h2[^>]*>([\\s\\S]*?)<\\/h2>/i).map(limparTexto).filter(Boolean).slice(0, 15),\n    schema_org_tipos: uniq(tiposSchema).slice(0, 20),\n    links_internos: internos,\n    links_externos: externos,\n    imagens_total: imgs.length,\n    imagens_sem_alt: semAlt,\n    formularios: (html.match(/<form\\b/gi) || []).length,\n    link_whatsapp: /(wa\\.me\\/|api\\.whatsapp\\.com|whatsapp:\\/\\/)/i.test(html),\n    link_telefone: /href=[\"']tel:/i.test(html),\n    rastreamento: {\n      google_tag_manager: /googletagmanager\\.com\\/gtm\\.js|GTM-[A-Z0-9]+/.test(html),\n      google_analytics_4: /gtag\\/js\\?id=G-|['\"]G-[A-Z0-9]{6,}['\"]/.test(html),\n      meta_pixel: /connect\\.facebook\\.net\\/[^\"']*fbevents\\.js|fbq\\(/.test(html)\n    },\n    quantidade_palavras: palavras,\n    robots_txt: entrada.robotsStatus ? { http_status: entrada.robotsStatus, bloqueia_tudo: /disallow:\\s*\\/\\s*$/im.test(String(entrada.robots || \"\")) && /user-agent:\\s*\\*/i.test(String(entrada.robots || \"\")) } : null,\n    sitemap_xml: entrada.sitemapStatus ? { http_status: entrada.sitemapStatus, urls_listadas: (sitemapTxt.match(/<loc>/gi) || []).length } : null,\n    // Amostra de texto: dado não confiável, truncado.\n    amostra_texto: truncate(texto, 4e3)\n  };\n}\nfunction urlsColetadas(ev) {\n  return uniq([ev.url_analisada].concat(ev.urls_extras || []).filter(Boolean));\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const s = $(\"Estado do site\").first().json;\n  const d = $(\"Diagnóstico necessário?\").first().json;\n  const extras = $(\"Buscar robots e sitemap\").all().map((i) => i.json);\n  const robots = extras[0] || {};\n  const sitemap = extras[1] || {};\n  const ev = extrair({\n    html: s.pagina.html,\n    url: s.pagina.url,\n    status: s.pagina.status,\n    coletadoEm: s.pagina.coletado_em,\n    robots: robots.ok ? robots.html : \"\",\n    robotsStatus: robots.status || null,\n    sitemap: sitemap.ok ? sitemap.html : \"\",\n    sitemapStatus: sitemap.status || null\n  });\n  ev.urls_extras = [robots.ok ? robots.urlFinal : null, sitemap.ok ? sitemap.urlFinal : null].filter(Boolean);\n  const urls = urlsColetadas(ev);\n  return [{ json: { ev, urls, decisao: d.decisao, versao: d.versao, fp: d.fp } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "dd7218bd-1937-4ca6-9098-913ca9895315",
+      "id": "c6208a6b-df2c-4a51-8e70-3681ce5c72d9",
       "name": "Executar Claude?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1155,7 +1155,7 @@
       }
     },
     {
-      "id": "afdf37f6-dfad-43e5-b913-ce9234f95ce1",
+      "id": "e239fd54-51c4-4c24-8147-68053a741dae",
       "name": "Montar pedido à Claude",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1169,7 +1169,7 @@
       }
     },
     {
-      "id": "d2d6d9db-1717-4c01-8f7f-6ce25b09505d",
+      "id": "9df5cdad-e7e1-4c10-955c-480231036c67",
       "name": "Claude — diagnóstico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1207,7 +1207,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "7b9ba4d0-8375-46ef-80aa-f04507968015",
+      "id": "be34f370-e31f-4c79-9644-21d76e6ffdb2",
       "name": "Validar diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1221,7 +1221,7 @@
       }
     },
     {
-      "id": "9f3ad429-d904-448a-8e2c-af5ee8b6296c",
+      "id": "a891f98f-74b6-4d79-b805-bbe68889902b",
       "name": "Diagnóstico válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1253,7 +1253,7 @@
       }
     },
     {
-      "id": "09f8175e-8597-4c52-84c1-c3f24b236fe3",
+      "id": "b020304a-22a1-4fbd-88b5-2cd9637d76ab",
       "name": "Registrar diagnóstico (nota no negócio)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1277,7 +1277,7 @@
       "credentials": {}
     },
     {
-      "id": "f39cd521-0346-4798-a81b-8f5f68d9ab85",
+      "id": "5a118dc6-6049-444c-8135-9c3fef004683",
       "name": "Campos do diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1291,7 +1291,7 @@
       }
     },
     {
-      "id": "5c690d27-46fe-4952-9648-a3314264c5d1",
+      "id": "2ee08fc3-0084-4cf4-b4ec-2bc86a2cf829",
       "name": "Atualizar campos do negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1323,7 +1323,7 @@
       }
     },
     {
-      "id": "f73fa47e-3fa2-473c-a956-ecaf55f0320b",
+      "id": "09ea9ff4-4a80-455b-809b-3df88908ebd4",
       "name": "Atualizar negócio (diagnóstico)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1348,7 +1348,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ba4dd94a-6dff-4779-b98e-5f5279692a90",
+      "id": "c209d62e-ea26-4c33-9f0c-364ec2e54b0c",
       "name": "Salvar estado do diagnóstico",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1436,7 +1436,7 @@
       }
     },
     {
-      "id": "4cb4eb4f-b1bd-4ab1-9efb-d2c8fd976891",
+      "id": "9a790539-7915-4f41-975d-2224678c77ea",
       "name": "Diagnóstico inválido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1450,7 +1450,7 @@
       }
     },
     {
-      "id": "cd14c4ab-5393-4e59-9cb2-ef2ce3284c8b",
+      "id": "92425cb3-1223-47ee-995c-d3d138ac10f2",
       "name": "Salvar diagnóstico inválido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1538,7 +1538,7 @@
       }
     },
     {
-      "id": "7bf804f5-580e-41c2-a566-1691e1b78a75",
+      "id": "df94d5c6-b430-4742-8048-16d2eae63586",
       "name": "Preparar alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1552,7 +1552,7 @@
       }
     },
     {
-      "id": "272e3aa7-0fc8-435f-9f43-c2373183df92",
+      "id": "9a28b3a0-8d5a-4435-a0b9-6532e8be2655",
       "name": "ATOM_11 — alerta diagnóstico",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1575,7 +1575,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5a353c08-3373-46db-8175-f9aed36f2693",
+      "id": "f26233fb-b7b4-46e0-8392-158744285839",
       "name": "Evidências aguardando modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1589,7 +1589,7 @@
       }
     },
     {
-      "id": "367b7fc4-5c34-4781-928a-dc8424fa84d2",
+      "id": "a7c574df-7279-4932-91f7-291b6d19ee60",
       "name": "Registrar nota de evidências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1621,7 +1621,7 @@
       }
     },
     {
-      "id": "3945f628-76b3-4b0a-9026-d1d28215dcc9",
+      "id": "b4b782b3-f7f1-4f3a-a7af-1a1a3d358bb8",
       "name": "Nota de evidências",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1646,7 +1646,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "1c9c1029-1191-4d7d-9dbe-8e6c939d6cc9",
+      "id": "24956aa2-9834-4b1d-a1c4-6a96285291b6",
       "name": "Salvar estado (diagnóstico pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1734,7 +1734,7 @@
       }
     },
     {
-      "id": "1d4ab904-879f-4dfc-8abb-cf56f37c730e",
+      "id": "1ae3e681-027c-4fe3-b844-622dec169521",
       "name": "Pendência de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1748,7 +1748,7 @@
       }
     },
     {
-      "id": "c01796fd-6841-4120-a6c3-228b22e67dce",
+      "id": "5e86689b-354e-4da6-8a47-13ae374a345f",
       "name": "Registrar nota do site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1780,7 +1780,7 @@
       }
     },
     {
-      "id": "45def86f-284f-44ba-8391-1210c44f2bdc",
+      "id": "30b1e9ad-5009-45ab-a009-4d8749b8da18",
       "name": "Nota de conferência do site",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1805,7 +1805,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "d66fb803-ada0-49ac-8bcd-d40040384376",
+      "id": "9ad05ed6-773d-4da6-b2f1-71533d1d0f89",
       "name": "Pedir site ao cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1837,7 +1837,7 @@
       }
     },
     {
-      "id": "b42cc68a-b01e-4982-8f6e-40ca5f36c519",
+      "id": "02e53137-508e-4315-b367-d589193ecffa",
       "name": "ATOM_10 — solicitar site",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1860,7 +1860,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "e9b3c5b0-170e-40cf-9fa9-1f76f4c2c1b7",
+      "id": "e135ed38-ee50-430c-b2d5-5bdb4014ef75",
       "name": "Estado após pedido de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1874,8 +1874,8 @@
       }
     },
     {
-      "id": "16598c9b-1b3e-46c8-8d85-0ecaf7c2b6ba",
-      "name": "Sticky Note 16598c9b",
+      "id": "4bb11aa1-b52d-4ba5-8e3b-0055b160258b",
+      "name": "Sticky Note 4bb11aa1",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
