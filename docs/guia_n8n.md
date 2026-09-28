@@ -1,5 +1,25 @@
 # Guia de configuração — n8n
 
+## Instruções para o agente de navegador (leia antes de agir)
+
+Você está configurando a instância n8n `https://thiagoatom.app.n8n.cloud`, na aba já aberta e logada.
+Siga as seções **3, 4 e 5**. A seção **2 (credenciais)** é feita **pelo usuário**: você pode abrir as telas e preencher
+**nome e tipo** de cada credencial, mas **nunca** digite, copie ou leia tokens, chaves ou senhas — quando o campo do
+segredo aparecer, pare e peça ao usuário que o preencha e salve.
+
+Regras obrigatórias:
+- **Não ative, publique nem execute** nenhum workflow. Não altere nós, conexões nem configurações dos workflows ATOM.
+- **Não execute a seção 6.**
+- Em Data tables, **apague somente** as linhas listadas na seção 4, e só depois de conferir que o conteúdo corresponde
+  exatamente à coluna "Como reconhecer". Se não corresponder, não apague e informe.
+- **Nunca** apague linhas de `atom_config` nem altere `MODO_EXECUCAO`.
+- Na seção 3, altere **apenas** a opção "Available in MCP" do workflow indicado; nada mais nele.
+- Se algo não corresponder ao descrito, **pare e pergunte** ao usuário.
+- Ao terminar, apresente um resumo: credenciais criadas (somente nomes), MCP liberado (sim/não), linhas apagadas por tabela
+  e qualquer item não concluído.
+
+---
+
 Instância: `https://thiagoatom.app.n8n.cloud`. O que a Atom precisa fazer no n8n. Tempo total: cerca de 45 minutos.
 Todos os workflows ATOM estão **desativados**; **não ative nada** durante estes passos.
 Segredos (tokens, chaves, senhas) ficam **somente** nas Credentials do n8n — nunca no chat, em tabelas ou em notas.

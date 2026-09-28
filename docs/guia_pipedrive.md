@@ -1,5 +1,23 @@
 # Guia de configuração — Pipedrive
 
+## Instruções para o agente de navegador (leia antes de agir)
+
+Você está configurando o Pipedrive da Atom Digital, na aba já aberta e logada. Siga as seções **1, 2 e 3** nesta ordem.
+
+Regras obrigatórias:
+- Faça **somente** o que está descrito nas seções 1, 2 e 3. **Não execute a seção 4** (webhook) nem altere negócios, pessoas,
+  organizações, etapas existentes, automações ou permissões.
+- **Não renomeie, mova nem apague** etapas ou campos que já existem. Se um campo com o mesmo nome já existir, não crie outro:
+  anote e siga adiante.
+- Use os nomes **exatamente** como escritos (inclusive o prefixo `ATOM · ` com o ponto médio `·`) e o tipo indicado.
+- **Segredos:** na seção 3, **não copie, leia em voz alta nem escreva o token de API** em lugar nenhum. Pare e peça ao usuário
+  que copie o token e cole ele mesmo na credencial do n8n.
+- Se algo não corresponder ao descrito (menu diferente, funil 2 inexistente, falta de permissão), **pare e pergunte** ao usuário.
+- Ao terminar, apresente um resumo: etapa criada (sim/não), lista de campos criados por aba, campos que já existiam e qualquer
+  item não concluído.
+
+---
+
 O que a Atom precisa fazer no Pipedrive para a automação funcionar. Tempo total: cerca de 1 hora.
 Nunca envie tokens pelo chat: eles vão direto nas Credentials do n8n (ver `guia_n8n.md`).
 
