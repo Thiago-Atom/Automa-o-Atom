@@ -23,6 +23,8 @@ contrato assinado + pagamento inicial → Trello, e início da execução + 7 di
 | [docs/09_contrato_zayra.md](docs/09_contrato_zayra.md) | Contrato proposto com a Zayra |
 | [docs/10_achados_tecnicos.md](docs/10_achados_tecnicos.md) | Falhas encontradas e corrigidas, riscos conhecidos |
 | [docs/11_guia_passo_a_passo.md](docs/11_guia_passo_a_passo.md) | **Guia do que falta configurar (parte da Atom)** |
+| [docs/guia_pipedrive.md](docs/guia_pipedrive.md) | Guia de configuração do Pipedrive |
+| [docs/guia_n8n.md](docs/guia_n8n.md) | Guia de configuração do n8n |
 
 ## Estrutura
 
