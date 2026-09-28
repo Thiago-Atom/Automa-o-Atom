@@ -149,6 +149,16 @@ return [{ json: {
 } }];
 //#endregion
 
+//#region acumular @include util
+// Acumula o contador com a linha anterior de atom_acoes: sem isso o limite RETENTATIVAS_MAX nunca seria atingido.
+const f = $('Falha na criação').first().json;
+const anterior = $input.all().map((i) => i.json).find((r) => r && r.request_id) || {};
+const tentativas = Number(anterior.tentativas || 0) + 1;
+const agora = Date.now();
+return [{ json: { acao: Object.assign({}, f.acao, { tentativas, criado_em: anterior.criado_em || f.acao.criado_em,
+  proxima_tentativa: new Date(agora + ATOM_UTIL.backoffMinutes(tentativas, 720) * 60000).toISOString() }) } }];
+//#endregion
+
 //#region webhook_normalizar @include util,regras
 const w = $('Webhook Asaas').first().json;
 const n = ATOM_REGRAS.normalizarEventoAsaas(w.body || {});

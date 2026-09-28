@@ -6,7 +6,7 @@ Esquema SQL equivalente para migração futura: `sql/postgres_schema.sql` (gerad
 | Tabela | ID | Chave lógica | Conteúdo |
 |---|---|---|---|
 | `atom_config` | `rlZWp7gPKiB6xzw3` | `chave` | Parâmetros, IDs de campos, IDs de workflows (`status`: CONFIGURADO / PROPOSTO / PENDENTE). Nenhum segredo. |
-| `atom_eventos` | `nzO3BvmxmGXY6hZT` | `event_key` | Eventos recebidos (Pipedrive, Clicksign, Asaas, Trello) e alertas; base da deduplicação. |
+| `atom_eventos` | `nzO3BvmxmGXY6hZT` | `event_key` | Eventos recebidos (Pipedrive, Autentique, Asaas, Trello) e alertas; base da deduplicação. |
 | `atom_negocios` | `4JWPJuuhMrWIhad4` | `deal_id` | Estado consolidado do negócio (site, diagnóstico, CNPJ, formalização, contrato, pagamento, liberação, Trello, cancelamento, lock). |
 | `atom_vinculos` | `jNlKdIaPXcS7cEhF` | `sistema`+`tipo`+`id_externo` | Vínculos com IDs externos (envelope, signatários, cliente/cobranças Asaas, cartão Trello, consulta CNPJ). |
 | `atom_snapshots` | `xEk09M9Zn7SCVz1n` | `deal_id`+`versao` | Snapshot versionado (hash) dos dados formalizados usados no contrato e nas cobranças. |

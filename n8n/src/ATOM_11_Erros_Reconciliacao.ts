@@ -9,7 +9,7 @@ const alertaInterno = trigger({
   type: 'n8n-nodes-base.executeWorkflowTrigger',
   version: 1.2,
   config: { name: 'Alerta interno', parameters: { inputSource: 'passthrough' } },
-  output: [{ tipo: 'CONTRATO_RECUSADO', severidade: 'ALTA', workflow: 'ATOM_05_Clicksign', deal_id: '70', mensagem: 'Signatário recusou' }]
+  output: [{ tipo: 'CONTRATO_RECUSADO', severidade: 'ALTA', workflow: 'ATOM_05_Autentique', deal_id: '70', mensagem: 'Signatário recusou' }]
 });
 
 const normalizarAlerta = node({

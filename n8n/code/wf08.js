@@ -91,7 +91,7 @@ const chaveServ = String(c.servico || '').toUpperCase().replace(/[^A-Z0-9]+/g, '
 const responsaveis = ATOM_CONFIG.lista(cfg, 'TRELLO_RESPONSAVEL_' + chaveServ).concat(ATOM_CONFIG.lista(cfg, 'TRELLO_RESPONSAVEL_' + chaveServ).length ? [] : ATOM_CONFIG.lista(cfg, 'TRELLO_RESPONSAVEL_PADRAO'));
 const checklist = (ATOM_CONFIG.valor(cfg, 'TRELLO_CHECKLIST_' + chaveServ, '') || ATOM_CONFIG.valor(cfg, 'TRELLO_CHECKLIST_PADRAO', '')).split(';').map((s) => s.trim()).filter(Boolean);
 const appUrl = ATOM_CONFIG.valor(cfg, 'PD_APP_URL', '').replace(/\/$/, '');
-const contrato = vincs.find((v) => v.sistema === 'CLICKSIGN' && v.tipo === 'ENVELOPE');
+const contrato = vincs.filter((v) => v.sistema === 'AUTENTIQUE' && v.tipo === 'DOCUMENTO').sort((a, b) => Number(b.snapshot_versao) - Number(a.snapshot_versao))[0];
 const proposta = ATOM_PD.lerCfg(deal, cfg, 'PD_DEAL_PROPOSTA_LINK');
 const L = [];
 L.push('**Empresa:** ' + (c.empresa || deal.title || '—'));
@@ -106,7 +106,7 @@ L.push('**Responsável:** ' + (responsaveis.length ? 'membro(s) atribuído(s) ao
 const links = [];
 if (appUrl) links.push('Pipedrive: ' + appUrl + '/deal/' + a.deal_id); else links.push('Pipedrive: negócio ' + a.deal_id);
 if (proposta) links.push('Proposta: ' + proposta);
-if (contrato && contrato.link) links.push('Contrato assinado: ' + contrato.link);
+if (contrato) links.push('Contrato: documento Autentique ' + contrato.id_externo);
 L.push('**Links:** ' + links.join(' · '));
 L.push('\n' + a.marcador + ' — cartão criado automaticamente (ATOM_08). O início da execução é registrado ao mover para a lista/campo configurado.');
 const corpo = { idList: ATOM_CONFIG.valor(cfg, 'TRELLO_LIST_ENTRADA_ID', ''), name: ((c.empresa || deal.title || 'Cliente') + ' — ' + (c.servico || 'Serviço') + ' ' + a.marcador).slice(0, 250), desc: L.join('\n\n').slice(0, 15000), pos: 'top' };

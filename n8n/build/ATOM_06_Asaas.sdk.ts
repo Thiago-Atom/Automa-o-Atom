@@ -240,6 +240,18 @@ const falha = node({
   output: [{ acao: {}, alerta: {} }]
 });
 
+const acaoAnterior = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: { name: 'Ação anterior', alwaysOutputData: true, parameters: { resource: 'row', operation: 'get', dataTableId: {"__rl":true,"mode":"id","value":"g4eyHC7N33XttLZH","cachedResultName":"atom_acoes"}, matchType: 'allConditions', filters: {"conditions":[{"keyName":"request_id","condition":"eq","keyValue":"={{ $json.acao.request_id }}"}]}, limit: 1 } },
+  output: [{}]
+});
+
+const acumular = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Acumular tentativas', parameters: { mode: 'runOnceForAllItems', jsCode: "// Gerado por n8n/build.js a partir de n8n/code/wf06.js#acumular + lib/{util}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction backoffMinutes(attempt, maxMinutes) {\n  const m = Math.pow(2, Math.max(0, attempt));\n  return Math.min(m, maxMinutes || 720);\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const f = $(\"Falha na criação\").first().json;\n  const anterior = $input.all().map((i) => i.json).find((r) => r && r.request_id) || {};\n  const tentativas = Number(anterior.tentativas || 0) + 1;\n  const agora = Date.now();\n  return [{ json: { acao: Object.assign({}, f.acao, {\n    tentativas,\n    criado_em: anterior.criado_em || f.acao.criado_em,\n    proxima_tentativa: new Date(agora + backoffMinutes(tentativas, 720) * 6e4).toISOString()\n  }) } }];\n})();\nreturn __resultado;" } },
+  output: [{ acao: {} }]
+});
+
 const salvarFalha = node({
   type: 'n8n-nodes-base.dataTable', version: 1.1,
   config: { name: 'Registrar falha', parameters: { resource: 'row', operation: 'upsert', dataTableId: {"__rl":true,"mode":"id","value":"g4eyHC7N33XttLZH","cachedResultName":"atom_acoes"}, matchType: 'allConditions', filters: {"conditions":[{"keyName":"request_id","condition":"eq","keyValue":"={{ $json.acao.request_id }}"}]}, columns: {"mappingMode":"defineBelow","value":{"request_id":"={{ $json.acao.request_id }}","sistema":"={{ $json.acao.sistema }}","acao":"={{ $json.acao.acao }}","deal_id":"={{ $json.acao.deal_id }}","status":"={{ $json.acao.status }}","tentativas":"={{ $json.acao.tentativas }}","proxima_tentativa":"={{ $json.acao.proxima_tentativa }}","ultimo_erro":"={{ $json.acao.ultimo_erro }}","payload":"={{ $json.acao.payload }}","resultado":"={{ $json.acao.resultado }}","criado_em":"={{ $json.acao.criado_em }}","atualizado_em":"={{ $json.acao.atualizado_em }}"},"matchingColumns":[],"schema":[{"id":"request_id","displayName":"request_id","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"sistema","displayName":"sistema","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"acao","displayName":"acao","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"deal_id","displayName":"deal_id","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"status","displayName":"status","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"tentativas","displayName":"tentativas","required":false,"defaultMatch":false,"display":true,"type":"number","canBeUsedToMatch":true},{"id":"proxima_tentativa","displayName":"proxima_tentativa","required":false,"defaultMatch":false,"display":true,"type":"dateTime","canBeUsedToMatch":true},{"id":"ultimo_erro","displayName":"ultimo_erro","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"payload","displayName":"payload","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"resultado","displayName":"resultado","required":false,"defaultMatch":false,"display":true,"type":"string","canBeUsedToMatch":true},{"id":"criado_em","displayName":"criado_em","required":false,"defaultMatch":false,"display":true,"type":"dateTime","canBeUsedToMatch":true},{"id":"atualizado_em","displayName":"atualizado_em","required":false,"defaultMatch":false,"display":true,"type":"dateTime","canBeUsedToMatch":true}]} } },
@@ -457,6 +469,8 @@ export default workflow('atom-06', 'ATOM_06_Asaas', { settings: { timezone: 'Ame
   .add(postCliente.onError(falha))
   .add(postCobranca.onError(falha))
   .add(falha)
+  .to(acaoAnterior)
+  .to(acumular)
   .to(salvarFalha)
   .to(prepAlertaFalha)
   .to(alertaFalha)

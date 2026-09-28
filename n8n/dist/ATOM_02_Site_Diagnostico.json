@@ -2,7 +2,7 @@
   "name": "ATOM_02_Site_Diagnostico",
   "nodes": [
     {
-      "id": "81c47a3b-d596-4c26-bcfa-833844a6ecef",
+      "id": "0f0fa9d0-4b00-4493-adf1-228f8c3a7942",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "bf392fe6-5326-4613-bde0-6809b9e3013f",
+      "id": "fd9830e6-5f66-4335-ad16-282f331cb235",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "9b76ae26-a5ec-4a59-88ab-b40edc9aaca7",
+      "id": "36297b2c-24b4-430d-acca-2f87cd9f9bca",
       "name": "Modo",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -78,7 +78,7 @@
       }
     },
     {
-      "id": "da4ba29a-1d59-47cc-988b-adc39939f072",
+      "id": "57fc68ba-ce70-4963-b1d7-2f7e3906490a",
       "name": "Preparar busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -92,7 +92,7 @@
       }
     },
     {
-      "id": "0d52a7af-15d5-4e8b-93c4-28ec500be921",
+      "id": "72395083-8cc3-44c6-8ea2-f104d1903b3b",
       "name": "Busca permitida?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -124,7 +124,7 @@
       }
     },
     {
-      "id": "9ce6aea4-7ecf-467c-8925-1910634e36f3",
+      "id": "bbbe6300-7038-4568-bad7-1dc7f32bd291",
       "name": "DNS (A)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -158,7 +158,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "61db0f68-2ca2-4a23-9a5c-465a4d02eeca",
+      "id": "057d917b-d775-4b38-a566-7da6699d2a46",
       "name": "DNS (AAAA)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -192,7 +192,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "c0c1c0eb-4251-4bf1-84f1-3e1747f743d5",
+      "id": "0c23a9c3-ded8-4239-8a33-a3eaf785579b",
       "name": "Avaliar DNS",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -206,7 +206,7 @@
       }
     },
     {
-      "id": "4ad5877d-2540-4522-a3b2-a91ee5caa870",
+      "id": "310ea88a-4c84-4862-8d32-e4f9879d06e8",
       "name": "DNS seguro?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -238,7 +238,7 @@
       }
     },
     {
-      "id": "8e6c8064-da3f-4ff9-926b-aca727f77dd2",
+      "id": "6155efcc-bd17-44e0-8359-14c90129accb",
       "name": "Acessar URL (sem seguir redirecionamento)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -282,7 +282,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "6e00f044-5f62-40e9-82d7-2388a0c4a6f1",
+      "id": "ed5512fa-0715-427c-a113-9f1af51cd518",
       "name": "Avaliar resposta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -296,7 +296,7 @@
       }
     },
     {
-      "id": "a5b7e46e-49ae-44a7-876d-b7b5a8d2b4b5",
+      "id": "3a2818c0-6fe7-44be-9a2a-f84dd742efd6",
       "name": "Redirecionar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -328,7 +328,7 @@
       }
     },
     {
-      "id": "f2b86c56-94f8-49c1-a4d9-63c14a5e46b3",
+      "id": "70567ff2-6d5d-4429-ad35-7880d3bc75fb",
       "name": "Próximo salto (validação repetida)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -350,7 +350,7 @@
       }
     },
     {
-      "id": "f441ef04-3938-4006-bc19-da59f98cc99a",
+      "id": "8b0dd224-5390-45aa-a284-80b4ba227666",
       "name": "Resultado da busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -364,7 +364,7 @@
       }
     },
     {
-      "id": "fc1d6aa3-f6fb-4181-a5d9-6d5a1d5bad94",
+      "id": "1c7d3c98-7eff-4412-ae48-b96ac390ba80",
       "name": "Preparar consulta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -378,7 +378,7 @@
       }
     },
     {
-      "id": "fb50e4aa-0cee-4f38-99af-0da21e8a7bd9",
+      "id": "ee5f7d68-a2ef-4c64-8625-cd65fba36576",
       "name": "Buscar negócios (atualizados)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -404,7 +404,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "d4830afd-865c-4f20-b2dd-a733324c7323",
+      "id": "705e0394-0533-4f21-b38e-9a1217a802b0",
       "name": "Selecionar negócios",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -418,7 +418,7 @@
       }
     },
     {
-      "id": "9adaec10-f061-42f4-b32e-bb7815b9f7d3",
+      "id": "f0f722f3-61b6-42ae-94f8-6295121effb9",
       "name": "Redespachar por negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -450,7 +450,7 @@
       }
     },
     {
-      "id": "6113194f-4fd6-4cac-8db3-2ccc147448a7",
+      "id": "7d7b08a3-f08b-424d-a862-8e7454e21508",
       "name": "Redespachar negócio",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -472,7 +472,7 @@
       }
     },
     {
-      "id": "fe2c88f1-14c5-456f-a03e-119c57e29486",
+      "id": "0629a839-217f-449c-ab31-98ce59e65279",
       "name": "Buscar organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -500,7 +500,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "1b2598d9-5f12-4533-8c8d-f0369dea3071",
+      "id": "410141a1-8318-4a9b-a7d0-004ce46befdc",
       "name": "Buscar pessoa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -528,7 +528,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "1129122c-5424-4d6f-bc48-b17f936c2ccd",
+      "id": "c82c9c51-3926-4f6c-9982-c4fbd0e74a43",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -560,7 +560,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "2a7c96d5-9bde-49db-9566-f2bcf20c63e9",
+      "id": "6c61ff23-7ede-45cd-988e-9740e615c6bc",
       "name": "Escolher site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -574,7 +574,7 @@
       }
     },
     {
-      "id": "06cb891a-fa08-4615-98b4-da008caf2652",
+      "id": "f30e419d-7432-4c88-a3de-07a10b5e4a1d",
       "name": "Ação do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -662,7 +662,7 @@
       }
     },
     {
-      "id": "cf8fa0fb-0a6e-4119-bb78-2a697cc1d58a",
+      "id": "a3978f4e-4de4-45fc-bb7c-d0927bf8d8d1",
       "name": "Buscar página (segura)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -684,7 +684,7 @@
       }
     },
     {
-      "id": "046ab85e-553f-4353-8033-8f00cf3dbdf4",
+      "id": "104c32e4-3028-44c6-9254-3d859c5f68bf",
       "name": "Estado do site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -698,7 +698,7 @@
       }
     },
     {
-      "id": "b2226de4-0769-44d5-9f6f-f105696ba7fb",
+      "id": "a8a4767c-bf18-44b8-a9ae-648a034be79a",
       "name": "Salvar estado do site",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -816,7 +816,7 @@
       }
     },
     {
-      "id": "ce57aadc-c29c-445d-b77a-c6cf0e3ac213",
+      "id": "0b21554d-c22c-4534-8507-fa9be701f20b",
       "name": "Atualização da organização",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -830,7 +830,7 @@
       }
     },
     {
-      "id": "34ea2951-8cf5-4305-9227-c82228c2178c",
+      "id": "2925bb3a-8024-4c73-9ae2-9b7f29a8d5be",
       "name": "Atualizar organização?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -862,7 +862,7 @@
       }
     },
     {
-      "id": "5705aaa2-4f1f-4388-bb87-efe4d9fe1ae9",
+      "id": "4bcc1771-baef-4e7a-b39a-de4e040b09fd",
       "name": "Atualizar organização no Pipedrive",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -887,7 +887,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "13db260c-bfab-468d-b50f-97a2d18c6135",
+      "id": "3917b33b-51d9-410b-975a-203e3fa6818d",
       "name": "Resultado do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -928,7 +928,7 @@
       }
     },
     {
-      "id": "5cd4fb99-c047-4e21-9dd4-5fe08f108ce5",
+      "id": "b84ba5df-194b-4867-a580-1cc9fba335b5",
       "name": "Pedido de site à Zayra",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -942,7 +942,7 @@
       }
     },
     {
-      "id": "b7d01a6a-6dfa-43c5-8b2e-c801c1fab331",
+      "id": "0e770d5f-b461-4d5f-a6ca-ba03a4948a1d",
       "name": "Estado: cliente sem site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -956,7 +956,7 @@
       }
     },
     {
-      "id": "35ff1e43-44ab-42fa-9373-93d1032fe4dd",
+      "id": "133f434d-25ff-4bbf-8cbd-cbbbd28ac6cd",
       "name": "Salvar estado (site pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1074,7 +1074,7 @@
       }
     },
     {
-      "id": "5b725e4f-6461-478f-83b8-e6f7fa53d375",
+      "id": "4cbf5afa-8429-4e2e-81cf-02c576853a45",
       "name": "Diagnóstico necessário?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1088,7 +1088,7 @@
       }
     },
     {
-      "id": "8fc6cd85-9b95-4753-a620-7a4e637387bc",
+      "id": "65eac16a-f426-4932-8e36-d903a2b7a6dd",
       "name": "Buscar robots e sitemap",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1110,7 +1110,7 @@
       }
     },
     {
-      "id": "8452cfd6-3c20-45df-beb8-583028b6932c",
+      "id": "3ef84932-9a97-422a-9543-5309ab32a36d",
       "name": "Extrair evidências",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1124,7 +1124,7 @@
       }
     },
     {
-      "id": "fe439fd5-f636-4a56-bd13-293156296b74",
+      "id": "55f89573-28c6-4297-b359-3f0371815f82",
       "name": "Executar Claude?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1155,7 +1155,7 @@
       }
     },
     {
-      "id": "37b01b60-5508-4b3c-ace7-656205ac1b69",
+      "id": "446d3c7f-7f86-4119-9321-e2593c2d9138",
       "name": "Montar pedido à Claude",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1169,7 +1169,7 @@
       }
     },
     {
-      "id": "888640cc-a1f7-4f75-8693-683c87002483",
+      "id": "b2215513-cd63-4d61-92e4-e83e5e4c1a25",
       "name": "Claude — diagnóstico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1207,7 +1207,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "cf5d0b1e-f730-4a5e-9266-da25f3677dfd",
+      "id": "a041d079-43fb-43ec-b60b-f483f5a5ccef",
       "name": "Validar diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1221,7 +1221,7 @@
       }
     },
     {
-      "id": "97a05ce2-ef86-4146-94da-051dee3086fe",
+      "id": "172a0a05-0c3c-4dbe-8c94-c644f1fab27e",
       "name": "Diagnóstico válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1253,7 +1253,7 @@
       }
     },
     {
-      "id": "8c25de4b-9916-457d-8086-605503869993",
+      "id": "0a3b5f16-c8e3-4df7-80fe-b710ec6a7e73",
       "name": "Registrar diagnóstico (nota no negócio)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1277,7 +1277,7 @@
       "credentials": {}
     },
     {
-      "id": "365bd78c-82b2-414c-aa02-67fd7db80820",
+      "id": "4240dd69-c4b5-4473-8964-cceafca374c7",
       "name": "Campos do diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1291,7 +1291,7 @@
       }
     },
     {
-      "id": "07ce3711-4ec7-460d-9708-c5194f4bd1da",
+      "id": "c89e537f-d554-4202-9314-90e74a3c45e9",
       "name": "Atualizar campos do negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1323,7 +1323,7 @@
       }
     },
     {
-      "id": "dd07ddab-28f4-4251-a4f2-2006b76f1478",
+      "id": "38bd8e52-7db2-430d-bbd7-89980710b15a",
       "name": "Atualizar negócio (diagnóstico)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1348,7 +1348,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "21e1111c-f372-41d2-aa8d-5ce088a0e925",
+      "id": "a6a5cca4-8409-4ee2-ac0d-5120fb795d96",
       "name": "Salvar estado do diagnóstico",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1436,7 +1436,7 @@
       }
     },
     {
-      "id": "8b29365a-fd8c-4590-a171-d3ae00ef013f",
+      "id": "0b7ffb05-a84b-467b-8fad-d6bf47d5ba1d",
       "name": "Diagnóstico inválido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1450,7 +1450,7 @@
       }
     },
     {
-      "id": "d92e331e-7de9-480c-ab79-361d5f7b712c",
+      "id": "e7c45225-9167-4f23-b7f7-2b277f0bd5aa",
       "name": "Salvar diagnóstico inválido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1538,7 +1538,7 @@
       }
     },
     {
-      "id": "7ac0b42e-e2ce-40fd-8231-cf35f69f9a31",
+      "id": "70c01813-8c6c-4548-b1f6-70512426edc8",
       "name": "Preparar alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1552,7 +1552,7 @@
       }
     },
     {
-      "id": "5e96dbb7-b73a-4c18-8a99-1b6b2397e62d",
+      "id": "9dddd750-c7d5-48ec-985e-d212eb2fdb11",
       "name": "ATOM_11 — alerta diagnóstico",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1575,7 +1575,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ebdf8658-45e5-445c-94d2-67812980831b",
+      "id": "8a79c090-d5e2-487f-916f-d952b62b5177",
       "name": "Evidências aguardando modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1589,7 +1589,7 @@
       }
     },
     {
-      "id": "be840848-75b8-48af-a771-20fa17684f6d",
+      "id": "fd5ea6df-e43c-4144-a379-e7a21e572f9a",
       "name": "Registrar nota de evidências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1621,7 +1621,7 @@
       }
     },
     {
-      "id": "2748991e-8abf-49a9-88a1-526937e40b06",
+      "id": "ef6000af-51d8-4c88-9fa3-8e17b776a16f",
       "name": "Nota de evidências",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1646,7 +1646,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "a895f31f-8093-4701-933d-6745a9902809",
+      "id": "2d1ab5c5-ecc8-41d0-9527-6daf55e72259",
       "name": "Salvar estado (diagnóstico pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1734,7 +1734,7 @@
       }
     },
     {
-      "id": "8b6902b9-7414-445d-a0a1-8ad2d4243bb5",
+      "id": "92017e02-15da-4b92-8876-44124331ccf0",
       "name": "Pendência de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1748,7 +1748,7 @@
       }
     },
     {
-      "id": "c047294e-1587-494d-b77c-ed18e3ba9724",
+      "id": "aaf9bdbd-3678-43c8-b50c-ad5ee1bc2580",
       "name": "Registrar nota do site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1780,7 +1780,7 @@
       }
     },
     {
-      "id": "db676548-a058-413e-add3-439642df355f",
+      "id": "9cc8e883-0f03-4a63-b33e-eac7a83785e7",
       "name": "Nota de conferência do site",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1805,7 +1805,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5b3b1355-4257-4fd4-8fc5-31b358963774",
+      "id": "740f6e96-8178-4bc6-9648-6261157b03e7",
       "name": "Pedir site ao cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1837,7 +1837,7 @@
       }
     },
     {
-      "id": "a2fa44b0-55c8-4a63-845a-de06a6ac6dad",
+      "id": "bcd95970-327b-40f5-9b96-5a70ca9694bb",
       "name": "ATOM_10 — solicitar site",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1860,7 +1860,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "14104bf3-a3b6-47ef-9746-f35c8459cbcf",
+      "id": "723e2dfd-c464-479a-9730-b4e301b4dbde",
       "name": "Estado após pedido de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1874,8 +1874,8 @@
       }
     },
     {
-      "id": "2a8587e1-a30a-4877-b27b-9ea74ae2df56",
-      "name": "Sticky Note 2a8587e1",
+      "id": "cfcc2440-ccea-4ff0-92b1-d7e6524634ae",
+      "name": "Sticky Note cfcc2440",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

@@ -39,7 +39,7 @@ Como fica o funil:
 | 2 | Contactado | Validação do site + diagnóstico |
 | 3 | Proposta Enviada | — |
 | 4 | Reunião concluída | — |
-| 5 | **Proposta aceita** (nova) | Conferência dos dados → contrato (Clicksign) + cobrança (Asaas) |
+| 5 | **Proposta aceita** (nova) | Conferência dos dados → contrato (Google Docs + Autentique) + cobrança (Asaas) |
 | 6 | Contrato assinado | — |
 
 > Mova um negócio para "Proposta aceita" **somente** quando os campos comerciais estiverem preenchidos e as condições aprovadas.
@@ -91,7 +91,7 @@ São os dados usados no contrato e nas cobranças. **Nenhum valor é inventado p
 |---|---|---|
 | ATOM · Serviço | Texto | Ex.: "Site institucional" |
 | ATOM · Escopo aprovado | Texto grande | |
-| ATOM · Modelo de contrato | Texto | Código do modelo na Clicksign, ex.: `SITE` |
+| ATOM · Modelo de contrato | Texto | `CURINGA_PROJETO` (valor total, projeto pontual) ou `CURINGA_RECORRENTE` (mensalidade + duração) |
 | ATOM · Prazo de execução | Texto | Texto livre ou data `AAAA-MM-DD` |
 | ATOM · Duração (meses) | Numérico | Para recorrência |
 | ATOM · Condições aprovadas | Texto | `Sim` ou vazio — **marque só com valores finais** |
@@ -135,8 +135,8 @@ Todos do tipo **Texto**, exceto os indicados:
 | ATOM · Versão do diagnóstico | Texto |
 | ATOM · Pendências | Texto grande |
 | ATOM · Status do contrato | Texto |
-| ATOM · ID do envelope | Texto |
-| ATOM · Link do envelope | Texto |
+| ATOM · ID do envelope | Texto (guarda o ID do documento na Autentique) |
+| ATOM · Link do envelope | Texto (guarda o link de assinatura do cliente na Autentique) |
 | ATOM · Status do pagamento inicial | Texto |
 | ATOM · IDs Asaas | Texto |
 | ATOM · ID do cartão Trello | Texto |

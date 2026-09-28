@@ -3,7 +3,7 @@
     "chave": "MODO_EXECUCAO",
     "valor": "SIMULACAO",
     "status": "CONFIGURADO",
-    "descricao": "SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Clicksign, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO).",
+    "descricao": "SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Autentique/Google Docs, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO).",
     "usado_por": "todos"
   },
   {
@@ -325,7 +325,7 @@
     "chave": "PD_DEAL_NOME_SIGNATARIO",
     "valor": "7c9a537bdaa12e9e25bb7ec9454f5d6ad36d38c0",
     "status": "CONFIGURADO",
-    "descricao": "Campo do negócio (hash ou nativo:<campo>): Nome do signatário (somente se a Clicksign exigir)",
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): Nome do signatário (exigido só se CONTRATO_EXIGE_NOME_SIGNATARIO=true)",
     "usado_por": "ATOM_02-09"
   },
   {
@@ -385,18 +385,18 @@
     "usado_por": "ATOM_02-09"
   },
   {
-    "chave": "PD_DEAL_CLICKSIGN_ID",
+    "chave": "PD_DEAL_CONTRATO_ID",
     "valor": "5079d56f57a999807114b8d147f06460ab5c76f5",
     "status": "CONFIGURADO",
-    "descricao": "Campo do negócio (hash ou nativo:<campo>): ID do envelope Clicksign",
-    "usado_por": "ATOM_02-09"
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): ID do documento do contrato na Autentique (campo \"ATOM · ID do envelope\")",
+    "usado_por": "ATOM_05"
   },
   {
-    "chave": "PD_DEAL_CLICKSIGN_LINK",
+    "chave": "PD_DEAL_CONTRATO_LINK",
     "valor": "53d560a9b35302f0cbf2dae12b05ddf69a3d7da2",
     "status": "CONFIGURADO",
-    "descricao": "Campo do negócio (hash ou nativo:<campo>): Link do envelope",
-    "usado_por": "ATOM_02-09"
+    "descricao": "Campo do negócio (hash ou nativo:<campo>): link de assinatura do cliente na Autentique (campo \"ATOM · Link do envelope\")",
+    "usado_por": "ATOM_05"
   },
   {
     "chave": "PD_DEAL_PAGAMENTO_STATUS",
@@ -518,67 +518,74 @@
     "usado_por": "ATOM_03"
   },
   {
-    "chave": "CLICKSIGN_BASE_URL",
-    "valor": "https://sandbox.clicksign.com/api/v3",
-    "status": "PROPOSTO",
-    "descricao": "Sandbox (testes) ou https://app.clicksign.com/api/v3 (produção).",
+    "chave": "AUTENTIQUE_SIGNATARIO_ATOM_EMAIL",
+    "valor": "thiago@atomdigital.com.br",
+    "status": "CONFIGURADO",
+    "descricao": "E-mail do signatário da Atom na Autentique",
     "usado_por": "ATOM_05"
   },
   {
-    "chave": "CLICKSIGN_VALIDADO_SANDBOX",
+    "chave": "AUTENTIQUE_SIGNATARIO_ATOM_NOME",
     "valor": "",
     "status": "PENDENTE",
-    "descricao": "Marcar CONFIGURADO (valor SIM) após validar no sandbox: documento por modelo, signatário sem CPF, cabeçalho HMAC e payload do webhook.",
+    "descricao": "Nome de quem assina pela Atom (informativo; a Autentique identifica o signatário pelo e-mail).",
     "usado_por": "ATOM_05"
   },
   {
-    "chave": "CLICKSIGN_AUTENTICACAO",
-    "valor": "email",
-    "status": "PROPOSTO",
-    "descricao": "Autenticação do signatário no requisito provide_evidence (ex.: email).",
-    "usado_por": "ATOM_05"
-  },
-  {
-    "chave": "CLICKSIGN_SIGNATARIO_ATOM_NOME",
+    "chave": "AUTENTIQUE_VALIDADO_SANDBOX",
     "valor": "",
     "status": "PENDENTE",
-    "descricao": "Nome do signatário da Atom.",
+    "descricao": "Marcar CONFIGURADO (valor SIM) após validar em SANDBOX: criação do documento, convites, assinatura de cliente e Atom, webhook e consulta. Exigido só em PRODUCAO.",
     "usado_por": "ATOM_05"
   },
   {
-    "chave": "CLICKSIGN_SIGNATARIO_ATOM_EMAIL",
+    "chave": "AUTENTIQUE_HMAC_CABECALHO",
     "valor": "",
     "status": "PENDENTE",
-    "descricao": "E-mail do signatário da Atom.",
+    "descricao": "Nome do cabeçalho com o HMAC-SHA256 do webhook (confirmar no primeiro evento do sandbox). Vazio: o webhook só aciona uma releitura do documento pela API.",
     "usado_por": "ATOM_05"
   },
   {
-    "chave": "CLICKSIGN_EXIGE_NOME_SIGNATARIO",
+    "chave": "GDRIVE_PASTA_CONTRATOS_ID",
+    "valor": "1oZncggrGSWFUI26YZA9Emke3Rm9JnrVK",
+    "status": "CONFIGURADO",
+    "descricao": "Pasta do Google Drive 'Contratos ATOM (n8n)' onde as cópias preenchidas são salvas",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CONTRATO_MODELO_CURINGA_PROJETO",
+    "valor": "1RrM4dBa9ypfDWOpejs2ZDBmwlI4ucMND-bhZ-vJbEiM",
+    "status": "CONFIGURADO",
+    "descricao": "Google Doc 'Modelo Contrato ATOM — CURINGA_PROJETO' (valor total, projeto pontual)",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CONTRATO_MAPA_CURINGA_PROJETO",
+    "valor": "{\"RAZAO_SOCIAL\":\"empresa.razao_social\",\"CNPJ\":{\"campo\":\"empresa.cnpj\",\"formato\":\"cnpj\"},\"ENDERECO\":{\"campo\":\"empresa.endereco\",\"formato\":\"endereco\"},\"NOME_SIGNATARIO\":\"contatos.nome_signatario\",\"SERVICO\":\"comercial.servico\",\"ESCOPO\":\"comercial.escopo\",\"PRAZO_EXECUCAO\":\"comercial.prazo_execucao\",\"VALOR_TOTAL\":{\"campo\":\"financeiro.valor_total\",\"formato\":\"moeda\"},\"PRIMEIRO_VENCIMENTO\":{\"campo\":\"financeiro.primeiro_vencimento\",\"formato\":\"data\"}}",
+    "status": "CONFIGURADO",
+    "descricao": "Variáveis {{VAR}} do modelo CURINGA_PROJETO → campos do snapshot",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CONTRATO_MODELO_CURINGA_RECORRENTE",
+    "valor": "1J9ziVXGc6y6Xlx41x89dxmiRL57ivrXiV71bjNRWh34",
+    "status": "CONFIGURADO",
+    "descricao": "Google Doc 'Modelo Contrato ATOM — CURINGA_RECORRENTE' (mensalidade + duração)",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CONTRATO_MAPA_CURINGA_RECORRENTE",
+    "valor": "{\"RAZAO_SOCIAL\":\"empresa.razao_social\",\"CNPJ\":{\"campo\":\"empresa.cnpj\",\"formato\":\"cnpj\"},\"ENDERECO\":{\"campo\":\"empresa.endereco\",\"formato\":\"endereco\"},\"NOME_SIGNATARIO\":\"contatos.nome_signatario\",\"SERVICO\":\"comercial.servico\",\"ESCOPO\":\"comercial.escopo\",\"PRAZO_EXECUCAO\":\"comercial.prazo_execucao\",\"MENSALIDADE\":{\"campo\":\"financeiro.mensalidade\",\"formato\":\"moeda\"},\"PRIMEIRO_VENCIMENTO\":{\"campo\":\"financeiro.primeiro_vencimento\",\"formato\":\"data\"},\"DURACAO_MESES\":{\"campo\":\"comercial.duracao_meses\",\"formato\":\"inteiro\"}}",
+    "status": "CONFIGURADO",
+    "descricao": "Variáveis {{VAR}} do modelo CURINGA_RECORRENTE → campos do snapshot",
+    "usado_por": "ATOM_05"
+  },
+  {
+    "chave": "CONTRATO_EXIGE_NOME_SIGNATARIO",
     "valor": "true",
-    "status": "PROPOSTO",
-    "descricao": "Se a Clicksign exigir nome do signatário, ele é pedido explicitamente ao cliente (não é coletado em silêncio).",
+    "status": "CONFIGURADO",
+    "descricao": "true: os modelos CURINGA_* usam {{NOME_SIGNATARIO}}, então o nome do signatário do cliente é pedido explicitamente na conferência (ATOM_04).",
     "usado_por": "ATOM_04"
-  },
-  {
-    "chave": "CLICKSIGN_HMAC_CABECALHO",
-    "valor": "content-hmac",
-    "status": "PROPOSTO",
-    "descricao": "Cabeçalho com a assinatura HMAC do webhook (fontes divergem: Content-Hmac ou x-clicksign-signature).",
-    "usado_por": "ATOM_05"
-  },
-  {
-    "chave": "CLICKSIGN_MODELO_EXEMPLO",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "Chave do modelo aprovado para PD_DEAL_MODELO_CONTRATO=EXEMPLO. Criar uma linha CLICKSIGN_MODELO_<CODIGO> por modelo.",
-    "usado_por": "ATOM_05"
-  },
-  {
-    "chave": "CLICKSIGN_MAPA_EXEMPLO",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "JSON {\"VARIAVEL_DO_MODELO\":\"caminho.no.snapshot\"}, ex.: {\"RAZAO_SOCIAL\":\"empresa.razao_social\",\"VALOR_TOTAL\":\"financeiro.valor_total\"}.",
-    "usado_por": "ATOM_05"
   },
   {
     "chave": "COBRANCA_DISPARO",
@@ -792,9 +799,9 @@
   },
   {
     "chave": "WF_ATOM_05",
-    "valor": "t88mptq0VysxNiKd",
+    "valor": "LSf8X0ufNXEY8mDY",
     "status": "CONFIGURADO",
-    "descricao": "ID do workflow ATOM_05_Clicksign",
+    "descricao": "ID do workflow ATOM_05_Autentique",
     "usado_por": "ATOM_04, ATOM_11"
   },
   {

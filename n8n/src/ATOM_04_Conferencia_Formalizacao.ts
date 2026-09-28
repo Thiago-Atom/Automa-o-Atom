@@ -252,15 +252,15 @@ const patchLimpar = node({
   output: [{ success: true }]
 });
 
-const prepClicksign = node({
+const prepContrato = node({
   type: 'n8n-nodes-base.code', version: 2,
-  config: { name: 'Pedido de contrato', parameters: { mode: 'runOnceForAllItems', jsCode: "return [{ json: $('Conferir dados').first().json.clicksign }];" } },
-  output: [{ acao: 'CRIAR_ENVELOPE', deal_id: '70', versao: 1 }]
+  config: { name: 'Pedido de contrato', parameters: { mode: 'runOnceForAllItems', jsCode: "return [{ json: $('Conferir dados').first().json.contrato }];" } },
+  output: [{ acao: 'CRIAR_CONTRATO', deal_id: '70', versao: 1 }]
 });
 
-const clicksign = node({
+const contratoWf = node({
   type: 'n8n-nodes-base.executeWorkflow', version: 1.3,
-  config: { name: 'ATOM_05 — criar envelope', onError: 'continueRegularOutput', parameters: { mode: 'once', source: 'database', workflowId: @@{CFGWF('WF_ATOM_05')}@@, options: { waitForSubWorkflow: false } } }
+  config: { name: 'ATOM_05 — criar contrato', onError: 'continueRegularOutput', parameters: { mode: 'once', source: 'database', workflowId: @@{CFGWF('WF_ATOM_05')}@@, options: { waitForSubWorkflow: false } } }
 });
 
 // Mesma versão: garante que o contrato exista (ATOM_05 é idempotente)
@@ -304,10 +304,10 @@ export default workflow('atom-04', 'ATOM_04_Conferencia_Formalizacao', { setting
             .onTrue(patchPend.to(pedirCliente))
             .onFalse(pedirCliente)))))
         .onCase(1, substituir.to(inserirSnapshot).to(salvarConferido).to(limparPend
-          .onTrue(patchLimpar.to(prepClicksign))
-          .onFalse(prepClicksign)))
-        .onCase(2, salvarMesma.to(prepClicksign))
+          .onTrue(patchLimpar.to(prepContrato))
+          .onFalse(prepContrato)))
+        .onCase(2, salvarMesma.to(prepContrato))
         .onCase(3, salvarBloq.to(prepAlertaBloq).to(execAlertaBloq)))))))
   .add(pedirCliente.onTrue(prepPedido.to(zayra)))
-  .add(prepClicksign.to(clicksign))
+  .add(prepContrato.to(contratoWf))
   .add(nota);

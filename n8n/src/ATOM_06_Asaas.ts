@@ -240,6 +240,18 @@ const falha = node({
   output: [{ acao: {}, alerta: {} }]
 });
 
+const acaoAnterior = node({
+  type: 'n8n-nodes-base.dataTable', version: 1.1,
+  config: { name: 'Ação anterior', alwaysOutputData: true, parameters: { resource: 'row', operation: 'get', dataTableId: @@{TABLE('atom_acoes')}@@, matchType: 'allConditions', filters: @@{FILTER([['request_id', 'eq', '$json.acao.request_id']])}@@, limit: 1 } },
+  output: [{}]
+});
+
+const acumular = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Acumular tentativas', parameters: { mode: 'runOnceForAllItems', jsCode: @@{CODE('wf06', 'acumular')}@@ } },
+  output: [{ acao: {} }]
+});
+
 const salvarFalha = node({
   type: 'n8n-nodes-base.dataTable', version: 1.1,
   config: { name: 'Registrar falha', parameters: { resource: 'row', operation: 'upsert', dataTableId: @@{TABLE('atom_acoes')}@@, matchType: 'allConditions', filters: @@{FILTER([['request_id', 'eq', '$json.acao.request_id']])}@@, columns: @@{COLS('atom_acoes', 'acao')}@@ } },
@@ -457,6 +469,8 @@ export default workflow('atom-06', 'ATOM_06_Asaas', { settings: { timezone: 'Ame
   .add(postCliente.onError(falha))
   .add(postCobranca.onError(falha))
   .add(falha)
+  .to(acaoAnterior)
+  .to(acumular)
   .to(salvarFalha)
   .to(prepAlertaFalha)
   .to(alertaFalha)

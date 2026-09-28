@@ -69,9 +69,9 @@ return [{ json: {
   decisao, deal_id: row.deal_id, org_id: row.org_id, versao, row, corpo_deal: at.corpo, atualizar_deal: !at.vazio && !!est.pendencias,
   snapshot: { deal_id: row.deal_id, versao, hash: m.hash, dados: JSON.stringify(Object.assign({ versao }, m.dados)), status: 'ATIVO', criado_em: agora },
   status_anterior: ultimo ? ultimo.status : null,
-  clicksign: { acao: 'CRIAR_ENVELOPE', deal_id: row.deal_id, versao },
+  contrato: { acao: 'CRIAR_CONTRATO', deal_id: row.deal_id, versao },
   alerta: decisao === 'ALTERACAO_APOS_ENVIO' ? { tipo: 'CONDICOES_ALTERADAS_APOS_ENVIO', severidade: 'ALTA', workflow: 'ATOM_04_Conferencia_Formalizacao', deal_id: row.deal_id,
-    mensagem: 'As condições/dados do negócio mudaram depois do envio do contrato (versão ' + versao + ', status ' + ultimo.status + '). Nada foi alterado automaticamente. Decida manualmente: manter, ou cancelar o envelope e reemitir.' } : null,
+    mensagem: 'As condições/dados do negócio mudaram depois do envio do contrato (versão ' + versao + ', status ' + ultimo.status + '). Nada foi alterado automaticamente. Decida manualmente: manter, ou cancelar o documento na Autentique e reemitir.' } : null,
 } }];
 //#endregion
 

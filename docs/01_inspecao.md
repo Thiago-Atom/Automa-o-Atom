@@ -27,10 +27,10 @@ Feita antes da construção, sem alterar nenhum sistema.
 
 - Quadros existentes: ATOM, DEMANDAS, Comercial, Gear, entre outros. O quadro/lista de execução não foi definido.
 
-## Asaas, Clicksign, Controlle, Zayra, Google
+## Asaas, assinatura eletrônica, Controlle, Zayra, Google
 
 - Asaas: há um workflow de teste de conexão; ambiente sandbox não confirmado para este projeto.
-- Clicksign: nenhum modelo, signatário ou chave foi informado.
+- Assinatura eletrônica: inicialmente Clicksign; em 2026-09-28 substituída pela **Autentique** (modelo no Google Docs). Nenhum modelo, signatário ou chave foi informado ainda.
 - Controlle: API e mapeamento **não fornecidos** (integração desativada por decisão do escopo).
 - Zayra: mecanismo de acionamento externo **não documentado** para este projeto; contrato proposto em `docs/09_contrato_zayra.md`.
 - Google: link direto de avaliação do Perfil da Empresa e template WhatsApp aprovado **não informados**.

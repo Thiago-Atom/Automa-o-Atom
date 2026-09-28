@@ -10,7 +10,7 @@ Toda leitura/escrita de campo passa por uma chave de `atom_config`. Nenhum ID de
 
 Campos personalizados: informe o **hash de 40 caracteres** do campo (Pipedrive → Configurações → Campos de dados). Campos nativos: `nativo:<nome>` (ex.: `nativo:website`).
 
-Resumo: 78 CONFIGURADO, 17 PROPOSTO, 26 PENDENTE (total 121).
+Resumo: 85 CONFIGURADO, 13 PROPOSTO, 24 PENDENTE (total 122).
 
 ## Campos da organização (Pipedrive)
 
@@ -57,7 +57,7 @@ Resumo: 78 CONFIGURADO, 17 PROPOSTO, 26 PENDENTE (total 121).
 | `PD_DEAL_PRIMEIRO_VENCIMENTO` | CONFIGURADO | `e2178aec6db2f981557abffdac16b41b87a54503` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Primeiro vencimento |
 | `PD_DEAL_EMAIL_ASSINATURA` | CONFIGURADO | `ca1ee58132282880b33997ce476cf8ea26c72a30` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): E-mail para assinatura |
 | `PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO` | CONFIGURADO | `0ae420301f25ef2dc3a331c4c0cbd528248db9ee` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: e-mail de assinatura confirmado |
-| `PD_DEAL_NOME_SIGNATARIO` | CONFIGURADO | `7c9a537bdaa12e9e25bb7ec9454f5d6ad36d38c0` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Nome do signatário (somente se a Clicksign exigir) |
+| `PD_DEAL_NOME_SIGNATARIO` | CONFIGURADO | `7c9a537bdaa12e9e25bb7ec9454f5d6ad36d38c0` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Nome do signatário (exigido só se CONTRATO_EXIGE_NOME_SIGNATARIO=true) |
 | `PD_DEAL_PROPOSTA_LINK` | CONFIGURADO | `12420e9c8055ab9bda634214b4e6b1e898507c0f` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link da proposta |
 | `PD_DEAL_DIAG_STATUS` | CONFIGURADO | `0d0aeb53fb080fe43e7030b60685894cdb263d69` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do diagnóstico |
 | `PD_DEAL_DIAG_LINK` | CONFIGURADO | `de4ba0fc639266bfaf3b041801def421a7e6aed0` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do diagnóstico |
@@ -66,8 +66,8 @@ Resumo: 78 CONFIGURADO, 17 PROPOSTO, 26 PENDENTE (total 121).
 | `PD_DEAL_DIAG_REEXECUTAR` | CONFIGURADO | `9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: pedir nova execução do diagnóstico |
 | `PD_DEAL_PENDENCIAS` | CONFIGURADO | `00d36a85250066580dbb4302abd87732c99067ac` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Pendências cadastrais |
 | `PD_DEAL_CONTRATO_STATUS` | CONFIGURADO | `4790cc4ebe4cc153902a6e53f97ea369deb6d2be` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do contrato |
-| `PD_DEAL_CLICKSIGN_ID` | CONFIGURADO | `5079d56f57a999807114b8d147f06460ab5c76f5` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): ID do envelope Clicksign |
-| `PD_DEAL_CLICKSIGN_LINK` | CONFIGURADO | `53d560a9b35302f0cbf2dae12b05ddf69a3d7da2` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do envelope |
+| `PD_DEAL_CONTRATO_ID` | CONFIGURADO | `5079d56f57a999807114b8d147f06460ab5c76f5` | ATOM_05 | Campo do negócio (hash ou nativo:<campo>): ID do documento do contrato na Autentique (campo "ATOM · ID do envelope") |
+| `PD_DEAL_CONTRATO_LINK` | CONFIGURADO | `53d560a9b35302f0cbf2dae12b05ddf69a3d7da2` | ATOM_05 | Campo do negócio (hash ou nativo:<campo>): link de assinatura do cliente na Autentique (campo "ATOM · Link do envelope") |
 | `PD_DEAL_PAGAMENTO_STATUS` | CONFIGURADO | `f95e59d62603186a50e72fe625df0b769e9874d8` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do pagamento inicial |
 | `PD_DEAL_ASAAS_IDS` | CONFIGURADO | `95cbb1da4029f8b03b5e0ca061de33f4e4f10332` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): IDs Asaas |
 | `PD_DEAL_CONTROLLE_STATUS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status de sincronização Controlle |
@@ -96,7 +96,7 @@ Resumo: 78 CONFIGURADO, 17 PROPOSTO, 26 PENDENTE (total 121).
 | `WF_ATOM_02` | CONFIGURADO | `87n6QYXZBijXZPTl` | ATOM_01, ATOM_02 | ID do workflow ATOM_02_Site_Diagnostico |
 | `WF_ATOM_03` | CONFIGURADO | `KDVf93dE4xuyPLg4` | ATOM_01 | ID do workflow ATOM_03_Cadastro_CNPJ |
 | `WF_ATOM_04` | CONFIGURADO | `lvvOD7G5O8ym33m8` | ATOM_01, ATOM_04 | ID do workflow ATOM_04_Conferencia_Formalizacao |
-| `WF_ATOM_05` | CONFIGURADO | `t88mptq0VysxNiKd` | ATOM_04, ATOM_11 | ID do workflow ATOM_05_Clicksign |
+| `WF_ATOM_05` | CONFIGURADO | `LSf8X0ufNXEY8mDY` | ATOM_04, ATOM_11 | ID do workflow ATOM_05_Autentique |
 | `WF_ATOM_06` | CONFIGURADO | `BlrMhSwF0m6y2s9z` | ATOM_05, ATOM_11 | ID do workflow ATOM_06_Asaas |
 | `WF_ATOM_07` | CONFIGURADO | `eyLqBdUcfmq9hzeS` | ATOM_11 | ID do workflow ATOM_07_Controlle |
 | `WF_ATOM_08` | CONFIGURADO | `86LFoss4Pzbj4cQy` | ATOM_05, ATOM_06, ATOM_11 | ID do workflow ATOM_08_Trello |
@@ -109,7 +109,7 @@ Resumo: 78 CONFIGURADO, 17 PROPOSTO, 26 PENDENTE (total 121).
 
 | Chave | Status | Valor atual | Usado por | Descrição |
 |---|---|---|---|---|
-| `MODO_EXECUCAO` | CONFIGURADO | `SIMULACAO` | todos | SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Clicksign, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO). |
+| `MODO_EXECUCAO` | CONFIGURADO | `SIMULACAO` | todos | SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Autentique/Google Docs, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO). |
 | `RETENTATIVAS_MAX` | PROPOSTO | `6` | ATOM_07, ATOM_11 | Máximo de retentativas automáticas (backoff exponencial em minutos). |
 | `ALERTA_CANAL` | CONFIGURADO | `PIPEDRIVE_ATIVIDADE` | ATOM_11 | PIPEDRIVE_ATIVIDADE (tarefa para PD_ALERTA_USER_ID) ou WEBHOOK (ALERTA_WEBHOOK_URL). Sem canal: alertas só ficam em atom_eventos. |
 | `ALERTA_WEBHOOK_URL` | PENDENTE | — | ATOM_11 | URL de webhook interno para alertas (ex.: Google Chat/Slack). Contém segredo: restrinja o acesso ao n8n. |
@@ -122,15 +122,16 @@ Resumo: 78 CONFIGURADO, 17 PROPOSTO, 26 PENDENTE (total 121).
 | `CNPJ_PROVEDOR` | CONFIGURADO | `BRASILAPI` | ATOM_03 | Provedor autorizado de consulta: BRASILAPI (público) ou outro com mapeamento implementado. |
 | `CNPJ_PROVEDOR_URL` | CONFIGURADO | `https://brasilapi.com.br/api/cnpj/v1/{cnpj}` | ATOM_03 | URL com {cnpj}. Endpoint documentado da BrasilAPI; uso depende de autorização. |
 | `CNPJ_PROVEDOR_ACEITA_ALFANUMERICO` | PROPOSTO | `false` | ATOM_03 | true somente após confirmar suporte do provedor a CNPJ alfanumérico. |
-| `CLICKSIGN_BASE_URL` | PROPOSTO | `https://sandbox.clicksign.com/api/v3` | ATOM_05 | Sandbox (testes) ou https://app.clicksign.com/api/v3 (produção). |
-| `CLICKSIGN_VALIDADO_SANDBOX` | PENDENTE | — | ATOM_05 | Marcar CONFIGURADO (valor SIM) após validar no sandbox: documento por modelo, signatário sem CPF, cabeçalho HMAC e payload do webhook. |
-| `CLICKSIGN_AUTENTICACAO` | PROPOSTO | `email` | ATOM_05 | Autenticação do signatário no requisito provide_evidence (ex.: email). |
-| `CLICKSIGN_SIGNATARIO_ATOM_NOME` | PENDENTE | — | ATOM_05 | Nome do signatário da Atom. |
-| `CLICKSIGN_SIGNATARIO_ATOM_EMAIL` | PENDENTE | — | ATOM_05 | E-mail do signatário da Atom. |
-| `CLICKSIGN_EXIGE_NOME_SIGNATARIO` | PROPOSTO | `true` | ATOM_04 | Se a Clicksign exigir nome do signatário, ele é pedido explicitamente ao cliente (não é coletado em silêncio). |
-| `CLICKSIGN_HMAC_CABECALHO` | PROPOSTO | `content-hmac` | ATOM_05 | Cabeçalho com a assinatura HMAC do webhook (fontes divergem: Content-Hmac ou x-clicksign-signature). |
-| `CLICKSIGN_MODELO_EXEMPLO` | PENDENTE | — | ATOM_05 | Chave do modelo aprovado para PD_DEAL_MODELO_CONTRATO=EXEMPLO. Criar uma linha CLICKSIGN_MODELO_<CODIGO> por modelo. |
-| `CLICKSIGN_MAPA_EXEMPLO` | PENDENTE | — | ATOM_05 | JSON {"VARIAVEL_DO_MODELO":"caminho.no.snapshot"}, ex.: {"RAZAO_SOCIAL":"empresa.razao_social","VALOR_TOTAL":"financeiro.valor_total"}. |
+| `AUTENTIQUE_SIGNATARIO_ATOM_EMAIL` | CONFIGURADO | `thiago@atomdigital.com.br` | ATOM_05 | E-mail do signatário da Atom na Autentique |
+| `AUTENTIQUE_SIGNATARIO_ATOM_NOME` | PENDENTE | — | ATOM_05 | Nome de quem assina pela Atom (informativo; a Autentique identifica o signatário pelo e-mail). |
+| `AUTENTIQUE_VALIDADO_SANDBOX` | PENDENTE | — | ATOM_05 | Marcar CONFIGURADO (valor SIM) após validar em SANDBOX: criação do documento, convites, assinatura de cliente e Atom, webhook e consulta. Exigido só em PRODUCAO. |
+| `AUTENTIQUE_HMAC_CABECALHO` | PENDENTE | — | ATOM_05 | Nome do cabeçalho com o HMAC-SHA256 do webhook (confirmar no primeiro evento do sandbox). Vazio: o webhook só aciona uma releitura do documento pela API. |
+| `GDRIVE_PASTA_CONTRATOS_ID` | CONFIGURADO | `1oZncggrGSWFUI26YZA9Emke3Rm9JnrVK` | ATOM_05 | Pasta do Google Drive 'Contratos ATOM (n8n)' onde as cópias preenchidas são salvas |
+| `CONTRATO_MODELO_CURINGA_PROJETO` | CONFIGURADO | `1RrM4dBa9ypfDWOpejs2ZDBmwlI4ucMND-bhZ-vJbEiM` | ATOM_05 | Google Doc 'Modelo Contrato ATOM — CURINGA_PROJETO' (valor total, projeto pontual) |
+| `CONTRATO_MAPA_CURINGA_PROJETO` | CONFIGURADO | `{"RAZAO_SOCIAL":"empresa.razao_social","CNPJ":{"campo":"empresa.cnpj","formato":"cnpj"},"ENDERECO":{"campo":"empresa.endereco","formato":"endereco"},"NOME_SIGNATARIO":"contatos.nome_signatario","SERVICO":"comercial.servico","ESCOPO":"comercial.escopo","PRAZO_EXECUCAO":"comercial.prazo_execucao","VALOR_TOTAL":{"campo":"financeiro.valor_total","formato":"moeda"},"PRIMEIRO_VENCIMENTO":{"campo":"financeiro.primeiro_vencimento","formato":"data"}}` | ATOM_05 | Variáveis {{VAR}} do modelo CURINGA_PROJETO → campos do snapshot |
+| `CONTRATO_MODELO_CURINGA_RECORRENTE` | CONFIGURADO | `1J9ziVXGc6y6Xlx41x89dxmiRL57ivrXiV71bjNRWh34` | ATOM_05 | Google Doc 'Modelo Contrato ATOM — CURINGA_RECORRENTE' (mensalidade + duração) |
+| `CONTRATO_MAPA_CURINGA_RECORRENTE` | CONFIGURADO | `{"RAZAO_SOCIAL":"empresa.razao_social","CNPJ":{"campo":"empresa.cnpj","formato":"cnpj"},"ENDERECO":{"campo":"empresa.endereco","formato":"endereco"},"NOME_SIGNATARIO":"contatos.nome_signatario","SERVICO":"comercial.servico","ESCOPO":"comercial.escopo","PRAZO_EXECUCAO":"comercial.prazo_execucao","MENSALIDADE":{"campo":"financeiro.mensalidade","formato":"moeda"},"PRIMEIRO_VENCIMENTO":{"campo":"financeiro.primeiro_vencimento","formato":"data"},"DURACAO_MESES":{"campo":"comercial.duracao_meses","formato":"inteiro"}}` | ATOM_05 | Variáveis {{VAR}} do modelo CURINGA_RECORRENTE → campos do snapshot |
+| `CONTRATO_EXIGE_NOME_SIGNATARIO` | CONFIGURADO | `true` | ATOM_04 | true: os modelos CURINGA_* usam {{NOME_SIGNATARIO}}, então o nome do signatário do cliente é pedido explicitamente na conferência (ATOM_04). |
 | `COBRANCA_DISPARO` | CONFIGURADO | `JUNTO_COM_CONTRATO` | ATOM_05, ATOM_06 | JUNTO_COM_CONTRATO ou APOS_ASSINATURAS. Decidido em 2026-09-28: JUNTO_COM_CONTRATO. |
 | `ASAAS_BASE_URL` | PROPOSTO | `https://api-sandbox.asaas.com/v3` | ATOM_06, ATOM_08 | Sandbox (testes) ou https://api.asaas.com/v3 (produção). |
 | `ASAAS_VALIDADO_SANDBOX` | PENDENTE | — | ATOM_06 | Marcar CONFIGURADO (valor SIM) após validar cobranças e webhooks no sandbox. |

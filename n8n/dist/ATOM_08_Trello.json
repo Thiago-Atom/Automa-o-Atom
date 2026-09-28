@@ -2,7 +2,7 @@
   "name": "ATOM_08_Trello",
   "nodes": [
     {
-      "id": "e63d6fd0-b3ba-4d32-9841-794aaccf9890",
+      "id": "21ac9a46-8937-4e2b-98e8-20c54b4c62ba",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "f32abc8d-3077-4528-8d38-9c1ed850bb70",
+      "id": "4196543f-7690-425d-8d65-92155c57fb0c",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "fdf0ee82-bfb7-4f73-b1c4-555203815087",
+      "id": "93caafde-0596-417f-847b-4cb6078ed615",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -69,7 +69,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "8ffb821f-2465-4afc-b18e-820073262739",
+      "id": "707b5dbd-5581-4a41-8c19-cf6dfae1227f",
       "name": "Vínculos do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -102,7 +102,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "b9b75d95-5ceb-475e-8ca9-234a7c58c4ce",
+      "id": "5fc8d88f-d8cc-4304-b151-d333d9d8aa41",
       "name": "Buscar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -131,7 +131,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "cece276c-9eb0-436f-8307-09731f9f9652",
+      "id": "9a74f291-43a5-47a3-a7ac-14517c2d6d67",
       "name": "Cobrança inicial",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -145,7 +145,7 @@
       }
     },
     {
-      "id": "e7429314-3acb-4a52-9ebb-1e8d5e2a1208",
+      "id": "ca380ad2-3724-4fc6-83fc-40bd0941d091",
       "name": "Consultar pagamento?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -177,7 +177,7 @@
       }
     },
     {
-      "id": "972fc10d-429a-4cdc-ac41-6c227e340e30",
+      "id": "2767cb08-93a3-44f1-8288-0d09caeb359a",
       "name": "Consultar pagamento inicial",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -215,7 +215,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "d5a91207-7600-42c2-aae9-ebc749352c6a",
+      "id": "50ee08ee-8180-48d8-a048-c41c9599ce45",
       "name": "Avaliar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -229,7 +229,7 @@
       }
     },
     {
-      "id": "10b10fac-c2af-44f6-b886-bdde231f0857",
+      "id": "9bed5270-27f9-4ad2-9e61-fd2a4fe97975",
       "name": "Decisão de liberação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -296,7 +296,7 @@
       }
     },
     {
-      "id": "99c851f1-fd99-41b6-85ca-9460aa36e102",
+      "id": "ca191b8c-8613-4356-a0a9-a643a0c76a37",
       "name": "Reservar liberação (trava)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -375,7 +375,7 @@
       "notes": "UPDATE condicional: só uma execução consegue mudar para CRIANDO_CARTAO. Se nenhuma linha for alterada, o fluxo para (outra execução já está criando ou já liberou)."
     },
     {
-      "id": "db917662-ab1e-45b2-b391-a557a8177e0e",
+      "id": "ec793196-a171-4be0-ba47-131f2e652251",
       "name": "Procurar cartão existente (marcador)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -430,7 +430,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "8d912188-5299-4b25-b9ec-09f7d79bb150",
+      "id": "50e52065-f66b-4321-8179-8a13a2f81df9",
       "name": "Cartão já existe?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -444,7 +444,7 @@
       }
     },
     {
-      "id": "f481c2e6-5c6b-4cee-8532-1c7e1121755f",
+      "id": "adffc2fd-404a-4dc5-bd8d-e4173f3b944c",
       "name": "Reaproveitar cartão?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -476,7 +476,7 @@
       }
     },
     {
-      "id": "3498aa9b-ad67-4307-a73f-083e0e0765f7",
+      "id": "5d787901-35d3-4ce5-992a-b3d17756e140",
       "name": "Finalizar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -491,7 +491,7 @@
       "executeOnce": true
     },
     {
-      "id": "143bc449-ce60-47f1-a6f1-934de57c96e2",
+      "id": "13690ae7-3cd5-404a-bcbb-82ee330a06bc",
       "name": "Snapshot formalizado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -531,7 +531,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "8d3a962f-9159-4afd-8369-ca1179efe848",
+      "id": "6959a6da-b505-48c4-834c-58b8b474d2eb",
       "name": "Dados do briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -545,7 +545,7 @@
       }
     },
     {
-      "id": "e8722772-cc69-4b14-9768-d8572c414296",
+      "id": "0cc5b891-0548-4a6e-a13a-3efbeaaa057a",
       "name": "Usar Claude no briefing?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -577,7 +577,7 @@
       }
     },
     {
-      "id": "34a9321e-2b95-4db9-aa36-4391915ce27c",
+      "id": "a0097ddb-b7df-4b7c-a079-08c8c47001d6",
       "name": "Claude — briefing de execução",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -615,7 +615,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "2a24a747-f3cc-4cf9-a72f-40b6b97e78f5",
+      "id": "83cf04c8-58dd-42ec-b947-f22becc1322a",
       "name": "Validar briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -629,7 +629,7 @@
       }
     },
     {
-      "id": "000b9dde-db06-4051-ac1a-294bca4f0292",
+      "id": "d35ec6c9-b587-4653-956b-03558625777a",
       "name": "Montar cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -639,11 +639,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf08.js#montar_cartao + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\n\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const a = $(\"Avaliar liberação\").first().json;\n  const b = $(\"Dados do briefing\").first().json;\n  const deal = ($(\"Buscar negócio\").first().json || {}).data || {};\n  const vincs = $(\"Vínculos do negócio\").all().map((i) => i.json).filter((r) => r && r.id_externo);\n  const vb = $(\"Validar briefing\").isExecuted ? $(\"Validar briefing\").first().json : null;\n  const br = vb && vb.ok ? vb.briefing : null;\n  const c = b.ctx;\n  const chaveServ = String(c.servico || \"\").toUpperCase().replace(/[^A-Z0-9]+/g, \"_\");\n  const responsaveis = lista(cfg, \"TRELLO_RESPONSAVEL_\" + chaveServ).concat(lista(cfg, \"TRELLO_RESPONSAVEL_\" + chaveServ).length ? [] : lista(cfg, \"TRELLO_RESPONSAVEL_PADRAO\"));\n  const checklist = (valor(cfg, \"TRELLO_CHECKLIST_\" + chaveServ, \"\") || valor(cfg, \"TRELLO_CHECKLIST_PADRAO\", \"\")).split(\";\").map((s) => s.trim()).filter(Boolean);\n  const appUrl = valor(cfg, \"PD_APP_URL\", \"\").replace(/\\/$/, \"\");\n  const contrato = vincs.find((v) => v.sistema === \"CLICKSIGN\" && v.tipo === \"ENVELOPE\");\n  const proposta = lerCfg(deal, cfg, \"PD_DEAL_PROPOSTA_LINK\");\n  const L = [];\n  L.push(\"**Empresa:** \" + (c.empresa || deal.title || \"—\"));\n  L.push(\"**Serviço:** \" + (c.servico || \"—\"));\n  L.push(\"**Escopo aprovado:** \" + (c.escopo_aprovado || \"—\"));\n  if (br && br.entregaveis.length) L.push(\"**Entregáveis:**\\n\" + br.entregaveis.map((x) => \"- \" + x).join(\"\\n\"));\n  if (br) L.push(\"**Briefing:** \" + br.contexto_diagnostico + (br.pontos_de_atencao.length ? \"\\n\" + br.pontos_de_atencao.map((x) => \"- \" + x).join(\"\\n\") : \"\") + (br.informacoes_ausentes.length ? \"\\n_Informações ausentes:_ \" + br.informacoes_ausentes.join(\"; \") : \"\"));\n  else L.push(\"**Briefing:** \" + (b.usar ? \"não gerado (falha na validação da IA) — ver escopo aprovado.\" : \"gerado sem IA — ver escopo aprovado.\"));\n  L.push(\"**Diagnóstico:** \" + c.diagnostico.status + (c.diagnostico.site ? \" (\" + c.diagnostico.site + \")\" : \"\"));\n  L.push(\"**Prazo acordado:** \" + (c.prazo_acordado || \"—\"));\n  L.push(\"**Responsável:** \" + (responsaveis.length ? \"membro(s) atribuído(s) ao cartão\" : \"a definir\"));\n  const links = [];\n  if (appUrl) links.push(\"Pipedrive: \" + appUrl + \"/deal/\" + a.deal_id);\n  else links.push(\"Pipedrive: negócio \" + a.deal_id);\n  if (proposta) links.push(\"Proposta: \" + proposta);\n  if (contrato && contrato.link) links.push(\"Contrato assinado: \" + contrato.link);\n  L.push(\"**Links:** \" + links.join(\" · \"));\n  L.push(\"\\n\" + a.marcador + \" — cartão criado automaticamente (ATOM_08). O início da execução é registrado ao mover para a lista/campo configurado.\");\n  const corpo = { idList: valor(cfg, \"TRELLO_LIST_ENTRADA_ID\", \"\"), name: ((c.empresa || deal.title || \"Cliente\") + \" — \" + (c.servico || \"Serviço\") + \" \" + a.marcador).slice(0, 250), desc: L.join(\"\\n\\n\").slice(0, 15e3), pos: \"top\" };\n  if (responsaveis.length) corpo.idMembers = responsaveis.join(\",\");\n  if (/^\\d{4}-\\d{2}-\\d{2}$/.test(c.prazo_acordado)) corpo.due = c.prazo_acordado + \"T12:00:00.000Z\";\n  return [{ json: { corpo, checklist, nome_checklist: \"Checklist — \" + (c.servico || \"execução\") } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf08.js#montar_cartao + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\n\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const a = $(\"Avaliar liberação\").first().json;\n  const b = $(\"Dados do briefing\").first().json;\n  const deal = ($(\"Buscar negócio\").first().json || {}).data || {};\n  const vincs = $(\"Vínculos do negócio\").all().map((i) => i.json).filter((r) => r && r.id_externo);\n  const vb = $(\"Validar briefing\").isExecuted ? $(\"Validar briefing\").first().json : null;\n  const br = vb && vb.ok ? vb.briefing : null;\n  const c = b.ctx;\n  const chaveServ = String(c.servico || \"\").toUpperCase().replace(/[^A-Z0-9]+/g, \"_\");\n  const responsaveis = lista(cfg, \"TRELLO_RESPONSAVEL_\" + chaveServ).concat(lista(cfg, \"TRELLO_RESPONSAVEL_\" + chaveServ).length ? [] : lista(cfg, \"TRELLO_RESPONSAVEL_PADRAO\"));\n  const checklist = (valor(cfg, \"TRELLO_CHECKLIST_\" + chaveServ, \"\") || valor(cfg, \"TRELLO_CHECKLIST_PADRAO\", \"\")).split(\";\").map((s) => s.trim()).filter(Boolean);\n  const appUrl = valor(cfg, \"PD_APP_URL\", \"\").replace(/\\/$/, \"\");\n  const contrato = vincs.filter((v) => v.sistema === \"AUTENTIQUE\" && v.tipo === \"DOCUMENTO\").sort((a2, b2) => Number(b2.snapshot_versao) - Number(a2.snapshot_versao))[0];\n  const proposta = lerCfg(deal, cfg, \"PD_DEAL_PROPOSTA_LINK\");\n  const L = [];\n  L.push(\"**Empresa:** \" + (c.empresa || deal.title || \"—\"));\n  L.push(\"**Serviço:** \" + (c.servico || \"—\"));\n  L.push(\"**Escopo aprovado:** \" + (c.escopo_aprovado || \"—\"));\n  if (br && br.entregaveis.length) L.push(\"**Entregáveis:**\\n\" + br.entregaveis.map((x) => \"- \" + x).join(\"\\n\"));\n  if (br) L.push(\"**Briefing:** \" + br.contexto_diagnostico + (br.pontos_de_atencao.length ? \"\\n\" + br.pontos_de_atencao.map((x) => \"- \" + x).join(\"\\n\") : \"\") + (br.informacoes_ausentes.length ? \"\\n_Informações ausentes:_ \" + br.informacoes_ausentes.join(\"; \") : \"\"));\n  else L.push(\"**Briefing:** \" + (b.usar ? \"não gerado (falha na validação da IA) — ver escopo aprovado.\" : \"gerado sem IA — ver escopo aprovado.\"));\n  L.push(\"**Diagnóstico:** \" + c.diagnostico.status + (c.diagnostico.site ? \" (\" + c.diagnostico.site + \")\" : \"\"));\n  L.push(\"**Prazo acordado:** \" + (c.prazo_acordado || \"—\"));\n  L.push(\"**Responsável:** \" + (responsaveis.length ? \"membro(s) atribuído(s) ao cartão\" : \"a definir\"));\n  const links = [];\n  if (appUrl) links.push(\"Pipedrive: \" + appUrl + \"/deal/\" + a.deal_id);\n  else links.push(\"Pipedrive: negócio \" + a.deal_id);\n  if (proposta) links.push(\"Proposta: \" + proposta);\n  if (contrato) links.push(\"Contrato: documento Autentique \" + contrato.id_externo);\n  L.push(\"**Links:** \" + links.join(\" · \"));\n  L.push(\"\\n\" + a.marcador + \" — cartão criado automaticamente (ATOM_08). O início da execução é registrado ao mover para a lista/campo configurado.\");\n  const corpo = { idList: valor(cfg, \"TRELLO_LIST_ENTRADA_ID\", \"\"), name: ((c.empresa || deal.title || \"Cliente\") + \" — \" + (c.servico || \"Serviço\") + \" \" + a.marcador).slice(0, 250), desc: L.join(\"\\n\\n\").slice(0, 15e3), pos: \"top\" };\n  if (responsaveis.length) corpo.idMembers = responsaveis.join(\",\");\n  if (/^\\d{4}-\\d{2}-\\d{2}$/.test(c.prazo_acordado)) corpo.due = c.prazo_acordado + \"T12:00:00.000Z\";\n  return [{ json: { corpo, checklist, nome_checklist: \"Checklist — \" + (c.servico || \"execução\") } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "adca6640-14ab-4b67-930f-90ea41c96413",
+      "id": "fd8174d8-1c8b-4ec6-a61c-4b4863c7e1b1",
       "name": "Salvar situação da liberação",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -711,7 +711,7 @@
       }
     },
     {
-      "id": "d9aed970-7e50-4d91-beff-64c1d1802bdb",
+      "id": "a807dd21-e7df-47d6-87c7-1aa4054baa60",
       "name": "Trello — criar cartão",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -741,7 +741,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "021fa4c1-a599-4df3-987a-3bda3a2a975b",
+      "id": "d581fcdd-f026-4f4e-8067-e4625cc48bd5",
       "name": "Cartão criado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -755,7 +755,7 @@
       }
     },
     {
-      "id": "8893d979-d656-4846-af94-4ce7071320dd",
+      "id": "c7d62ccb-4eac-4e5d-ae05-fd33be296eb5",
       "name": "Registrar cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -898,7 +898,7 @@
       }
     },
     {
-      "id": "074dc56d-5ac4-480d-b086-2c5de9b101cc",
+      "id": "ae18d45e-0a4a-41d6-8aac-93bcc3311d9d",
       "name": "Criar checklist?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -930,7 +930,7 @@
       }
     },
     {
-      "id": "e2905af7-ef56-4576-be54-4a457639ad16",
+      "id": "96cd644d-e5fe-4ce6-a28a-ae3ae10967ea",
       "name": "Trello — criar checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -960,7 +960,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6cc918e5-bc21-4928-96d4-5df3ccd8d2be",
+      "id": "3b453c20-39d3-4362-b656-9c069a34fee4",
       "name": "Itens do checklist",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -974,7 +974,7 @@
       }
     },
     {
-      "id": "9c9e49c5-508d-47cb-bf78-569dc1adc3ca",
+      "id": "1f84a7e5-1ac9-4ac7-a4a2-8742536de5bc",
       "name": "Trello — itens do checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1010,7 +1010,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6adf5184-1485-4ac1-8cd1-318d0a88d44a",
+      "id": "9a1f1ead-b1de-4064-be59-d27536d710e4",
       "name": "Salvar liberado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1118,7 +1118,7 @@
       }
     },
     {
-      "id": "f8ff4222-c516-4486-b2da-eb1310db4417",
+      "id": "93f87b77-1edc-480d-b173-cc99e6fed9de",
       "name": "Garantir vínculo do cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1261,7 +1261,7 @@
       }
     },
     {
-      "id": "84b1c021-1433-43c4-a59a-650cb1b8f039",
+      "id": "12e340cb-3a85-48ec-9529-14a40aacb2f4",
       "name": "Atualizar negócio (Trello)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1293,7 +1293,7 @@
       }
     },
     {
-      "id": "ce2418a0-0640-45f1-b8c3-671612fbf5d4",
+      "id": "6f775fd3-4cb5-40e6-89f2-ec790b796de9",
       "name": "Atualizar negócio (cartão Trello)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1318,7 +1318,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "3c3ab035-42bc-40bc-80ec-8f7123d5ff15",
+      "id": "621ab230-9a63-4617-9399-a3ef3f733173",
       "name": "Falha no cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1332,7 +1332,7 @@
       }
     },
     {
-      "id": "126d5037-05d2-47f0-923f-78ab9cc32faf",
+      "id": "954f4664-09b3-4940-9545-5acc75ea24f7",
       "name": "Liberar trava após falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1420,7 +1420,7 @@
       }
     },
     {
-      "id": "bd2e7861-5a7c-422c-aaa1-997c2e017c5a",
+      "id": "2dfb78e0-817e-496d-b6b5-e014cc89bc5b",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1578,7 +1578,7 @@
       }
     },
     {
-      "id": "049ecd3a-a9c1-4506-be7e-035e3c7a3723",
+      "id": "3af52c8f-776e-4800-9a0d-9d18e73851d8",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1592,7 +1592,7 @@
       }
     },
     {
-      "id": "e7a4c2d9-b900-4887-a4c2-79999175a8dc",
+      "id": "78e47b93-f22b-41c7-b5ad-de1de14faea5",
       "name": "ATOM_11 — alerta Trello",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1615,7 +1615,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "9ebbe2fb-90d1-4f5f-9da2-4894eeaa5155",
+      "id": "849b89de-5a59-44b2-b41a-aa07e56806eb",
       "name": "Webhook Trello",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1635,10 +1635,10 @@
           "rawBody": true
         }
       },
-      "webhookId": "8d488c10-da4e-4e50-9605-770b2033fb22"
+      "webhookId": "978de592-1ac9-4c13-ad8e-06c37d3de43e"
     },
     {
-      "id": "ddeecb1e-008a-47b3-89d0-8e63d7053cf8",
+      "id": "1e383671-e55d-43df-8548-149e1a843d4f",
       "name": "Corpo bruto",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1652,7 +1652,7 @@
       }
     },
     {
-      "id": "4166c095-4d8c-437c-9233-6db4f4125c1e",
+      "id": "877a449a-c1b9-419c-9806-febbda7c8973",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1674,7 +1674,7 @@
       "executeOnce": true
     },
     {
-      "id": "d5836c06-92f5-4971-aedb-2bc8deb64fdc",
+      "id": "761b3144-835d-45eb-848a-ef59ee0a5641",
       "name": "Montar verificação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1688,7 +1688,7 @@
       }
     },
     {
-      "id": "d079747b-84a8-4927-b7af-58fae818a4c3",
+      "id": "b0adde14-3241-42c7-a8f8-5f22fd0460e9",
       "name": "Calcular HMAC-SHA1",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -1706,7 +1706,7 @@
       "credentials": {}
     },
     {
-      "id": "34f50024-4a1a-41c9-9714-44ceb17f16f3",
+      "id": "18bb387d-c111-4b37-8c19-05795b6bb95c",
       "name": "Verificar assinatura Trello",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1720,7 +1720,7 @@
       }
     },
     {
-      "id": "641194dc-3a43-4cc4-8f83-a46c34590026",
+      "id": "d7bc798f-9e87-41d8-a585-5cde876b67ec",
       "name": "Ação Trello já recebida?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1752,7 +1752,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "56238412-4061-487a-b49e-628198de2010",
+      "id": "16fc16fc-a255-4b21-890f-bbc337128b17",
       "name": "Deduplicar ação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1766,7 +1766,7 @@
       }
     },
     {
-      "id": "50c33a7c-1a51-430b-b38b-4e0e52fa4d48",
+      "id": "52461c58-e781-44de-9a29-53cefc1e8562",
       "name": "Registrar ação Trello",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1914,7 +1914,7 @@
       }
     },
     {
-      "id": "cfe56493-9521-4968-bfd2-bfd16cd6e8d3",
+      "id": "164abb33-3c2e-454d-85e6-3e8e4c810153",
       "name": "Detectar início da execução",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1928,7 +1928,7 @@
       }
     },
     {
-      "id": "1bfbd87a-4f69-42f3-b5b4-f36bfd75912a",
+      "id": "463d6c6b-cc0a-4ca0-abde-f915473cfd57",
       "name": "Cartão vinculado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1965,7 +1965,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f58ff805-8b2f-4dba-998d-96082f93d381",
+      "id": "0e5970cd-4a47-4342-831d-9b0973e9dc32",
       "name": "Estado (início)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1997,7 +1997,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "14ce41ad-87c4-489f-939e-810d1fd70834",
+      "id": "5ec65969-d743-47d5-851e-b05e76e4f4c4",
       "name": "Registrar início",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2011,7 +2011,7 @@
       }
     },
     {
-      "id": "3e43b1f0-2f1d-4a90-a030-88db060849d6",
+      "id": "e4b9785d-a118-41e5-b18f-36e2889298f4",
       "name": "Salvar início da execução",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2079,7 +2079,7 @@
       }
     },
     {
-      "id": "6db6d087-e3ce-4985-a14b-566c43994225",
+      "id": "a9d55607-8a70-4377-bf99-2758033f3fb9",
       "name": "Atualizar negócio (início)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2111,7 +2111,7 @@
       }
     },
     {
-      "id": "bbfc0d14-2110-4f49-a399-515716cbde75",
+      "id": "2d2ea598-bcbf-4282-8cbf-d157a7c64c48",
       "name": "Atualizar negócio (início da execução)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2136,7 +2136,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "37c373d0-995b-45e8-8d40-454dc4dc4923",
+      "id": "69da7e96-0cdf-4dd1-b192-3c0b38fcfc63",
       "name": "Pedido de agendamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2150,7 +2150,7 @@
       }
     },
     {
-      "id": "a38e4f66-d3f7-4a73-9b85-e3c0872f0f69",
+      "id": "d0779897-70ad-4ad9-9609-b2cd702fb9f1",
       "name": "ATOM_09 — agendar avaliação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2173,8 +2173,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "8c0922be-6227-4822-bfaa-ba8b15a46f79",
-      "name": "Sticky Note 8c0922be",
+      "id": "1d19928b-b1da-4e21-928b-5a8d679799d5",
+      "name": "Sticky Note 1d19928b",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

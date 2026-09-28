@@ -2,7 +2,7 @@
   "name": "ATOM_11_Erros_Reconciliacao",
   "nodes": [
     {
-      "id": "302ba0ce-796a-4abf-817a-468a82d43969",
+      "id": "fc7117d0-b46d-4ab4-9649-d6dbb935cbb5",
       "name": "Erro em workflow ATOM",
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
@@ -13,7 +13,7 @@
       "parameters": {}
     },
     {
-      "id": "e6b6b981-29bb-4b84-8c34-351c60083d5d",
+      "id": "d22da4c1-aca2-4b82-9117-0f407f22a90c",
       "name": "Normalizar alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -27,7 +27,7 @@
       }
     },
     {
-      "id": "045f6127-4ceb-4cef-8eb6-fa452a109298",
+      "id": "e9d56ab5-b12d-4640-91ef-f6bd448a084a",
       "name": "Alerta interno",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -40,7 +40,7 @@
       }
     },
     {
-      "id": "4974eff0-16cd-4ed1-9fb9-bff68fe595a9",
+      "id": "e98a8144-fde1-40b1-9277-29ea365601bc",
       "name": "Alerta já registrado?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -72,7 +72,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "999b69ea-1cc9-408b-87ed-8e2e8a879b4c",
+      "id": "1c84eb9c-dc26-4b83-97a2-59e016182a62",
       "name": "Alerta novo?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -86,7 +86,7 @@
       }
     },
     {
-      "id": "397e3b41-0f6d-4705-b1a8-a713c28a21c4",
+      "id": "65a50af3-a279-4323-9dea-a9606c0804d6",
       "name": "Registrar alerta",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -234,7 +234,7 @@
       }
     },
     {
-      "id": "43363918-2c0e-41f4-b7c9-eb978b3dcba4",
+      "id": "8180910e-2611-46cb-908a-c922f584fc71",
       "name": "Ler configuração (alerta)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -256,7 +256,7 @@
       "executeOnce": true
     },
     {
-      "id": "a8a7dca7-767b-479c-8497-538eafb4080d",
+      "id": "159e22da-2b18-4cfb-a4a5-efa4fab53c3d",
       "name": "Canal de alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -270,7 +270,7 @@
       }
     },
     {
-      "id": "f6def75a-6893-4955-b4da-9d90c61300ee",
+      "id": "d66f3300-41a1-400e-88ef-5c957888bd52",
       "name": "Rotear canal de alerta",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -329,7 +329,7 @@
       }
     },
     {
-      "id": "544d1816-4219-49d5-99ef-5f136c940ad9",
+      "id": "ad974975-65a3-42a7-bf87-338aa04ea910",
       "name": "Alerta como atividade no Pipedrive",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -354,7 +354,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "f6aadf1e-a8ab-4aed-96f5-29f732f62c58",
+      "id": "ef7111ea-b3ca-42d0-abac-e8512132182c",
       "name": "Alerta por webhook",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -376,7 +376,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ac8a9bf3-7356-476f-923d-17b1d3bfcb3f",
+      "id": "a36fd5d9-f0af-4d6f-aeed-997257d02ad3",
       "name": "A cada hora",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
@@ -397,7 +397,7 @@
       }
     },
     {
-      "id": "490e54d1-ef39-4980-9294-c589ba74df2a",
+      "id": "3a27dbd6-9cd9-47fa-9a29-de39ba022114",
       "name": "Ler configuração (reconciliação)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -419,7 +419,7 @@
       "executeOnce": true
     },
     {
-      "id": "af0fc493-7069-4ebe-80e8-2c5f986366c6",
+      "id": "48196831-4fc5-4fab-bf56-127d430794d7",
       "name": "Liberar locks expirados",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -484,7 +484,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "9033fc46-33ba-4194-aedf-45b18df28df6",
+      "id": "4f9d681e-40ca-4720-bd24-49f0a878fc5f",
       "name": "Ações com falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -517,7 +517,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "677ba2f2-f0dc-41e7-92b0-c18a1e85a6bf",
+      "id": "db7d2821-4195-4397-8283-114a75de87fd",
       "name": "Negócios aguardando liberação",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -555,7 +555,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "793dcf3e-e685-43d8-b9e0-c3e872970743",
+      "id": "390d0686-d26a-47f2-95b6-b7b5008811e3",
       "name": "Cobranças iniciais pendentes",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -593,7 +593,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "66fac22a-95f3-4f70-b6f2-7f530b08418c",
+      "id": "c6a978ec-19be-4b0e-951b-04e2356c9a6d",
       "name": "Planejar reprocessamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -603,11 +603,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#reconciliar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (reconciliação)\").all());\n  const agora = Date.now();\n  const MAX = Number(valor(cfg, \"RETENTATIVAS_MAX\", \"6\")) || 6;\n  const wf = (k) => valor(cfg, k, \"\");\n  const out = [];\n  const vistos = /* @__PURE__ */ new Set();\n  const add = (chaveWf, payload, motivo) => {\n    const id = wf(chaveWf);\n    if (!id) return;\n    const k = chaveWf + \":\" + JSON.stringify(payload);\n    if (vistos.has(k)) return;\n    vistos.add(k);\n    out.push({ json: Object.assign({}, payload, { _workflow_id: id, _origem: \"RECONCILIACAO\", _motivo: motivo }) });\n  };\n  for (const i of $(\"Ações com falha\").all()) {\n    const r = i.json;\n    if (!r || !r.request_id) continue;\n    if (Number(r.tentativas || 0) >= MAX) continue;\n    if (r.proxima_tentativa && Date.parse(r.proxima_tentativa) > agora) continue;\n    const alvo = { ZAYRA: \"WF_ATOM_10\", CLICKSIGN: \"WF_ATOM_05\", ASAAS: \"WF_ATOM_06\", TRELLO: \"WF_ATOM_08\" }[r.sistema];\n    if (!alvo) continue;\n    let p = safeJsonParse(r.payload, {});\n    if (r.sistema === \"ZAYRA\") {\n      p = {\n        action: p.action,\n        deal_id: p.pipedrive_deal_id,\n        org_id: p.pipedrive_organization_id,\n        phone: p.recipient_phone,\n        conversation_id: p.conversation_id,\n        missing_fields: p.missing_fields,\n        message_context: p.message_context,\n        scheduled_at: p.scheduled_at,\n        retry_request_id: r.request_id\n      };\n    }\n    add(alvo, p, \"RETENTATIVA \" + r.sistema + \" \" + r.acao);\n  }\n  for (const i of $(\"Negócios aguardando liberação\").all()) {\n    const r = i.json;\n    if (!r || !r.deal_id || r.cancelado === true) continue;\n    if (r.liberacao_status === \"LIBERADO\" || r.liberacao_status === \"CRIANDO_CARTAO\") continue;\n    add(\"WF_ATOM_08\", { acao: \"REAVALIAR_LIBERACAO\", deal_id: String(r.deal_id) }, \"RECONCILIAR_LIBERACAO\");\n  }\n  for (const i of $(\"Cobranças iniciais pendentes\").all()) {\n    const r = i.json;\n    if (!r || !r.id_externo || !/^INICIAL/.test(String(r.papel || \"\"))) continue;\n    if ([\"PAGAMENTO_CONFIRMADO\", \"RECEBIDO_DISPONIVEL\", \"CANCELADO\", \"ESTORNADO\"].includes(r.status)) continue;\n    add(\"WF_ATOM_06\", { acao: \"RECONCILIAR_PAGAMENTO\", payment_id: String(r.id_externo), deal_id: String(r.deal_id) }, \"RECONCILIAR_PAGAMENTO\");\n  }\n  return out;\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#reconciliar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (reconciliação)\").all());\n  const agora = Date.now();\n  const MAX = Number(valor(cfg, \"RETENTATIVAS_MAX\", \"6\")) || 6;\n  const wf = (k) => valor(cfg, k, \"\");\n  const out = [];\n  const vistos = /* @__PURE__ */ new Set();\n  const add = (chaveWf, payload, motivo) => {\n    const id = wf(chaveWf);\n    if (!id) return;\n    const k = chaveWf + \":\" + JSON.stringify(payload);\n    if (vistos.has(k)) return;\n    vistos.add(k);\n    out.push({ json: Object.assign({}, payload, { _workflow_id: id, _origem: \"RECONCILIACAO\", _motivo: motivo }) });\n  };\n  for (const i of $(\"Ações com falha\").all()) {\n    const r = i.json;\n    if (!r || !r.request_id) continue;\n    if (Number(r.tentativas || 0) >= MAX) continue;\n    if (r.proxima_tentativa && Date.parse(r.proxima_tentativa) > agora) continue;\n    const alvo = { ZAYRA: \"WF_ATOM_10\", AUTENTIQUE: \"WF_ATOM_05\", ASAAS: \"WF_ATOM_06\", TRELLO: \"WF_ATOM_08\" }[r.sistema];\n    if (!alvo) continue;\n    let p = safeJsonParse(r.payload, {});\n    if (r.sistema === \"ZAYRA\") {\n      p = {\n        action: p.action,\n        deal_id: p.pipedrive_deal_id,\n        org_id: p.pipedrive_organization_id,\n        phone: p.recipient_phone,\n        conversation_id: p.conversation_id,\n        missing_fields: p.missing_fields,\n        message_context: p.message_context,\n        scheduled_at: p.scheduled_at,\n        retry_request_id: r.request_id\n      };\n    }\n    add(alvo, p, \"RETENTATIVA \" + r.sistema + \" \" + r.acao);\n  }\n  for (const i of $(\"Negócios aguardando liberação\").all()) {\n    const r = i.json;\n    if (!r || !r.deal_id || r.cancelado === true) continue;\n    if (r.liberacao_status === \"LIBERADO\" || r.liberacao_status === \"CRIANDO_CARTAO\") continue;\n    add(\"WF_ATOM_08\", { acao: \"REAVALIAR_LIBERACAO\", deal_id: String(r.deal_id) }, \"RECONCILIAR_LIBERACAO\");\n  }\n  for (const i of $(\"Cobranças iniciais pendentes\").all()) {\n    const r = i.json;\n    if (!r || !r.id_externo || !/^INICIAL/.test(String(r.papel || \"\"))) continue;\n    if ([\"PAGAMENTO_CONFIRMADO\", \"RECEBIDO_DISPONIVEL\", \"CANCELADO\", \"ESTORNADO\"].includes(r.status)) continue;\n    add(\"WF_ATOM_06\", { acao: \"RECONCILIAR_PAGAMENTO\", payment_id: String(r.id_externo), deal_id: String(r.deal_id) }, \"RECONCILIAR_PAGAMENTO\");\n  }\n  return out;\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "fb5cb1ad-0c59-4c67-b3d6-ecafc70503d2",
+      "id": "de79f7f2-722a-4736-bd0e-2689ec00d351",
       "name": "Despachar reprocessamento",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -630,7 +630,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b0deadc4-45d1-47a5-b4af-c202ea57ffc6",
+      "id": "89d2b2f1-6925-4d09-b26b-47dda1f3ea7e",
       "name": "Painel (GET)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -646,11 +646,11 @@
         "responseData": "firstEntryJson",
         "options": {}
       },
-      "webhookId": "91286f6e-56e2-4475-b4f4-1b715208468b",
+      "webhookId": "2ba23c93-56db-4faf-b72f-6b58c07e8172",
       "credentials": {}
     },
     {
-      "id": "2712385a-d6ae-4b6f-8a86-a7c767141b40",
+      "id": "dcd97c82-8aab-413a-bd76-f8a5ffc4cd25",
       "name": "Painel: negócios",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -673,7 +673,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "21161837-f178-4ddb-8891-68f556f86a5e",
+      "id": "26875239-6552-4cd9-aa64-43340b1e8d51",
       "name": "Painel: agendamentos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -696,7 +696,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "dacfef1c-19cd-4bfe-aca2-e6214cea1a1b",
+      "id": "539b9f2c-1267-4465-b267-bb6fb06050f7",
       "name": "Painel: financeiro",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -719,7 +719,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "88ffa3e4-89b6-4f05-91d9-411eb8d1e081",
+      "id": "0af23e00-8827-4d4c-a249-b38f9e0932a9",
       "name": "Painel: ações",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -742,7 +742,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "5c6b00e3-36de-4c09-933b-15c4cb788ae4",
+      "id": "28a6c759-c49f-466d-bf44-75281011522f",
       "name": "Montar painel",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -756,8 +756,8 @@
       }
     },
     {
-      "id": "97d4a748-df60-4c9d-a416-b493ba4e3c94",
-      "name": "Sticky Note 97d4a748",
+      "id": "92d16b0d-82e8-4206-83e2-b5b8a0d5976d",
+      "name": "Sticky Note 92d16b0d",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

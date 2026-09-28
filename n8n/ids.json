@@ -4,7 +4,7 @@
  "ATOM_02_Site_Diagnostico": "87n6QYXZBijXZPTl",
  "ATOM_03_Cadastro_CNPJ": "KDVf93dE4xuyPLg4",
  "ATOM_04_Conferencia_Formalizacao": "lvvOD7G5O8ym33m8",
- "ATOM_05_Clicksign": "t88mptq0VysxNiKd",
+ "ATOM_05_Autentique": "LSf8X0ufNXEY8mDY",
  "ATOM_06_Asaas": "BlrMhSwF0m6y2s9z",
  "ATOM_07_Controlle": "eyLqBdUcfmq9hzeS",
  "ATOM_08_Trello": "86LFoss4Pzbj4cQy",
@@ -12,5 +12,6 @@
  "ATOM_10_Zayra_Interface": "D0MWED51LMZE4FU7",
  "ATOM_11_Erros_Reconciliacao": "vd4MLxMjp8SlGgRh",
  "ATOM_00_Aplicar_Config": "E3SVfrlTjba5wq8r",
- "ATOM_00_Inspecionar_Campos": "nJvY4JNhmjfloJmt"
+ "ATOM_00_Inspecionar_Campos": "nJvY4JNhmjfloJmt",
+ "ATOM_05_Clicksign_ARQUIVADO": "t88mptq0VysxNiKd"
 }

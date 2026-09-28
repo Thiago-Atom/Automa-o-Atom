@@ -65,7 +65,7 @@ Campos marcados "texto com valores fixos" devem ser do tipo **Texto** e preenchi
 |---|---|---|
 | ATOM · Serviço | Texto | Ex.: "Site institucional" |
 | ATOM · Escopo aprovado | Texto grande | |
-| ATOM · Modelo de contrato | Texto | Código do modelo Clicksign (ver Passo 7), ex.: `SITE` |
+| ATOM · Modelo de contrato | Texto | `CURINGA_PROJETO` ou `CURINGA_RECORRENTE` (ver Passo 7) |
 | ATOM · Prazo de execução | Texto | Texto ou data AAAA-MM-DD |
 | ATOM · Duração (meses) | Numérico | Para recorrência |
 | ATOM · Condições aprovadas | Texto com valores fixos: `Sim` ou vazio | **Só marque `Sim` quando os valores estiverem finais** |
@@ -127,9 +127,10 @@ n8n → menu lateral *Overview* (ou *Credentials*) → **Create** → *Credentia
 | 3 | `ATOM Webhook interno (header)` | Header Auth | Name: `X-Atom-Token`; Value: uma senha longa aleatória |
 | 4 | `ATOM Asaas (access_token)` | Custom Auth (ou Header Auth) | Cabeçalho `access_token` = chave do **sandbox** (Passo 8) |
 | 5 | `ATOM Webhook Asaas (asaas-access-token)` | Header Auth | Name: `asaas-access-token`; Value: token que você definirá no webhook do Asaas |
-| 6 | `ATOM Clicksign (Authorization)` | Custom Auth (ou Header Auth) | Cabeçalho `Authorization` = token do **sandbox** (Passo 7) |
-| 7 | `ATOM Clicksign — segredo HMAC do webhook` | Custom Auth (ou Header Auth) | Segredo HMAC do webhook da Clicksign (Passo 7) |
+| 6 | `ATOM Autentique (Bearer)` | Custom Auth | `{"headers":{"Authorization":"Bearer <token>"}}` com o token da Autentique (Passo 7) |
+| 7 | `ATOM Autentique — segredo HMAC do webhook` | Crypto | Segredo do webhook da Autentique (na ativação) |
 | 8 | `ATOM Trello — segredo do app (webhook)` | Custom Auth (ou Header Auth) | *Secret* do app em trello.com/power-ups/admin → sua integração → API key → Secret |
+| 9 | `ATOM Google Drive` | Google Drive OAuth2 API | *Sign in with Google* (Passo 7) |
 
 Se o tipo "Custom Auth" não aparecer, crie como **Header Auth** com o mesmo nome — eu ajusto os nós.
 A credencial `Trello account` já existe e será reaproveitada.
@@ -162,20 +163,29 @@ Defina também:
 
 ---
 
-## Passo 7 — Clicksign (sandbox) (30–60 min)
+## Passo 7 — Contrato: modelo no Google Docs + Autentique (30–60 min)
 
-1. Crie uma conta em **sandbox.clicksign.com** (ambiente de testes, sem validade jurídica).
-2. *Configurações → API* → gere o **token** → cole na credencial 6 (Passo 4).
-3. *Modelos* → para cada tipo de contrato, envie o **.docx** do modelo com as variáveis entre chaves duplas, por exemplo
-   `{{RAZAO_SOCIAL}}`, `{{CNPJ}}`, `{{VALOR_TOTAL}}`, `{{ESCOPO}}`. Anote a **chave do modelo** (aparece na URL/detalhe do modelo).
-4. *Configurações → Webhooks* → **não cadastre ainda** (a URL só funciona com o workflow ativo); copie o **segredo HMAC** quando
-   for criá-lo e guarde na credencial 7.
+> **Situação em 2026-09-28:** modelos `CURINGA_PROJETO` e `CURINGA_RECORRENTE`, pasta "Contratos ATOM (n8n)" e e-mail do
+> signatário da Atom já estão em `atom_config` (variáveis conferidas contra os documentos). Faltam as credenciais
+> `ATOM Google Drive` e `ATOM Autentique (Bearer)` e o teste em SANDBOX.
 
-**Me envie**, para cada modelo: código curto (ex.: `SITE`), chave do modelo e lista de variáveis. Também:
-- nome e e-mail de quem **assina pela Atom**;
-- se a conta exige **CPF** ou **nome** do signatário do cliente.
+1. **Modelo(s) no Google Docs** — para cada tipo de contrato, um **Documento Google** com as variáveis entre chaves duplas,
+   em maiúsculas: `{{RAZAO_SOCIAL}}`, `{{CNPJ}}`, `{{ENDERECO}}`, `{{ESCOPO}}`, `{{VALOR_TOTAL}}`, `{{PRIMEIRO_VENCIMENTO}}`…
+   O texto fixo da Atom (qualificação, foro, cláusulas) fica escrito no próprio modelo.
+2. **Pasta de contratos** no Google Drive, onde ficarão as cópias preenchidas (ex.: "ATOM · Contratos gerados").
+3. **Credencial `ATOM Google Drive`** (Passo 4, nº 9): *Sign in with Google* com a conta que tem acesso ao modelo e à pasta.
+4. **Autentique** — no painel da Autentique, gere o **token de API** e cole na credencial `ATOM Autentique (Bearer)` (Passo 4, nº 6).
+   Os testes usam documentos em **modo sandbox** (sem validade jurídica), criados pela própria automação com `MODO_EXECUCAO=SANDBOX`.
+5. **Webhook**: não cadastre ainda (a URL só funciona com o workflow ativo). Na ativação, o segredo vai na credencial nº 7.
 
-Eu crio o mapa variável → dado aprovado do negócio (`CLICKSIGN_MODELO_<CODIGO>` e `CLICKSIGN_MAPA_<CODIGO>`).
+**Me envie**, para cada modelo: o código curto (ex.: `SITE`, igual ao valor usado em `ATOM · Modelo de contrato`), o **link**
+do Google Doc e a lista de variáveis. Também:
+- o link da **pasta** de contratos;
+- nome e e-mail de quem **assina pela Atom** (diferente do e-mail do cliente);
+- se o modelo usa o **nome** do signatário do cliente (a Autentique só exige o e-mail).
+
+Eu crio o mapa variável → dado aprovado do negócio (`CONTRATO_MODELO_<CODIGO>` e `CONTRATO_MAPA_<CODIGO>`).
+IDs de documento e pasta não são segredos e podem ser enviados no chat; **o token da Autentique não** — ele vai só na credencial.
 
 ---
 

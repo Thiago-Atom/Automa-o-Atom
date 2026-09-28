@@ -82,21 +82,89 @@ test('teste 17 — falha após criação externa: Asaas reaproveita cobrança ex
   assert.equal(r[1].criar, true);
 });
 
-test('teste 17 — falha após criação externa: Clicksign retoma do passo interrompido (sem novo envelope)', () => {
-  const config = cfg({ MODO_EXECUCAO: 'SANDBOX', CLICKSIGN_BASE_URL: 'https://sandbox.exemplo/api/v3', CLICKSIGN_MODELO_EXEMPLO: 'modelo-ficticio',
-    CLICKSIGN_MAPA_EXEMPLO: '{"RAZAO_SOCIAL":"empresa.razao_social"}', CLICKSIGN_SIGNATARIO_ATOM_NOME: 'Signatário Fictício',
-    CLICKSIGN_SIGNATARIO_ATOM_EMAIL: 'assinatura@exemplo.invalid', CLICKSIGN_AUTENTICACAO: 'email', CLICKSIGN_VALIDADO_SANDBOX: 'SIM' });
-  const dados = { org_id: 900113, empresa: { razao_social: 'EMPRESA FICTICIA LTDA' }, comercial: { modelo_contrato: 'EXEMPLO' },
-    contatos: { nome_signatario: 'Contato Fictício', email_assinatura: 'contato@exemplo.invalid' } };
-  const r = executarNo('ATOM_05_Clicksign', 'Planejar envelope', { nos: {
-    'Ler configuração': config, 'Entrada': [{ deal_id: '900013', versao: 1 }],
-    'Snapshot': [{ deal_id: '900013', versao: 1, status: 'ATIVO', dados: JSON.stringify(dados) }],
-    'Vínculos Clicksign': [
-      { sistema: 'CLICKSIGN', tipo: 'ENVELOPE', id_externo: 'env-ficticio', snapshot_versao: 1, status: 'CRIADO' },
-      { sistema: 'CLICKSIGN', tipo: 'DOCUMENTO', id_externo: 'doc-ficticio', snapshot_versao: 1, status: 'CRIADO' },
-    ],
-  } })[0];
+const CFG_CONTRATO = {
+  MODO_EXECUCAO: 'SANDBOX', GDRIVE_PASTA_CONTRATOS_ID: 'pasta-ficticia', CONTRATO_MODELO_EXEMPLO: 'modelo-ficticio',
+  CONTRATO_MAPA_EXEMPLO: '{"RAZAO_SOCIAL":"empresa.razao_social","VALOR_TOTAL":{"campo":"financeiro.valor_total","formato":"moeda"}}',
+  AUTENTIQUE_SIGNATARIO_ATOM_EMAIL: 'assinatura@exemplo.invalid', COBRANCA_DISPARO: 'JUNTO_COM_CONTRATO',
+};
+const DADOS_CONTRATO = { org_id: 900113, empresa: { razao_social: 'EMPRESA FICTICIA LTDA' }, comercial: { modelo_contrato: 'EXEMPLO' },
+  financeiro: { valor_total: 1500 }, contatos: { email_assinatura: 'contato@exemplo.invalid' } };
+const planejarContrato = (config, vinculos) => executarNo('ATOM_05_Autentique', 'Planejar contrato', { nos: {
+  'Ler configuração': cfg(config), 'Entrada': [{ acao: 'CRIAR_ENVELOPE', deal_id: '900013', versao: 1 }],
+  'Snapshot': [{ deal_id: '900013', versao: 1, status: 'ATIVO', dados: JSON.stringify(DADOS_CONTRATO) }],
+  'Vínculos do contrato': vinculos,
+} })[0];
+
+test('teste 17 — falha após criação externa: contrato retoma com a mesma cópia e não duplica documento', () => {
+  // Cópia do modelo já criada numa execução interrompida: é reaproveitada.
+  const r = planejarContrato(CFG_CONTRATO, [{ sistema: 'GDOCS', tipo: 'DOCUMENTO_GOOGLE', id_externo: 'copia-ficticia', snapshot_versao: 1, status: 'CRIADO' }]);
   assert.equal(r.executar, true);
-  assert.deepEqual(r.etapas, { envelope: false, documento: false, cliente: true, atom: true, requisitos: true });
-  assert.equal(r.ids.envelope, 'env-ficticio');
+  assert.deepEqual(r.etapas, { copiar: false });
+  assert.equal(r.ids.copia, 'copia-ficticia');
+  assert.equal(r.substituicoes['{{VALOR_TOTAL}}'], 'R$ 1.500,00');
+  assert.equal(r.sandbox, true, 'fora de PRODUCAO o documento é criado em sandbox');
+  assert.deepEqual(JSON.parse(r.operations).variables.signers.map((s) => s.email), ['contato@exemplo.invalid', 'assinatura@exemplo.invalid']);
+  // Documento já registrado: nada é criado de novo.
+  const fim = planejarContrato(CFG_CONTRATO, [{ sistema: 'AUTENTIQUE', tipo: 'DOCUMENTO', id_externo: 'doc-ficticio', snapshot_versao: 1, status: 'ENVIADO' }]);
+  assert.equal(fim.executar, false); assert.equal(fim.motivo, 'CONTRATO_JA_ENVIADO');
+  // Resposta perdida após a criação: o documento é localizado pelo nome e reaproveitado.
+  const dec = executarNo('ATOM_05_Autentique', 'Decidir criação', { nos: { 'Planejar contrato': [r] },
+    entrada: [{ data: { documents: { data: [{ id: 'doc-ja-criado', name: r.nome }] } } }] })[0];
+  assert.equal(dec.criar, false); assert.equal(dec.existente.id, 'doc-ja-criado');
+});
+
+test('contrato: bloqueios (simulação, produção sem validação, variável sem valor, modelo incompatível)', () => {
+  assert.equal(planejarContrato(Object.assign({}, CFG_CONTRATO, { MODO_EXECUCAO: 'SIMULACAO' }), []).motivo, 'MODO_SIMULACAO');
+  assert.match(planejarContrato(Object.assign({}, CFG_CONTRATO, { MODO_EXECUCAO: 'PRODUCAO' }), []).motivo, /AUTENTIQUE_VALIDADO_SANDBOX/);
+  const semValor = planejarContrato(Object.assign({}, CFG_CONTRATO, { CONTRATO_MAPA_EXEMPLO: '{"PRAZO":"comercial.prazo_execucao"}' }), []);
+  assert.equal(semValor.bloqueado, true); assert.match(semValor.motivo, /PRAZO/);
+  const iguais = planejarContrato(Object.assign({}, CFG_CONTRATO, { AUTENTIQUE_SIGNATARIO_ATOM_EMAIL: 'Contato@exemplo.invalid' }), []);
+  assert.equal(iguais.motivo, 'E-MAILS_DO_CLIENTE_E_DA_ATOM_IGUAIS');
+
+  const p = planejarContrato(CFG_CONTRATO, []);
+  const conf = (copiaNova, lote, doc) => executarNo('ATOM_05_Autentique', 'Conferir preenchimento', { nos: {
+    'Planejar contrato': [p], 'Cópia do modelo': [{ copia_id: 'c', copia_nova: copiaNova }], 'Google Docs — preencher': [lote] }, entrada: [doc] })[0];
+  const docLimpo = { body: { content: [{ paragraph: { elements: [{ textRun: { content: 'EMPRESA FICTICIA LTDA R$ 1.500,00' } }] } }] } };
+  const tudo = { replies: [{ replaceAllText: { occurrencesChanged: 1 } }, { replaceAllText: { occurrencesChanged: 2 } }] };
+  assert.equal(conf(true, tudo, docLimpo).ok, true);
+  assert.match(conf(true, { replies: [{ replaceAllText: { occurrencesChanged: 1 } }, {}] }, docLimpo).motivo, /\{\{VALOR_TOTAL\}\}/);
+  assert.match(conf(true, tudo, { body: { content: [{ paragraph: { elements: [{ textRun: { content: 'Foro: {{FORO}}' } }] } }] } }).motivo, /\{\{FORO\}\}/);
+  assert.equal(conf(false, { replies: [] }, docLimpo).ok, true, 'cópia reaproveitada: vale só a conferência de marcas restantes');
+});
+
+test('contrato: situação relida pela API — assinatura completa dispara cobrança só se APOS_ASSINATURAS', () => {
+  const doc = { data: { document: { id: 'doc-ficticio', signatures: [
+    { public_id: 'p-cli', email: 'contato@exemplo.invalid', signed: { created_at: 'x' }, rejected: null },
+    { public_id: 'p-atom', email: 'assinatura@exemplo.invalid', signed: { created_at: 'y' }, rejected: null }] } } };
+  const sigs = [{ sistema: 'AUTENTIQUE', tipo: 'SIGNATARIO', id_externo: 'p-cli', papel: 'CLIENTE', snapshot_versao: 1 },
+    { sistema: 'AUTENTIQUE', tipo: 'SIGNATARIO', id_externo: 'p-atom', papel: 'ATOM', snapshot_versao: 1 }];
+  const rodar = (disparo, resp) => executarNo('ATOM_05_Autentique', 'Consolidar contrato', { nos: {
+    'Ler configuração (webhook)': cfg({ COBRANCA_DISPARO: disparo }), 'Documento a consultar': [{ deal_id: '900013', versao: 1, documento: 'doc-ficticio', link: '' }],
+    'Signatários do documento': sigs, 'Autentique — consultar documento': [resp] }, entrada: sigs })[0];
+  const a = rodar('APOS_ASSINATURAS', doc);
+  assert.equal(a.status_contrato, 'ASSINADO_TODOS'); assert.equal(a.concluido, true); assert.equal(a.cobrar_agora, true);
+  assert.equal(rodar('JUNTO_COM_CONTRATO', doc).cobrar_agora, false, 'cobrança já criada no envio');
+  const erro = rodar('APOS_ASSINATURAS', { errors: [{ message: 'falha fictícia' }] });
+  assert.equal(erro.status_contrato, 'FALHA'); assert.equal(erro.gravar, false, 'falha de consulta não sobrescreve a situação'); assert.equal(erro.alertar, true);
+});
+
+test('ATOM_00: aceita ID do Google Drive só nas chaves de modelo/pasta; continua recusando segredos', () => {
+  const idDrive = '1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-abcd';
+  const rodar = (linhas) => executarNo('ATOM_00_Aplicar_Config', 'Validar e mesclar', { nos: { 'Ler configuração': [], 'Entrada': [{ linhas }] } });
+  assert.equal(rodar([{ chave: 'CONTRATO_MODELO_SITE', valor: idDrive, status: 'CONFIGURADO' }])[0].row.valor, idDrive);
+  assert.equal(rodar([{ chave: 'GDRIVE_PASTA_CONTRATOS_ID', valor: idDrive, status: 'CONFIGURADO' }]).length, 1);
+  assert.throws(() => rodar([{ chave: 'AUTENTIQUE_TOKEN', valor: idDrive, status: 'CONFIGURADO' }]), /segredo/);
+  assert.throws(() => rodar([{ chave: 'CONTRATO_MODELO_SITE', valor: 'Bearer ' + idDrive, status: 'CONFIGURADO' }]), /segredo/);
+  assert.equal(rodar([{ chave: 'CLICKSIGN_BASE_URL', valor: '', status: 'OBSOLETO' }])[0].row.status, 'OBSOLETO');
+});
+
+test('retentativas acumulam (ATOM_06): o limite RETENTATIVAS_MAX pode ser atingido', () => {
+  const falha = { acao: { request_id: 'asaas:cobrancas:900001:v1', status: 'FALHA', tentativas: 1, criado_em: '2026-09-28T10:00:00.000Z' } };
+  const primeira = executarNo('ATOM_06_Asaas', 'Acumular tentativas', { nos: { 'Falha na criação': [falha] }, entrada: [{}] })[0];
+  assert.equal(primeira.acao.tentativas, 1);
+  const terceira = executarNo('ATOM_06_Asaas', 'Acumular tentativas', { nos: { 'Falha na criação': [falha] },
+    entrada: [{ request_id: 'asaas:cobrancas:900001:v1', tentativas: 2, criado_em: '2026-09-27T10:00:00.000Z' }] })[0];
+  assert.equal(terceira.acao.tentativas, 3);
+  assert.equal(terceira.acao.criado_em, '2026-09-27T10:00:00.000Z');
+  assert.ok(Date.parse(terceira.acao.proxima_tentativa) > Date.parse(primeira.acao.proxima_tentativa) - 1000);
 });

@@ -31,7 +31,7 @@ const CFG = C.montar(cfgRows({
   PD_DEAL_VALOR_PARCELA: 'af'.repeat(20), PD_DEAL_VENCIMENTO_ENTRADA: 'b0'.repeat(20), PD_DEAL_PRIMEIRO_VENCIMENTO: 'b1'.repeat(20),
   PD_DEAL_EMAIL_ASSINATURA: 'b2'.repeat(20), PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO: 'b3'.repeat(20), PD_DEAL_NOME_SIGNATARIO: 'b4'.repeat(20),
   PD_DEAL_DIAG_STATUS: 'b5'.repeat(20), PD_DEAL_MENSALIDADE: 'b6'.repeat(20), PD_DEAL_DURACAO_MESES: 'b7'.repeat(20),
-  CLICKSIGN_EXIGE_NOME_SIGNATARIO: 'true', PD_INTEGRACAO_USER_ID: '999',
+  CONTRATO_EXIGE_NOME_SIGNATARIO: 'true', PD_INTEGRACAO_USER_ID: '999',
 }));
 
 test('config: valores PENDENTE/PROPOSTO não liberam ações e SIMULACAO bloqueia escrita', () => {
@@ -259,18 +259,6 @@ test('liberação: outro negócio (15), parcela posterior (16), cancelado (20), 
   assert.equal(R.avaliarLiberacao(Object.assign(base(), { pagamentoInicial: { status: 'CONFIRMED', value: 900 } })).liberar, false);
   assert.equal(R.avaliarLiberacao(Object.assign(base(), { regraConfirmada: false })).liberar, false);
   assert.equal(R.avaliarLiberacao(Object.assign(base(), { pagamentoInicial: { status: 'REFUNDED', value: 1000 } })).liberar, false);
-});
-
-test('Clicksign: todos os estados e fechamento manual sem todas as assinaturas', () => {
-  const s = (o) => R.statusContrato(Object.assign({ signatariosExigidos: ['cli', 'atom'] }, o)).status;
-  assert.equal(s({ envelopeStatus: 'running', signatariosQueAssinaram: [] }), 'PENDENTE');
-  assert.equal(s({ envelopeStatus: 'running', signatariosQueAssinaram: ['cli'] }), 'PARCIALMENTE_ASSINADO');
-  assert.equal(s({ envelopeStatus: 'closed', signatariosQueAssinaram: ['cli', 'atom'] }), 'ASSINADO_TODOS');
-  assert.equal(s({ envelopeStatus: 'closed', signatariosQueAssinaram: ['cli'] }), 'ENCERRADO_SEM_TODAS_ASSINATURAS');
-  assert.equal(s({ envelopeStatus: 'running', eventos: ['refusal'] }), 'RECUSADO');
-  assert.equal(s({ envelopeStatus: 'running', eventos: ['deadline'] }), 'EXPIRADO');
-  assert.equal(s({ envelopeStatus: 'canceled' }), 'CANCELADO');
-  assert.equal(R.statusContrato({ envelopeStatus: 'running' }).status, 'FALHA');
 });
 
 test('agenda: +7 dias corridos, janela comercial e fuso America/Sao_Paulo', () => {

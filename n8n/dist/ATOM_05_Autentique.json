@@ -1,8 +1,8 @@
 {
-  "name": "ATOM_05_Clicksign",
+  "name": "ATOM_05_Autentique",
   "nodes": [
     {
-      "id": "615cfb31-4819-487c-a3e4-9ef593b5fd0c",
+      "id": "e7bbb5ce-d7a2-4889-9344-a76f68342ea4",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "08bd1de5-df67-4ef1-873c-abde18da9c37",
+      "id": "b58e51a6-ef2d-4746-8249-994e8a17af45",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,12 +37,72 @@
       "executeOnce": true
     },
     {
-      "id": "4c542426-5aac-4a58-9fa4-6854f3352916",
+      "id": "c756f29f-e7a3-4ba3-82bd-750d7ee7f40e",
+      "name": "Ação",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "criar",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ ['CRIAR_CONTRATO', 'CRIAR_ENVELOPE'].includes($('Entrada').first().json.acao) }}",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "rightValue": ""
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "consultar",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Entrada').first().json.acao }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "CONSULTAR"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "c4105e35-01b1-4a84-a12d-13c092317e95",
       "name": "Snapshot",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        500,
+        700,
         300
       ],
       "parameters": {
@@ -74,12 +134,12 @@
       "alwaysOutputData": true
     },
     {
-      "id": "097fd43d-6e64-494a-b4e9-6378f6567c40",
-      "name": "Vínculos Clicksign",
+      "id": "0d828b01-6225-4969-8a20-ed8976f497c4",
+      "name": "Vínculos do contrato",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        700,
+        900,
         300
       ],
       "parameters": {
@@ -95,11 +155,6 @@
         "filters": {
           "conditions": [
             {
-              "keyName": "sistema",
-              "condition": "eq",
-              "keyValue": "={{ \"CLICKSIGN\" }}"
-            },
-            {
               "keyName": "deal_id",
               "condition": "eq",
               "keyValue": "={{ String($('Entrada').first().json.deal_id) }}"
@@ -112,26 +167,26 @@
       "alwaysOutputData": true
     },
     {
-      "id": "91a10efe-8e58-4e63-9464-67c0492e9ec0",
-      "name": "Planejar envelope",
+      "id": "f57600eb-0feb-4fe4-88a2-78f392b7e61c",
+      "name": "Planejar contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        900,
+        1100,
         300
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#planejar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos Clicksign\").all().map((i) => i.json).filter((r) => r && r.id_externo && Number(r.snapshot_versao) === Number(e.versao));\n  const reqId = \"clicksign:envelope:\" + e.deal_id + \":v\" + e.versao;\n  const base = { request_id: reqId, deal_id: String(e.deal_id), versao: Number(e.versao) };\n  if (!snap || ![\"ATIVO\", \"ENVIADO\"].includes(snap.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE_OU_INATIVO\" }) }];\n  const env = vincs.find((v) => v.tipo === \"ENVELOPE\");\n  if (env && [\"ENVIADO\", \"ASSINADO_TODOS\"].includes(env.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"ENVELOPE_JA_ENVIADO\" }) }];\n  const d = safeJsonParse(snap.dados, {});\n  const modelo = String(d.comercial && d.comercial.modelo_contrato || \"\").toUpperCase().replace(/[^A-Z0-9]+/g, \"_\");\n  const chaveModelo = \"CLICKSIGN_MODELO_\" + modelo;\n  const chaveMapa = \"CLICKSIGN_MAPA_\" + modelo;\n  const gate = portao(cfg, [\"CLICKSIGN_BASE_URL\", chaveModelo, chaveMapa, \"CLICKSIGN_SIGNATARIO_ATOM_NOME\", \"CLICKSIGN_SIGNATARIO_ATOM_EMAIL\", \"CLICKSIGN_AUTENTICACAO\", \"CLICKSIGN_VALIDADO_SANDBOX\"]);\n  if (!gate.liberado) return [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo: gate.motivo }) }];\n  const mapa = safeJsonParse(valor(cfg, chaveMapa, \"\"), null);\n  if (!mapa || typeof mapa !== \"object\") return [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo: chaveMapa + \" inválido (JSON)\" }) }];\n  const ler = (o, cam) => cam.split(\".\").reduce((a, k) => a && a[k] !== void 0 ? a[k] : void 0, o);\n  const dadosModelo = {};\n  const semValor = [];\n  for (const [variavel, caminho] of Object.entries(mapa)) {\n    const v = ler(d, String(caminho));\n    if (v === void 0 || v === null || v === \"\") semValor.push(variavel);\n    else dadosModelo[variavel] = String(v);\n  }\n  if (semValor.length) return [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo: \"Variáveis do modelo sem valor no snapshot: \" + semValor.join(\", \") }) }];\n  const doc = vincs.find((v) => v.tipo === \"DOCUMENTO\");\n  const sigC = vincs.find((v) => v.tipo === \"SIGNATARIO\" && v.papel === \"CLIENTE\");\n  const sigA = vincs.find((v) => v.tipo === \"SIGNATARIO\" && v.papel === \"ATOM\");\n  const reqs = vincs.find((v) => v.tipo === \"REQUISITOS\");\n  const nomeEnv = (\"ATOM-D\" + e.deal_id + \"-V\" + e.versao + \" — \" + (d.empresa && d.empresa.razao_social || \"\")).slice(0, 250);\n  const url = valor(cfg, \"CLICKSIGN_BASE_URL\", \"\").replace(/\\/$/, \"\");\n  const auth = valor(cfg, \"CLICKSIGN_AUTENTICACAO\", \"email\");\n  const signer = (nome, email) => ({ data: { type: \"signers\", attributes: {\n    name: nome,\n    email,\n    has_documentation: false,\n    refusable: true,\n    communicate_events: { signature_request: \"email\", signature_reminder: \"email\", document_signed: \"email\" }\n  } } });\n  return [{ json: Object.assign(base, {\n    executar: true,\n    url,\n    org_id: String(d.org_id || \"\"),\n    etapas: { envelope: !env, documento: !doc, cliente: !sigC, atom: !sigA, requisitos: !reqs },\n    ids: { envelope: env ? env.id_externo : \"\", documento: doc ? doc.id_externo : \"\", cliente: sigC ? sigC.id_externo : \"\", atom: sigA ? sigA.id_externo : \"\" },\n    corpos: {\n      envelope: { data: { type: \"envelopes\", attributes: { name: nomeEnv, locale: \"pt-BR\", auto_close: true, block_after_refusal: true } } },\n      documento: { data: { type: \"documents\", attributes: { filename: \"Contrato ATOM-D\" + e.deal_id + \"-V\" + e.versao + \".docx\", template: { key: valor(cfg, chaveModelo, \"\"), data: dadosModelo } } } },\n      cliente: signer(d.contatos.nome_signatario, d.contatos.email_assinatura),\n      atom: signer(valor(cfg, \"CLICKSIGN_SIGNATARIO_ATOM_NOME\", \"\"), valor(cfg, \"CLICKSIGN_SIGNATARIO_ATOM_EMAIL\", \"\")),\n      ativar: { data: { type: \"envelopes\", attributes: { status: \"running\" } } }\n    },\n    autenticacao: auth,\n    modelo,\n    disparo_cobranca: valor(cfg, \"COBRANCA_DISPARO\", \"\")\n  }) }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#planejar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction toNumber(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  if (typeof v === \"number\") return Number.isFinite(v) ? v : null;\n  if (typeof v === \"object\" && v !== null && \"value\" in v) return toNumber(v.value);\n  let s = String(v).trim().replace(/[R$\\s]/g, \"\");\n  if (/,\\d{1,2}$/.test(s)) s = s.replace(/\\./g, \"\").replace(\",\", \".\");\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// lib/autentique.js\nvar RAIZES = [\"empresa\", \"comercial\", \"financeiro\", \"contatos\", \"deal_id\", \"org_id\", \"versao\"];\nvar FORMATOS = [\"texto\", \"moeda\", \"numero\", \"inteiro\", \"data\", \"cnpj\", \"cep\", \"endereco\", \"sim_nao\"];\nfunction codigoModelo(modelo) {\n  return String(modelo || \"\").toUpperCase().normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").replace(/[^A-Z0-9]+/g, \"_\").replace(/^_+|_+$/g, \"\");\n}\nfunction ler(obj, caminho) {\n  return String(caminho).split(\".\").reduce((a, k) => a !== null && a !== void 0 && a[k] !== void 0 ? a[k] : void 0, obj);\n}\nfunction milhar(inteiro) {\n  return String(inteiro).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n}\nfunction formatar(valor2, formato) {\n  if (valor2 === void 0 || valor2 === null || valor2 === \"\") return \"\";\n  switch (formato || \"texto\") {\n    case \"moeda\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const neg = n < 0;\n      const c = Math.round(Math.abs(n) * 100);\n      return (neg ? \"-\" : \"\") + \"R$ \" + milhar(Math.floor(c / 100)) + \",\" + String(c % 100).padStart(2, \"0\");\n    }\n    case \"numero\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const c = Math.round(Math.abs(n) * 100);\n      const dec = c % 100;\n      return (n < 0 ? \"-\" : \"\") + milhar(Math.floor(c / 100)) + (dec ? \",\" + String(dec).padStart(2, \"0\") : \"\");\n    }\n    case \"inteiro\": {\n      const n = toNumber(valor2);\n      return n === null || Number.isNaN(n) || !Number.isInteger(n) ? \"\" : String(n);\n    }\n    case \"data\": {\n      const m = /^(\\d{4})-(\\d{2})-(\\d{2})/.exec(String(valor2));\n      return m ? m[3] + \"/\" + m[2] + \"/\" + m[1] : \"\";\n    }\n    case \"cnpj\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 14 ? d.replace(/^(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})$/, \"$1.$2.$3/$4-$5\") : \"\";\n    }\n    case \"cep\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 8 ? d.slice(0, 5) + \"-\" + d.slice(5) : \"\";\n    }\n    case \"endereco\": {\n      if (typeof valor2 !== \"object\") return \"\";\n      const e = valor2;\n      if (!e.logradouro || !e.cidade || !e.uf) return \"\";\n      const linha1 = [e.logradouro, e.numero].filter(Boolean).join(\", \") + (e.complemento ? \" - \" + e.complemento : \"\");\n      const cep = formatar(e.cep, \"cep\");\n      return [linha1, e.bairro, e.cidade + \"/\" + e.uf].filter(Boolean).join(\", \") + (cep ? \", CEP \" + cep : \"\");\n    }\n    case \"sim_nao\":\n      return valor2 === true ? \"Sim\" : valor2 === false ? \"Não\" : \"\";\n    default:\n      return typeof valor2 === \"object\" ? \"\" : String(valor2).trim();\n  }\n}\nfunction montarSubstituicoes(dados, mapa) {\n  const substituicoes = {};\n  const semValor = [];\n  const invalidos = [];\n  if (!mapa || typeof mapa !== \"object\" || Array.isArray(mapa) || !Object.keys(mapa).length) {\n    return { substituicoes, semValor, invalidos: [\"MAPA_VAZIO_OU_INVALIDO\"] };\n  }\n  for (const [variavel, def] of Object.entries(mapa)) {\n    const campo = typeof def === \"string\" ? def : def && def.campo;\n    const formato = typeof def === \"object\" && def && def.formato ? def.formato : \"texto\";\n    if (!/^[A-Z][A-Z0-9_]{0,60}$/.test(variavel)) {\n      invalidos.push(variavel + \": nome inválido (use MAIUSCULAS_E_SUBLINHADO)\");\n      continue;\n    }\n    if (!campo || !RAIZES.includes(String(campo).split(\".\")[0])) {\n      invalidos.push(variavel + \": campo fora do snapshot aprovado\");\n      continue;\n    }\n    if (!FORMATOS.includes(formato)) {\n      invalidos.push(variavel + \": formato desconhecido \" + formato);\n      continue;\n    }\n    const v = formatar(ler(dados, campo), formato);\n    if (v === \"\") semValor.push(variavel);\n    else substituicoes[\"{{\" + variavel + \"}}\"] = v;\n  }\n  return { substituicoes, semValor, invalidos };\n}\nfunction requisicoesDocs(substituicoes) {\n  return Object.entries(substituicoes).map(([marca, valor2]) => ({\n    replaceAllText: { containsText: { text: marca, matchCase: true }, replaceText: valor2 }\n  }));\n}\nfunction nomeDocumento(dealId, versao, razaoSocial) {\n  return (\"ATOM-D\" + dealId + \"-V\" + versao + \" — Contrato\" + (razaoSocial ? \" — \" + razaoSocial : \"\")).slice(0, 200);\n}\nvar MUTATION_CRIAR = \"mutation CreateDocumentMutation($document: DocumentInput!, $signers: [SignerInput!]!, $file: Upload!) { createDocument(sandbox: %SANDBOX%, document: $document, signers: $signers, file: $file) { id name created_at signatures { public_id name email action { name } link { short_link } } } }\";\nfunction operacoesCriacao({ nome, emails, sandbox }) {\n  return JSON.stringify({\n    query: MUTATION_CRIAR.replace(\"%SANDBOX%\", sandbox ? \"true\" : \"false\"),\n    variables: { document: { name: nome }, signers: emails.map((email) => ({ email, action: \"SIGN\" })), file: null }\n  });\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction consultaRecentes(limite) {\n  return { query: \"query { documents(limit: \" + Math.max(1, Math.min(60, Number(limite) || 30)) + \", page: 1) { data { id name created_at signatures { public_id name email action { name } link { short_link } } } } }\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const versao = Number(e.versao);\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos do contrato\").all().map((i) => i.json).filter((r) => r && r.id_externo && Number(r.snapshot_versao) === versao);\n  const reqId = \"autentique:contrato:\" + e.deal_id + \":v\" + versao;\n  const base = { request_id: reqId, deal_id: String(e.deal_id), versao };\n  const bloquear = (motivo) => [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo }) }];\n  if (!snap || ![\"ATIVO\", \"ENVIADO\"].includes(snap.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE_OU_INATIVO\" }) }];\n  if (vincs.some((v) => v.sistema === \"AUTENTIQUE\" && v.tipo === \"DOCUMENTO\")) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"CONTRATO_JA_ENVIADO\" }) }];\n  const d = safeJsonParse(snap.dados, {});\n  const cod = codigoModelo(d.comercial && d.comercial.modelo_contrato);\n  if (!cod) return bloquear(\"MODELO_DE_CONTRATO_AUSENTE_NO_SNAPSHOT\");\n  const chaveModelo = \"CONTRATO_MODELO_\" + cod;\n  const chaveMapa = \"CONTRATO_MAPA_\" + cod;\n  const modo2 = modo(cfg);\n  const exigidas = [\"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"GDRIVE_PASTA_CONTRATOS_ID\", chaveModelo, chaveMapa];\n  if (modo2 === \"PRODUCAO\") exigidas.push(\"AUTENTIQUE_VALIDADO_SANDBOX\");\n  const gate = portao(cfg, exigidas);\n  if (!gate.liberado) return bloquear(gate.motivo);\n  const mapa = safeJsonParse(valor(cfg, chaveMapa, \"\"), null);\n  const s = montarSubstituicoes(d, mapa);\n  if (s.invalidos.length) return bloquear(chaveMapa + \" inválido: \" + s.invalidos.join(\"; \"));\n  if (s.semValor.length) return bloquear(\"Variáveis do modelo sem valor no snapshot: \" + s.semValor.join(\", \"));\n  const emailCliente = normalizeEmail(d.contatos && d.contatos.email_assinatura);\n  const emailAtom = normalizeEmail(valor(cfg, \"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"\"));\n  if (!emailCliente || !emailAtom) return bloquear(\"E-MAIL_DE_SIGNATARIO_AUSENTE\");\n  if (emailCliente === emailAtom) return bloquear(\"E-MAILS_DO_CLIENTE_E_DA_ATOM_IGUAIS\");\n  const copia = vincs.find((v) => v.sistema === \"GDOCS\" && v.tipo === \"DOCUMENTO_GOOGLE\");\n  const nome = nomeDocumento(e.deal_id, versao, d.empresa && d.empresa.razao_social);\n  const sandbox = modo2 !== \"PRODUCAO\";\n  return [{ json: Object.assign(base, {\n    executar: true,\n    fim: false,\n    org_id: String(d.org_id || \"\"),\n    modelo: cod,\n    nome,\n    sandbox,\n    etapas: { copiar: !copia },\n    ids: { copia: copia ? copia.id_externo : \"\" },\n    modelo_id: valor(cfg, chaveModelo, \"\"),\n    corpo_copia: { name: nome, parents: [valor(cfg, \"GDRIVE_PASTA_CONTRATOS_ID\", \"\")] },\n    corpo_docs: { requests: requisicoesDocs(s.substituicoes) },\n    substituicoes: s.substituicoes,\n    consulta_recentes: consultaRecentes(30),\n    operations: operacoesCriacao({ nome, emails: [emailCliente, emailAtom], sandbox }),\n    mapa_arquivo: MAPA_ARQUIVO,\n    signatarios: [{ papel: \"CLIENTE\", email: emailCliente }, { papel: \"ATOM\", email: emailAtom }],\n    disparo_cobranca: valor(cfg, \"COBRANCA_DISPARO\", \"\")\n  }) }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "ea1f7a39-de7f-42c2-bc6e-3d8dc6ba65c5",
+      "id": "64557607-b4f9-4ac6-8fee-c0a54b62773e",
       "name": "Executar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1100,
+        1300,
         300
       ],
       "parameters": {
@@ -158,12 +213,12 @@
       }
     },
     {
-      "id": "f44dcd99-f32d-4626-8503-3cc3beacaf83",
-      "name": "Criar envelope?",
+      "id": "95fc38bd-f3ef-498a-9791-acb7cafa8e39",
+      "name": "Copiar modelo?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1300,
+        1500,
         300
       ],
       "parameters": {
@@ -176,7 +231,7 @@
           },
           "conditions": [
             {
-              "leftValue": "={{ $('Planejar envelope').first().json.etapas.envelope }}",
+              "leftValue": "={{ $('Planejar contrato').first().json.etapas.copiar }}",
               "rightValue": true,
               "operator": {
                 "type": "boolean",
@@ -190,33 +245,23 @@
       }
     },
     {
-      "id": "b573e6a6-e576-432c-8090-55ba65f5648f",
-      "name": "Clicksign — criar envelope",
+      "id": "4f9719b1-26d5-4603-a099-d70540378c8f",
+      "name": "Google Drive — copiar modelo",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1500,
+        1700,
         300
       ],
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Accept",
-              "value": "application/vnd.api+json"
-            }
-          ]
-        },
+        "url": "=https://www.googleapis.com/drive/v3/files/{{ encodeURIComponent($('Planejar contrato').first().json.modelo_id) }}/copy?supportsAllDrives=true",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
         "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/vnd.api+json",
-        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.envelope) }}",
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Planejar contrato').first().json.corpo_copia) }}",
         "options": {
           "timeout": 30000
         }
@@ -225,26 +270,27 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "7147a418-100a-4da3-bea7-0df074b39da0",
-      "name": "Guardar envelope",
+      "id": "85cf28fd-543a-407c-992f-b74acf668abc",
+      "name": "Guardar cópia",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1700,
+        1900,
         300
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
-      }
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#guardar_copia. Edite a fonte no repositório, não este nó.\n// Guarda o ID da cópia do modelo logo após criá-la: uma retentativa reaproveita a mesma cópia.\nconst p = $('Planejar contrato').first().json;\nconst r = $input.first().json;\nconst id = r && r.id ? String(r.id) : '';\nif (!id) throw new Error('Google Drive não retornou o id da cópia do modelo');\nreturn [{ json: { id, row: { sistema: 'GDOCS', tipo: 'DOCUMENTO_GOOGLE', id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: '', status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+      },
+      "onError": "continueErrorOutput"
     },
     {
-      "id": "f2ff3ef6-0a6f-40cb-88cc-58473378585a",
-      "name": "Registrar envelope",
+      "id": "aec72b4d-656a-4b8c-a0e1-58d1e24b28f4",
+      "name": "Registrar cópia",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1900,
+        2100,
         300
       ],
       "parameters": {
@@ -259,17 +305,17 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "sistema": "={{ $('Guardar envelope').first().json.row.sistema }}",
-            "tipo": "={{ $('Guardar envelope').first().json.row.tipo }}",
-            "id_externo": "={{ $('Guardar envelope').first().json.row.id_externo }}",
-            "deal_id": "={{ $('Guardar envelope').first().json.row.deal_id }}",
-            "org_id": "={{ $('Guardar envelope').first().json.row.org_id }}",
-            "snapshot_versao": "={{ $('Guardar envelope').first().json.row.snapshot_versao }}",
-            "papel": "={{ $('Guardar envelope').first().json.row.papel }}",
-            "status": "={{ $('Guardar envelope').first().json.row.status }}",
-            "link": "={{ $('Guardar envelope').first().json.row.link }}",
-            "referencia": "={{ $('Guardar envelope').first().json.row.referencia }}",
-            "atualizado_em": "={{ $('Guardar envelope').first().json.row.atualizado_em }}"
+            "sistema": "={{ $('Guardar cópia').first().json.row.sistema }}",
+            "tipo": "={{ $('Guardar cópia').first().json.row.tipo }}",
+            "id_externo": "={{ $('Guardar cópia').first().json.row.id_externo }}",
+            "deal_id": "={{ $('Guardar cópia').first().json.row.deal_id }}",
+            "org_id": "={{ $('Guardar cópia').first().json.row.org_id }}",
+            "snapshot_versao": "={{ $('Guardar cópia').first().json.row.snapshot_versao }}",
+            "papel": "={{ $('Guardar cópia').first().json.row.papel }}",
+            "status": "={{ $('Guardar cópia').first().json.row.status }}",
+            "link": "={{ $('Guardar cópia').first().json.row.link }}",
+            "referencia": "={{ $('Guardar cópia').first().json.row.referencia }}",
+            "atualizado_em": "={{ $('Guardar cópia').first().json.row.atualizado_em }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -377,58 +423,40 @@
       }
     },
     {
-      "id": "2abad9a9-bbe8-4cb5-9e68-a627f3c1bd6b",
-      "name": "Criar documento?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        1500,
-        450
-      ],
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "leftValue": "={{ $('Planejar envelope').first().json.etapas.documento }}",
-              "rightValue": true,
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        }
-      }
-    },
-    {
-      "id": "5a12c82f-8d15-402b-8052-8521c416c620",
-      "name": "Registrar bloqueio",
+      "id": "59807b8e-ce1a-4f03-8b38-b8faeb3a7611",
+      "name": "Cópia do modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1300,
+        1700,
         450
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#bloqueio. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar envelope').first().json;\nif (p.fim) return []; // já enviado ou snapshot inativo: nada a fazer\nconst agora = new Date().toISOString();\nreturn [{ json: {\n  acao: { request_id: p.request_id, sistema: 'CLICKSIGN', acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, status: 'BLOQUEADO_CONFIG',\n    tentativas: 0, proxima_tentativa: null, ultimo_erro: String(p.motivo || '').slice(0, 480),\n    payload: JSON.stringify({ acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, versao: p.versao }), resultado: '', criado_em: agora, atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'AGUARDANDO_CONFIGURACAO', ultimo_evento_em: agora },\n} }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#copia_atual. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar contrato').first().json;\nconst id = $('Guardar cópia').isExecuted ? $('Guardar cópia').first().json.id : p.ids.copia;\nreturn [{ json: { copia_id: id, copia_nova: $('Guardar cópia').isExecuted } }];"
       }
     },
     {
-      "id": "3a9e73f8-59ce-4dde-8e32-c73241648821",
+      "id": "394c0d6e-098f-4520-8607-86fc1460cc89",
+      "name": "Registrar bloqueio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#bloqueio. Edite a fonte no repositório, não este nó.\n// Recebe o item do planejamento (configuração pendente) ou da conferência do preenchimento (modelo incompatível).\nconst p = $('Planejar contrato').first().json;\nconst x = $input.first().json;\nif (p.fim) return []; // já enviado ou snapshot inativo: nada a fazer\nconst motivo = String(x.motivo || p.motivo || '').slice(0, 480);\nconst agora = new Date().toISOString();\nreturn [{ json: {\n  acao: { request_id: p.request_id, sistema: 'AUTENTIQUE', acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, status: 'BLOQUEADO_CONFIG',\n    tentativas: 0, proxima_tentativa: null, ultimo_erro: motivo,\n    payload: JSON.stringify({ acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, versao: p.versao }), resultado: '', criado_em: agora, atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'AGUARDANDO_CONFIGURACAO', ultimo_evento_em: agora },\n} }];"
+      }
+    },
+    {
+      "id": "8c636791-77cf-4e9d-98bd-fd55b38fa7a0",
       "name": "Salvar ação bloqueada",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1500,
+        1700,
         450
       ],
       "parameters": {
@@ -581,12 +609,12 @@
       }
     },
     {
-      "id": "c93851f6-5af3-4b03-85d0-620e5b8495ab",
+      "id": "3b86406b-b791-47cf-9aa4-35fa4fc1b0bd",
       "name": "Salvar contrato aguardando configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1700,
+        1900,
         450
       ],
       "parameters": {
@@ -649,473 +677,94 @@
       }
     },
     {
-      "id": "ca93924a-3f7b-4f89-809c-a540695ec726",
-      "name": "Clicksign — criar documento do modelo",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.5,
-      "position": [
-        1700,
-        450
-      ],
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ ($('Guardar envelope').isExecuted ? $('Guardar envelope').first().json.id : $('Planejar envelope').first().json.ids.envelope) }}/documents",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Accept",
-              "value": "application/vnd.api+json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/vnd.api+json",
-        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.documento) }}",
-        "options": {
-          "timeout": 30000
-        }
-      },
-      "credentials": {},
-      "notes": "Atributos de documento por modelo (template.key/template.data) NÃO confirmados na documentação: validar no sandbox.",
-      "onError": "continueErrorOutput"
-    },
-    {
-      "id": "d4ab7ba6-6af2-46fc-96b4-cae4bc0535fe",
-      "name": "Guardar documento",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1900,
-        450
-      ],
-      "parameters": {
-        "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
-      }
-    },
-    {
-      "id": "bda76029-6a6d-4681-859c-1dca2734e23f",
-      "name": "Registrar documento",
+      "id": "56bbdb73-204e-47b7-a831-f6e0e6a115f0",
+      "name": "Documentos do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2100,
+        700,
         450
       ],
       "parameters": {
         "resource": "row",
-        "operation": "insert",
+        "operation": "get",
         "dataTableId": {
           "__rl": true,
           "mode": "id",
           "value": "jNlKdIaPXcS7cEhF",
           "cachedResultName": "atom_vinculos"
         },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "sistema": "={{ $('Guardar documento').first().json.row.sistema }}",
-            "tipo": "={{ $('Guardar documento').first().json.row.tipo }}",
-            "id_externo": "={{ $('Guardar documento').first().json.row.id_externo }}",
-            "deal_id": "={{ $('Guardar documento').first().json.row.deal_id }}",
-            "org_id": "={{ $('Guardar documento').first().json.row.org_id }}",
-            "snapshot_versao": "={{ $('Guardar documento').first().json.row.snapshot_versao }}",
-            "papel": "={{ $('Guardar documento').first().json.row.papel }}",
-            "status": "={{ $('Guardar documento').first().json.row.status }}",
-            "link": "={{ $('Guardar documento').first().json.row.link }}",
-            "referencia": "={{ $('Guardar documento').first().json.row.referencia }}",
-            "atualizado_em": "={{ $('Guardar documento').first().json.row.atualizado_em }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "sistema",
-              "displayName": "sistema",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "tipo",
-              "displayName": "tipo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "id_externo",
-              "displayName": "id_externo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "deal_id",
-              "displayName": "deal_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "org_id",
-              "displayName": "org_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "snapshot_versao",
-              "displayName": "snapshot_versao",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "papel",
-              "displayName": "papel",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "status",
-              "displayName": "status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "link",
-              "displayName": "link",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "referencia",
-              "displayName": "referencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "atualizado_em",
-              "displayName": "atualizado_em",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "fdd566f7-efc6-4533-b147-51bad1c5ea0f",
-      "name": "Criar signatário cliente?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        1700,
-        600
-      ],
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
+        "matchType": "allConditions",
+        "filters": {
           "conditions": [
             {
-              "leftValue": "={{ $('Planejar envelope').first().json.etapas.cliente }}",
-              "rightValue": true,
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        }
-      }
-    },
-    {
-      "id": "e6fe5686-fe9e-43e1-adad-02038636041d",
-      "name": "Clicksign — signatário cliente",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.5,
-      "position": [
-        1900,
-        600
-      ],
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ ($('Guardar envelope').isExecuted ? $('Guardar envelope').first().json.id : $('Planejar envelope').first().json.ids.envelope) }}/signers",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"AUTENTIQUE\" }}"
+            },
             {
-              "name": "Accept",
-              "value": "application/vnd.api+json"
+              "keyName": "tipo",
+              "condition": "eq",
+              "keyValue": "={{ \"DOCUMENTO\" }}"
+            },
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ String($('Entrada').first().json.deal_id) }}"
             }
           ]
         },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/vnd.api+json",
-        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.cliente) }}",
-        "options": {
-          "timeout": 30000
-        }
+        "returnAll": true
       },
-      "credentials": {},
-      "notes": "Obrigatoriedade de nome/CPF (has_documentation:false) NÃO confirmada na API v3: validar no sandbox.",
-      "onError": "continueErrorOutput"
+      "executeOnce": true,
+      "alwaysOutputData": true
     },
     {
-      "id": "c8e3c902-f667-47a1-b2d2-1d6762a09f98",
-      "name": "Guardar signatário cliente",
+      "id": "47e19d4d-a9f6-428b-89e7-8b5eebae43bf",
+      "name": "Resolver documento (consulta)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2100,
-        600
+        900,
+        450
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#resolver_consulta. Edite a fonte no repositório, não este nó.\n// Ação CONSULTAR (reconciliação/manual): relê o documento vinculado à versão informada (ou à mais recente).\nconst e = $('Entrada').first().json;\nconst docs = $input.all().map((i) => i.json).filter((r) => r && r.sistema === 'AUTENTIQUE' && r.tipo === 'DOCUMENTO' && r.id_externo);\nconst alvo = e.versao ? docs.filter((r) => Number(r.snapshot_versao) === Number(e.versao)) : docs;\nalvo.sort((a, b) => Number(b.snapshot_versao) - Number(a.snapshot_versao));\nif (!alvo.length) return [];\nreturn [{ json: { deal_id: String(alvo[0].deal_id), versao: Number(alvo[0].snapshot_versao), documento: alvo[0].id_externo, link: alvo[0].link || '', origem: 'CONSULTA' } }];"
       }
     },
     {
-      "id": "92a0cbb5-a03f-42ea-aab2-d86cf8da82ec",
-      "name": "Registrar signatário cliente",
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
+      "id": "42b166f3-b512-46a3-a639-6a8bc61db3b4",
+      "name": "Documento a consultar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        2300,
-        600
+        1100,
+        450
       ],
       "parameters": {
-        "resource": "row",
-        "operation": "insert",
-        "dataTableId": {
-          "__rl": true,
-          "mode": "id",
-          "value": "jNlKdIaPXcS7cEhF",
-          "cachedResultName": "atom_vinculos"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "sistema": "={{ $('Guardar signatário cliente').first().json.row.sistema }}",
-            "tipo": "={{ $('Guardar signatário cliente').first().json.row.tipo }}",
-            "id_externo": "={{ $('Guardar signatário cliente').first().json.row.id_externo }}",
-            "deal_id": "={{ $('Guardar signatário cliente').first().json.row.deal_id }}",
-            "org_id": "={{ $('Guardar signatário cliente').first().json.row.org_id }}",
-            "snapshot_versao": "={{ $('Guardar signatário cliente').first().json.row.snapshot_versao }}",
-            "papel": "={{ $('Guardar signatário cliente').first().json.row.papel }}",
-            "status": "={{ $('Guardar signatário cliente').first().json.row.status }}",
-            "link": "={{ $('Guardar signatário cliente').first().json.row.link }}",
-            "referencia": "={{ $('Guardar signatário cliente').first().json.row.referencia }}",
-            "atualizado_em": "={{ $('Guardar signatário cliente').first().json.row.atualizado_em }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "sistema",
-              "displayName": "sistema",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "tipo",
-              "displayName": "tipo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "id_externo",
-              "displayName": "id_externo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "deal_id",
-              "displayName": "deal_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "org_id",
-              "displayName": "org_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "snapshot_versao",
-              "displayName": "snapshot_versao",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "papel",
-              "displayName": "papel",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "status",
-              "displayName": "status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "link",
-              "displayName": "link",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "referencia",
-              "displayName": "referencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "atualizado_em",
-              "displayName": "atualizado_em",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            }
-          ]
-        }
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $input.first().json }];"
       }
     },
     {
-      "id": "4efc10af-60cc-4610-9dce-5c3485191eb2",
-      "name": "Criar signatário Atom?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        1900,
-        750
-      ],
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "leftValue": "={{ $('Planejar envelope').first().json.etapas.atom }}",
-              "rightValue": true,
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        }
-      }
-    },
-    {
-      "id": "5bc864d3-1510-4ab9-bbc8-0f177fb508a1",
-      "name": "Clicksign — signatário Atom",
+      "id": "1e80ef62-f680-4bb3-b412-2216f802dcb0",
+      "name": "Google Docs — preencher",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        2100,
-        750
+        1900,
+        450
       ],
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ ($('Guardar envelope').isExecuted ? $('Guardar envelope').first().json.id : $('Planejar envelope').first().json.ids.envelope) }}/signers",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Accept",
-              "value": "application/vnd.api+json"
-            }
-          ]
-        },
+        "url": "=https://docs.googleapis.com/v1/documents/{{ encodeURIComponent($json.copia_id) }}:batchUpdate",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
         "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/vnd.api+json",
-        "body": "={{ JSON.stringify($('Planejar envelope').first().json.corpos.atom) }}",
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Planejar contrato').first().json.corpo_docs) }}",
         "options": {
           "timeout": 30000
         }
@@ -1124,179 +773,48 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "e4d27a28-a0df-49a7-a0a9-d737d91b71c2",
-      "name": "Guardar signatário Atom",
+      "id": "06d31b3f-c36d-4de6-b854-95da55571fa9",
+      "name": "Google Docs — conferir",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2100,
+        450
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ encodeURIComponent($('Cópia do modelo').first().json.copia_id) }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "1b74a75f-465d-4949-9012-11aebcf9941b",
+      "name": "Conferir preenchimento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
         2300,
-        750
+        450
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#guardar_id. Edite a fonte no repositório, não este nó.\n// Guarda o ID retornado (JSON:API: data.id) logo após cada criação, antes da etapa seguinte.\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = $prevNode.name;\nconst TIPOS = {\n  'Clicksign — criar envelope': ['ENVELOPE', ''], 'Clicksign — criar documento do modelo': ['DOCUMENTO', ''],\n  'Clicksign — signatário cliente': ['SIGNATARIO', 'CLIENTE'], 'Clicksign — signatário Atom': ['SIGNATARIO', 'ATOM'],\n};\nconst t = TIPOS[etapa] || ['DESCONHECIDO', ''];\nconst id = r && r.data && r.data.id ? String(r.data.id) : '';\nif (!id) throw new Error('Clicksign não retornou data.id na etapa ' + etapa);\nreturn [{ json: { id, row: { sistema: 'CLICKSIGN', tipo: t[0], id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: t[1], status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#validar_preenchimento + lib/{util,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/autentique.js\nfunction naoEncontradas(respostaBatch, substituicoes) {\n  const marcas = Object.keys(substituicoes);\n  const replies = respostaBatch && respostaBatch.replies || [];\n  return marcas.filter((m, i) => !(replies[i] && replies[i].replaceAllText && Number(replies[i].replaceAllText.occurrencesChanged) > 0));\n}\nfunction marcasRestantes(documentoGoogle) {\n  const texto = JSON.stringify(documentoGoogle || {});\n  return uniq((texto.match(/\\{\\{\\s*[A-Za-z0-9_.]+\\s*\\}\\}/g) || []).map((s) => s.replace(/\\s+/g, \"\")));\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  const c = $(\"Cópia do modelo\").first().json;\n  const lote = $(\"Google Docs — preencher\").first().json || {};\n  const doc = $input.first().json || {};\n  const restantes = marcasRestantes(doc);\n  const ausentes = c.copia_nova ? naoEncontradas(lote, p.substituicoes) : [];\n  const problemas = [];\n  if (restantes.length) problemas.push(\"marcas sem valor no documento: \" + restantes.join(\", \"));\n  if (ausentes.length) problemas.push(\"variáveis do mapa ausentes no modelo: \" + ausentes.join(\", \"));\n  return [{ json: {\n    ok: problemas.length === 0,\n    copia_id: c.copia_id,\n    motivo: problemas.length ? \"MODELO_INCOMPATIVEL (CONTRATO_MODELO_\" + p.modelo + \"): \" + problemas.join(\"; \") : \"\"\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "5e2fbfdb-b5e4-43bd-9cfe-80152574f7c1",
-      "name": "Registrar signatário Atom",
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
+      "id": "70f3da9b-0ce8-4c4f-8727-bf4e5d7fdb43",
+      "name": "Preenchimento completo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
       "position": [
         2500,
-        750
-      ],
-      "parameters": {
-        "resource": "row",
-        "operation": "insert",
-        "dataTableId": {
-          "__rl": true,
-          "mode": "id",
-          "value": "jNlKdIaPXcS7cEhF",
-          "cachedResultName": "atom_vinculos"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "sistema": "={{ $('Guardar signatário Atom').first().json.row.sistema }}",
-            "tipo": "={{ $('Guardar signatário Atom').first().json.row.tipo }}",
-            "id_externo": "={{ $('Guardar signatário Atom').first().json.row.id_externo }}",
-            "deal_id": "={{ $('Guardar signatário Atom').first().json.row.deal_id }}",
-            "org_id": "={{ $('Guardar signatário Atom').first().json.row.org_id }}",
-            "snapshot_versao": "={{ $('Guardar signatário Atom').first().json.row.snapshot_versao }}",
-            "papel": "={{ $('Guardar signatário Atom').first().json.row.papel }}",
-            "status": "={{ $('Guardar signatário Atom').first().json.row.status }}",
-            "link": "={{ $('Guardar signatário Atom').first().json.row.link }}",
-            "referencia": "={{ $('Guardar signatário Atom').first().json.row.referencia }}",
-            "atualizado_em": "={{ $('Guardar signatário Atom').first().json.row.atualizado_em }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "sistema",
-              "displayName": "sistema",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "tipo",
-              "displayName": "tipo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "id_externo",
-              "displayName": "id_externo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "deal_id",
-              "displayName": "deal_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "org_id",
-              "displayName": "org_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "snapshot_versao",
-              "displayName": "snapshot_versao",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "papel",
-              "displayName": "papel",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "status",
-              "displayName": "status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "link",
-              "displayName": "link",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "referencia",
-              "displayName": "referencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "atualizado_em",
-              "displayName": "atualizado_em",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "b32d8333-fae0-485b-bc33-6d335266199a",
-      "name": "IDs atuais",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2100,
-        900
-      ],
-      "parameters": {
-        "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#ids_atuais. Edite a fonte no repositório, não este nó.\n// IDs efetivos (criados nesta execução ou recuperados de execuções anteriores).\nconst p = $('Planejar envelope').first().json;\nconst pega = (no, padrao) => ($(no).isExecuted ? $(no).first().json.id : padrao);\nreturn [{ json: {\n  envelope: pega('Guardar envelope', p.ids.envelope),\n  documento: pega('Guardar documento', p.ids.documento),\n  cliente: pega('Guardar signatário cliente', p.ids.cliente),\n  atom: pega('Guardar signatário Atom', p.ids.atom),\n} }];"
-      }
-    },
-    {
-      "id": "30edc7ae-b6a4-452f-9cd6-edafd8be6e95",
-      "name": "Criar requisitos?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        2300,
-        900
+        450
       ],
       "parameters": {
         "conditions": {
@@ -1308,7 +826,7 @@
           },
           "conditions": [
             {
-              "leftValue": "={{ $('Planejar envelope').first().json.etapas.requisitos }}",
+              "leftValue": "={{ $json.ok }}",
               "rightValue": true,
               "operator": {
                 "type": "boolean",
@@ -1322,47 +840,23 @@
       }
     },
     {
-      "id": "94f22733-647d-4237-b099-0bf7ed5e3684",
-      "name": "Montar requisitos",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2500,
-        900
-      ],
-      "parameters": {
-        "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#requisitos. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar envelope').first().json;\nconst ids = $('IDs atuais').first().json;\nconst rel = (s) => ({ document: { data: { type: 'documents', id: ids.documento } }, signer: { data: { type: 'signers', id: s } } });\nconst out = [];\nfor (const s of [ids.cliente, ids.atom]) {\n  out.push({ json: { corpo: { data: { type: 'requirements', attributes: { action: 'agree', role: 'sign' }, relationships: rel(s) } } } });\n  out.push({ json: { corpo: { data: { type: 'requirements', attributes: { action: 'provide_evidence', auth: p.autenticacao }, relationships: rel(s) } } } });\n}\nreturn out;"
-      }
-    },
-    {
-      "id": "77ecbe5a-8546-4538-b1e3-fcc9d6e0d0c1",
-      "name": "Clicksign — requisitos (qualificação e autenticação)",
+      "id": "ae695bc9-110a-449f-9bc4-5a70a8e345ad",
+      "name": "Autentique — documentos recentes",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
         2700,
-        900
+        450
       ],
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ $('IDs atuais').first().json.envelope }}/requirements",
+        "url": "https://api.autentique.com.br/v2/graphql",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpTemplatedCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Accept",
-              "value": "application/vnd.api+json"
-            }
-          ]
-        },
         "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/vnd.api+json",
-        "body": "={{ JSON.stringify($json.corpo) }}",
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Planejar contrato').first().json.consulta_recentes) }}",
         "options": {
           "timeout": 30000
         }
@@ -1371,27 +865,160 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "07aa6244-e8ea-46e0-9746-3bc0eaa6c01a",
-      "name": "Requisitos criados",
+      "id": "329a2095-dfd3-40c0-a79d-c5aa0cbace4b",
+      "name": "Decidir criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
         2900,
-        900
+        450
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#requisitos_ok. Edite a fonte no repositório, não este nó.\n// Só segue para a ativação se os 4 requisitos (2 por signatário) foram criados; falhas vão para \"Falha na criação\".\nif ($input.all().length < 4) return [];\nconst p = $('Planejar envelope').first().json;\nconst ids = $('IDs atuais').first().json;\nreturn [{ json: { row: { sistema: 'CLICKSIGN', tipo: 'REQUISITOS', id_externo: ids.envelope, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: '', status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#decidir_criacao + lib/{util,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/autentique.js\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction erroGraphql(resp) {\n  if (!resp || typeof resp !== \"object\") return \"RESPOSTA_VAZIA\";\n  if (Array.isArray(resp.errors) && resp.errors.length) {\n    return errorSummary(resp.errors.map((e) => e && e.message || JSON.stringify(e)).join(\"; \"));\n  }\n  return \"\";\n}\nfunction procurarPorNome(respRecentes, nome) {\n  const lista = (((respRecentes || {}).data || {}).documents || {}).data || [];\n  return lista.find((d) => d && d.name === nome) || null;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  const r = $input.first().json;\n  const erro = erroGraphql(r);\n  if (erro) throw new Error(\"Autentique (consulta de documentos recentes): \" + erro);\n  const existente = procurarPorNome(r, p.nome);\n  return [{ json: { criar: !existente, existente } }];\n})();\nreturn __resultado;"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "60e61caf-930d-4c90-b699-571e6ea9cfaa",
+      "name": "Criar documento?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3100,
+        450
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.criar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
       }
     },
     {
-      "id": "422299ee-21ec-4a79-8b9f-6a9993bfcabc",
-      "name": "Registrar requisitos",
+      "id": "d1a546a5-98fd-46b9-b92a-58a73834af28",
+      "name": "Google Drive — exportar PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        3300,
+        450
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://www.googleapis.com/drive/v3/files/{{ encodeURIComponent($('Cópia do modelo').first().json.copia_id) }}/export?mimeType=application%2Fpdf",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
+        "options": {
+          "timeout": 60000,
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "e2b7edee-d7a7-4342-82b5-f778cceaea47",
+      "name": "Preparar arquivo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3500,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#preparar_arquivo. Edite a fonte no repositório, não este nó.\n// Nome e tipo do PDF exportado (o conteúdo binário segue inalterado).\nconst p = $('Planejar contrato').first().json;\nconst item = $input.first();\nif (!item.binary || !item.binary.data) throw new Error('Exportação do PDF não retornou arquivo');\nitem.binary.data.fileName = p.nome.replace(/[^\\w\\- .]+/g, '').slice(0, 120) + '.pdf';\nitem.binary.data.mimeType = 'application/pdf';\nitem.json = { arquivo: item.binary.data.fileName };\nreturn [item];"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "39abe337-0924-4200-a6c9-0ee912f78d60",
+      "name": "Autentique — criar documento",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        3700,
+        450
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.autentique.com.br/v2/graphql",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formData",
+              "name": "operations",
+              "value": "={{ $('Planejar contrato').first().json.operations }}"
+            },
+            {
+              "parameterType": "formData",
+              "name": "map",
+              "value": "={{ $('Planejar contrato').first().json.mapa_arquivo }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {},
+      "notes": "Envia os convites de assinatura por e-mail ao cliente e à Atom. sandbox=true fora de PRODUCAO.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "315efb9f-7b83-4e3e-8c8a-37ace75aa887",
+      "name": "Documento do contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3300,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#documento + lib/{util,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/autentique.js\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction erroGraphql(resp) {\n  if (!resp || typeof resp !== \"object\") return \"RESPOSTA_VAZIA\";\n  if (Array.isArray(resp.errors) && resp.errors.length) {\n    return errorSummary(resp.errors.map((e) => e && e.message || JSON.stringify(e)).join(\"; \"));\n  }\n  return \"\";\n}\nfunction signatariosDoDocumento(doc, exigidos) {\n  const sigs = doc && doc.signatures || [];\n  const achados = [];\n  const faltando = [];\n  for (const x of exigidos) {\n    const email = normalizeEmail(x.email);\n    const s = sigs.find((g) => g && normalizeEmail(g.email) === email);\n    if (!s || !s.public_id) faltando.push(x.papel);\n    else achados.push({ papel: x.papel, email, public_id: String(s.public_id), link: s.link && s.link.short_link || \"\" });\n  }\n  return { achados, faltando };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  let doc;\n  if ($(\"Autentique — criar documento\").isExecuted) {\n    const r = $input.first().json;\n    const erro = erroGraphql(r);\n    if (erro) throw new Error(\"Autentique recusou a criação: \" + erro);\n    doc = r && r.data && r.data.createDocument;\n  } else {\n    doc = $(\"Decidir criação\").first().json.existente;\n  }\n  if (!doc || !doc.id) throw new Error(\"Autentique não retornou o id do documento\");\n  const loc = signatariosDoDocumento(doc, p.signatarios);\n  if (loc.faltando.length) throw new Error(\"Documento \" + doc.id + \" sem signatário(s): \" + loc.faltando.join(\", \") + \" — conferir na Autentique antes de reprocessar\");\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const linha = (tipo, id, papel, link) => ({\n    sistema: \"AUTENTIQUE\",\n    tipo,\n    id_externo: id,\n    deal_id: p.deal_id,\n    org_id: p.org_id,\n    snapshot_versao: p.versao,\n    papel,\n    status: \"ENVIADO\",\n    link,\n    referencia: p.request_id,\n    atualizado_em: agora\n  });\n  const cliente = loc.achados.find((a) => a.papel === \"CLIENTE\");\n  return [linha(\"DOCUMENTO\", String(doc.id), \"\", cliente.link)].concat(loc.achados.map((a) => linha(\"SIGNATARIO\", a.public_id, a.papel, a.link))).map((row) => ({ json: { row, documento_id: String(doc.id), reaproveitado: !$(\"Autentique — criar documento\").isExecuted } }));\n})();\nreturn __resultado;"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "98ffc8f7-394b-43d3-8169-5944a254d4f6",
+      "name": "Registrar documento e signatários",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        3100,
-        900
+        3500,
+        600
       ],
       "parameters": {
         "resource": "row",
@@ -1523,64 +1150,27 @@
       }
     },
     {
-      "id": "7d44590a-d304-4152-9179-f80e7e821932",
-      "name": "Clicksign — ativar envelope (envia convites)",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.5,
-      "position": [
-        2500,
-        1050
-      ],
-      "parameters": {
-        "method": "PATCH",
-        "url": "={{ $('Planejar envelope').first().json.url }}/envelopes/{{ $('IDs atuais').first().json.envelope }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Accept",
-              "value": "application/vnd.api+json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/vnd.api+json",
-        "body": "={{ JSON.stringify({ data: { id: $('IDs atuais').first().json.envelope, type: 'envelopes', attributes: { status: 'running' } } }) }}",
-        "options": {
-          "timeout": 30000
-        }
-      },
-      "credentials": {},
-      "notes": "Convites por e-mail conforme communicate_events dos signatários (signature_request: email).",
-      "executeOnce": true,
-      "onError": "continueErrorOutput"
-    },
-    {
-      "id": "a4daf09c-5d7d-4053-b457-098e1d2afc4c",
-      "name": "Envelope enviado",
+      "id": "ce638b80-0a8d-4238-b2b6-19ef49c34538",
+      "name": "Contrato enviado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2700,
-        1050
+        3700,
+        600
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#enviado. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar envelope').first().json;\nconst ids = $('IDs atuais').first().json;\nconst agora = new Date().toISOString();\nconst base = p.url.replace(/\\/api\\/v3$/, '');\nreturn [{ json: {\n  deal_id: p.deal_id, versao: p.versao, envelope_id: ids.envelope,\n  vinculo: { status: 'ENVIADO', link: base + '/envelopes/' + ids.envelope, atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'ENVIADO', ultimo_evento_em: agora },\n  acao: { request_id: p.request_id, sistema: 'CLICKSIGN', acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, status: 'CONCLUIDO', tentativas: 0,\n    proxima_tentativa: null, ultimo_erro: '', payload: JSON.stringify({ acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, versao: p.versao }),\n    resultado: JSON.stringify(ids), criado_em: agora, atualizado_em: agora },\n  cobrar_agora: p.disparo_cobranca === 'JUNTO_COM_CONTRATO',\n  cobranca: { acao: 'CRIAR_COBRANCAS', deal_id: p.deal_id, versao: p.versao, origem: 'CONTRATO_ENVIADO' },\n} }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#enviado. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar contrato').first().json;\nconst docs = $('Documento do contrato').all().map((i) => i.json);\nconst doc = docs.find((x) => x.row.tipo === 'DOCUMENTO');\nconst agora = new Date().toISOString();\nreturn [{ json: {\n  deal_id: p.deal_id, versao: p.versao, documento_id: doc.documento_id, link: doc.row.link, status_contrato: 'ENVIADO',\n  copia: { status: 'CONVERTIDO_EM_PDF', atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'ENVIADO', ultimo_evento_em: agora },\n  acao: { request_id: p.request_id, sistema: 'AUTENTIQUE', acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, status: 'CONCLUIDO', tentativas: 0,\n    proxima_tentativa: null, ultimo_erro: '', payload: JSON.stringify({ acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, versao: p.versao }),\n    resultado: JSON.stringify({ documento: doc.documento_id, sandbox: p.sandbox, reaproveitado: doc.reaproveitado }), criado_em: agora, atualizado_em: agora },\n  cobrar_agora: p.disparo_cobranca === 'JUNTO_COM_CONTRATO',\n  cobranca: { acao: 'CRIAR_COBRANCAS', deal_id: p.deal_id, versao: p.versao, origem: 'CONTRATO_ENVIADO' },\n} }];"
       }
     },
     {
-      "id": "7fcac8ad-15cd-4673-8961-c68a29ef4eec",
-      "name": "Atualizar vínculo do envelope",
+      "id": "19f20d7b-a9a7-401a-bd46-d4d9834d9087",
+      "name": "Atualizar vínculo da cópia",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2900,
-        1050
+        3900,
+        600
       ],
       "parameters": {
         "resource": "row",
@@ -1597,41 +1187,26 @@
             {
               "keyName": "sistema",
               "condition": "eq",
-              "keyValue": "={{ \"CLICKSIGN\" }}"
-            },
-            {
-              "keyName": "tipo",
-              "condition": "eq",
-              "keyValue": "={{ \"ENVELOPE\" }}"
+              "keyValue": "={{ \"GDOCS\" }}"
             },
             {
               "keyName": "id_externo",
               "condition": "eq",
-              "keyValue": "={{ $('Envelope enviado').first().json.envelope_id }}"
+              "keyValue": "={{ $('Cópia do modelo').first().json.copia_id }}"
             }
           ]
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "status": "={{ $('Envelope enviado').first().json.vinculo.status }}",
-            "link": "={{ $('Envelope enviado').first().json.vinculo.link }}",
-            "atualizado_em": "={{ $('Envelope enviado').first().json.vinculo.atualizado_em }}"
+            "status": "={{ $('Contrato enviado').first().json.copia.status }}",
+            "atualizado_em": "={{ $('Contrato enviado').first().json.copia.atualizado_em }}"
           },
           "matchingColumns": [],
           "schema": [
             {
               "id": "status",
               "displayName": "status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "link",
-              "displayName": "link",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -1649,16 +1224,17 @@
             }
           ]
         }
-      }
+      },
+      "alwaysOutputData": true
     },
     {
-      "id": "595c38d1-2be3-4823-ac69-37564ae1e449",
+      "id": "e292a857-338f-4d48-8680-618b2d42d378",
       "name": "Snapshot enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        3100,
-        1050
+        4100,
+        600
       ],
       "parameters": {
         "resource": "row",
@@ -1675,12 +1251,12 @@
             {
               "keyName": "deal_id",
               "condition": "eq",
-              "keyValue": "={{ $('Envelope enviado').first().json.deal_id }}"
+              "keyValue": "={{ $('Contrato enviado').first().json.deal_id }}"
             },
             {
               "keyName": "versao",
               "condition": "eq",
-              "keyValue": "={{ $('Envelope enviado').first().json.versao }}"
+              "keyValue": "={{ $('Contrato enviado').first().json.versao }}"
             }
           ]
         },
@@ -1703,16 +1279,17 @@
           ]
         }
       },
-      "executeOnce": true
+      "executeOnce": true,
+      "alwaysOutputData": true
     },
     {
-      "id": "c23b4965-f65c-4088-b44e-c0f9909c88e1",
+      "id": "233f8ecf-8d0e-458a-9915-ce054c82a231",
       "name": "Salvar contrato enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        3300,
-        1050
+        4300,
+        600
       ],
       "parameters": {
         "resource": "row",
@@ -1729,16 +1306,16 @@
             {
               "keyName": "deal_id",
               "condition": "eq",
-              "keyValue": "={{ $('Envelope enviado').first().json.deal_id }}"
+              "keyValue": "={{ $('Contrato enviado').first().json.deal_id }}"
             }
           ]
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "deal_id": "={{ $('Envelope enviado').first().json.negocio.deal_id }}",
-            "contrato_status": "={{ $('Envelope enviado').first().json.negocio.contrato_status }}",
-            "ultimo_evento_em": "={{ $('Envelope enviado').first().json.negocio.ultimo_evento_em }}"
+            "deal_id": "={{ $('Contrato enviado').first().json.negocio.deal_id }}",
+            "contrato_status": "={{ $('Contrato enviado').first().json.negocio.contrato_status }}",
+            "ultimo_evento_em": "={{ $('Contrato enviado').first().json.negocio.ultimo_evento_em }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1775,13 +1352,13 @@
       "executeOnce": true
     },
     {
-      "id": "1099d778-e9cd-45a4-b5a4-ef45880c9979",
+      "id": "fd992a33-8bb5-474e-94c6-12b8937778ff",
       "name": "Registrar ação concluída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        3500,
-        1050
+        4500,
+        600
       ],
       "parameters": {
         "resource": "row",
@@ -1798,25 +1375,25 @@
             {
               "keyName": "request_id",
               "condition": "eq",
-              "keyValue": "={{ $('Envelope enviado').first().json.acao.request_id }}"
+              "keyValue": "={{ $('Contrato enviado').first().json.acao.request_id }}"
             }
           ]
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "request_id": "={{ $('Envelope enviado').first().json.acao.request_id }}",
-            "sistema": "={{ $('Envelope enviado').first().json.acao.sistema }}",
-            "acao": "={{ $('Envelope enviado').first().json.acao.acao }}",
-            "deal_id": "={{ $('Envelope enviado').first().json.acao.deal_id }}",
-            "status": "={{ $('Envelope enviado').first().json.acao.status }}",
-            "tentativas": "={{ $('Envelope enviado').first().json.acao.tentativas }}",
-            "proxima_tentativa": "={{ $('Envelope enviado').first().json.acao.proxima_tentativa }}",
-            "ultimo_erro": "={{ $('Envelope enviado').first().json.acao.ultimo_erro }}",
-            "payload": "={{ $('Envelope enviado').first().json.acao.payload }}",
-            "resultado": "={{ $('Envelope enviado').first().json.acao.resultado }}",
-            "criado_em": "={{ $('Envelope enviado').first().json.acao.criado_em }}",
-            "atualizado_em": "={{ $('Envelope enviado').first().json.acao.atualizado_em }}"
+            "request_id": "={{ $('Contrato enviado').first().json.acao.request_id }}",
+            "sistema": "={{ $('Contrato enviado').first().json.acao.sistema }}",
+            "acao": "={{ $('Contrato enviado').first().json.acao.acao }}",
+            "deal_id": "={{ $('Contrato enviado').first().json.acao.deal_id }}",
+            "status": "={{ $('Contrato enviado').first().json.acao.status }}",
+            "tentativas": "={{ $('Contrato enviado').first().json.acao.tentativas }}",
+            "proxima_tentativa": "={{ $('Contrato enviado').first().json.acao.proxima_tentativa }}",
+            "ultimo_erro": "={{ $('Contrato enviado').first().json.acao.ultimo_erro }}",
+            "payload": "={{ $('Contrato enviado').first().json.acao.payload }}",
+            "resultado": "={{ $('Contrato enviado').first().json.acao.resultado }}",
+            "criado_em": "={{ $('Contrato enviado').first().json.acao.criado_em }}",
+            "atualizado_em": "={{ $('Contrato enviado').first().json.acao.atualizado_em }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1934,27 +1511,27 @@
       "executeOnce": true
     },
     {
-      "id": "5d987d5b-0ece-48fb-8abc-3794006254ee",
+      "id": "d4f08457-e614-4db5-8036-e367b292b00b",
       "name": "Campos do contrato (envio)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3700,
-        1050
+        4700,
+        600
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : Object.assign({ status_contrato: \"ENVIADO\", link: $(\"Envelope enviado\").first().json.vinculo.link }, $(\"Envelope enviado\").first().json);\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.envelope_id) valores.PD_DEAL_CLICKSIGN_ID = x.envelope_id;\n  if (x.link) valores.PD_DEAL_CLICKSIGN_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : $(\"Contrato enviado\").first().json;\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.documento_id) valores.PD_DEAL_CONTRATO_ID = x.documento_id;\n  if (x.link) valores.PD_DEAL_CONTRATO_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "2ea43707-d893-416f-8fe5-5b8300c66e8c",
+      "id": "0d9bf627-e374-459f-b086-7b97de4d3694",
       "name": "Atualizar negócio (envio)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3900,
-        1050
+        4900,
+        600
       ],
       "parameters": {
         "conditions": {
@@ -1980,13 +1557,13 @@
       }
     },
     {
-      "id": "b171db72-6bf3-4a78-bdaf-97eaa476e8fb",
+      "id": "584c338e-9e19-4319-b064-0c88af0467d9",
       "name": "Atualizar negócio (contrato enviado)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        4100,
-        1050
+        5100,
+        600
       ],
       "parameters": {
         "method": "PATCH",
@@ -2005,13 +1582,13 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "1477274b-64b3-4547-807d-16ee609fe3af",
+      "id": "6cfbd6a8-cc4d-4d86-8c3d-d5749a8ef7ab",
       "name": "Cobrar junto com o contrato?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4100,
-        1200
+        5100,
+        750
       ],
       "parameters": {
         "conditions": {
@@ -2023,7 +1600,7 @@
           },
           "conditions": [
             {
-              "leftValue": "={{ $('Envelope enviado').first().json.cobrar_agora }}",
+              "leftValue": "={{ $('Contrato enviado').first().json.cobrar_agora }}",
               "rightValue": true,
               "operator": {
                 "type": "boolean",
@@ -2037,27 +1614,27 @@
       }
     },
     {
-      "id": "03b4a1ab-6d2f-43ab-ac08-b75635502597",
+      "id": "c49c1836-fe7c-4538-87df-a3d18babbd41",
       "name": "Pedido de cobrança (junto)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4300,
-        1200
+        5300,
+        750
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "return [{ json: $('Envelope enviado').first().json.cobranca }];"
+        "jsCode": "return [{ json: $('Contrato enviado').first().json.cobranca }];"
       }
     },
     {
-      "id": "3a1487c9-c4ce-49d7-b931-32b789e48d03",
+      "id": "807fd3ce-b137-40e9-925d-2ba9f5adfadd",
       "name": "ATOM_06 — cobranças (junto com contrato)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        4500,
-        1200
+        5500,
+        750
       ],
       "parameters": {
         "mode": "once",
@@ -2074,26 +1651,72 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "30d02c33-30a1-4212-989d-328b249bcf35",
-      "name": "Falha na criação",
+      "id": "5d2575f5-eacd-4036-894a-4c91c6d4a602",
+      "name": "Capturar erro",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1700,
+        1900,
         450
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#falha. Edite a fonte no repositório, não este nó.\n// Falha em etapa de criação: 4xx => não criado (pode repetir); rede/5xx/timeout => pode ter sido criado:\n// exige conferência manual antes de repetir (evita envelope/documento duplicado).\nconst p = $('Planejar envelope').first().json;\nconst r = $input.first().json;\nconst etapa = (typeof $prevNode !== 'undefined' && $prevNode.name) ? $prevNode.name : 'etapa';\nconst codigo = Number((r.error && (r.error.httpCode || r.error.status)) || r.statusCode || 0);\nconst ambigua = !(codigo >= 400 && codigo < 500);\nconst msg = String((r.error && (r.error.message || r.error.description)) || ('HTTP ' + codigo)).replace(/(token|authorization)[^,\\s]*/gi, '$1=***').slice(0, 300);\nconst agora = new Date();\nreturn [{ json: {\n  acao: { request_id: p.request_id, sistema: 'CLICKSIGN', acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id,\n    status: ambigua ? 'FALHA_VERIFICAR_MANUAL' : 'FALHA', tentativas: 1,\n    proxima_tentativa: new Date(agora.getTime() + 30 * 60000).toISOString(), ultimo_erro: etapa + ': ' + msg,\n    payload: JSON.stringify({ acao: 'CRIAR_ENVELOPE', deal_id: p.deal_id, versao: p.versao }), resultado: '', criado_em: agora.toISOString(), atualizado_em: agora.toISOString() },\n  alerta: { tipo: 'CLICKSIGN_FALHA', severidade: 'ALTA', workflow: 'ATOM_05_Clicksign', deal_id: p.deal_id,\n    mensagem: 'Falha em \"' + etapa + '\" (' + msg + '). ' + (ambigua ? 'Resultado incerto (rede/timeout/5xx): confira no Clicksign se o recurso foi criado antes de reprocessar.' : 'Requisição rejeitada; corrija a configuração e reprocesse.') },\n} }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#capturar_erro. Edite a fonte no repositório, não este nó.\n// Guarda a etapa e o erro antes da consulta da ação anterior (que substitui o item).\nconst r = $input.first().json || {};\nconst etapa = typeof $prevNode !== 'undefined' && $prevNode.name ? $prevNode.name : 'etapa';\nconst bruto = r.error && typeof r.error === 'object' ? (r.error.message || r.error.description || JSON.stringify(r.error)) : (r.error || r.message || 'HTTP ' + (r.statusCode || '?'));\nreturn [{ json: { etapa, erro: String(bruto) } }];"
       }
     },
     {
-      "id": "a676b6bd-8570-424e-9780-63d5362bb864",
+      "id": "306919a2-b20f-4366-bb6e-fb316c990519",
+      "name": "Ação anterior",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2100,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "g4eyHC7N33XttLZH",
+          "cachedResultName": "atom_acoes"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "request_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Planejar contrato').first().json.request_id }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "0db87592-43d6-4ece-a80c-a3d9b6f998f6",
+      "name": "Falha na criação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2300,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#falha + lib/{util}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction backoffMinutes(attempt, maxMinutes) {\n  const m = Math.pow(2, Math.max(0, attempt));\n  return Math.min(m, maxMinutes || 720);\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  const c = $(\"Capturar erro\").first().json;\n  const anterior = $(\"Ação anterior\").all().map((i) => i.json).find((a) => a && a.request_id) || {};\n  const tentativas = Number(anterior.tentativas || 0) + 1;\n  const etapa = c.etapa;\n  const msg = errorSummary(c.erro).slice(0, 300);\n  const agora = /* @__PURE__ */ new Date();\n  return [{ json: {\n    acao: {\n      request_id: p.request_id,\n      sistema: \"AUTENTIQUE\",\n      acao: \"CRIAR_CONTRATO\",\n      deal_id: p.deal_id,\n      status: \"FALHA\",\n      tentativas,\n      proxima_tentativa: new Date(agora.getTime() + backoffMinutes(tentativas, 720) * 6e4).toISOString(),\n      ultimo_erro: etapa + \": \" + msg,\n      payload: JSON.stringify({ acao: \"CRIAR_CONTRATO\", deal_id: p.deal_id, versao: p.versao }),\n      resultado: \"\",\n      criado_em: anterior.criado_em || agora.toISOString(),\n      atualizado_em: agora.toISOString()\n    },\n    alerta: {\n      tipo: \"AUTENTIQUE_FALHA\",\n      severidade: \"ALTA\",\n      workflow: \"ATOM_05_Autentique\",\n      deal_id: p.deal_id,\n      mensagem: 'Falha em \"' + etapa + '\" (' + msg + \"), tentativa \" + tentativas + \". A retentativa reaproveita a cópia e procura o documento pelo nome antes de criar outro.\"\n    }\n  } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "8f553b2d-200e-4f4c-9bb0-511ad5bc9404",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1900,
+        2500,
         450
       ],
       "parameters": {
@@ -2246,12 +1869,12 @@
       }
     },
     {
-      "id": "9aa51f43-16ef-4076-8492-c1a9e38ee7d6",
+      "id": "cf7139de-009c-4d3f-93b3-67f589d2671e",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2100,
+        2700,
         450
       ],
       "parameters": {
@@ -2260,12 +1883,12 @@
       }
     },
     {
-      "id": "8ccdf5f5-74b5-4e9b-99d3-4576c4a0d669",
-      "name": "ATOM_11 — alerta Clicksign",
+      "id": "390060a7-c9a5-4e25-80ac-50fc04132844",
+      "name": "ATOM_11 — alerta Autentique",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        2300,
+        2900,
         450
       ],
       "parameters": {
@@ -2283,8 +1906,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "fe73d2fd-8453-41c7-9dc5-059647c76c52",
-      "name": "Webhook Clicksign",
+      "id": "1de36ada-8ec8-4ab3-a601-77ddaa61cb00",
+      "name": "Webhook Autentique",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
@@ -2293,16 +1916,16 @@
       ],
       "parameters": {
         "httpMethod": "POST",
-        "path": "atom/clicksign",
+        "path": "atom/autentique",
         "responseMode": "onReceived",
         "options": {
           "rawBody": true
         }
       },
-      "webhookId": "5b0ea682-2e94-481d-8278-05bb49283eed"
+      "webhookId": "08da9aea-8898-4104-84ea-1fc474fc38f3"
     },
     {
-      "id": "1e6f6684-64ab-46a7-a749-c5fb2446fafb",
+      "id": "e93b4acb-ef87-46dc-9cb4-2d2b98b0df98",
       "name": "Calcular HMAC",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -2318,10 +1941,11 @@
         "dataPropertyName": "hmac_calculado",
         "encoding": "hex"
       },
-      "credentials": {}
+      "credentials": {},
+      "onError": "continueRegularOutput"
     },
     {
-      "id": "f6c62a48-ec81-4f87-9c86-9bab8915cd36",
+      "id": "6de57818-1000-43f7-bd0f-fb13cc590e20",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2343,8 +1967,8 @@
       "executeOnce": true
     },
     {
-      "id": "835c8a12-2054-43f7-8cbf-aa6af92493ca",
-      "name": "Validar evento Clicksign",
+      "id": "bac067ce-1521-4ace-9cd5-280e2cdc8f77",
+      "name": "Validar evento Autentique",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
@@ -2353,12 +1977,12 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#webhook_validar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (webhook)\").all());\n  const w = $(\"Webhook Clicksign\").first().json;\n  const calc = String($(\"Calcular HMAC\").first().json.hmac_calculado || \"\").toLowerCase();\n  const nomeCab = valor(cfg, \"CLICKSIGN_HMAC_CABECALHO\", \"content-hmac\").toLowerCase();\n  const recebido = String((w.headers || {})[nomeCab] || \"\").replace(/^sha256=/i, \"\").trim().toLowerCase();\n  let igual = recebido.length === calc.length && calc.length > 0;\n  for (let i = 0; i < Math.max(recebido.length, calc.length); i++) igual = igual && recebido.charCodeAt(i) === calc.charCodeAt(i);\n  const b = w.body || {};\n  const pega = (o, caminhos) => {\n    for (const c of caminhos) {\n      const v = c.split(\".\").reduce((a, k) => a && a[k] !== void 0 ? a[k] : void 0, o);\n      if (v !== void 0 && v !== null && v !== \"\") return String(v);\n    }\n    return \"\";\n  };\n  const evento = pega(b, [\"event.name\", \"event\", \"data.attributes.name\", \"name\"]).toLowerCase();\n  const envelope = pega(b, [\"envelope.id\", \"event.data.envelope.id\", \"data.envelope.id\", \"data.relationships.envelope.data.id\", \"document.envelope_id\", \"envelope_id\"]);\n  const signatario = pega(b, [\"event.data.signer.id\", \"event.data.signer.key\", \"signer.id\", \"signer.key\", \"data.relationships.signer.data.id\"]);\n  const idEvento = pega(b, [\"event.id\", \"id\", \"data.id\"]) || fingerprint(b);\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  return [{ json: {\n    valido: igual && !!envelope,\n    assinatura_valida: igual,\n    evento,\n    envelope,\n    signatario,\n    row: {\n      event_key: \"clicksign:\" + idEvento + \":\" + evento,\n      origem: \"clicksign\",\n      tipo: evento || \"?\",\n      entidade_id: envelope,\n      deal_id: \"\",\n      status: igual ? envelope ? \"RECEBIDO\" : \"INVALIDO\" : \"ASSINATURA_INVALIDA\",\n      tentativas: 0,\n      ultimo_erro: igual ? \"\" : \"HMAC não confere\",\n      resumo: truncate(evento + (signatario ? \" | signatario=\" + signatario : \"\"), 300),\n      evento_em: agora,\n      recebido_em: agora,\n      processado_em: null\n    }\n  } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#webhook_validar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/autentique.js\nfunction ler(obj, caminho) {\n  return String(caminho).split(\".\").reduce((a, k) => a !== null && a !== void 0 && a[k] !== void 0 ? a[k] : void 0, obj);\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction idsCandidatos(body) {\n  const caminhos = [\n    \"document.id\",\n    \"documento.id\",\n    \"data.document.id\",\n    \"event.data.document.id\",\n    \"event.data.id\",\n    \"data.object.document.id\",\n    \"data.object.id\",\n    \"object.document.id\",\n    \"object.id\",\n    \"data.id\",\n    \"document_id\",\n    \"id\"\n  ];\n  const out = [];\n  for (const c of caminhos) {\n    const v = ler(body || {}, c);\n    if ((typeof v === \"string\" || typeof v === \"number\") && /^[A-Za-z0-9_-]{8,128}$/.test(String(v))) out.push(String(v));\n  }\n  return uniq(out);\n}\nfunction tipoEvento(body) {\n  for (const c of [\"type\", \"event.type\", \"event\", \"data.type\", \"name\"]) {\n    const v = ler(body || {}, c);\n    if (typeof v === \"string\" && v) return v.slice(0, 80);\n  }\n  return \"\";\n}\nfunction hmacConfere(recebido, calculado) {\n  const a = String(recebido || \"\").replace(/^sha256=/i, \"\").trim().toLowerCase();\n  const b = String(calculado || \"\").trim().toLowerCase();\n  let igual = a.length === b.length && b.length > 0;\n  for (let i = 0; i < Math.max(a.length, b.length); i++) igual = igual && a.charCodeAt(i) === b.charCodeAt(i);\n  return igual;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (webhook)\").all());\n  const w = $(\"Webhook Autentique\").first().json;\n  const calc = ($(\"Calcular HMAC\").first().json || {}).hmac_calculado || \"\";\n  const nomeCab = valor(cfg, \"AUTENTIQUE_HMAC_CABECALHO\", \"\").toLowerCase();\n  const conferir = !!nomeCab;\n  const assinaturaOk = conferir ? hmacConfere((w.headers || {})[nomeCab], calc) : true;\n  const b = w.body || {};\n  const ids = idsCandidatos(b);\n  const tipo = tipoEvento(b);\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const chave = \"autentique:\" + (ids[0] || \"?\") + \":\" + (tipo || \"?\") + \":\" + fingerprint(b);\n  return [{ json: {\n    valido: assinaturaOk && ids.length > 0,\n    ids,\n    tipo,\n    hmac_conferido: conferir,\n    row: {\n      event_key: chave,\n      origem: \"autentique\",\n      tipo: tipo || \"?\",\n      entidade_id: ids[0] || \"\",\n      deal_id: \"\",\n      status: !assinaturaOk ? \"ASSINATURA_INVALIDA\" : ids.length ? conferir ? \"RECEBIDO\" : \"RECEBIDO_SEM_HMAC\" : \"INVALIDO\",\n      tentativas: 0,\n      ultimo_erro: assinaturaOk ? \"\" : \"HMAC não confere\",\n      resumo: truncate(tipo + \" | documento=\" + (ids[0] || \"?\"), 300),\n      evento_em: agora,\n      recebido_em: agora,\n      processado_em: null\n    }\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "d75d13b8-f7aa-494f-a7a2-4b66760fcc96",
-      "name": "Evento Clicksign já recebido?",
+      "id": "20aad054-511c-42d8-96d8-020ed98a3642",
+      "name": "Evento Autentique já recebido?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
@@ -2389,7 +2013,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "c34043d7-20bd-42a1-9e29-9fea6cee5786",
+      "id": "2207d376-3c39-4797-8e4d-f5a8f0bd1b4c",
       "name": "Deduplicar evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2399,12 +2023,12 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#webhook_dedup. Edite a fonte no repositório, não este nó.\nconst v = $('Validar evento Clicksign').first().json;\nconst existe = $('Evento Clicksign já recebido?').all().some((i) => i.json && i.json.event_key);\nreturn existe ? [] : [{ json: v }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#webhook_dedup. Edite a fonte no repositório, não este nó.\nconst v = $('Validar evento Autentique').first().json;\nconst existe = $('Evento Autentique já recebido?').all().some((i) => i.json && i.json.event_key);\nreturn existe ? [] : [{ json: v }];"
       }
     },
     {
-      "id": "cfa3b5cf-b0b4-42f9-b7a2-e13dca84b353",
-      "name": "Registrar evento Clicksign",
+      "id": "b130d72c-f7aa-48ed-9347-db9e17f26bb0",
+      "name": "Registrar evento Autentique",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
@@ -2551,7 +2175,7 @@
       }
     },
     {
-      "id": "28133856-5c87-4dbb-827d-a10700964e67",
+      "id": "1ecff4f1-d342-484e-b84d-2d7acdf11133",
       "name": "Evento válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2569,7 +2193,7 @@
           },
           "conditions": [
             {
-              "leftValue": "={{ $('Validar evento Clicksign').first().json.valido }}",
+              "leftValue": "={{ $('Validar evento Autentique').first().json.valido }}",
               "rightValue": true,
               "operator": {
                 "type": "boolean",
@@ -2583,8 +2207,8 @@
       }
     },
     {
-      "id": "1609bac2-ba70-4685-a7e8-b57ad4a4b01b",
-      "name": "Vínculo do envelope",
+      "id": "104c82f3-000d-4e78-839f-3bff11fc95d2",
+      "name": "Documentos Autentique",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
@@ -2606,26 +2230,23 @@
             {
               "keyName": "sistema",
               "condition": "eq",
-              "keyValue": "={{ \"CLICKSIGN\" }}"
+              "keyValue": "={{ \"AUTENTIQUE\" }}"
             },
             {
               "keyName": "tipo",
               "condition": "eq",
-              "keyValue": "={{ \"ENVELOPE\" }}"
-            },
-            {
-              "keyName": "id_externo",
-              "condition": "eq",
-              "keyValue": "={{ $('Validar evento Clicksign').first().json.envelope }}"
+              "keyValue": "={{ \"DOCUMENTO\" }}"
             }
           ]
         },
-        "limit": 1
-      }
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
     },
     {
-      "id": "a4ff8f71-a423-494e-b1f9-4f9c21fa2bee",
-      "name": "Resolver envelope",
+      "id": "613421e8-bf70-4452-a2a7-91f0dbe22dc2",
+      "name": "Resolver documento (webhook)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
@@ -2634,16 +2255,106 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#webhook_resolver. Edite a fonte no repositório, não este nó.\nconst v = $('Validar evento Clicksign').first().json;\nconst env = $input.all().map((i) => i.json).find((r) => r && r.tipo === 'ENVELOPE' && r.id_externo === v.envelope);\nif (!env) return [];\nreturn [{ json: { deal_id: env.deal_id, versao: Number(env.snapshot_versao), envelope: v.envelope, evento: v.evento, signatario: v.signatario } }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#resolver_webhook. Edite a fonte no repositório, não este nó.\n// Só documentos criados por este fluxo (vínculo existente) são considerados.\nconst v = $('Validar evento Autentique').first().json;\nconst docs = $input.all().map((i) => i.json).filter((r) => r && r.tipo === 'DOCUMENTO' && r.id_externo);\nconst doc = docs.find((r) => v.ids.includes(String(r.id_externo)));\nif (!doc) return [];\nreturn [{ json: { deal_id: String(doc.deal_id), versao: Number(doc.snapshot_versao), documento: doc.id_externo, link: doc.link || '', origem: 'WEBHOOK:' + v.tipo } }];"
       }
     },
     {
-      "id": "2086c0c9-1e09-46b9-beb9-708f1788a8d6",
-      "name": "Evento de assinatura?",
+      "id": "b3a547ba-6198-4490-bfb0-19e02f795903",
+      "name": "Autentique — consultar documento",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1300,
+        450
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.autentique.com.br/v2/graphql",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpTemplatedCustomAuth",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: 'query { document(id: \"' + String($json.documento).replace(/[^A-Za-z0-9_-]/g, '') + '\") { id name files { original signed } signatures { public_id email action { name } signed { created_at } rejected { created_at reason } } } }' }) }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "credentials": {},
+      "executeOnce": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000
+    },
+    {
+      "id": "b871a0c6-a486-4a08-8a67-98d0ef939676",
+      "name": "Signatários do documento",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1500,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "jNlKdIaPXcS7cEhF",
+          "cachedResultName": "atom_vinculos"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "sistema",
+              "condition": "eq",
+              "keyValue": "={{ \"AUTENTIQUE\" }}"
+            },
+            {
+              "keyName": "tipo",
+              "condition": "eq",
+              "keyValue": "={{ \"SIGNATARIO\" }}"
+            },
+            {
+              "keyName": "deal_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Documento a consultar').first().json.deal_id }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "8385015d-5fb4-4bd9-8ef7-56c0715ed3dd",
+      "name": "Consolidar contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#consolidar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/autentique.js\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction erroGraphql(resp) {\n  if (!resp || typeof resp !== \"object\") return \"RESPOSTA_VAZIA\";\n  if (Array.isArray(resp.errors) && resp.errors.length) {\n    return errorSummary(resp.errors.map((e) => e && e.message || JSON.stringify(e)).join(\"; \"));\n  }\n  return \"\";\n}\nfunction statusDocumento(doc, exigidos) {\n  if (!doc || !doc.id) return { status: \"FALHA\", motivo: \"DOCUMENTO_NAO_ENCONTRADO\", faltam: [], assinaram: [] };\n  if (!exigidos || !exigidos.length) return { status: \"FALHA\", motivo: \"SEM_SIGNATARIOS_REGISTRADOS\", faltam: [], assinaram: [] };\n  const sigs = doc.signatures || [];\n  const assinaram = [];\n  const faltam = [];\n  let recusou = \"\";\n  for (const x of exigidos) {\n    const s = sigs.find((g) => g && String(g.public_id) === String(x.public_id));\n    if (!s) return { status: \"FALHA\", motivo: \"SIGNATARIO_REMOVIDO_DO_DOCUMENTO: \" + x.papel, faltam: [x.papel], assinaram };\n    if (s.rejected) recusou = recusou || x.papel;\n    if (s.signed) assinaram.push(x.papel);\n    else faltam.push(x.papel);\n  }\n  if (recusou) return { status: \"RECUSADO\", recusou, faltam, assinaram };\n  if (!faltam.length) return { status: \"ASSINADO_TODOS\", faltam, assinaram };\n  if (assinaram.length) return { status: \"PARCIALMENTE_ASSINADO\", faltam, assinaram };\n  return { status: \"PENDENTE\", faltam, assinaram };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Documento a consultar\").first().json;\n  const r = $(\"Autentique — consultar documento\").first().json || {};\n  const erro = erroGraphql(r);\n  const doc = r.data && r.data.document;\n  const sigs = $(\"Signatários do documento\").all().map((i) => i.json).filter((s) => s && s.sistema === \"AUTENTIQUE\" && s.tipo === \"SIGNATARIO\" && Number(s.snapshot_versao) === x.versao).map((s) => ({ papel: s.papel, public_id: s.id_externo }));\n  const st = erro ? { status: \"FALHA\", motivo: \"CONSULTA: \" + erro, faltam: [] } : statusDocumento(doc, sigs);\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const concluido = st.status === \"ASSINADO_TODOS\";\n  const alertar = [\"RECUSADO\", \"FALHA\"].includes(st.status);\n  return [{ json: {\n    deal_id: x.deal_id,\n    versao: x.versao,\n    status_contrato: st.status,\n    documento_id: x.documento,\n    link: x.link,\n    concluido,\n    // Falha de consulta não sobrescreve a situação gravada: só alerta.\n    gravar: st.status !== \"FALHA\",\n    vinculo: { status: st.status, atualizado_em: agora },\n    negocio: { deal_id: x.deal_id, contrato_status: st.status, contrato_concluido_em: concluido ? agora : null, ultimo_evento_em: agora },\n    cobrar_agora: concluido && valor(cfg, \"COBRANCA_DISPARO\", \"\") === \"APOS_ASSINATURAS\",\n    cobranca: { acao: \"CRIAR_COBRANCAS\", deal_id: x.deal_id, versao: x.versao, origem: \"ASSINATURAS_CONCLUIDAS\" },\n    liberacao: { acao: \"REAVALIAR_LIBERACAO\", deal_id: x.deal_id },\n    alertar,\n    alerta: {\n      tipo: \"CONTRATO_\" + st.status,\n      severidade: \"ALTA\",\n      workflow: \"ATOM_05_Autentique\",\n      deal_id: x.deal_id,\n      mensagem: \"Contrato (documento Autentique \" + x.documento + \") ficou \" + st.status + (st.recusou ? \" — recusado por: \" + st.recusou : \"\") + (st.motivo ? \" (\" + st.motivo + \")\" : \"\") + \". Verifique na Autentique.\"\n    }\n  } }];\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "21f0586e-d023-4bff-8b8a-2c82dfe9b009",
+      "name": "Gravar situação?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2100,
+        1900,
         450
       ],
       "parameters": {
@@ -2656,7 +2367,7 @@
           },
           "conditions": [
             {
-              "leftValue": "={{ $json.evento === 'sign' && !!$json.signatario }}",
+              "leftValue": "={{ $json.gravar }}",
               "rightValue": true,
               "operator": {
                 "type": "boolean",
@@ -2670,12 +2381,12 @@
       }
     },
     {
-      "id": "ea38e29a-179a-4b6b-b4fd-044f20b625c2",
-      "name": "Registrar assinatura do signatário",
+      "id": "6a94f095-b162-4bef-b5ee-aab8fcf8c6e7",
+      "name": "Atualizar vínculo do documento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2300,
+        2100,
         450
       ],
       "parameters": {
@@ -2693,25 +2404,25 @@
             {
               "keyName": "sistema",
               "condition": "eq",
-              "keyValue": "={{ \"CLICKSIGN\" }}"
+              "keyValue": "={{ \"AUTENTIQUE\" }}"
             },
             {
               "keyName": "tipo",
               "condition": "eq",
-              "keyValue": "={{ \"SIGNATARIO\" }}"
+              "keyValue": "={{ \"DOCUMENTO\" }}"
             },
             {
               "keyName": "id_externo",
               "condition": "eq",
-              "keyValue": "={{ $('Resolver envelope').first().json.signatario }}"
+              "keyValue": "={{ $('Consolidar contrato').first().json.documento_id }}"
             }
           ]
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "status": "ASSINOU",
-            "atualizado_em": "={{ $now.toISO() }}"
+            "status": "={{ $('Consolidar contrato').first().json.vinculo.status }}",
+            "atualizado_em": "={{ $('Consolidar contrato').first().json.vinculo.atualizado_em }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -2739,109 +2450,13 @@
       "alwaysOutputData": true
     },
     {
-      "id": "8516d5d4-e49e-4e23-913d-10df85887edb",
-      "name": "Consultar envelope",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.5,
-      "position": [
-        2300,
-        600
-      ],
-      "parameters": {
-        "method": "GET",
-        "url": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'CLICKSIGN_BASE_URL') || {}).valor }}/envelopes/{{ $('Resolver envelope').first().json.envelope }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Accept",
-              "value": "application/vnd.api+json"
-            }
-          ]
-        },
-        "options": {
-          "timeout": 20000,
-          "response": {
-            "response": {
-              "neverError": true
-            }
-          }
-        }
-      },
-      "credentials": {},
-      "executeOnce": true,
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 3000
-    },
-    {
-      "id": "e561cec0-f814-491f-827b-2cb99eef967d",
-      "name": "Signatários do envelope",
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
-      "position": [
-        2500,
-        600
-      ],
-      "parameters": {
-        "resource": "row",
-        "operation": "get",
-        "dataTableId": {
-          "__rl": true,
-          "mode": "id",
-          "value": "jNlKdIaPXcS7cEhF",
-          "cachedResultName": "atom_vinculos"
-        },
-        "matchType": "allConditions",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "sistema",
-              "condition": "eq",
-              "keyValue": "={{ \"CLICKSIGN\" }}"
-            },
-            {
-              "keyName": "tipo",
-              "condition": "eq",
-              "keyValue": "={{ \"SIGNATARIO\" }}"
-            },
-            {
-              "keyName": "deal_id",
-              "condition": "eq",
-              "keyValue": "={{ $('Resolver envelope').first().json.deal_id }}"
-            }
-          ]
-        },
-        "returnAll": true
-      },
-      "executeOnce": true,
-      "alwaysOutputData": true
-    },
-    {
-      "id": "bead7432-35a4-4642-8167-9b10c0c0b2bc",
-      "name": "Consolidar contrato",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2700,
-        600
-      ],
-      "parameters": {
-        "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#consolidar + lib/{util,config,regras}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/regras.js\nfunction statusContrato(e) {\n  const envStatus = String(e.envelopeStatus || \"\").toLowerCase();\n  const exigidos = uniq((e.signatariosExigidos || []).map(String));\n  const assinaram = uniq((e.signatariosQueAssinaram || []).map(String));\n  const faltam = exigidos.filter((s) => !assinaram.includes(s));\n  const eventos = (e.eventos || []).map((x) => String(x).toLowerCase());\n  if (eventos.includes(\"refusal\")) return { status: \"RECUSADO\", faltam };\n  if (envStatus === \"canceled\" || envStatus === \"cancelled\" || eventos.includes(\"cancel\")) return { status: \"CANCELADO\", faltam };\n  if (eventos.includes(\"deadline\") && faltam.length) return { status: \"EXPIRADO\", faltam };\n  if (!exigidos.length) return { status: \"FALHA\", faltam, motivo: \"SEM_SIGNATARIOS_REGISTRADOS\" };\n  if (faltam.length === 0 && [\"closed\", \"finished\", \"completed\"].includes(envStatus)) return { status: \"ASSINADO_TODOS\", faltam };\n  if (faltam.length === 0) return { status: \"AGUARDANDO_ENCERRAMENTO\", faltam };\n  if ([\"closed\", \"finished\", \"completed\"].includes(envStatus)) return { status: \"ENCERRADO_SEM_TODAS_ASSINATURAS\", faltam };\n  if (assinaram.length > 0) return { status: \"PARCIALMENTE_ASSINADO\", faltam };\n  return { status: \"PENDENTE\", faltam };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (webhook)\").all());\n  const x = $(\"Resolver envelope\").first().json;\n  const envResp = $(\"Consultar envelope\").first().json || {};\n  const sigs = $(\"Signatários do envelope\").all().map((i) => i.json).filter((r) => r && r.tipo === \"SIGNATARIO\" && Number(r.snapshot_versao) === x.versao);\n  const assinaram = sigs.filter((s) => s.status === \"ASSINOU\" || x.evento === \"sign\" && s.id_externo === x.signatario).map((s) => s.id_externo);\n  const statusEnv = envResp.data && envResp.data.attributes ? envResp.data.attributes.status : \"\";\n  const st = statusContrato({ envelopeStatus: statusEnv, signatariosExigidos: sigs.map((s) => s.id_externo), signatariosQueAssinaram: assinaram, eventos: [x.evento] });\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const concluido = st.status === \"ASSINADO_TODOS\";\n  const alertar = [\"RECUSADO\", \"EXPIRADO\", \"CANCELADO\", \"ENCERRADO_SEM_TODAS_ASSINATURAS\", \"FALHA\"].includes(st.status);\n  return [{ json: {\n    deal_id: x.deal_id,\n    versao: x.versao,\n    status_contrato: st.status,\n    envelope_id: x.envelope,\n    concluido,\n    negocio: { deal_id: x.deal_id, contrato_status: st.status, contrato_concluido_em: concluido ? agora : null, ultimo_evento_em: agora },\n    cobrar_agora: concluido && valor(cfg, \"COBRANCA_DISPARO\", \"\") === \"APOS_ASSINATURAS\",\n    cobranca: { acao: \"CRIAR_COBRANCAS\", deal_id: x.deal_id, versao: x.versao, origem: \"ASSINATURAS_CONCLUIDAS\" },\n    liberacao: { acao: \"REAVALIAR_LIBERACAO\", deal_id: x.deal_id },\n    alertar,\n    alerta: {\n      tipo: \"CONTRATO_\" + st.status,\n      severidade: \"ALTA\",\n      workflow: \"ATOM_05_Clicksign\",\n      deal_id: x.deal_id,\n      mensagem: \"Contrato (envelope \" + x.envelope + \") ficou \" + st.status + (st.faltam && st.faltam.length ? \"; faltam assinaturas de: \" + st.faltam.join(\", \") : \"\") + \". Verifique no Clicksign.\"\n    }\n  } }];\n})();\nreturn __resultado;"
-      }
-    },
-    {
-      "id": "732fcd12-6492-47ed-a2e9-e10de9f15d50",
+      "id": "07e9aea7-d578-44e9-889c-5258f88cf104",
       "name": "Salvar situação do contrato",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2900,
-        600
+        2300,
+        450
       ],
       "parameters": {
         "resource": "row",
@@ -2858,17 +2473,17 @@
             {
               "keyName": "deal_id",
               "condition": "eq",
-              "keyValue": "={{ $json.negocio.deal_id }}"
+              "keyValue": "={{ $('Consolidar contrato').first().json.negocio.deal_id }}"
             }
           ]
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "deal_id": "={{ $json.negocio.deal_id }}",
-            "contrato_status": "={{ $json.negocio.contrato_status }}",
-            "contrato_concluido_em": "={{ $json.negocio.contrato_concluido_em }}",
-            "ultimo_evento_em": "={{ $json.negocio.ultimo_evento_em }}"
+            "deal_id": "={{ $('Consolidar contrato').first().json.negocio.deal_id }}",
+            "contrato_status": "={{ $('Consolidar contrato').first().json.negocio.contrato_status }}",
+            "contrato_concluido_em": "={{ $('Consolidar contrato').first().json.negocio.contrato_concluido_em }}",
+            "ultimo_evento_em": "={{ $('Consolidar contrato').first().json.negocio.ultimo_evento_em }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -2910,30 +2525,31 @@
             }
           ]
         }
-      }
+      },
+      "executeOnce": true
     },
     {
-      "id": "059b947a-3398-46c4-bd65-b7f7f62c78b0",
-      "name": "Campos do contrato (webhook)",
+      "id": "18451b54-916e-40c8-9c4b-03e915cb9313",
+      "name": "Campos do contrato (situação)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3100,
-        600
+        2500,
+        450
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : Object.assign({ status_contrato: \"ENVIADO\", link: $(\"Envelope enviado\").first().json.vinculo.link }, $(\"Envelope enviado\").first().json);\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.envelope_id) valores.PD_DEAL_CLICKSIGN_ID = x.envelope_id;\n  if (x.link) valores.PD_DEAL_CLICKSIGN_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : $(\"Contrato enviado\").first().json;\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.documento_id) valores.PD_DEAL_CONTRATO_ID = x.documento_id;\n  if (x.link) valores.PD_DEAL_CONTRATO_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "131cd058-8ab0-47ac-8f95-dd331e9225c3",
-      "name": "Atualizar negócio (contrato)?",
+      "id": "c8d2999e-64ec-4b7c-9abe-aeb61240c98c",
+      "name": "Atualizar negócio (situação)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3300,
-        600
+        2700,
+        450
       ],
       "parameters": {
         "conditions": {
@@ -2959,13 +2575,13 @@
       }
     },
     {
-      "id": "7a3fe281-b09f-47e5-a26b-9428855f2abd",
+      "id": "5d62807b-13a1-4763-b1fd-f9caa9e197f6",
       "name": "Atualizar negócio (situação do contrato)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        3500,
-        600
+        2900,
+        450
       ],
       "parameters": {
         "method": "PATCH",
@@ -2984,13 +2600,13 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "124f7742-d161-4eac-aff8-fa487ae64c9a",
+      "id": "7ae4144c-64b4-4293-bab4-321c60f44455",
       "name": "Assinado por todos?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3500,
-        750
+        2900,
+        600
       ],
       "parameters": {
         "conditions": {
@@ -3016,13 +2632,45 @@
       }
     },
     {
-      "id": "d240edbb-9da6-4c74-ad9c-69874cc1ccd1",
+      "id": "962ad1f1-ade4-4e91-95f1-2f796ae5e243",
+      "name": "Alertar situação do contrato?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2100,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Consolidar contrato').first().json.alertar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "17219757-de64-4b93-a8c5-2349a4e61689",
       "name": "Snapshot assinado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        3700,
-        750
+        3100,
+        600
       ],
       "parameters": {
         "resource": "row",
@@ -3070,13 +2718,13 @@
       "alwaysOutputData": true
     },
     {
-      "id": "c9423eb4-1d73-47fe-8fc2-969a9d688c1d",
+      "id": "f3b80341-4923-4df4-8168-ae57026f556b",
       "name": "Cobrar após assinaturas?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3900,
-        750
+        3300,
+        600
       ],
       "parameters": {
         "conditions": {
@@ -3102,13 +2750,13 @@
       }
     },
     {
-      "id": "ce158c43-6709-4b23-8438-7592dbc7aad0",
+      "id": "84d4fa27-43f5-442c-9a95-88320c0f0276",
       "name": "Pedido de cobrança (após assinaturas)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4100,
-        750
+        3500,
+        600
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3116,13 +2764,13 @@
       }
     },
     {
-      "id": "4607c19d-485a-4e49-bc3c-c33c243d5ab4",
+      "id": "8cfd17e6-1378-48a9-b103-d5df56c1b8e2",
       "name": "ATOM_06 — cobranças (após assinaturas)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        4300,
-        750
+        3700,
+        600
       ],
       "parameters": {
         "mode": "once",
@@ -3130,7 +2778,7 @@
         "workflowId": {
           "__rl": true,
           "mode": "id",
-          "value": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_06' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+          "value": "={{ ($('Ler configuração').isExecuted ? $('Ler configuração') : $('Ler configuração (webhook)')).all().map(i => i.json).find(r => r.chave === 'WF_ATOM_06' && r.status === 'CONFIGURADO')?.valor || '' }}"
         },
         "options": {
           "waitForSubWorkflow": true
@@ -3139,13 +2787,13 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "272978c1-51d5-4da3-9fcb-a3c5bf31c08c",
+      "id": "2c7c775e-2535-453f-b43a-9797d8dc1198",
       "name": "Pedido de reavaliação da liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4100,
-        900
+        3500,
+        750
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3154,45 +2802,13 @@
       "executeOnce": true
     },
     {
-      "id": "e15a6456-89da-4023-bcba-74c824a54202",
-      "name": "Alertar situação do contrato?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        3700,
-        900
-      ],
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "leftValue": "={{ $('Consolidar contrato').first().json.alertar }}",
-              "rightValue": true,
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        }
-      }
-    },
-    {
-      "id": "437dabf8-a936-4551-b7d8-fad43f14fe0b",
+      "id": "454585f2-b3f7-4e4a-ac41-a3b455c25dbe",
       "name": "Alerta do contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3900,
-        900
+        2300,
+        600
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
@@ -3200,13 +2816,13 @@
       }
     },
     {
-      "id": "108c3fff-26c5-4410-98ee-e6391bca1e03",
+      "id": "c9b92af7-db3a-48b5-a33d-54c6ef45370e",
       "name": "ATOM_11 — alerta contrato",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        4100,
-        900
+        2500,
+        600
       ],
       "parameters": {
         "mode": "once",
@@ -3214,7 +2830,7 @@
         "workflowId": {
           "__rl": true,
           "mode": "id",
-          "value": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_11' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+          "value": "={{ ($('Ler configuração').isExecuted ? $('Ler configuração') : $('Ler configuração (webhook)')).all().map(i => i.json).find(r => r.chave === 'WF_ATOM_11' && r.status === 'CONFIGURADO')?.valor || '' }}"
         },
         "options": {
           "waitForSubWorkflow": false
@@ -3223,13 +2839,13 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "25b7cc21-5c8e-44e3-88f7-d31fd7fe7103",
+      "id": "f36f45a0-f0eb-4fba-8701-84a784b098e6",
       "name": "ATOM_08 — reavaliar liberação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        4300,
-        900
+        3700,
+        750
       ],
       "parameters": {
         "mode": "once",
@@ -3237,7 +2853,7 @@
         "workflowId": {
           "__rl": true,
           "mode": "id",
-          "value": "={{ ($('Ler configuração (webhook)').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_08' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+          "value": "={{ ($('Ler configuração').isExecuted ? $('Ler configuração') : $('Ler configuração (webhook)')).all().map(i => i.json).find(r => r.chave === 'WF_ATOM_08' && r.status === 'CONFIGURADO')?.valor || '' }}"
         },
         "options": {
           "waitForSubWorkflow": false
@@ -3246,8 +2862,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b86a2a8b-b159-4a56-b53a-4d32f405b154",
-      "name": "Sticky Note b86a2a8b",
+      "id": "49d83675-6f8e-4dc8-91f4-87154c47849f",
+      "name": "Sticky Note 49d83675",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -3255,7 +2871,7 @@
         600
       ],
       "parameters": {
-        "content": "## ATOM_05 — Clicksign (API v3)\n- Envelope a partir de modelo aprovado (`CLICKSIGN_MODELO_<MODELO>` + mapa `CLICKSIGN_MAPA_<MODELO>`), signatários cliente e Atom, requisitos de qualificação e autenticação, ativação (convites por e-mail).\n- Cada ID é gravado logo após a criação: uma falha parcial retoma só o que falta.\n- Falha de rede/5xx em criação → `FALHA_VERIFICAR_MANUAL` (não repete sozinho, evita duplicar).\n- Webhook validado por HMAC-SHA256 (segredo na credencial Crypto). Assinatura completa exige envelope encerrado **e** registro de assinatura de todos os signatários.\n- **Bloqueado** até `CLICKSIGN_VALIDADO_SANDBOX` = CONFIGURADO (atributos não confirmados na documentação).",
+        "content": "## ATOM_05 — Autentique\n- Modelo no **Google Docs** (`CONTRATO_MODELO_<COD>` = ID do documento; `CONTRATO_MAPA_<COD>` = variáveis `{{VAR}}` → campos do snapshot aprovado). Cópia na pasta `GDRIVE_PASTA_CONTRATOS_ID`, preenchimento, conferência (nenhuma `{{...}}` restante), PDF.\n- Documento na Autentique com signatários **cliente** (e-mail de assinatura confirmado) e **Atom** (`AUTENTIQUE_SIGNATARIO_ATOM_EMAIL`); convites por e-mail da própria Autentique. `sandbox: true` fora de PRODUCAO.\n- Retentativa segura: reaproveita a cópia e procura o documento pelo nome antes de criar outro.\n- Situação sempre relida por `document(id)` (webhook `/atom/autentique` ou ação `CONSULTAR`). HMAC conferido quando `AUTENTIQUE_HMAC_CABECALHO` estiver configurado.\n- Em PRODUCAO exige `AUTENTIQUE_VALIDADO_SANDBOX`.",
         "color": 3
       }
     }
@@ -3276,7 +2892,25 @@
       "main": [
         [
           {
+            "node": "Ação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ação": {
+      "main": [
+        [
+          {
             "node": "Snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Documentos do negócio",
             "type": "main",
             "index": 0
           }
@@ -3287,25 +2921,25 @@
       "main": [
         [
           {
-            "node": "Vínculos Clicksign",
+            "node": "Vínculos do contrato",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Vínculos Clicksign": {
+    "Vínculos do contrato": {
       "main": [
         [
           {
-            "node": "Planejar envelope",
+            "node": "Planejar contrato",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Planejar envelope": {
+    "Planejar contrato": {
       "main": [
         [
           {
@@ -3320,7 +2954,7 @@
       "main": [
         [
           {
-            "node": "Criar envelope?",
+            "node": "Copiar modelo?",
             "type": "main",
             "index": 0
           }
@@ -3334,76 +2968,76 @@
         ]
       ]
     },
-    "Criar envelope?": {
+    "Copiar modelo?": {
       "main": [
         [
           {
-            "node": "Clicksign — criar envelope",
+            "node": "Google Drive — copiar modelo",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Criar documento?",
+            "node": "Cópia do modelo",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Clicksign — criar envelope": {
+    "Google Drive — copiar modelo": {
       "main": [
         [
           {
-            "node": "Guardar envelope",
+            "node": "Guardar cópia",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Falha na criação",
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Guardar envelope": {
+    "Guardar cópia": {
       "main": [
         [
           {
-            "node": "Registrar envelope",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Registrar envelope": {
-      "main": [
-        [
-          {
-            "node": "Criar documento?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Criar documento?": {
-      "main": [
-        [
-          {
-            "node": "Clicksign — criar documento do modelo",
+            "node": "Registrar cópia",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Criar signatário cliente?",
+            "node": "Capturar erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar cópia": {
+      "main": [
+        [
+          {
+            "node": "Cópia do modelo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cópia do modelo": {
+      "main": [
+        [
+          {
+            "node": "Google Docs — preencher",
             "type": "main",
             "index": 0
           }
@@ -3432,272 +3066,253 @@
         ]
       ]
     },
-    "Clicksign — criar documento do modelo": {
+    "Documentos do negócio": {
       "main": [
         [
           {
-            "node": "Guardar documento",
+            "node": "Resolver documento (consulta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolver documento (consulta)": {
+      "main": [
+        [
+          {
+            "node": "Documento a consultar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Documento a consultar": {
+      "main": [
+        [
+          {
+            "node": "Autentique — consultar documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs — preencher": {
+      "main": [
+        [
+          {
+            "node": "Google Docs — conferir",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Falha na criação",
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Guardar documento": {
+    "Google Docs — conferir": {
       "main": [
         [
           {
-            "node": "Registrar documento",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Registrar documento": {
-      "main": [
-        [
-          {
-            "node": "Criar signatário cliente?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Criar signatário cliente?": {
-      "main": [
-        [
-          {
-            "node": "Clicksign — signatário cliente",
+            "node": "Conferir preenchimento",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Criar signatário Atom?",
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Clicksign — signatário cliente": {
+    "Conferir preenchimento": {
       "main": [
         [
           {
-            "node": "Guardar signatário cliente",
+            "node": "Preenchimento completo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preenchimento completo?": {
+      "main": [
+        [
+          {
+            "node": "Autentique — documentos recentes",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Falha na criação",
+            "node": "Registrar bloqueio",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Guardar signatário cliente": {
+    "Autentique — documentos recentes": {
       "main": [
         [
           {
-            "node": "Registrar signatário cliente",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Registrar signatário cliente": {
-      "main": [
-        [
-          {
-            "node": "Criar signatário Atom?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Criar signatário Atom?": {
-      "main": [
-        [
-          {
-            "node": "Clicksign — signatário Atom",
+            "node": "Decidir criação",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "IDs atuais",
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Clicksign — signatário Atom": {
+    "Decidir criação": {
       "main": [
         [
           {
-            "node": "Guardar signatário Atom",
+            "node": "Criar documento?",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Falha na criação",
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Guardar signatário Atom": {
+    "Criar documento?": {
       "main": [
         [
           {
-            "node": "Registrar signatário Atom",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Registrar signatário Atom": {
-      "main": [
-        [
-          {
-            "node": "IDs atuais",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "IDs atuais": {
-      "main": [
-        [
-          {
-            "node": "Criar requisitos?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Criar requisitos?": {
-      "main": [
-        [
-          {
-            "node": "Montar requisitos",
+            "node": "Google Drive — exportar PDF",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Clicksign — ativar envelope (envia convites)",
+            "node": "Documento do contrato",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Montar requisitos": {
+    "Google Drive — exportar PDF": {
       "main": [
         [
           {
-            "node": "Clicksign — requisitos (qualificação e autenticação)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Clicksign — requisitos (qualificação e autenticação)": {
-      "main": [
-        [
-          {
-            "node": "Requisitos criados",
+            "node": "Preparar arquivo",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Falha na criação",
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Requisitos criados": {
+    "Preparar arquivo": {
       "main": [
         [
           {
-            "node": "Registrar requisitos",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Registrar requisitos": {
-      "main": [
-        [
-          {
-            "node": "Clicksign — ativar envelope (envia convites)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Clicksign — ativar envelope (envia convites)": {
-      "main": [
-        [
-          {
-            "node": "Envelope enviado",
+            "node": "Autentique — criar documento",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Falha na criação",
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Envelope enviado": {
+    "Autentique — criar documento": {
       "main": [
         [
           {
-            "node": "Atualizar vínculo do envelope",
+            "node": "Documento do contrato",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Capturar erro",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Atualizar vínculo do envelope": {
+    "Documento do contrato": {
+      "main": [
+        [
+          {
+            "node": "Registrar documento e signatários",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Capturar erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar documento e signatários": {
+      "main": [
+        [
+          {
+            "node": "Contrato enviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contrato enviado": {
+      "main": [
+        [
+          {
+            "node": "Atualizar vínculo da cópia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar vínculo da cópia": {
       "main": [
         [
           {
@@ -3803,6 +3418,28 @@
         ]
       ]
     },
+    "Capturar erro": {
+      "main": [
+        [
+          {
+            "node": "Ação anterior",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ação anterior": {
+      "main": [
+        [
+          {
+            "node": "Falha na criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Falha na criação": {
       "main": [
         [
@@ -3829,14 +3466,14 @@
       "main": [
         [
           {
-            "node": "ATOM_11 — alerta Clicksign",
+            "node": "ATOM_11 — alerta Autentique",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Webhook Clicksign": {
+    "Webhook Autentique": {
       "main": [
         [
           {
@@ -3862,25 +3499,25 @@
       "main": [
         [
           {
-            "node": "Validar evento Clicksign",
+            "node": "Validar evento Autentique",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Validar evento Clicksign": {
+    "Validar evento Autentique": {
       "main": [
         [
           {
-            "node": "Evento Clicksign já recebido?",
+            "node": "Evento Autentique já recebido?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Evento Clicksign já recebido?": {
+    "Evento Autentique já recebido?": {
       "main": [
         [
           {
@@ -3895,14 +3532,14 @@
       "main": [
         [
           {
-            "node": "Registrar evento Clicksign",
+            "node": "Registrar evento Autentique",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Registrar evento Clicksign": {
+    "Registrar evento Autentique": {
       "main": [
         [
           {
@@ -3917,76 +3554,47 @@
       "main": [
         [
           {
-            "node": "Vínculo do envelope",
+            "node": "Documentos Autentique",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Vínculo do envelope": {
+    "Documentos Autentique": {
       "main": [
         [
           {
-            "node": "Resolver envelope",
+            "node": "Resolver documento (webhook)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Resolver envelope": {
+    "Resolver documento (webhook)": {
       "main": [
         [
           {
-            "node": "Evento de assinatura?",
+            "node": "Documento a consultar",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Evento de assinatura?": {
+    "Autentique — consultar documento": {
       "main": [
         [
           {
-            "node": "Registrar assinatura do signatário",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Consultar envelope",
+            "node": "Signatários do documento",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Registrar assinatura do signatário": {
-      "main": [
-        [
-          {
-            "node": "Consultar envelope",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Consultar envelope": {
-      "main": [
-        [
-          {
-            "node": "Signatários do envelope",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Signatários do envelope": {
+    "Signatários do documento": {
       "main": [
         [
           {
@@ -4001,6 +3609,35 @@
       "main": [
         [
           {
+            "node": "Gravar situação?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gravar situação?": {
+      "main": [
+        [
+          {
+            "node": "Atualizar vínculo do documento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alertar situação do contrato?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar vínculo do documento": {
+      "main": [
+        [
+          {
             "node": "Salvar situação do contrato",
             "type": "main",
             "index": 0
@@ -4012,25 +3649,25 @@
       "main": [
         [
           {
-            "node": "Campos do contrato (webhook)",
+            "node": "Campos do contrato (situação)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Campos do contrato (webhook)": {
+    "Campos do contrato (situação)": {
       "main": [
         [
           {
-            "node": "Atualizar negócio (contrato)?",
+            "node": "Atualizar negócio (situação)?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Atualizar negócio (contrato)?": {
+    "Atualizar negócio (situação)?": {
       "main": [
         [
           {
@@ -4071,6 +3708,17 @@
         [
           {
             "node": "Alertar situação do contrato?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alertar situação do contrato?": {
+      "main": [
+        [
+          {
+            "node": "Alerta do contrato",
             "type": "main",
             "index": 0
           }
@@ -4133,17 +3781,6 @@
         [
           {
             "node": "ATOM_08 — reavaliar liberação",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Alertar situação do contrato?": {
-      "main": [
-        [
-          {
-            "node": "Alerta do contrato",
             "type": "main",
             "index": 0
           }

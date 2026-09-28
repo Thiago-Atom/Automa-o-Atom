@@ -9,7 +9,7 @@
 | DNS sobre HTTPS (`dns.google/resolve`, A/AAAA) | Proteção SSRF antes de acessar sites | Serviço público, sem credencial; só nomes de domínio de sites são enviados |
 | Anthropic (Claude) | Briefing opcional (o diagnóstico usará a rotina "Análise de Sites") | Só necessária se `BRIEFING_USAR_CLAUDE=true` |
 | Provedor de CNPJ: BrasilAPI | Cadastro | Decidido e configurado (2026-09-28); serviço público, sem credencial |
-| Clicksign API v3 | Contrato | Sandbox, modelos e signatários pendentes |
+| Autentique API v2 (GraphQL) + Google Drive/Docs | Contrato | Token, modelo(s) no Google Docs, pasta de contratos e signatário da Atom pendentes; cabeçalho HMAC e payload do webhook a confirmar no sandbox |
 | Asaas API v3 | Cliente, cobranças, pagamentos | Sandbox e regra de disparo pendentes |
 | Controlle | Financeiro | Não usado por este projeto: os lançamentos já vêm de uma integração existente (`CONTROLLE_ORIGEM_LANCAMENTOS=INTEGRACAO_EXISTENTE`). ATOM_07 só marca a fila como não aplicável |
 | Trello API | Cartão de execução e início efetivo | Credencial existente `Trello account`; quadro/listas a definir |
@@ -44,7 +44,7 @@ Sem estas respostas, os fluxos correspondentes ficam bloqueados — o restante d
 3. **Diagnóstico:** usar a rotina existente "Análise de Sites" (habilitar acesso via MCP ou exportá-la), fornecer o modelo padrão aprovado
    da Atom, ou autorizar o modelo provisório? Qual modelo Claude está contratado?
 4. **CNPJ:** qual provedor está autorizado (BrasilAPI ou outro contratado)? Aceita CNPJ alfanumérico?
-5. **Clicksign:** quais modelos (chave e variáveis) por tipo de contrato? Quem assina pela Atom? A Clicksign exige nome/CPF do signatário do cliente?
+5. **Autentique:** quais modelos no Google Docs (ID e variáveis `{{VAR}}`) por código de `ATOM · Modelo de contrato`? Em qual pasta do Drive ficam as cópias? Nome e e-mail de quem assina pela Atom (precisa ser diferente do e-mail do cliente)? O modelo usa o nome do signatário do cliente (se sim, `CONTRATO_EXIGE_NOME_SIGNATARIO=true`)?
    Qual o cabeçalho HMAC do webhook na conta?
 6. **Cobrança:** `COBRANCA_DISPARO` = `JUNTO_COM_CONTRATO` ou `APOS_ASSINATURAS`?
 7. **Liberação:** a regra "contrato assinado por todos + pagamento inicial confirmado/recebido + negócio não cancelado" está aprovada?

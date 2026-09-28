@@ -2,7 +2,7 @@
   "name": "ATOM_04_Conferencia_Formalizacao",
   "nodes": [
     {
-      "id": "c6156632-3fdf-4f00-b126-b52f28b05ec7",
+      "id": "f7352b8e-4e7c-4abf-bb5b-a93eb27f5dae",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "1d696aa7-c566-40e8-8ac4-ca80d674de1b",
+      "id": "8759c304-d91e-44c7-ade5-00e2813bc43a",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "76394192-da93-41b4-a62b-848637e3ea87",
+      "id": "5efa0502-3175-4d20-980a-2a97b77c380a",
       "name": "Tipo de gatilho",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -78,7 +78,7 @@
       }
     },
     {
-      "id": "08e97ba3-5879-499d-bad9-9c92cd79596f",
+      "id": "f060d488-5d97-4fd7-b2a2-9652b3d1cb6d",
       "name": "Estado (cancelamento)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -110,7 +110,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "8b8967b3-658e-4365-bfa4-ff062099b861",
+      "id": "d4a3c59b-ce9a-46d8-a8fd-610ae13c55a8",
       "name": "Cancelamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -124,7 +124,7 @@
       }
     },
     {
-      "id": "715366a9-86bd-45fe-a232-070b492a6ff2",
+      "id": "515551b7-7682-4543-8625-610292499586",
       "name": "Marcar negócio cancelado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -192,7 +192,7 @@
       }
     },
     {
-      "id": "ee5ff81a-d3c1-4c0c-ab47-2836a2cbb666",
+      "id": "20c62b1f-b872-48b5-abd2-d40a479c14af",
       "name": "Cancelar avaliações agendadas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -271,7 +271,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "6ecafe93-9838-43d3-98a4-9e194c93eec9",
+      "id": "27a19ee5-a421-4926-ad8e-6bcb80b7eb3f",
       "name": "Alertar responsável?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -304,7 +304,7 @@
       "executeOnce": true
     },
     {
-      "id": "17fc42be-f0c1-4a7d-9b5a-31753507a7d4",
+      "id": "57598b28-c45b-4f06-80ba-8137e55f8a64",
       "name": "Alerta de cancelamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -318,7 +318,7 @@
       }
     },
     {
-      "id": "0e8612e4-7527-441f-bee9-b263e3fe9902",
+      "id": "6db61caf-22ed-4b04-a09e-8b14673de9d6",
       "name": "ATOM_11 — alerta cancelamento",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -341,7 +341,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7ad9a78e-6ac0-409a-bc53-099eaf5c850c",
+      "id": "fb94bc34-cf93-4828-9fb4-22d3c2efa3b8",
       "name": "Preparar consulta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -355,7 +355,7 @@
       }
     },
     {
-      "id": "9520eac5-c480-435d-aa4c-820c6dc0118d",
+      "id": "b4f694e6-0d65-4e5b-bf8b-5167d9d47c4e",
       "name": "Buscar negócios (atualizados)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -381,7 +381,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "03ebcdbe-4d36-4b93-988f-72e5f68b8359",
+      "id": "44f97ebc-98d2-4438-93b7-10a857cc9842",
       "name": "Selecionar negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -395,7 +395,7 @@
       }
     },
     {
-      "id": "513bd4a3-24f0-481a-9b0b-b08878b5cc55",
+      "id": "7bf7b285-a0ac-4f9a-b967-6a1ddba7815e",
       "name": "Redespachar por negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -427,7 +427,7 @@
       }
     },
     {
-      "id": "58ebf382-f536-4ea3-b378-abc3549fe5d7",
+      "id": "667b21f0-9b63-45e2-a1cb-79857063347b",
       "name": "Redespachar negócio",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -449,7 +449,7 @@
       }
     },
     {
-      "id": "8d0fd1f2-cc72-42af-88f6-c3669fdce5c4",
+      "id": "b9599efc-83b7-45c8-adda-c30006afc549",
       "name": "Buscar organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -477,7 +477,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "77e1c916-ea1b-4bd8-b395-de74fa123fc6",
+      "id": "2b2e4f35-5d22-4476-b6fb-f54fb286fd80",
       "name": "Buscar pessoa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -505,7 +505,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "63231a5d-b240-49dd-9110-d31735950e3e",
+      "id": "4b3a0dfe-ceaf-4d4b-82d0-d33ed025491e",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -537,7 +537,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "47b53aee-d260-4788-b03c-ba5b420e8882",
+      "id": "c670dcd4-5a5f-458f-a4f8-b1a90c9d1ef3",
       "name": "Snapshots",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -570,7 +570,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "1d5e208d-4a8b-41c6-a3bc-89bd03bf6e73",
+      "id": "f9fe92fa-e040-4974-8110-0898d22e4ada",
       "name": "Conferir dados",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -580,11 +580,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf04.js#conferir + lib/{util,config,cnpj,pipedrive,formalizacao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction toNumber(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  if (typeof v === \"number\") return Number.isFinite(v) ? v : null;\n  if (typeof v === \"object\" && v !== null && \"value\" in v) return toNumber(v.value);\n  let s = String(v).trim().replace(/[R$\\s]/g, \"\");\n  if (/,\\d{1,2}$/.test(s)) s = s.replace(/\\./g, \"\").replace(\",\", \".\");\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n}\nfunction round2(n) {\n  return Math.round((n + Number.EPSILON) * 100) / 100;\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\n\n// lib/cnpj.js\nvar P1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\nvar P2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\nfunction limpar(valor2) {\n  if (valor2 === null || valor2 === void 0) return \"\";\n  return String(valor2).toUpperCase().replace(/[\\s.\\-\\/]/g, \"\");\n}\nfunction dv(base, pesos) {\n  let soma = 0;\n  for (let i = 0; i < pesos.length; i++) soma += (base.charCodeAt(i) - 48) * pesos[i];\n  const resto = soma % 11;\n  return resto < 2 ? 0 : 11 - resto;\n}\nfunction validar(valor2) {\n  const c = limpar(valor2);\n  if (c.length !== 14) return { valido: false, cnpj: c, motivo: \"TAMANHO_INVALIDO\" };\n  if (!/^[0-9A-Z]{12}[0-9]{2}$/.test(c)) return { valido: false, cnpj: c, motivo: \"CARACTERE_INVALIDO\" };\n  if (/^(\\d)\\1{13}$/.test(c)) return { valido: false, cnpj: c, motivo: \"SEQUENCIA_REPETIDA\" };\n  const d1 = dv(c.slice(0, 12), P1);\n  const d2 = dv(c.slice(0, 12) + d1, P2);\n  if (c.slice(12) !== String(d1) + String(d2)) return { valido: false, cnpj: c, motivo: \"DV_INVALIDO\" };\n  return { valido: true, cnpj: c, alfanumerico: /[A-Z]/.test(c), motivo: \"\" };\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\nfunction truthy(v) {\n  if (v === true) return true;\n  if (v === null || v === void 0) return false;\n  return /^(sim|true|1|yes|x|ok)$/i.test(String(v && v.label ? v.label : v).trim());\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// lib/formalizacao.js\nvar TIPOS = [\"AVULSA\", \"PARCELADA\", \"ENTRADA_MAIS_PARCELAS\", \"RECORRENTE\", \"ENTRADA_MAIS_RECORRENTE\"];\nvar FORMAS = [\"BOLETO\", \"PIX\", \"CREDIT_CARD\", \"UNDEFINED\"];\nfunction rotulo(v) {\n  if (v && typeof v === \"object\" && \"label\" in v) return v.label;\n  return v;\n}\nfunction texto(v) {\n  const r = rotulo(v);\n  return r === null || r === void 0 ? \"\" : String(r).trim();\n}\nfunction data(v) {\n  const s = texto(v);\n  const m = s.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n  return m ? m[1] + \"-\" + m[2] + \"-\" + m[3] : \"\";\n}\nfunction montar2(e) {\n  const { deal, org, cfg } = e;\n  const L = (ent, k) => lerCfg(ent, cfg, k);\n  const faltantes = [];\n  const falta = (campo, origem, motivo) => faltantes.push({ campo, origem, motivo: motivo || \"AUSENTE\" });\n  const cnpjBruto = texto(L(org, \"PD_ORG_CNPJ\"));\n  const cnpj = validar(cnpjBruto);\n  const empresa = {\n    cnpj: cnpj.valido ? cnpj.cnpj : \"\",\n    razao_social: texto(L(org, \"PD_ORG_RAZAO_SOCIAL\")),\n    endereco: {\n      logradouro: texto(L(org, \"PD_ORG_LOGRADOURO\")),\n      numero: texto(L(org, \"PD_ORG_NUMERO\")),\n      complemento: texto(L(org, \"PD_ORG_COMPLEMENTO\")),\n      bairro: texto(L(org, \"PD_ORG_BAIRRO\")),\n      cidade: texto(L(org, \"PD_ORG_CIDADE\")),\n      uf: texto(L(org, \"PD_ORG_UF\")).toUpperCase(),\n      cep: texto(L(org, \"PD_ORG_CEP\")).replace(/\\D/g, \"\")\n    },\n    cadastro_status: texto(L(org, \"PD_ORG_CADASTRO_STATUS\"))\n  };\n  if (!cnpjBruto) falta(\"cnpj\", \"INTERNO\");\n  else if (!cnpj.valido) falta(\"cnpj\", \"INTERNO\", \"CNPJ_INVALIDO_\" + cnpj.motivo);\n  if (!empresa.razao_social) falta(\"razao_social\", \"INTERNO\");\n  if (empresa.cadastro_status && /DIVERGENTE|PENDENTE/i.test(empresa.cadastro_status)) falta(\"conferencia_cadastral\", \"INTERNO\", \"CADASTRO_\" + empresa.cadastro_status);\n  for (const k of [\"logradouro\", \"numero\", \"bairro\", \"cidade\", \"uf\", \"cep\"]) if (!empresa.endereco[k]) falta(\"endereco.\" + k, \"INTERNO\");\n  if (empresa.endereco.cep && empresa.endereco.cep.length !== 8) falta(\"endereco.cep\", \"INTERNO\", \"CEP_INVALIDO\");\n  const comercial = {\n    servico: texto(L(deal, \"PD_DEAL_SERVICO\")),\n    escopo: texto(L(deal, \"PD_DEAL_ESCOPO\")),\n    modelo_contrato: texto(L(deal, \"PD_DEAL_MODELO_CONTRATO\")),\n    prazo_execucao: texto(L(deal, \"PD_DEAL_PRAZO_EXECUCAO\")),\n    duracao_meses: toNumber(L(deal, \"PD_DEAL_DURACAO_MESES\")),\n    condicoes_aprovadas: truthy(L(deal, \"PD_DEAL_CONDICOES_APROVADAS\"))\n  };\n  for (const k of [\"servico\", \"escopo\", \"modelo_contrato\", \"prazo_execucao\"]) if (!comercial[k]) falta(k, \"INTERNO\");\n  if (!comercial.condicoes_aprovadas) falta(\"condicoes_aprovadas\", \"INTERNO\", \"CONDICOES_NAO_MARCADAS_COMO_APROVADAS\");\n  const fin = {\n    tipo_cobranca: texto(L(deal, \"PD_DEAL_TIPO_COBRANCA\")).toUpperCase(),\n    forma_pagamento: texto(L(deal, \"PD_DEAL_FORMA_PAGAMENTO\")).toUpperCase(),\n    valor_total: toNumber(L(deal, \"PD_DEAL_VALOR_TOTAL\")),\n    valor_entrada: toNumber(L(deal, \"PD_DEAL_VALOR_ENTRADA\")),\n    num_parcelas: toNumber(L(deal, \"PD_DEAL_NUM_PARCELAS\")),\n    valor_parcela: toNumber(L(deal, \"PD_DEAL_VALOR_PARCELA\")),\n    mensalidade: toNumber(L(deal, \"PD_DEAL_MENSALIDADE\")),\n    vencimento_entrada: data(L(deal, \"PD_DEAL_VENCIMENTO_ENTRADA\")),\n    primeiro_vencimento: data(L(deal, \"PD_DEAL_PRIMEIRO_VENCIMENTO\"))\n  };\n  const tol = 0.05;\n  if (!TIPOS.includes(fin.tipo_cobranca)) falta(\"tipo_cobranca\", \"INTERNO\", fin.tipo_cobranca ? \"TIPO_DESCONHECIDO\" : \"AUSENTE\");\n  if (!FORMAS.includes(fin.forma_pagamento)) falta(\"forma_pagamento\", \"INTERNO\", fin.forma_pagamento ? \"FORMA_DESCONHECIDA\" : \"AUSENTE\");\n  const temEntrada = /^ENTRADA_/.test(fin.tipo_cobranca);\n  if (temEntrada) {\n    if (!(fin.valor_entrada > 0)) falta(\"valor_entrada\", \"INTERNO\");\n    if (!fin.vencimento_entrada) falta(\"vencimento_entrada\", \"INTERNO\");\n  }\n  if (fin.tipo_cobranca === \"AVULSA\") {\n    if (!(fin.valor_total > 0)) falta(\"valor_total\", \"INTERNO\");\n    if (!fin.primeiro_vencimento) falta(\"primeiro_vencimento\", \"INTERNO\");\n  }\n  if (fin.tipo_cobranca === \"PARCELADA\" || fin.tipo_cobranca === \"ENTRADA_MAIS_PARCELAS\") {\n    if (!(fin.num_parcelas >= 1 && Number.isInteger(fin.num_parcelas))) falta(\"num_parcelas\", \"INTERNO\");\n    if (!(fin.valor_parcela > 0)) falta(\"valor_parcela\", \"INTERNO\");\n    if (!(fin.valor_total > 0)) falta(\"valor_total\", \"INTERNO\");\n    if (!fin.primeiro_vencimento) falta(\"primeiro_vencimento\", \"INTERNO\");\n    if (fin.num_parcelas > 0 && fin.valor_parcela > 0 && fin.valor_total > 0) {\n      const soma = round2((temEntrada ? fin.valor_entrada || 0 : 0) + fin.num_parcelas * fin.valor_parcela);\n      if (Math.abs(soma - fin.valor_total) > tol) falta(\"valores\", \"INTERNO\", \"SOMA_DAS_PARCELAS_DIFERE_DO_TOTAL\");\n    }\n  }\n  if (fin.tipo_cobranca === \"RECORRENTE\" || fin.tipo_cobranca === \"ENTRADA_MAIS_RECORRENTE\") {\n    if (!(fin.mensalidade > 0)) falta(\"mensalidade\", \"INTERNO\");\n    if (!(comercial.duracao_meses > 0)) falta(\"duracao_meses\", \"INTERNO\");\n    if (!fin.primeiro_vencimento) falta(\"primeiro_vencimento\", \"INTERNO\");\n  }\n  for (const k of [\"vencimento_entrada\", \"primeiro_vencimento\"]) {\n    if (fin[k] && e.hoje && fin[k] < e.hoje) falta(k, \"INTERNO\", \"DATA_NO_PASSADO\");\n  }\n  if (fin.vencimento_entrada && fin.primeiro_vencimento && fin.primeiro_vencimento < fin.vencimento_entrada) falta(\"primeiro_vencimento\", \"INTERNO\", \"ANTERIOR_A_ENTRADA\");\n  const emailReuniao = normalizeEmail(e.emailReuniao || \"\");\n  const contatos = {\n    email_financeiro: normalizeEmail(texto(L(org, \"PD_ORG_EMAIL_FINANCEIRO\"))),\n    email_financeiro_confirmado: truthy(L(org, \"PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO\")),\n    email_assinatura: normalizeEmail(texto(L(deal, \"PD_DEAL_EMAIL_ASSINATURA\"))),\n    email_assinatura_confirmado: truthy(L(deal, \"PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO\")),\n    nome_signatario: texto(L(deal, \"PD_DEAL_NOME_SIGNATARIO\"))\n  };\n  const confirmar = (campo, valor2, confirmado) => {\n    if (!valor2) falta(campo, \"CLIENTE\", emailReuniao ? \"CONFIRMAR_SE_EMAIL_DA_REUNIAO_ATENDE\" : \"AUSENTE\");\n    else if (!confirmado) falta(campo, \"CLIENTE\", \"AGUARDANDO_CONFIRMACAO\");\n  };\n  confirmar(\"email_financeiro\", contatos.email_financeiro, contatos.email_financeiro_confirmado);\n  confirmar(\"email_assinatura\", contatos.email_assinatura, contatos.email_assinatura_confirmado);\n  if (booleano(cfg, \"CLICKSIGN_EXIGE_NOME_SIGNATARIO\") && !contatos.nome_signatario) falta(\"nome_signatario\", \"CLIENTE\", \"EXIGIDO_PELA_PLATAFORMA_DE_ASSINATURA\");\n  const dados = { deal_id: String(deal.id), org_id: String(org.id), empresa, comercial, financeiro: fin, contatos };\n  return { dados, faltantes, completo: faltantes.length === 0, hash: fingerprint(dados) };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const deal = $(\"Selecionar negócio\").first().json.deal;\n  const org = ($(\"Buscar organização\").first().json || {}).data || { id: deal.org_id };\n  const pessoa = ($(\"Buscar pessoa\").first().json || {}).data || {};\n  const est = $(\"Estado do negócio\").all().map((i) => i.json).find((r) => r && r.deal_id) || {};\n  const snaps = $(\"Snapshots\").all().map((i) => i.json).filter((r) => r && r.deal_id).sort((a, b) => Number(b.versao) - Number(a.versao));\n  const idEmail = idCampo(cfg, \"PD_EMAIL_REUNIAO\") || \"nativo:emails\";\n  const emailReuniao = idEmail.startsWith(\"nativo:\") ? primeiroEmail(pessoa.emails) : String(ler(deal, idEmail) || \"\");\n  const hoje = $now.setZone(\"America/Sao_Paulo\").toFormat(\"yyyy-MM-dd\");\n  const m = montar2({ deal, org, cfg, hoje, emailReuniao });\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const tel = Array.isArray(pessoa.phones) ? (pessoa.phones.find((p) => p && p.primary) || pessoa.phones[0] || {}).value : \"\";\n  const row = { deal_id: String(deal.id), org_id: String(deal.org_id || \"\"), person_id: String(deal.person_id || \"\"), ultimo_evento_em: agora };\n  if (!m.completo) {\n    const fp = fingerprint(m.faltantes);\n    const repetido = est.pendencias_fp === fp;\n    Object.assign(row, {\n      formalizacao_status: \"PENDENTE_DADOS\",\n      pendencias: JSON.stringify(m.faltantes).slice(0, 1800),\n      pendencias_fp: fp,\n      pendencias_solicitadas_em: repetido ? est.pendencias_solicitadas_em || agora : agora,\n      snapshot_versao: est.snapshot_versao || null\n    });\n    const cliente = uniq(m.faltantes.filter((f) => f.origem === \"CLIENTE\").map((f) => f.campo));\n    const internos = m.faltantes.filter((f) => f.origem === \"INTERNO\");\n    const lista2 = m.faltantes.map((f) => \"• \" + f.campo + \" — \" + f.motivo + \" (\" + (f.origem === \"CLIENTE\" ? \"solicitar ao cliente\" : \"conferência interna\") + \")\").join(\"<br>\");\n    const at2 = corpoAtualizacao(cfg, { PD_DEAL_PENDENCIAS: m.faltantes.map((f) => f.campo + \":\" + f.motivo).join(\"; \").slice(0, 250) });\n    return [{ json: {\n      decisao: \"PENDENTE\",\n      repetido,\n      deal_id: row.deal_id,\n      org_id: row.org_id,\n      row,\n      cliente,\n      internos: internos.length,\n      corpo_deal: at2.corpo,\n      atualizar_deal: !at2.vazio,\n      nota: { deal_id: Number(deal.id), content: \"<b>Formalização — dados pendentes</b><br>Nenhum contrato ou cobrança foi criado.<br>\" + lista2 + \"<br><small>Gerado automaticamente (ATOM_04). Novos pedidos ao cliente só ocorrem se a lista de pendências mudar.</small>\" },\n      pedido: {\n        action: \"COMPLETAR_DADOS\",\n        deal_id: row.deal_id,\n        org_id: row.org_id,\n        phone: tel || \"\",\n        missing_fields: cliente,\n        message_context: { empresa: org.name || deal.title || \"\", motivos: m.faltantes.filter((f) => f.origem === \"CLIENTE\").map((f) => f.campo + \":\" + f.motivo) }\n      }\n    } }];\n  }\n  const ultimo = snaps[0] || null;\n  let decisao;\n  let versao;\n  if (ultimo && ultimo.hash === m.hash) {\n    decisao = \"MESMA_VERSAO\";\n    versao = Number(ultimo.versao);\n  } else if (ultimo && [\"ENVIADO\", \"ASSINADO\"].includes(ultimo.status)) {\n    decisao = \"ALTERACAO_APOS_ENVIO\";\n    versao = Number(ultimo.versao);\n  } else {\n    decisao = \"NOVA_VERSAO\";\n    versao = (ultimo ? Number(ultimo.versao) : 0) + 1;\n  }\n  Object.assign(row, {\n    formalizacao_status: decisao === \"ALTERACAO_APOS_ENVIO\" ? \"BLOQUEADO_ALTERACAO_POS_ENVIO\" : \"DADOS_CONFERIDOS\",\n    pendencias: \"\",\n    pendencias_fp: \"\",\n    snapshot_versao: versao\n  });\n  const at = corpoAtualizacao(cfg, { PD_DEAL_PENDENCIAS: \"\" });\n  return [{ json: {\n    decisao,\n    deal_id: row.deal_id,\n    org_id: row.org_id,\n    versao,\n    row,\n    corpo_deal: at.corpo,\n    atualizar_deal: !at.vazio && !!est.pendencias,\n    snapshot: { deal_id: row.deal_id, versao, hash: m.hash, dados: JSON.stringify(Object.assign({ versao }, m.dados)), status: \"ATIVO\", criado_em: agora },\n    status_anterior: ultimo ? ultimo.status : null,\n    clicksign: { acao: \"CRIAR_ENVELOPE\", deal_id: row.deal_id, versao },\n    alerta: decisao === \"ALTERACAO_APOS_ENVIO\" ? {\n      tipo: \"CONDICOES_ALTERADAS_APOS_ENVIO\",\n      severidade: \"ALTA\",\n      workflow: \"ATOM_04_Conferencia_Formalizacao\",\n      deal_id: row.deal_id,\n      mensagem: \"As condições/dados do negócio mudaram depois do envio do contrato (versão \" + versao + \", status \" + ultimo.status + \"). Nada foi alterado automaticamente. Decida manualmente: manter, ou cancelar o envelope e reemitir.\"\n    } : null\n  } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf04.js#conferir + lib/{util,config,cnpj,pipedrive,formalizacao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction toNumber(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  if (typeof v === \"number\") return Number.isFinite(v) ? v : null;\n  if (typeof v === \"object\" && v !== null && \"value\" in v) return toNumber(v.value);\n  let s = String(v).trim().replace(/[R$\\s]/g, \"\");\n  if (/,\\d{1,2}$/.test(s)) s = s.replace(/\\./g, \"\").replace(\",\", \".\");\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n}\nfunction round2(n) {\n  return Math.round((n + Number.EPSILON) * 100) / 100;\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\n\n// lib/cnpj.js\nvar P1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\nvar P2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];\nfunction limpar(valor2) {\n  if (valor2 === null || valor2 === void 0) return \"\";\n  return String(valor2).toUpperCase().replace(/[\\s.\\-\\/]/g, \"\");\n}\nfunction dv(base, pesos) {\n  let soma = 0;\n  for (let i = 0; i < pesos.length; i++) soma += (base.charCodeAt(i) - 48) * pesos[i];\n  const resto = soma % 11;\n  return resto < 2 ? 0 : 11 - resto;\n}\nfunction validar(valor2) {\n  const c = limpar(valor2);\n  if (c.length !== 14) return { valido: false, cnpj: c, motivo: \"TAMANHO_INVALIDO\" };\n  if (!/^[0-9A-Z]{12}[0-9]{2}$/.test(c)) return { valido: false, cnpj: c, motivo: \"CARACTERE_INVALIDO\" };\n  if (/^(\\d)\\1{13}$/.test(c)) return { valido: false, cnpj: c, motivo: \"SEQUENCIA_REPETIDA\" };\n  const d1 = dv(c.slice(0, 12), P1);\n  const d2 = dv(c.slice(0, 12) + d1, P2);\n  if (c.slice(12) !== String(d1) + String(d2)) return { valido: false, cnpj: c, motivo: \"DV_INVALIDO\" };\n  return { valido: true, cnpj: c, alfanumerico: /[A-Z]/.test(c), motivo: \"\" };\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction primeiroEmail(v) {\n  if (!v) return \"\";\n  if (typeof v === \"string\") return normalizeEmail(v);\n  if (Array.isArray(v)) {\n    const p = v.find((e) => e && e.primary) || v[0];\n    return p ? normalizeEmail(p.value || p) : \"\";\n  }\n  if (typeof v === \"object\" && v.value) return normalizeEmail(v.value);\n  return \"\";\n}\nfunction ler(entidade, id) {\n  if (!entidade || !id) return null;\n  if (id.startsWith(\"nativo:\")) {\n    const nome = id.slice(7);\n    const v = entidade[nome];\n    if (nome === \"emails\" || nome === \"email\") return primeiroEmail(v);\n    return v === void 0 ? null : v;\n  }\n  const cf = entidade.custom_fields || {};\n  if (id in cf) {\n    const v = cf[id];\n    if (v && typeof v === \"object\" && !Array.isArray(v) && \"value\" in v && !(\"currency\" in v)) return v.value;\n    return v === void 0 ? null : v;\n  }\n  return entidade[id] === void 0 ? null : entidade[id];\n}\nfunction lerCfg(entidade, cfg, chaveConfig) {\n  return ler(entidade, idCampo(cfg, chaveConfig));\n}\nfunction truthy(v) {\n  if (v === true) return true;\n  if (v === null || v === void 0) return false;\n  return /^(sim|true|1|yes|x|ok)$/i.test(String(v && v.label ? v.label : v).trim());\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// lib/formalizacao.js\nvar TIPOS = [\"AVULSA\", \"PARCELADA\", \"ENTRADA_MAIS_PARCELAS\", \"RECORRENTE\", \"ENTRADA_MAIS_RECORRENTE\"];\nvar FORMAS = [\"BOLETO\", \"PIX\", \"CREDIT_CARD\", \"UNDEFINED\"];\nfunction rotulo(v) {\n  if (v && typeof v === \"object\" && \"label\" in v) return v.label;\n  return v;\n}\nfunction texto(v) {\n  const r = rotulo(v);\n  return r === null || r === void 0 ? \"\" : String(r).trim();\n}\nfunction data(v) {\n  const s = texto(v);\n  const m = s.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n  return m ? m[1] + \"-\" + m[2] + \"-\" + m[3] : \"\";\n}\nfunction montar2(e) {\n  const { deal, org, cfg } = e;\n  const L = (ent, k) => lerCfg(ent, cfg, k);\n  const faltantes = [];\n  const falta = (campo, origem, motivo) => faltantes.push({ campo, origem, motivo: motivo || \"AUSENTE\" });\n  const cnpjBruto = texto(L(org, \"PD_ORG_CNPJ\"));\n  const cnpj = validar(cnpjBruto);\n  const empresa = {\n    cnpj: cnpj.valido ? cnpj.cnpj : \"\",\n    razao_social: texto(L(org, \"PD_ORG_RAZAO_SOCIAL\")),\n    endereco: {\n      logradouro: texto(L(org, \"PD_ORG_LOGRADOURO\")),\n      numero: texto(L(org, \"PD_ORG_NUMERO\")),\n      complemento: texto(L(org, \"PD_ORG_COMPLEMENTO\")),\n      bairro: texto(L(org, \"PD_ORG_BAIRRO\")),\n      cidade: texto(L(org, \"PD_ORG_CIDADE\")),\n      uf: texto(L(org, \"PD_ORG_UF\")).toUpperCase(),\n      cep: texto(L(org, \"PD_ORG_CEP\")).replace(/\\D/g, \"\")\n    },\n    cadastro_status: texto(L(org, \"PD_ORG_CADASTRO_STATUS\"))\n  };\n  if (!cnpjBruto) falta(\"cnpj\", \"INTERNO\");\n  else if (!cnpj.valido) falta(\"cnpj\", \"INTERNO\", \"CNPJ_INVALIDO_\" + cnpj.motivo);\n  if (!empresa.razao_social) falta(\"razao_social\", \"INTERNO\");\n  if (empresa.cadastro_status && /DIVERGENTE|PENDENTE/i.test(empresa.cadastro_status)) falta(\"conferencia_cadastral\", \"INTERNO\", \"CADASTRO_\" + empresa.cadastro_status);\n  for (const k of [\"logradouro\", \"numero\", \"bairro\", \"cidade\", \"uf\", \"cep\"]) if (!empresa.endereco[k]) falta(\"endereco.\" + k, \"INTERNO\");\n  if (empresa.endereco.cep && empresa.endereco.cep.length !== 8) falta(\"endereco.cep\", \"INTERNO\", \"CEP_INVALIDO\");\n  const comercial = {\n    servico: texto(L(deal, \"PD_DEAL_SERVICO\")),\n    escopo: texto(L(deal, \"PD_DEAL_ESCOPO\")),\n    modelo_contrato: texto(L(deal, \"PD_DEAL_MODELO_CONTRATO\")),\n    prazo_execucao: texto(L(deal, \"PD_DEAL_PRAZO_EXECUCAO\")),\n    duracao_meses: toNumber(L(deal, \"PD_DEAL_DURACAO_MESES\")),\n    condicoes_aprovadas: truthy(L(deal, \"PD_DEAL_CONDICOES_APROVADAS\"))\n  };\n  for (const k of [\"servico\", \"escopo\", \"modelo_contrato\", \"prazo_execucao\"]) if (!comercial[k]) falta(k, \"INTERNO\");\n  if (!comercial.condicoes_aprovadas) falta(\"condicoes_aprovadas\", \"INTERNO\", \"CONDICOES_NAO_MARCADAS_COMO_APROVADAS\");\n  const fin = {\n    tipo_cobranca: texto(L(deal, \"PD_DEAL_TIPO_COBRANCA\")).toUpperCase(),\n    forma_pagamento: texto(L(deal, \"PD_DEAL_FORMA_PAGAMENTO\")).toUpperCase(),\n    valor_total: toNumber(L(deal, \"PD_DEAL_VALOR_TOTAL\")),\n    valor_entrada: toNumber(L(deal, \"PD_DEAL_VALOR_ENTRADA\")),\n    num_parcelas: toNumber(L(deal, \"PD_DEAL_NUM_PARCELAS\")),\n    valor_parcela: toNumber(L(deal, \"PD_DEAL_VALOR_PARCELA\")),\n    mensalidade: toNumber(L(deal, \"PD_DEAL_MENSALIDADE\")),\n    vencimento_entrada: data(L(deal, \"PD_DEAL_VENCIMENTO_ENTRADA\")),\n    primeiro_vencimento: data(L(deal, \"PD_DEAL_PRIMEIRO_VENCIMENTO\"))\n  };\n  const tol = 0.05;\n  if (!TIPOS.includes(fin.tipo_cobranca)) falta(\"tipo_cobranca\", \"INTERNO\", fin.tipo_cobranca ? \"TIPO_DESCONHECIDO\" : \"AUSENTE\");\n  if (!FORMAS.includes(fin.forma_pagamento)) falta(\"forma_pagamento\", \"INTERNO\", fin.forma_pagamento ? \"FORMA_DESCONHECIDA\" : \"AUSENTE\");\n  const temEntrada = /^ENTRADA_/.test(fin.tipo_cobranca);\n  if (temEntrada) {\n    if (!(fin.valor_entrada > 0)) falta(\"valor_entrada\", \"INTERNO\");\n    if (!fin.vencimento_entrada) falta(\"vencimento_entrada\", \"INTERNO\");\n  }\n  if (fin.tipo_cobranca === \"AVULSA\") {\n    if (!(fin.valor_total > 0)) falta(\"valor_total\", \"INTERNO\");\n    if (!fin.primeiro_vencimento) falta(\"primeiro_vencimento\", \"INTERNO\");\n  }\n  if (fin.tipo_cobranca === \"PARCELADA\" || fin.tipo_cobranca === \"ENTRADA_MAIS_PARCELAS\") {\n    if (!(fin.num_parcelas >= 1 && Number.isInteger(fin.num_parcelas))) falta(\"num_parcelas\", \"INTERNO\");\n    if (!(fin.valor_parcela > 0)) falta(\"valor_parcela\", \"INTERNO\");\n    if (!(fin.valor_total > 0)) falta(\"valor_total\", \"INTERNO\");\n    if (!fin.primeiro_vencimento) falta(\"primeiro_vencimento\", \"INTERNO\");\n    if (fin.num_parcelas > 0 && fin.valor_parcela > 0 && fin.valor_total > 0) {\n      const soma = round2((temEntrada ? fin.valor_entrada || 0 : 0) + fin.num_parcelas * fin.valor_parcela);\n      if (Math.abs(soma - fin.valor_total) > tol) falta(\"valores\", \"INTERNO\", \"SOMA_DAS_PARCELAS_DIFERE_DO_TOTAL\");\n    }\n  }\n  if (fin.tipo_cobranca === \"RECORRENTE\" || fin.tipo_cobranca === \"ENTRADA_MAIS_RECORRENTE\") {\n    if (!(fin.mensalidade > 0)) falta(\"mensalidade\", \"INTERNO\");\n    if (!(comercial.duracao_meses > 0)) falta(\"duracao_meses\", \"INTERNO\");\n    if (!fin.primeiro_vencimento) falta(\"primeiro_vencimento\", \"INTERNO\");\n  }\n  for (const k of [\"vencimento_entrada\", \"primeiro_vencimento\"]) {\n    if (fin[k] && e.hoje && fin[k] < e.hoje) falta(k, \"INTERNO\", \"DATA_NO_PASSADO\");\n  }\n  if (fin.vencimento_entrada && fin.primeiro_vencimento && fin.primeiro_vencimento < fin.vencimento_entrada) falta(\"primeiro_vencimento\", \"INTERNO\", \"ANTERIOR_A_ENTRADA\");\n  const emailReuniao = normalizeEmail(e.emailReuniao || \"\");\n  const contatos = {\n    email_financeiro: normalizeEmail(texto(L(org, \"PD_ORG_EMAIL_FINANCEIRO\"))),\n    email_financeiro_confirmado: truthy(L(org, \"PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO\")),\n    email_assinatura: normalizeEmail(texto(L(deal, \"PD_DEAL_EMAIL_ASSINATURA\"))),\n    email_assinatura_confirmado: truthy(L(deal, \"PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO\")),\n    nome_signatario: texto(L(deal, \"PD_DEAL_NOME_SIGNATARIO\"))\n  };\n  const confirmar = (campo, valor2, confirmado) => {\n    if (!valor2) falta(campo, \"CLIENTE\", emailReuniao ? \"CONFIRMAR_SE_EMAIL_DA_REUNIAO_ATENDE\" : \"AUSENTE\");\n    else if (!confirmado) falta(campo, \"CLIENTE\", \"AGUARDANDO_CONFIRMACAO\");\n  };\n  confirmar(\"email_financeiro\", contatos.email_financeiro, contatos.email_financeiro_confirmado);\n  confirmar(\"email_assinatura\", contatos.email_assinatura, contatos.email_assinatura_confirmado);\n  if (booleano(cfg, \"CONTRATO_EXIGE_NOME_SIGNATARIO\") && !contatos.nome_signatario) falta(\"nome_signatario\", \"CLIENTE\", \"EXIGIDO_PELA_PLATAFORMA_DE_ASSINATURA\");\n  const dados = { deal_id: String(deal.id), org_id: String(org.id), empresa, comercial, financeiro: fin, contatos };\n  return { dados, faltantes, completo: faltantes.length === 0, hash: fingerprint(dados) };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const deal = $(\"Selecionar negócio\").first().json.deal;\n  const org = ($(\"Buscar organização\").first().json || {}).data || { id: deal.org_id };\n  const pessoa = ($(\"Buscar pessoa\").first().json || {}).data || {};\n  const est = $(\"Estado do negócio\").all().map((i) => i.json).find((r) => r && r.deal_id) || {};\n  const snaps = $(\"Snapshots\").all().map((i) => i.json).filter((r) => r && r.deal_id).sort((a, b) => Number(b.versao) - Number(a.versao));\n  const idEmail = idCampo(cfg, \"PD_EMAIL_REUNIAO\") || \"nativo:emails\";\n  const emailReuniao = idEmail.startsWith(\"nativo:\") ? primeiroEmail(pessoa.emails) : String(ler(deal, idEmail) || \"\");\n  const hoje = $now.setZone(\"America/Sao_Paulo\").toFormat(\"yyyy-MM-dd\");\n  const m = montar2({ deal, org, cfg, hoje, emailReuniao });\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const tel = Array.isArray(pessoa.phones) ? (pessoa.phones.find((p) => p && p.primary) || pessoa.phones[0] || {}).value : \"\";\n  const row = { deal_id: String(deal.id), org_id: String(deal.org_id || \"\"), person_id: String(deal.person_id || \"\"), ultimo_evento_em: agora };\n  if (!m.completo) {\n    const fp = fingerprint(m.faltantes);\n    const repetido = est.pendencias_fp === fp;\n    Object.assign(row, {\n      formalizacao_status: \"PENDENTE_DADOS\",\n      pendencias: JSON.stringify(m.faltantes).slice(0, 1800),\n      pendencias_fp: fp,\n      pendencias_solicitadas_em: repetido ? est.pendencias_solicitadas_em || agora : agora,\n      snapshot_versao: est.snapshot_versao || null\n    });\n    const cliente = uniq(m.faltantes.filter((f) => f.origem === \"CLIENTE\").map((f) => f.campo));\n    const internos = m.faltantes.filter((f) => f.origem === \"INTERNO\");\n    const lista2 = m.faltantes.map((f) => \"• \" + f.campo + \" — \" + f.motivo + \" (\" + (f.origem === \"CLIENTE\" ? \"solicitar ao cliente\" : \"conferência interna\") + \")\").join(\"<br>\");\n    const at2 = corpoAtualizacao(cfg, { PD_DEAL_PENDENCIAS: m.faltantes.map((f) => f.campo + \":\" + f.motivo).join(\"; \").slice(0, 250) });\n    return [{ json: {\n      decisao: \"PENDENTE\",\n      repetido,\n      deal_id: row.deal_id,\n      org_id: row.org_id,\n      row,\n      cliente,\n      internos: internos.length,\n      corpo_deal: at2.corpo,\n      atualizar_deal: !at2.vazio,\n      nota: { deal_id: Number(deal.id), content: \"<b>Formalização — dados pendentes</b><br>Nenhum contrato ou cobrança foi criado.<br>\" + lista2 + \"<br><small>Gerado automaticamente (ATOM_04). Novos pedidos ao cliente só ocorrem se a lista de pendências mudar.</small>\" },\n      pedido: {\n        action: \"COMPLETAR_DADOS\",\n        deal_id: row.deal_id,\n        org_id: row.org_id,\n        phone: tel || \"\",\n        missing_fields: cliente,\n        message_context: { empresa: org.name || deal.title || \"\", motivos: m.faltantes.filter((f) => f.origem === \"CLIENTE\").map((f) => f.campo + \":\" + f.motivo) }\n      }\n    } }];\n  }\n  const ultimo = snaps[0] || null;\n  let decisao;\n  let versao;\n  if (ultimo && ultimo.hash === m.hash) {\n    decisao = \"MESMA_VERSAO\";\n    versao = Number(ultimo.versao);\n  } else if (ultimo && [\"ENVIADO\", \"ASSINADO\"].includes(ultimo.status)) {\n    decisao = \"ALTERACAO_APOS_ENVIO\";\n    versao = Number(ultimo.versao);\n  } else {\n    decisao = \"NOVA_VERSAO\";\n    versao = (ultimo ? Number(ultimo.versao) : 0) + 1;\n  }\n  Object.assign(row, {\n    formalizacao_status: decisao === \"ALTERACAO_APOS_ENVIO\" ? \"BLOQUEADO_ALTERACAO_POS_ENVIO\" : \"DADOS_CONFERIDOS\",\n    pendencias: \"\",\n    pendencias_fp: \"\",\n    snapshot_versao: versao\n  });\n  const at = corpoAtualizacao(cfg, { PD_DEAL_PENDENCIAS: \"\" });\n  return [{ json: {\n    decisao,\n    deal_id: row.deal_id,\n    org_id: row.org_id,\n    versao,\n    row,\n    corpo_deal: at.corpo,\n    atualizar_deal: !at.vazio && !!est.pendencias,\n    snapshot: { deal_id: row.deal_id, versao, hash: m.hash, dados: JSON.stringify(Object.assign({ versao }, m.dados)), status: \"ATIVO\", criado_em: agora },\n    status_anterior: ultimo ? ultimo.status : null,\n    contrato: { acao: \"CRIAR_CONTRATO\", deal_id: row.deal_id, versao },\n    alerta: decisao === \"ALTERACAO_APOS_ENVIO\" ? {\n      tipo: \"CONDICOES_ALTERADAS_APOS_ENVIO\",\n      severidade: \"ALTA\",\n      workflow: \"ATOM_04_Conferencia_Formalizacao\",\n      deal_id: row.deal_id,\n      mensagem: \"As condições/dados do negócio mudaram depois do envio do contrato (versão \" + versao + \", status \" + ultimo.status + \"). Nada foi alterado automaticamente. Decida manualmente: manter, ou cancelar o documento na Autentique e reemitir.\"\n    } : null\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "b615b783-cd51-4343-b74a-61d82e051072",
+      "id": "6ee5ed4c-e00a-4a57-b795-08a98660ac47",
       "name": "Decisão",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -685,7 +685,7 @@
       }
     },
     {
-      "id": "0467eb39-c348-4529-982b-4b357d675007",
+      "id": "e15fb570-d12d-4de2-b4f2-1a0384733aaa",
       "name": "Salvar pendências",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -803,7 +803,7 @@
       }
     },
     {
-      "id": "14d2830b-0430-4ae1-8e22-a403cd76cc5d",
+      "id": "9e8c335d-9a91-497f-bb1b-5934935e6a88",
       "name": "Pendências mudaram?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -835,7 +835,7 @@
       }
     },
     {
-      "id": "c5d2fae4-8f6c-43b7-8e41-6da2302632ae",
+      "id": "236ff020-a617-443c-a5ee-50d42bd84c01",
       "name": "Nota de pendências",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -860,7 +860,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "86461f57-b651-4030-933d-9797375c493c",
+      "id": "e346672d-b403-474e-8e1a-8422f30887c3",
       "name": "Atualizar campo de pendências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -892,7 +892,7 @@
       }
     },
     {
-      "id": "28a0e0c7-d946-42e3-9890-00056e1ff8f8",
+      "id": "8dc4d435-050c-4c11-aa91-eab0e45292fd",
       "name": "Atualizar pendências no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -917,7 +917,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5ad7439d-a368-4d3e-9f3e-f77b4b80d097",
+      "id": "e65de721-5757-43ca-adb5-b018c42c9b11",
       "name": "Pedir dados ao cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -948,7 +948,7 @@
       }
     },
     {
-      "id": "564ef71f-d17f-44ac-86fe-7b8ca9847d04",
+      "id": "02cafc4c-5909-4896-955b-b6cb2250a25c",
       "name": "Marcar versão anterior como substituída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1002,7 +1002,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "7fdc08b8-ebd8-423c-9f98-86cb4a393a06",
+      "id": "1ae9b6f2-205b-44a7-b1c7-cbb27798d037",
       "name": "Registrar snapshot da formalização",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1091,7 +1091,7 @@
       "executeOnce": true
     },
     {
-      "id": "c7653540-3dca-4111-a1f7-e4bd65487031",
+      "id": "09310e03-7820-4829-b9db-a5c6da80a82b",
       "name": "Salvar estado conferido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1210,7 +1210,7 @@
       "executeOnce": true
     },
     {
-      "id": "6f3d6afc-f38e-49cb-9258-1291673b8580",
+      "id": "25a47a4c-dcab-4ce5-8e1a-94a06743d52c",
       "name": "Limpar campo de pendências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1242,7 +1242,7 @@
       }
     },
     {
-      "id": "3b3ce043-3115-46f5-9b57-a66d4c5e9836",
+      "id": "3063ed9c-7e70-4849-b3a3-13ffdccb139b",
       "name": "Limpar pendências no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1267,7 +1267,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c240aeb5-7483-4074-9d02-fe52419dadb8",
+      "id": "eec3ed4b-924a-4640-aa06-5586a3c073af",
       "name": "Pedido de contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1277,11 +1277,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "return [{ json: $('Conferir dados').first().json.clicksign }];"
+        "jsCode": "return [{ json: $('Conferir dados').first().json.contrato }];"
       }
     },
     {
-      "id": "107e0c1a-9194-4520-9323-423d56152343",
+      "id": "aefed266-93de-4b88-94b7-bbb83a72ee0e",
       "name": "Salvar estado (mesma versão)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1399,7 +1399,7 @@
       }
     },
     {
-      "id": "dbe13d72-333f-42e6-b6eb-2d9a27a5e50e",
+      "id": "d5f7a7dc-7677-48d2-9e08-094e5572534a",
       "name": "Salvar bloqueio (alteração pós-envio)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1467,7 +1467,7 @@
       }
     },
     {
-      "id": "e6afcb75-5755-4bb3-af53-8190dc3ff7e5",
+      "id": "46eaebe2-f388-4557-a90d-e4ff569163fb",
       "name": "Alerta de alteração pós-envio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1481,7 +1481,7 @@
       }
     },
     {
-      "id": "7499a3ec-f658-4179-a803-105e2c48188f",
+      "id": "b1765727-a6b0-4af0-800c-ddfe57ead5b4",
       "name": "ATOM_11 — alerta alteração",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1504,7 +1504,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b7cdf059-94ee-4681-8ef2-d0eeeaf276ee",
+      "id": "85ee0852-e384-4be2-a197-49a5d986d181",
       "name": "Pedido de dados à Zayra",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1518,7 +1518,7 @@
       }
     },
     {
-      "id": "e276b97f-0936-466d-ad19-5cbab9021f4d",
+      "id": "c393a936-4ad8-46c4-b037-cb1c2121cdba",
       "name": "ATOM_10 — completar dados",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1541,8 +1541,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "41cc28cf-02c0-4cd3-9c71-7d6ccac94aaf",
-      "name": "ATOM_05 — criar envelope",
+      "id": "8b1b3045-a631-48a6-99ad-a2f2a9265e8e",
+      "name": "ATOM_05 — criar contrato",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
@@ -1564,8 +1564,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "87d2cf43-febc-4414-aea6-c2263055daa5",
-      "name": "Sticky Note 87d2cf43",
+      "id": "cdde0534-1ef8-4097-b247-35f5efd42616",
+      "name": "Sticky Note cdde0534",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -1962,7 +1962,7 @@
       "main": [
         [
           {
-            "node": "ATOM_05 — criar envelope",
+            "node": "ATOM_05 — criar contrato",
             "type": "main",
             "index": 0
           }

@@ -18,11 +18,12 @@ flowchart LR
   A02 -- sem site / e-mail genérico --> A10
   A03 -- consulta --> CNPJ((Provedor CNPJ))
   A04 -- dados faltantes do cliente --> A10[ATOM_10 Interface Zayra]
-  A04 -- snapshot versionado --> A05[ATOM_05 Clicksign]
+  A04 -- snapshot versionado --> A05[ATOM_05 Autentique]
+  A05 -- cópia + preenchimento + PDF --> GD((Google Drive/Docs))
 
   A05 -- JUNTO_COM_CONTRATO --> A06[ATOM_06 Asaas]
   A05 -- assinaturas concluídas --> A06
-  CS((Clicksign)) -- webhook HMAC --> A05
+  AU((Autentique)) -- webhook: só aciona releitura --> A05
   AS((Asaas)) -- webhook token --> A06
   A06 -- fila atom_financeiro --> A07[ATOM_07 Controlle<br/>API DESATIVADA]
   A05 -- contrato assinado --> A08[ATOM_08 Trello]
@@ -52,7 +53,7 @@ flowchart LR
 | ATOM_02_Site_Diagnostico | `87n6QYXZBijXZPTl` | Sub-workflow (e modo `BUSCA_SEGURA` recursivo) | Escolhe o site (CRM > domínio corporativo do e-mail), busca com proteção SSRF (DNS A/AAAA, IP privado, redirecionamento revalidado a cada salto, máx. 5), classifica, pede o site à Zayra quando necessário, coleta evidências e chama a Claude com saída estruturada. |
 | ATOM_03_Cadastro_CNPJ | `KDVf93dE4xuyPLg4` | Sub-workflow | Valida CNPJ (numérico e alfanumérico), consulta provedor configurável, completa **somente campos vazios**; divergências viram pendência (nota), nunca sobrescrita. |
 | ATOM_04_Conferencia_Formalizacao | `lvvOD7G5O8ym33m8` | Sub-workflow | Confere dados obrigatórios de campos aprovados, registra pendências sem pedidos repetidos, versiona snapshot (hash), bloqueia alteração pós-envio, trata cancelamento. |
-| ATOM_05_Clicksign | `t88mptq0VysxNiKd` | Sub-workflow + Webhook `POST /atom/clicksign` (HMAC) | Envelope → documento por modelo → signatários → requisitos → ativação, com etapas retomáveis (IDs gravados a cada passo). Estados de assinatura. |
+| ATOM_05_Autentique | `LSf8X0ufNXEY8mDY` | Sub-workflow (`CRIAR_CONTRATO`/`CRIAR_ENVELOPE`, `CONSULTAR`) + Webhook `POST /atom/autentique` | Cópia do modelo Google Docs → preenchimento só com dados do snapshot aprovado → conferência (nenhuma `{{...}}` restante) → PDF → documento na Autentique com signatários cliente e Atom (convites por e-mail da Autentique). Retentativa reaproveita a cópia e procura o documento pelo nome antes de criar outro. Situação sempre relida por `document(id)`. |
 | ATOM_06_Asaas | `BlrMhSwF0m6y2s9z` | Sub-workflow + Webhook `POST /atom/asaas` (token no cabeçalho) | Cliente (busca por CNPJ antes de criar), cobranças avulsa/parcelada/recorrente com `externalReference` determinístico, processamento de pagamentos (reconsulta o estado atual), fila financeira. `COBRANCA_DISPARO` nunca é escolhido em silêncio. |
 | ATOM_07_Controlle | `eyLqBdUcfmq9hzeS` | A cada 30 min + sub-workflow | Fila persistente → Controlle. **Chamada real desativada** até a API ser fornecida; nada é marcado como sincronizado sem 2xx real. |
 | ATOM_08_Trello | `86LFoss4Pzbj4cQy` | Sub-workflow + Webhook `POST/HEAD /atom/trello` (HMAC) | Avalia a liberação (contrato assinado + pagamento inicial + não cancelado), cria cartão/checklist uma vez (lock + vínculo), briefing (opcionalmente pela Claude, só com dados aprovados), registra início efetivo e agenda a avaliação. |

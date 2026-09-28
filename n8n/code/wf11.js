@@ -71,7 +71,7 @@ for (const i of $('Ações com falha').all()) {
   if (!r || !r.request_id) continue;
   if (Number(r.tentativas || 0) >= MAX) continue;
   if (r.proxima_tentativa && Date.parse(r.proxima_tentativa) > agora) continue;
-  const alvo = { ZAYRA: 'WF_ATOM_10', CLICKSIGN: 'WF_ATOM_05', ASAAS: 'WF_ATOM_06', TRELLO: 'WF_ATOM_08' }[r.sistema];
+  const alvo = { ZAYRA: 'WF_ATOM_10', AUTENTIQUE: 'WF_ATOM_05', ASAAS: 'WF_ATOM_06', TRELLO: 'WF_ATOM_08' }[r.sistema];
   if (!alvo) continue;
   let p = ATOM_UTIL.safeJsonParse(r.payload, {});
   if (r.sistema === 'ZAYRA') {

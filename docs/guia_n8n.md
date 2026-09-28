@@ -35,7 +35,7 @@ Segredos (tokens, chaves, senhas) ficam **somente** nas Credentials do n8n — n
 | ATOM_02_Site_Diagnostico | `87n6QYXZBijXZPTl` | Site e diagnóstico |
 | ATOM_03_Cadastro_CNPJ | `KDVf93dE4xuyPLg4` | Cadastro pelo CNPJ (BrasilAPI) |
 | ATOM_04_Conferencia_Formalizacao | `lvvOD7G5O8ym33m8` | Conferência de dados e pendências |
-| ATOM_05_Clicksign | `t88mptq0VysxNiKd` | Contrato |
+| ATOM_05_Autentique | `LSf8X0ufNXEY8mDY` | Contrato (Google Docs + Autentique). O antigo ATOM_05_Clicksign foi arquivado |
 | ATOM_06_Asaas | `BlrMhSwF0m6y2s9z` | Cobranças e pagamentos |
 | ATOM_07_Controlle | `eyLqBdUcfmq9hzeS` | Fila financeira (lançamentos feitos pela integração existente) |
 | ATOM_08_Trello | `86LFoss4Pzbj4cQy` | Cartão de execução |
@@ -59,9 +59,10 @@ renomeie para o **nome exato** da tabela → **Save**.
 | 3 | `ATOM Webhook interno (header)` | Header Auth | Name: `X-Atom-Token` · Value: senha longa aleatória | Você define (use um gerador de senhas) |
 | 4 | `ATOM Asaas (access_token)` | Custom Auth* | Cabeçalho `access_token` | Asaas **sandbox** → Integrações → Chave de API |
 | 5 | `ATOM Webhook Asaas (asaas-access-token)` | Header Auth | Name: `asaas-access-token` · Value: token | Você define; será usado no webhook do Asaas |
-| 6 | `ATOM Clicksign (Authorization)` | Custom Auth* | Cabeçalho `Authorization` | Clicksign **sandbox** → Configurações → API |
-| 7 | `ATOM Clicksign — segredo HMAC do webhook` | Custom Auth* | Segredo HMAC | Clicksign sandbox → Webhooks (ao criar o webhook) |
+| 6 | `ATOM Autentique (Bearer)` | Custom Auth* | `{ "headers": { "Authorization": "Bearer COLE_AQUI_O_TOKEN" } }` | Painel da Autentique, área de **API** (token de acesso da conta da Atom) |
+| 7 | `ATOM Autentique — segredo HMAC do webhook` | Crypto | Secret | Painel da Autentique, área de **Webhooks** (ao criar o webhook, na ativação) |
 | 8 | `ATOM Trello — segredo do app (webhook)` | Custom Auth* | Secret do app | trello.com/power-ups/admin → sua integração → API key → Secret |
+| 9 | `ATOM Google Drive` | Google Drive OAuth2 API | Botão **Sign in with Google** | Conta Google que tem acesso ao modelo do contrato e à pasta de contratos |
 
 \* Formato do Custom Auth (JSON), exemplo para a credencial 4:
 
@@ -124,7 +125,7 @@ Já configurado: `MODO_EXECUCAO=SIMULACAO`, `COBRANCA_DISPARO=JUNTO_COM_CONTRATO
 `CNPJ_PROVEDOR=BRASILAPI`, `ALERTA_CANAL=PIPEDRIVE_ATIVIDADE`, `PD_ALERTA_USER_ID=26712787`, `PD_STAGES_REUNIAO_IDS=7`,
 `CONTROLLE_ORIGEM_LANCAMENTOS=INTEGRACAO_EXISTENTE`, IDs dos workflows.
 
-**Não altere `MODO_EXECUCAO`.** Ele só muda para `SANDBOX` durante os testes com Clicksign/Asaas sandbox e para `PRODUCAO` na
+**Não altere `MODO_EXECUCAO`.** Ele só muda para `SANDBOX` durante os testes com Autentique (documentos em modo sandbox) e Asaas sandbox e para `PRODUCAO` na
 ativação final. Em `SIMULACAO` nenhum contrato, cobrança, cartão ou mensagem é criado.
 
 Para alterar valores, prefira pedir: as mudanças são feitas pelo **ATOM_00_Aplicar_Config**, que não cria linhas duplicadas e
@@ -144,7 +145,7 @@ A ativação segue `docs/08_ativacao_e_recuperacao.md`. Resumo dos pontos feitos
 | Origem | URL |
 |---|---|
 | Pipedrive | `https://thiagoatom.app.n8n.cloud/webhook/atom/pipedrive` |
-| Clicksign | `https://thiagoatom.app.n8n.cloud/webhook/atom/clicksign` |
+| Autentique | `https://thiagoatom.app.n8n.cloud/webhook/atom/autentique` |
 | Asaas | `https://thiagoatom.app.n8n.cloud/webhook/atom/asaas` |
 | Trello | `https://thiagoatom.app.n8n.cloud/webhook/atom/trello` |
 | Zayra (status) | `https://thiagoatom.app.n8n.cloud/webhook/atom/zayra/status` |

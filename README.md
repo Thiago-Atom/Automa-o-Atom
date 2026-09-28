@@ -1,7 +1,7 @@
 # Automação comercial, administrativa e operacional — Atom Digital
 
 Fluxos n8n que partem de eventos do Pipedrive e cobrem: e-mail → site → diagnóstico (Claude), cadastro pelo CNPJ,
-proposta aceita → conferência → contrato (Clicksign) e cobrança (Asaas), Asaas → Controlle → Pipedrive,
+proposta aceita → conferência → contrato (modelo no Google Docs + assinatura na Autentique) e cobrança (Asaas), Asaas → Controlle → Pipedrive,
 contrato assinado + pagamento inicial → Trello, e início da execução + 7 dias → pedido de avaliação no Google pela Zayra.
 
 > **Situação: construído e testado com dados fictícios, NÃO operacional.** Os 11 workflows estão criados e **desativados** no n8n.
@@ -47,7 +47,7 @@ scripts/        gerador de prompts/, schemas/, sql/ e docs/03
 
 ```bash
 npm install
-npm test        # 41 testes, sem rede
+npm test        # 53 testes, sem rede
 npm run build   # regenera n8n/build e n8n/dist
 npm run docs    # regenera prompts/, schemas/, sql/ e docs/03
 ```

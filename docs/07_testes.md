@@ -3,9 +3,9 @@
 ## Categorias
 
 - **Ambiente** — executado no n8n real (`thiagoatom.app.n8n.cloud`), com os nós Code e as Data Tables reais. As respostas de
-  **sistemas externos** (Pipedrive, provedor de CNPJ, Asaas, Clicksign, Trello, Zayra, sites, DNS) foram **fixadas com dados fictícios** (pin data).
+  **sistemas externos** (Pipedrive, provedor de CNPJ, Asaas, Autentique, Google Docs, Trello, Zayra, sites, DNS) foram **fixadas com dados fictícios** (pin data).
   Nenhuma mensagem, contrato ou cobrança real foi enviado.
-- **Simulação** — `npm test` (41 testes, todos passando), sem rede: lógica de `lib/`, verificação estática dos workflows e execução
+- **Simulação** — `npm test` (53 testes, todos passando), sem rede: lógica de `lib/`, verificação estática dos workflows e execução
   do código real dos nós publicados (`tests/nos.test.js`) com `$()` simulado.
 - **Não testado por dependência** — exige conta/sandbox/configuração ainda não disponível ou execução concorrente real.
 
@@ -32,7 +32,7 @@
 | 14 | Evento antigo recebido depois de um novo | OK: cada evento reconsulta o pagamento no Asaas; vale o estado atual | Simulação (código real do nó) | `nos.test.js`. Consulta real ao Asaas **não testada** |
 | 15 | Pagamento de outro negócio | OK: cobrança sem vínculo/referência ATOM é ignorada; referência conflitante gera alerta e não libera | Simulação | `lib.test.js`, `nos.test.js` |
 | 16 | Parcela posterior sem novo cartão | OK: pagamento de parcela posterior não libera de novo nem cria novo cartão no Trello (cartão existente → já liberado) | Simulação | `lib.test.js` (liberação) |
-| 17 | Falha após criação externa | OK: Asaas reaproveita cobrança pela `externalReference`; Clicksign retoma do passo em que parou | Simulação (código real do nó) | `nos.test.js`. APIs reais **não testadas** |
+| 17 | Falha após criação externa | OK: Asaas reaproveita cobrança pela `externalReference`; contrato reaproveita a cópia do modelo e localiza pelo nome o documento já criado na Autentique (sem duplicar) | Simulação (código real do nó) | `nos.test.js`. APIs reais **não testadas** |
 | 18 | Controlle indisponível e posterior reprocessamento | Parcial: item fica `AGUARDANDO_API`, não é marcado como sincronizado, nenhuma chamada | Ambiente | Exec. 25 (ATOM_07). Reprocessamento com API real **não testado** (API não fornecida) |
 | 19 | Reinicialização antes do pedido de avaliação | Parcial: agendamento persistido em `atom_agendamentos` (sobrevive a reinício); reivindicação por status | Ambiente | Exec. 20 e 22. Nó "Recuperar processamentos interrompidos" **não executado** |
 | 20 | Projeto cancelado antes do envio | OK: decisão CANCELAR (PROJETO_CANCELADO), agendamento marcado CANCELADO, nada enviado | Ambiente | Exec. 22 (ATOM_09) |
@@ -54,11 +54,18 @@
 | 23 | ATOM_06 | Criar cobranças em SIMULACAO | Bloqueado (MODO_SIMULACAO), registrado em `atom_acoes` |
 | 24 | ATOM_06 | `COBRANCA_DISPARO` não definido | Bloqueado; regra nunca escolhida em silêncio |
 | 28 | ATOM_11 | Painel | Retorna negócios aguardando dados e ações bloqueadas |
+| 37 | ATOM_05_Autentique | Retentativa: cópia do modelo já existente + documento já criado na Autentique (localizado pelo nome) | Cópia reaproveitada; conferência sem `{{...}}` restante; documento **não** recriado; 3 vínculos (documento + cliente + Atom, por `public_id`); campos do Pipedrive montados; pedido ao ATOM_06 (`JUNTO_COM_CONTRATO`) |
+| 38 | ATOM_05_Autentique | Cópia nova; nenhum documento com o mesmo nome; exportação do PDF sem arquivo | Falha capturada em "Preparar arquivo" → `FALHA`, tentativa 1, próxima tentativa com backoff, alerta ao ATOM_11 |
+| 39 | ATOM_05_Autentique | Webhook de assinatura (cliente e Atom assinaram) | **Falha encontrada**: "Consolidar contrato" lia a resposta do nó errado (situação `FALHA`) — corrigida |
+| 40 | ATOM_05_Autentique | Mesmo cenário após correção | `ASSINADO_TODOS` (assinatura do dono da conta ignorada); snapshot assinado; pedido ao ATOM_08; sem cobrança duplicada |
+
+Em todas as execuções do ATOM_05, Google Drive/Docs e Autentique foram **fixados** (nenhuma chamada real) e todos os nós de
+escrita foram fixados (nada gravado). Execuções 41–42 aplicaram a configuração da Autentique em `atom_config` via ATOM_00.
 
 Execuções 19 e 29 foram chamadas com o campo de roteamento errado (encerraram no nó "Modo", sem efeito) e foram repetidas como 20 e 30.
 
 ## Não testado por dependência (resumo)
 
-Claude (diagnóstico e briefing), provedor de CNPJ real, Clicksign sandbox (envelope, modelo, HMAC real), Asaas sandbox
+Claude (diagnóstico e briefing), provedor de CNPJ real, Autentique sandbox + Google Docs (cópia, preenchimento, PDF, documento, convites, webhook/HMAC real), Asaas sandbox
 (cliente, cobranças, webhook), Trello (cartão, checklist, webhook), Zayra (mecanismo real e status de entrega), Controlle (API),
 Google (link de avaliação), envio de template WhatsApp, concorrência real, webhooks de produção (workflows inativos).

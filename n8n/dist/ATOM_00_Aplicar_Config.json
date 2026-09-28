@@ -2,7 +2,7 @@
   "name": "ATOM_00_Aplicar_Config",
   "nodes": [
     {
-      "id": "5aac8cf2-60b9-4c54-881c-32f298fc0bac",
+      "id": "53644e7e-0875-49aa-9a5a-e49720cc70ef",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "36def88c-4f91-4086-9cff-23bc13c2a337",
+      "id": "a93c45a5-b01e-4a63-8186-59cdc64b096c",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -38,7 +38,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "b6414856-f5b7-4a06-9bde-d5910d64b392",
+      "id": "0843926a-d7c8-45b4-bc0d-728302477559",
       "name": "Validar e mesclar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -48,11 +48,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00.js#preparar. Edite a fonte no repositório, não este nó.\nconst existentes = {};\nfor (const i of $('Ler configuração').all()) if (i.json && i.json.chave) existentes[i.json.chave] = i.json;\nconst pedido = $('Entrada').first().json.linhas || [];\nconst STATUS = ['CONFIGURADO', 'PROPOSTO', 'PENDENTE'];\n// Heurística contra segredos: tokens longos sem espaço, prefixos típicos de chave ou \"Bearer\".\nconst pareceSegredo = (v) => /^(sk-|pk_|ghp_|xox|U2FsdGVk|\\$aact_)/i.test(v) || /bearer\\s/i.test(v) ||\n  (/^[A-Za-z0-9+/=_-]{32,}$/.test(v) && !/^[a-f0-9]{40}$/i.test(v) && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v)); // hash de campo e UUID são permitidos\nconst out = [];\nfor (const l of pedido) {\n  const chave = String(l.chave || '').trim();\n  const valor = l.valor === null || l.valor === undefined ? '' : String(l.valor).trim();\n  const status = String(l.status || '').trim().toUpperCase();\n  if (!/^[A-Z][A-Z0-9_]{1,62}$/.test(chave)) throw new Error('Chave inválida: ' + chave);\n  if (!STATUS.includes(status)) throw new Error('Status inválido em ' + chave + ': ' + status);\n  if (pareceSegredo(valor)) throw new Error('Valor de ' + chave + ' parece um segredo. Segredos vão em Credentials do n8n.');\n  const atual = existentes[chave] || {};\n  out.push({ json: { row: { chave, valor, status,\n    descricao: l.descricao !== undefined ? String(l.descricao) : String(atual.descricao || ''),\n    usado_por: l.usado_por !== undefined ? String(l.usado_por) : String(atual.usado_por || '') } } });\n}\nreturn out;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00.js#preparar. Edite a fonte no repositório, não este nó.\nconst existentes = {};\nfor (const i of $('Ler configuração').all()) if (i.json && i.json.chave) existentes[i.json.chave] = i.json;\nconst pedido = $('Entrada').first().json.linhas || [];\nconst STATUS = ['CONFIGURADO', 'PROPOSTO', 'PENDENTE', 'OBSOLETO'];\n// IDs de arquivo/pasta do Google Drive são longos, mas não são segredos: aceitos só nestas chaves.\nconst chaveIdDrive = (k) => /^(CONTRATO_MODELO_[A-Z0-9_]+|GDRIVE_[A-Z0-9_]+_ID)$/.test(k);\n// Heurística contra segredos: tokens longos sem espaço, prefixos típicos de chave ou \"Bearer\".\nconst pareceSegredo = (v) => /^(sk-|pk_|ghp_|xox|U2FsdGVk|\\$aact_)/i.test(v) || /bearer\\s/i.test(v) ||\n  (/^[A-Za-z0-9+/=_-]{32,}$/.test(v) && !/^[a-f0-9]{40}$/i.test(v) && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v)); // hash de campo e UUID são permitidos\nconst out = [];\nfor (const l of pedido) {\n  const chave = String(l.chave || '').trim();\n  const valor = l.valor === null || l.valor === undefined ? '' : String(l.valor).trim();\n  const status = String(l.status || '').trim().toUpperCase();\n  if (!/^[A-Z][A-Z0-9_]{1,62}$/.test(chave)) throw new Error('Chave inválida: ' + chave);\n  if (!STATUS.includes(status)) throw new Error('Status inválido em ' + chave + ': ' + status);\n  const idDrive = chaveIdDrive(chave) && /^[A-Za-z0-9_-]{20,80}$/.test(valor);\n  if (!idDrive && pareceSegredo(valor)) throw new Error('Valor de ' + chave + ' parece um segredo. Segredos vão em Credentials do n8n.');\n  const atual = existentes[chave] || {};\n  out.push({ json: { row: { chave, valor, status,\n    descricao: l.descricao !== undefined ? String(l.descricao) : String(atual.descricao || ''),\n    usado_por: l.usado_por !== undefined ? String(l.usado_por) : String(atual.usado_por || '') } } });\n}\nreturn out;"
       }
     },
     {
-      "id": "e3cfc413-2d0f-4806-b437-12efb7b4c3a5",
+      "id": "3bfbd4eb-e054-45d3-877d-523c49d93f15",
       "name": "Gravar em atom_config",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
