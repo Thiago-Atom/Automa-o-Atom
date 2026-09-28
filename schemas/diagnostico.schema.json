@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Diagnóstico PROPOSTA-PROVISORIA-0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "site",
+    "data_coleta",
+    "resumo_executivo",
+    "evidencias",
+    "oportunidades",
+    "prioridades",
+    "dados_indisponiveis",
+    "limitacoes",
+    "perguntas_para_reuniao"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "CONCLUIDO",
+        "EVIDENCIAS_INSUFICIENTES"
+      ]
+    },
+    "site": {
+      "type": "string"
+    },
+    "data_coleta": {
+      "type": "string"
+    },
+    "resumo_executivo": {
+      "type": "string"
+    },
+    "evidencias": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "url",
+          "observacao"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "observacao": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "oportunidades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "titulo",
+          "categoria",
+          "natureza",
+          "descricao",
+          "evidencias_ids",
+          "impacto_comercial"
+        ],
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "categoria": {
+            "type": "string",
+            "enum": [
+              "TECNICA",
+              "SEO",
+              "GEO_AEO",
+              "CONTEUDO",
+              "CONVERSAO",
+              "CONFIANCA",
+              "OUTRA"
+            ]
+          },
+          "natureza": {
+            "type": "string",
+            "enum": [
+              "FATO",
+              "HIPOTESE"
+            ]
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "evidencias_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "impacto_comercial": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "prioridades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ordem",
+          "titulo",
+          "justificativa"
+        ],
+        "properties": {
+          "ordem": {
+            "type": "integer"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "justificativa": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dados_indisponiveis": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitacoes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "perguntas_para_reuniao": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

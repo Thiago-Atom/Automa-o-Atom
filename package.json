@@ -6,7 +6,8 @@
   "description": "Automação comercial, administrativa e operacional da Atom Digital (n8n + Pipedrive + Claude + Clicksign + Asaas + Controlle + Trello)",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "build": "node n8n/build.js"
+    "build": "node n8n/build.js",
+    "docs": "node scripts/gerar_docs.mjs"
   },
   "devDependencies": {
     "@n8n/workflow-sdk": "0.33.1",

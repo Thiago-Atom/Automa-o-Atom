@@ -306,3 +306,11 @@ test('util: impressão digital estável e logs sem segredos', () => {
   assert.equal(U.toNumber('1.234,56'), 1234.56);
   assert.equal(U.toNumber({ value: 10, currency: 'BRL' }), 10);
 });
+
+test('errorSummary mascara credencial após esquema Bearer/Basic (achado em teste real no n8n, execução 16)', () => {
+  for (const t of ['Authorization: Bearer abc123xyz', '{"authorization":"Basic dXNlcjpwYXNz"}', 'x-api-key: sk-123456', 'falhou com Bearer eyJhbGciOi.xyz']) {
+    const r = U.errorSummary(t);
+    for (const segredo of ['abc123xyz', 'dXNlcjpwYXNz', 'sk-123456', 'eyJhbGciOi']) assert.equal(r.includes(segredo), false, t + ' -> ' + r);
+  }
+  assert.equal(U.errorSummary('sem segredo aqui'), 'sem segredo aqui');
+});

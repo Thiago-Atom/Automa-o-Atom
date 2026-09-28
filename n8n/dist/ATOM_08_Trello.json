@@ -2,7 +2,7 @@
   "name": "ATOM_08_Trello",
   "nodes": [
     {
-      "id": "8e9fd152-ad5f-4aeb-870c-3ee4a09e7a6d",
+      "id": "e4551fbb-78d9-404b-8d84-c477657eed1d",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "0747f583-af60-4130-8704-1d752e827c12",
+      "id": "d50bd912-a7cd-48c4-aaf2-7c521d9505ae",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "66f09feb-fa8b-4538-95df-a62e8e747e3f",
+      "id": "292a27c6-302e-43f8-833d-5a8710cd421b",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -69,7 +69,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "a3dc4725-02f0-4d26-ae39-e39c75b9b44e",
+      "id": "faa3c769-1a15-4260-812a-cd4f2e5bebfb",
       "name": "Vínculos do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -102,7 +102,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "4e5326ad-b554-4ad9-9cf6-47e145e10194",
+      "id": "e611c3b9-3933-43f4-b408-3b14ed92c67b",
       "name": "Buscar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -131,7 +131,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "b62d4fe2-67ae-49bb-a3f9-f30864967975",
+      "id": "0ae3fcc1-1293-4677-86c7-aa3babd58d74",
       "name": "Cobrança inicial",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -145,7 +145,7 @@
       }
     },
     {
-      "id": "a3561025-26ee-4d4d-9b33-6358aac4b2aa",
+      "id": "cb1f7f74-2234-4ac8-b0a6-8ee9f4f832ca",
       "name": "Consultar pagamento?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -177,7 +177,7 @@
       }
     },
     {
-      "id": "5d32367f-46ef-4d5c-905f-406ecc2a8dcc",
+      "id": "57d433b0-a897-4cdc-97b2-1333af9a5304",
       "name": "Consultar pagamento inicial",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -215,7 +215,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "6112e24a-9c15-4a6a-a7bf-5ecf450157d0",
+      "id": "2c76a2fa-4bfc-4214-8603-99d30b7000d6",
       "name": "Avaliar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -229,7 +229,7 @@
       }
     },
     {
-      "id": "fd35e909-ea6b-4d64-8d42-ab61cd323012",
+      "id": "8e22c4e1-77d6-4de2-8f7e-c35177354361",
       "name": "Decisão de liberação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -296,7 +296,7 @@
       }
     },
     {
-      "id": "9d6f8e9d-4bc0-4aea-a6db-24640e3c4b46",
+      "id": "7f21c721-4ec5-451b-88e4-844c760e749b",
       "name": "Reservar liberação (trava)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -375,7 +375,7 @@
       "notes": "UPDATE condicional: só uma execução consegue mudar para CRIANDO_CARTAO. Se nenhuma linha for alterada, o fluxo para (outra execução já está criando ou já liberou)."
     },
     {
-      "id": "3010434e-15bc-4b9f-a3bd-4f30dae6c500",
+      "id": "8e0f5f01-1732-4b18-9b4d-aecaf64851fb",
       "name": "Procurar cartão existente (marcador)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -430,7 +430,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "b6ff27ab-1a59-4eb2-91c3-a879acf9f018",
+      "id": "5eb58f9b-6c32-4be1-b98b-42b1770520fc",
       "name": "Cartão já existe?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -444,7 +444,7 @@
       }
     },
     {
-      "id": "67c6092e-3554-4194-9840-3074ecad23fe",
+      "id": "5ae134bb-1d18-4195-b657-f4020dcc3c3b",
       "name": "Reaproveitar cartão?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -476,7 +476,7 @@
       }
     },
     {
-      "id": "2a563af1-eb63-4d56-8cee-5ed23f9d13d9",
+      "id": "517f0ee1-8d4c-4dbf-8fa2-91fe14cb1e47",
       "name": "Finalizar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -491,7 +491,7 @@
       "executeOnce": true
     },
     {
-      "id": "45c5014a-9223-47d4-a2bf-d4c790afdfb8",
+      "id": "49cdc27a-f338-4f18-9abd-f73030bffb85",
       "name": "Snapshot formalizado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -531,7 +531,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "e9398362-7488-4ec5-b987-36d0c41b09b5",
+      "id": "b3f125b2-79d5-415f-9757-7be54bc71ef1",
       "name": "Dados do briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -545,7 +545,7 @@
       }
     },
     {
-      "id": "fb892b9d-2cfe-4fcc-9276-e0f0a3a46f0b",
+      "id": "edad4325-c29a-4c0a-8972-a09cee7dd636",
       "name": "Usar Claude no briefing?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -577,7 +577,7 @@
       }
     },
     {
-      "id": "57d2c88d-4145-4bdc-ba64-526fe75c0ca8",
+      "id": "08f30f3d-56ed-4439-a55e-9abf9e62b896",
       "name": "Claude — briefing de execução",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -615,7 +615,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "9ad488f1-9b8d-4ced-872c-0a722222c1c1",
+      "id": "e87198bc-e813-4cda-a335-14dd5cc5accb",
       "name": "Validar briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -625,11 +625,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf08.js#validar_briefing + lib/{util,validate,diagnostico}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str2, max) {\n  if (typeof str2 !== \"string\") return str2;\n  return str2.length > max ? str2.slice(0, max) + \"…[truncado]\" : str2;\n}\nfunction safeJsonParse(str2, fallback) {\n  if (typeof str2 !== \"string\" || str2 === \"\") return fallback;\n  try {\n    return JSON.parse(str2);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token)\"?\\s*[:=]\\s*\"?[^\",\\s]+/gi, \"$1: ***\"), 500);\n}\n\n// lib/validate.js\nfunction tipoDe(v) {\n  if (v === null) return \"null\";\n  if (Array.isArray(v)) return \"array\";\n  if (typeof v === \"number\") return Number.isInteger(v) ? \"integer\" : \"number\";\n  return typeof v;\n}\nfunction confereTipo(v, esperado) {\n  const t = tipoDe(v);\n  const lista = Array.isArray(esperado) ? esperado : [esperado];\n  return lista.some((e) => e === t || e === \"number\" && t === \"integer\");\n}\nfunction validar(valor, schema, caminho, erros) {\n  caminho = caminho || \"$\";\n  erros = erros || [];\n  if (!schema || typeof schema !== \"object\") return erros;\n  if (schema.type && !confereTipo(valor, schema.type)) {\n    erros.push(caminho + \": tipo esperado \" + JSON.stringify(schema.type) + \", recebido \" + tipoDe(valor));\n    return erros;\n  }\n  if (schema.enum && !schema.enum.includes(valor)) erros.push(caminho + \": valor fora do enum\");\n  if (typeof valor === \"string\") {\n    if (schema.minLength !== void 0 && valor.length < schema.minLength) erros.push(caminho + \": texto curto\");\n    if (schema.maxLength !== void 0 && valor.length > schema.maxLength) erros.push(caminho + \": texto longo\");\n    if (schema.pattern && !new RegExp(schema.pattern).test(valor)) erros.push(caminho + \": formato inválido\");\n  }\n  if (Array.isArray(valor)) {\n    if (schema.minItems !== void 0 && valor.length < schema.minItems) erros.push(caminho + \": itens insuficientes\");\n    if (schema.maxItems !== void 0 && valor.length > schema.maxItems) erros.push(caminho + \": itens em excesso\");\n    if (schema.items) valor.forEach((v, i) => validar(v, schema.items, caminho + \"[\" + i + \"]\", erros));\n  }\n  if (tipoDe(valor) === \"object\") {\n    const props = schema.properties || {};\n    for (const r of schema.required || []) {\n      if (!(r in valor)) erros.push(caminho + \".\" + r + \": obrigatório\");\n    }\n    for (const k of Object.keys(valor)) {\n      if (props[k]) validar(valor[k], props[k], caminho + \".\" + k, erros);\n      else if (schema.additionalProperties === false) erros.push(caminho + \".\" + k + \": propriedade não permitida\");\n    }\n  }\n  return erros;\n}\n\n// lib/diagnostico.js\nvar str = { type: \"string\" };\nvar strList = { type: \"array\", items: str };\nvar SCHEMA_BRIEFING = {\n  type: \"object\",\n  additionalProperties: false,\n  required: [\n    \"empresa\",\n    \"servico\",\n    \"escopo_aprovado\",\n    \"entregaveis\",\n    \"contexto_diagnostico\",\n    \"pontos_de_atencao\",\n    \"informacoes_ausentes\",\n    \"prazo_acordado\"\n  ],\n  properties: {\n    empresa: str,\n    servico: str,\n    escopo_aprovado: str,\n    entregaveis: strList,\n    contexto_diagnostico: str,\n    pontos_de_atencao: strList,\n    informacoes_ausentes: strList,\n    prazo_acordado: str\n  }\n};\nfunction validarBriefing(b) {\n  const erros = validar(b, SCHEMA_BRIEFING);\n  const txt = JSON.stringify(b);\n  if (/R\\$\\s*\\d|\\b\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}\\b|@[a-z0-9-]+\\.[a-z]/i.test(txt)) erros.push(\"briefing contém dado financeiro ou pessoal\");\n  return { ok: erros.length === 0, erros };\n}\nfunction lerResposta(resp) {\n  if (!resp || typeof resp !== \"object\") return { ok: false, erro: \"RESPOSTA_VAZIA\" };\n  if (resp.type === \"error\" || resp.error) return { ok: false, erro: \"API_ERRO: \" + errorSummary(resp.error || resp) };\n  if (resp.stop_reason === \"refusal\") return { ok: false, erro: \"RECUSA_DO_MODELO\" };\n  if (resp.stop_reason === \"max_tokens\") return { ok: false, erro: \"SAIDA_TRUNCADA_MAX_TOKENS\" };\n  const bloco = (resp.content || []).find((c) => c.type === \"text\");\n  if (!bloco) return { ok: false, erro: \"SEM_TEXTO\" };\n  const json = safeJsonParse(bloco.text, null);\n  if (!json) return { ok: false, erro: \"JSON_INVALIDO\" };\n  return { ok: true, json, uso: resp.usage || null, modelo: resp.model };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const r = $input.first().json;\n  const lido = r && !r.error ? lerResposta(r) : { ok: false, erro: \"FALHA_API\" };\n  if (!lido.ok) return [{ json: { ok: false, erro: lido.erro } }];\n  const v = validarBriefing(lido.json);\n  return [{ json: v.ok ? { ok: true, briefing: lido.json } : { ok: false, erro: v.erros.join(\"; \") } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf08.js#validar_briefing + lib/{util,validate,diagnostico}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str2, max) {\n  if (typeof str2 !== \"string\") return str2;\n  return str2.length > max ? str2.slice(0, max) + \"…[truncado]\" : str2;\n}\nfunction safeJsonParse(str2, fallback) {\n  if (typeof str2 !== \"string\" || str2 === \"\") return fallback;\n  try {\n    return JSON.parse(str2);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/validate.js\nfunction tipoDe(v) {\n  if (v === null) return \"null\";\n  if (Array.isArray(v)) return \"array\";\n  if (typeof v === \"number\") return Number.isInteger(v) ? \"integer\" : \"number\";\n  return typeof v;\n}\nfunction confereTipo(v, esperado) {\n  const t = tipoDe(v);\n  const lista = Array.isArray(esperado) ? esperado : [esperado];\n  return lista.some((e) => e === t || e === \"number\" && t === \"integer\");\n}\nfunction validar(valor, schema, caminho, erros) {\n  caminho = caminho || \"$\";\n  erros = erros || [];\n  if (!schema || typeof schema !== \"object\") return erros;\n  if (schema.type && !confereTipo(valor, schema.type)) {\n    erros.push(caminho + \": tipo esperado \" + JSON.stringify(schema.type) + \", recebido \" + tipoDe(valor));\n    return erros;\n  }\n  if (schema.enum && !schema.enum.includes(valor)) erros.push(caminho + \": valor fora do enum\");\n  if (typeof valor === \"string\") {\n    if (schema.minLength !== void 0 && valor.length < schema.minLength) erros.push(caminho + \": texto curto\");\n    if (schema.maxLength !== void 0 && valor.length > schema.maxLength) erros.push(caminho + \": texto longo\");\n    if (schema.pattern && !new RegExp(schema.pattern).test(valor)) erros.push(caminho + \": formato inválido\");\n  }\n  if (Array.isArray(valor)) {\n    if (schema.minItems !== void 0 && valor.length < schema.minItems) erros.push(caminho + \": itens insuficientes\");\n    if (schema.maxItems !== void 0 && valor.length > schema.maxItems) erros.push(caminho + \": itens em excesso\");\n    if (schema.items) valor.forEach((v, i) => validar(v, schema.items, caminho + \"[\" + i + \"]\", erros));\n  }\n  if (tipoDe(valor) === \"object\") {\n    const props = schema.properties || {};\n    for (const r of schema.required || []) {\n      if (!(r in valor)) erros.push(caminho + \".\" + r + \": obrigatório\");\n    }\n    for (const k of Object.keys(valor)) {\n      if (props[k]) validar(valor[k], props[k], caminho + \".\" + k, erros);\n      else if (schema.additionalProperties === false) erros.push(caminho + \".\" + k + \": propriedade não permitida\");\n    }\n  }\n  return erros;\n}\n\n// lib/diagnostico.js\nvar str = { type: \"string\" };\nvar strList = { type: \"array\", items: str };\nvar SCHEMA_BRIEFING = {\n  type: \"object\",\n  additionalProperties: false,\n  required: [\n    \"empresa\",\n    \"servico\",\n    \"escopo_aprovado\",\n    \"entregaveis\",\n    \"contexto_diagnostico\",\n    \"pontos_de_atencao\",\n    \"informacoes_ausentes\",\n    \"prazo_acordado\"\n  ],\n  properties: {\n    empresa: str,\n    servico: str,\n    escopo_aprovado: str,\n    entregaveis: strList,\n    contexto_diagnostico: str,\n    pontos_de_atencao: strList,\n    informacoes_ausentes: strList,\n    prazo_acordado: str\n  }\n};\nfunction validarBriefing(b) {\n  const erros = validar(b, SCHEMA_BRIEFING);\n  const txt = JSON.stringify(b);\n  if (/R\\$\\s*\\d|\\b\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}\\b|@[a-z0-9-]+\\.[a-z]/i.test(txt)) erros.push(\"briefing contém dado financeiro ou pessoal\");\n  return { ok: erros.length === 0, erros };\n}\nfunction lerResposta(resp) {\n  if (!resp || typeof resp !== \"object\") return { ok: false, erro: \"RESPOSTA_VAZIA\" };\n  if (resp.type === \"error\" || resp.error) return { ok: false, erro: \"API_ERRO: \" + errorSummary(resp.error || resp) };\n  if (resp.stop_reason === \"refusal\") return { ok: false, erro: \"RECUSA_DO_MODELO\" };\n  if (resp.stop_reason === \"max_tokens\") return { ok: false, erro: \"SAIDA_TRUNCADA_MAX_TOKENS\" };\n  const bloco = (resp.content || []).find((c) => c.type === \"text\");\n  if (!bloco) return { ok: false, erro: \"SEM_TEXTO\" };\n  const json = safeJsonParse(bloco.text, null);\n  if (!json) return { ok: false, erro: \"JSON_INVALIDO\" };\n  return { ok: true, json, uso: resp.usage || null, modelo: resp.model };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const r = $input.first().json;\n  const lido = r && !r.error ? lerResposta(r) : { ok: false, erro: \"FALHA_API\" };\n  if (!lido.ok) return [{ json: { ok: false, erro: lido.erro } }];\n  const v = validarBriefing(lido.json);\n  return [{ json: v.ok ? { ok: true, briefing: lido.json } : { ok: false, erro: v.erros.join(\"; \") } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "8ad862ae-1b4c-4bd0-a705-4e039eb0e5b2",
+      "id": "ddc9729a-f65e-4d96-9fa2-c8b451284121",
       "name": "Montar cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -643,7 +643,7 @@
       }
     },
     {
-      "id": "0fbf48f0-0230-4035-95d9-a137f239a43d",
+      "id": "a3823340-495d-4d03-a40d-e3915256380a",
       "name": "Salvar situação da liberação",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -711,7 +711,7 @@
       }
     },
     {
-      "id": "28879106-b2b2-4cc5-ac04-4f04185e3199",
+      "id": "8b5edbe1-8510-4a88-9718-e218662d84c5",
       "name": "Trello — criar cartão",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -741,7 +741,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "9b0acb88-7a9f-4b8a-9603-7e5ff9089ea1",
+      "id": "c03227b4-a8fb-4920-89c2-965d7befb41a",
       "name": "Cartão criado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -755,7 +755,7 @@
       }
     },
     {
-      "id": "cef38e16-4821-416e-a5de-da71f0b3b379",
+      "id": "e0b049ee-2752-419d-be4f-b9e209720921",
       "name": "Registrar cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -898,7 +898,7 @@
       }
     },
     {
-      "id": "cea8f134-cdf0-428d-8c07-238a996ca15e",
+      "id": "8b0a7c2e-3b26-447f-9c97-fdeec9d328a1",
       "name": "Criar checklist?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -930,7 +930,7 @@
       }
     },
     {
-      "id": "8a4955b3-1fed-4f2b-91fa-56f7239a70ff",
+      "id": "c5938842-ed58-48d3-833f-df87fc23471a",
       "name": "Trello — criar checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -960,7 +960,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "cf54e3e4-d480-4cde-870c-6df47fbb5023",
+      "id": "c69dd7a2-e115-45c8-870e-62e419b41df1",
       "name": "Itens do checklist",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -974,7 +974,7 @@
       }
     },
     {
-      "id": "37db9cd3-0bbc-4f47-a23f-ca6de65e7ed2",
+      "id": "5f255668-1490-4519-907b-8284137c63da",
       "name": "Trello — itens do checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1010,7 +1010,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "8e09189e-2c56-4eaf-a42c-4171ce8484d0",
+      "id": "7072393f-2f2b-4c7a-afbd-7b868e532c89",
       "name": "Salvar liberado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1118,7 +1118,7 @@
       }
     },
     {
-      "id": "fc2e7241-5c55-4b16-8efb-6518a8dedb1d",
+      "id": "47a3ce98-0cc3-4966-80c4-3c17045f00a8",
       "name": "Garantir vínculo do cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1261,7 +1261,7 @@
       }
     },
     {
-      "id": "2a932c7e-aee6-4461-a106-2665ee174cde",
+      "id": "f223c1a3-acdc-43c2-ace2-194017df1267",
       "name": "Atualizar negócio (Trello)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1293,7 +1293,7 @@
       }
     },
     {
-      "id": "e391cfaa-d6cf-4dd7-91e9-2ae48b80b2e9",
+      "id": "6c69e3f1-b573-411e-a9c8-af5576f3bebd",
       "name": "Atualizar negócio (cartão Trello)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1318,7 +1318,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "66a8bcab-f345-4da2-9ccb-905ec66eb9e5",
+      "id": "28a6bfa5-b9fc-4100-89a3-c03553404885",
       "name": "Falha no cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1332,7 +1332,7 @@
       }
     },
     {
-      "id": "814f560d-6745-485e-9a89-1954bbdf4398",
+      "id": "5c1e495f-744b-432f-9cee-8e59edbdfb40",
       "name": "Liberar trava após falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1420,7 +1420,7 @@
       }
     },
     {
-      "id": "075d721d-4682-4df0-a92e-2dc5fe074fba",
+      "id": "6aad74d9-2d15-4071-b7af-6b24014e15cb",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1578,7 +1578,7 @@
       }
     },
     {
-      "id": "1c9181c7-1e1a-4976-b402-d1a9d92c8356",
+      "id": "812d05b5-c3ea-4575-916f-e631124e26fd",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1592,7 +1592,7 @@
       }
     },
     {
-      "id": "ebe6d28e-5f81-412d-a029-8eab8c38bcbf",
+      "id": "3ace80c6-2cad-43f7-a2f2-ef0bea94a5c7",
       "name": "ATOM_11 — alerta Trello",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1615,7 +1615,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b97b5017-a819-4548-9b42-fab70b3f914a",
+      "id": "4f647c8b-a628-4f7d-8ac6-743abdbb6c7c",
       "name": "Webhook Trello",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1635,10 +1635,10 @@
           "rawBody": true
         }
       },
-      "webhookId": "44f739ce-b91f-453c-81e2-05a1f414f6df"
+      "webhookId": "af1c4f3f-12e5-4e85-8664-db8a75423538"
     },
     {
-      "id": "123a1fe9-9d02-4858-b6ea-377187786b8f",
+      "id": "94e0d4fb-4e54-4de6-93c8-68d317557c63",
       "name": "Corpo bruto",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1652,7 +1652,7 @@
       }
     },
     {
-      "id": "5ed3cb58-5df1-4758-a6db-b2903f17d626",
+      "id": "1742b5e0-328a-4d55-b73d-022e028073da",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1674,7 +1674,7 @@
       "executeOnce": true
     },
     {
-      "id": "3a77031f-718a-485d-b361-2d30474b3add",
+      "id": "0ccb57c7-7d03-425e-8701-8f43b84699f3",
       "name": "Montar verificação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1688,7 +1688,7 @@
       }
     },
     {
-      "id": "b108bc06-7a28-4520-93b6-6483accbc8ea",
+      "id": "f644a6ad-9b9b-4bf2-9521-f75eba280270",
       "name": "Calcular HMAC-SHA1",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -1706,7 +1706,7 @@
       "credentials": {}
     },
     {
-      "id": "160fa571-3bad-437e-88b3-bfa6e5759990",
+      "id": "4398b4a3-1e96-4ff7-9898-58e8e46d2f5e",
       "name": "Verificar assinatura Trello",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1720,7 +1720,7 @@
       }
     },
     {
-      "id": "d1098951-6f33-44dc-a286-6091741abb76",
+      "id": "08db9a9e-1705-4b8a-bc15-2b07a9f38bcc",
       "name": "Ação Trello já recebida?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1752,7 +1752,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0012d190-ae1d-46bc-b36d-1638e75f2219",
+      "id": "18066e33-1f4c-4163-891a-ab86764a5c2e",
       "name": "Deduplicar ação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1766,7 +1766,7 @@
       }
     },
     {
-      "id": "c6d07958-3a3a-42e7-b96f-9e3e768827c7",
+      "id": "94a13d8c-741d-4f42-8b71-813c71282b93",
       "name": "Registrar ação Trello",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1914,7 +1914,7 @@
       }
     },
     {
-      "id": "3b652166-6ea7-4690-8393-e074ce080749",
+      "id": "4224afa3-c4c6-4c00-8942-5b8574a782fb",
       "name": "Detectar início da execução",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1928,7 +1928,7 @@
       }
     },
     {
-      "id": "b6296132-d1af-4f3d-b28d-2345206fdf41",
+      "id": "344e827a-edb3-4f82-81f2-9bfb4eb6e416",
       "name": "Cartão vinculado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1965,7 +1965,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0e520ee0-55a7-4d78-9771-751930c82f7c",
+      "id": "6188976a-cf4a-4dad-825c-fed98bcc1c9d",
       "name": "Estado (início)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1997,7 +1997,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "d1cc821c-7b24-4c68-ad84-1da65258c35b",
+      "id": "6a0d4e7b-80a2-4fae-92f7-bce32a04e0ec",
       "name": "Registrar início",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2011,7 +2011,7 @@
       }
     },
     {
-      "id": "a2178cb2-7f68-4200-9423-84f16ea579a9",
+      "id": "14e1dd9b-6869-4671-a059-7d4800376646",
       "name": "Salvar início da execução",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2079,7 +2079,7 @@
       }
     },
     {
-      "id": "4ad358b0-2110-4027-ad8b-027b83b64d4e",
+      "id": "e4722155-c9ab-4a4a-a6f3-529334c444c7",
       "name": "Atualizar negócio (início)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2111,7 +2111,7 @@
       }
     },
     {
-      "id": "6609db3e-e39d-41a6-ac89-7d4e4ae5644e",
+      "id": "38ff8673-0aad-4ca3-8d86-09ede4457587",
       "name": "Atualizar negócio (início da execução)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2136,7 +2136,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b9b6b24f-fa66-4e26-920a-fa17fd9bb2cc",
+      "id": "943d0cc8-9f86-49bd-b9bb-716f86f34f13",
       "name": "Pedido de agendamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2150,7 +2150,7 @@
       }
     },
     {
-      "id": "5755a256-a0df-4797-ae0e-a3fea38944bd",
+      "id": "3d3f6e52-2fa1-4959-bcc8-e52e6253ff03",
       "name": "ATOM_09 — agendar avaliação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2173,8 +2173,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "08eef9bd-79b7-4077-ba47-592c020aac08",
-      "name": "Sticky Note 08eef9bd",
+      "id": "3c725c49-c3bd-4112-9fd6-54f26491088d",
+      "name": "Sticky Note 3c725c49",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -2824,6 +2824,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-27"
+    "atomBuild": "2026-09-28"
   }
 }

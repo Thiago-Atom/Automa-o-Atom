@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Briefing BRIEFING-0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "empresa",
+    "servico",
+    "escopo_aprovado",
+    "entregaveis",
+    "contexto_diagnostico",
+    "pontos_de_atencao",
+    "informacoes_ausentes",
+    "prazo_acordado"
+  ],
+  "properties": {
+    "empresa": {
+      "type": "string"
+    },
+    "servico": {
+      "type": "string"
+    },
+    "escopo_aprovado": {
+      "type": "string"
+    },
+    "entregaveis": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contexto_diagnostico": {
+      "type": "string"
+    },
+    "pontos_de_atencao": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "informacoes_ausentes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prazo_acordado": {
+      "type": "string"
+    }
+  }
+}

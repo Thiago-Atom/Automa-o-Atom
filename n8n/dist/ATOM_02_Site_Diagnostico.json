@@ -2,7 +2,7 @@
   "name": "ATOM_02_Site_Diagnostico",
   "nodes": [
     {
-      "id": "3dc502da-be08-4dda-ad8e-93bca337983a",
+      "id": "c0e68191-4e5d-4ee1-bc7e-6b2a973ce0b4",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "cb1a016d-a39d-4445-a17e-0a0bbbac3895",
+      "id": "8cec9aca-fcc9-490f-8523-56709b03d2ec",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "0393ef4c-06f1-42a2-a298-bc2b5940021c",
+      "id": "487efa92-f19c-41a0-b92a-7b09ea15543e",
       "name": "Modo",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -78,7 +78,7 @@
       }
     },
     {
-      "id": "6ee1f54e-b0a9-4bc1-a0e6-afc890448056",
+      "id": "1ec8351f-c5e8-42c5-a17c-02f42b4de48b",
       "name": "Preparar busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -92,7 +92,7 @@
       }
     },
     {
-      "id": "a19a9972-af9d-4cf2-bec5-a62f3e6dc0c8",
+      "id": "39d64c1f-ba9d-45c8-985f-dc9df6f8000c",
       "name": "Busca permitida?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -124,7 +124,7 @@
       }
     },
     {
-      "id": "7a2f92e2-7ed1-4902-818d-66fbfe5d69ad",
+      "id": "521145ea-1621-485b-b55a-7b0bbc6c5467",
       "name": "DNS (A)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -158,7 +158,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "aac67fe3-eaf5-46c2-b197-42c875722ab6",
+      "id": "df36a8fc-075d-4189-ac42-6e4d4c605986",
       "name": "DNS (AAAA)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -192,7 +192,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "b0f4ffc5-fa8a-4929-874a-1ad79fb8313a",
+      "id": "a1be8e81-fd65-435e-95d0-bce69598ae68",
       "name": "Avaliar DNS",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -206,7 +206,7 @@
       }
     },
     {
-      "id": "9ce9b8aa-cdf1-4c0c-9c24-54540e597c4c",
+      "id": "54988101-4248-463d-a37c-ff4566e1df87",
       "name": "DNS seguro?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -238,7 +238,7 @@
       }
     },
     {
-      "id": "6f5939e6-16e6-4c8f-9e9c-01c80cbd333a",
+      "id": "4d8fb49c-998f-489f-8558-b85e03a71bee",
       "name": "Acessar URL (sem seguir redirecionamento)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -282,7 +282,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "421b3770-9bab-4c84-b2c2-d745ff55492d",
+      "id": "50f24593-7e12-4cc8-a45c-af59a4a0d16b",
       "name": "Avaliar resposta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -296,7 +296,7 @@
       }
     },
     {
-      "id": "1d8ca9ce-6618-4650-89cd-0074be4ab7b1",
+      "id": "c8b631ea-86b9-4a5a-80ad-b3e3ca60e0e8",
       "name": "Redirecionar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -328,7 +328,7 @@
       }
     },
     {
-      "id": "82b056a1-a4fe-4c11-b802-8f2c7c378c6e",
+      "id": "1c80b888-1bfc-41a5-b310-3f557b314973",
       "name": "Próximo salto (validação repetida)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -350,7 +350,7 @@
       }
     },
     {
-      "id": "460ed253-7c07-449e-b65a-95f31522d997",
+      "id": "372b23d5-30cf-4b9e-ae05-f48569bbb0f8",
       "name": "Resultado da busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -364,7 +364,7 @@
       }
     },
     {
-      "id": "3a5b1804-6f03-41ad-9896-6eb99e64abf1",
+      "id": "10c1b8ea-9bb6-4595-a6ce-88068ce53316",
       "name": "Preparar consulta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -378,7 +378,7 @@
       }
     },
     {
-      "id": "2e97b40a-bcab-44f5-a375-fd4f55d36bc3",
+      "id": "bb2738ab-89a0-46ff-b120-70364933168e",
       "name": "Buscar negócios (atualizados)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -404,7 +404,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "a7e24bc6-4912-4ec8-9430-a7ea90bc5892",
+      "id": "d58ee53d-3eb2-4f7a-a7b4-c82d6eb86aa6",
       "name": "Selecionar negócios",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -418,7 +418,7 @@
       }
     },
     {
-      "id": "680e6383-e839-417f-95d9-4d7aacb99dfd",
+      "id": "ea09cba7-a519-4466-acf6-833ec7d8c755",
       "name": "Redespachar por negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -450,7 +450,7 @@
       }
     },
     {
-      "id": "c477a4ce-93f8-4d93-996e-105c7a63d4ff",
+      "id": "d16f91e2-a19b-4dcb-b0bd-d072932562eb",
       "name": "Redespachar negócio",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -472,7 +472,7 @@
       }
     },
     {
-      "id": "10399f95-65a5-4eeb-a503-3058427e271f",
+      "id": "4f504db6-d0a1-41b1-8ce5-0f1e85c71579",
       "name": "Buscar organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -500,7 +500,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "fd7561f1-06c8-4438-8b25-4be32ca46acb",
+      "id": "da5212f4-1105-4919-914b-679b3d0acd28",
       "name": "Buscar pessoa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -528,7 +528,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "b078850d-1977-4d33-b23b-3b522877ce21",
+      "id": "5256068e-42b2-45eb-8cd4-c493998ecf2b",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -560,7 +560,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "e99590d8-583b-4694-ae90-d4ec15302b28",
+      "id": "b3ec8305-47b2-4fe6-bd72-949d0956c487",
       "name": "Escolher site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -574,7 +574,7 @@
       }
     },
     {
-      "id": "e7d3e68f-1a95-4042-830b-e1b7e63235a9",
+      "id": "e894f920-f573-4405-9a2c-a487fd3e82d9",
       "name": "Ação do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -662,7 +662,7 @@
       }
     },
     {
-      "id": "3962ccd6-18e5-4171-a958-9ea2898d981c",
+      "id": "d9e34d58-012d-40b9-bba6-2a306b16807a",
       "name": "Buscar página (segura)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -684,7 +684,7 @@
       }
     },
     {
-      "id": "b0ce5031-727b-4b08-8277-a2d94e4bc638",
+      "id": "93c7bfde-626b-44f5-9958-63bd12315837",
       "name": "Estado do site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -698,7 +698,7 @@
       }
     },
     {
-      "id": "eafd82b3-8487-41f2-877f-53e65c4680e3",
+      "id": "1886397f-3515-4d59-aa83-ab72c2b6af24",
       "name": "Salvar estado do site",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -816,7 +816,7 @@
       }
     },
     {
-      "id": "fb67ef3b-cdc3-4c96-ac79-78199eb0b3e6",
+      "id": "f1ac5d3d-36ee-4092-9377-5fba7cad3f2d",
       "name": "Atualização da organização",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -830,7 +830,7 @@
       }
     },
     {
-      "id": "318f4bc2-e5d7-42cb-9595-68d609ed0e62",
+      "id": "faf2a467-e184-4abe-8ff0-0275065ea4d3",
       "name": "Atualizar organização?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -862,7 +862,7 @@
       }
     },
     {
-      "id": "2e7b7d5e-a329-4f5b-a693-67d4e2afddc0",
+      "id": "7d8882b6-2b67-4aa3-9743-442a44f44e36",
       "name": "Atualizar organização no Pipedrive",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -887,7 +887,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "24fd5cc4-a639-4b3f-86ed-c84ef95e5d00",
+      "id": "0227dc33-823e-40d2-b023-bc9587438946",
       "name": "Resultado do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -928,7 +928,7 @@
       }
     },
     {
-      "id": "1f5a40b4-4c54-4de6-8c6a-c21bb861b7b6",
+      "id": "0dbf4137-c1b5-4c5e-90a6-6151e3c319bb",
       "name": "Pedido de site à Zayra",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -942,7 +942,7 @@
       }
     },
     {
-      "id": "b3139a09-d492-43e7-a198-4cd33c69893f",
+      "id": "a3cdf00e-f2bb-46ad-a0a0-e74e72fd0111",
       "name": "Estado: cliente sem site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -956,7 +956,7 @@
       }
     },
     {
-      "id": "367e1a3a-f253-4568-966e-feed0c301e22",
+      "id": "010a8132-8374-4335-9378-6b9207f65982",
       "name": "Salvar estado (site pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1074,7 +1074,7 @@
       }
     },
     {
-      "id": "451853cc-a639-4e00-9b12-dc1d70446fdf",
+      "id": "4d2428a0-79f5-41af-a896-c582882e9685",
       "name": "Diagnóstico necessário?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1088,7 +1088,7 @@
       }
     },
     {
-      "id": "7880c54f-37a7-4982-8dba-a65bd1ea1760",
+      "id": "a3de8fce-cfbb-4ff1-9270-767ddc774eb2",
       "name": "Buscar robots e sitemap",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1110,7 +1110,7 @@
       }
     },
     {
-      "id": "f74a6a77-7bbe-4a54-96d3-6b7102400eb2",
+      "id": "acf97bc3-9117-4220-8a57-8d083a2e986d",
       "name": "Extrair evidências",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1124,7 +1124,7 @@
       }
     },
     {
-      "id": "c6208a6b-df2c-4a51-8e70-3681ce5c72d9",
+      "id": "786f4fae-6aee-4d76-b387-df8e5b0dc019",
       "name": "Executar Claude?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1155,7 +1155,7 @@
       }
     },
     {
-      "id": "e239fd54-51c4-4c24-8147-68053a741dae",
+      "id": "3a3dccd0-0f24-45dd-a0da-43b3885e1bfb",
       "name": "Montar pedido à Claude",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1169,7 +1169,7 @@
       }
     },
     {
-      "id": "9df5cdad-e7e1-4c10-955c-480231036c67",
+      "id": "2c9ab9cd-0177-4cc5-88d7-ce1af01c35d8",
       "name": "Claude — diagnóstico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1207,7 +1207,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "be34f370-e31f-4c79-9644-21d76e6ffdb2",
+      "id": "a4c2bb36-3d1c-4467-a9e8-797781133e51",
       "name": "Validar diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1217,11 +1217,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#validar_diag + lib/{util,validate,diagnostico}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str2, max) {\n  if (typeof str2 !== \"string\") return str2;\n  return str2.length > max ? str2.slice(0, max) + \"…[truncado]\" : str2;\n}\nfunction safeJsonParse(str2, fallback) {\n  if (typeof str2 !== \"string\" || str2 === \"\") return fallback;\n  try {\n    return JSON.parse(str2);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token)\"?\\s*[:=]\\s*\"?[^\",\\s]+/gi, \"$1: ***\"), 500);\n}\n\n// lib/validate.js\nfunction tipoDe(v) {\n  if (v === null) return \"null\";\n  if (Array.isArray(v)) return \"array\";\n  if (typeof v === \"number\") return Number.isInteger(v) ? \"integer\" : \"number\";\n  return typeof v;\n}\nfunction confereTipo(v, esperado) {\n  const t = tipoDe(v);\n  const lista = Array.isArray(esperado) ? esperado : [esperado];\n  return lista.some((e) => e === t || e === \"number\" && t === \"integer\");\n}\nfunction validar(valor, schema, caminho, erros) {\n  caminho = caminho || \"$\";\n  erros = erros || [];\n  if (!schema || typeof schema !== \"object\") return erros;\n  if (schema.type && !confereTipo(valor, schema.type)) {\n    erros.push(caminho + \": tipo esperado \" + JSON.stringify(schema.type) + \", recebido \" + tipoDe(valor));\n    return erros;\n  }\n  if (schema.enum && !schema.enum.includes(valor)) erros.push(caminho + \": valor fora do enum\");\n  if (typeof valor === \"string\") {\n    if (schema.minLength !== void 0 && valor.length < schema.minLength) erros.push(caminho + \": texto curto\");\n    if (schema.maxLength !== void 0 && valor.length > schema.maxLength) erros.push(caminho + \": texto longo\");\n    if (schema.pattern && !new RegExp(schema.pattern).test(valor)) erros.push(caminho + \": formato inválido\");\n  }\n  if (Array.isArray(valor)) {\n    if (schema.minItems !== void 0 && valor.length < schema.minItems) erros.push(caminho + \": itens insuficientes\");\n    if (schema.maxItems !== void 0 && valor.length > schema.maxItems) erros.push(caminho + \": itens em excesso\");\n    if (schema.items) valor.forEach((v, i) => validar(v, schema.items, caminho + \"[\" + i + \"]\", erros));\n  }\n  if (tipoDe(valor) === \"object\") {\n    const props = schema.properties || {};\n    for (const r of schema.required || []) {\n      if (!(r in valor)) erros.push(caminho + \".\" + r + \": obrigatório\");\n    }\n    for (const k of Object.keys(valor)) {\n      if (props[k]) validar(valor[k], props[k], caminho + \".\" + k, erros);\n      else if (schema.additionalProperties === false) erros.push(caminho + \".\" + k + \": propriedade não permitida\");\n    }\n  }\n  return erros;\n}\n\n// lib/diagnostico.js\nvar str = { type: \"string\" };\nvar strList = { type: \"array\", items: str };\nvar SCHEMA_DIAGNOSTICO = {\n  type: \"object\",\n  additionalProperties: false,\n  required: [\n    \"status\",\n    \"site\",\n    \"data_coleta\",\n    \"resumo_executivo\",\n    \"evidencias\",\n    \"oportunidades\",\n    \"prioridades\",\n    \"dados_indisponiveis\",\n    \"limitacoes\",\n    \"perguntas_para_reuniao\"\n  ],\n  properties: {\n    status: { type: \"string\", enum: [\"CONCLUIDO\", \"EVIDENCIAS_INSUFICIENTES\"] },\n    site: str,\n    data_coleta: str,\n    resumo_executivo: str,\n    evidencias: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        required: [\"id\", \"url\", \"observacao\"],\n        properties: { id: str, url: str, observacao: str }\n      }\n    },\n    oportunidades: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        required: [\"titulo\", \"categoria\", \"natureza\", \"descricao\", \"evidencias_ids\", \"impacto_comercial\"],\n        properties: {\n          titulo: str,\n          categoria: { type: \"string\", enum: [\"TECNICA\", \"SEO\", \"GEO_AEO\", \"CONTEUDO\", \"CONVERSAO\", \"CONFIANCA\", \"OUTRA\"] },\n          natureza: { type: \"string\", enum: [\"FATO\", \"HIPOTESE\"] },\n          descricao: str,\n          evidencias_ids: strList,\n          impacto_comercial: str\n        }\n      }\n    },\n    prioridades: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        required: [\"ordem\", \"titulo\", \"justificativa\"],\n        properties: { ordem: { type: \"integer\" }, titulo: str, justificativa: str }\n      }\n    },\n    dados_indisponiveis: strList,\n    limitacoes: strList,\n    perguntas_para_reuniao: strList\n  }\n};\nvar PROIBIDOS = [\n  /primeir[oa]s?\\s+(lugar|posi[cç](ão|ao|ões|oes)|p[aá]gina)/i,\n  /topo\\s+do\\s+google/i,\n  /garant(ia|imos|ido|ida|imos|e)\\b/i,\n  /resultado[s]?\\s+garantid/i,\n  /\\b\\d[\\d.,]*\\s*(mil\\s+)?(visitas|acessos|visitantes|cliques|buscas|pesquisas)\\s*(\\/|por)\\s*(m[eê]s|dia|semana)/i,\n  /posi[cç][aã]o\\s*(n[ºo°]?\\s*)?\\d+\\s+(no|do)\\s+google/i\n];\nfunction textoCompleto(d) {\n  return JSON.stringify(d);\n}\nfunction posValidar(diag, ctx) {\n  const erros = validar(diag, SCHEMA_DIAGNOSTICO);\n  if (erros.length) return { ok: false, erros };\n  const urls = new Set((ctx.urls || []).map(String));\n  const ids = /* @__PURE__ */ new Set();\n  for (const ev of diag.evidencias) {\n    if (!urls.has(ev.url)) erros.push(\"evidência \" + ev.id + \" cita URL não coletada: \" + truncate(ev.url, 120));\n    ids.add(ev.id);\n  }\n  for (const op of diag.oportunidades) {\n    if (op.natureza === \"FATO\" && op.evidencias_ids.length === 0) erros.push('oportunidade \"' + truncate(op.titulo, 60) + '\" marcada como FATO sem evidência');\n    for (const id of op.evidencias_ids) if (!ids.has(id)) erros.push('oportunidade \"' + truncate(op.titulo, 60) + '\" cita evidência inexistente ' + id);\n  }\n  const txt = textoCompleto({ r: diag.resumo_executivo, o: diag.oportunidades, p: diag.prioridades });\n  for (const re of PROIBIDOS) if (re.test(txt)) erros.push(\"conteúdo proibido: \" + re.source);\n  const semBarra = (u) => String(u || \"\").trim().replace(/\\/+$/, \"\").toLowerCase();\n  if (ctx.site && semBarra(diag.site) !== semBarra(ctx.site)) erros.push(\"site divergente do analisado\");\n  return { ok: erros.length === 0, erros };\n}\nfunction lerResposta(resp) {\n  if (!resp || typeof resp !== \"object\") return { ok: false, erro: \"RESPOSTA_VAZIA\" };\n  if (resp.type === \"error\" || resp.error) return { ok: false, erro: \"API_ERRO: \" + errorSummary(resp.error || resp) };\n  if (resp.stop_reason === \"refusal\") return { ok: false, erro: \"RECUSA_DO_MODELO\" };\n  if (resp.stop_reason === \"max_tokens\") return { ok: false, erro: \"SAIDA_TRUNCADA_MAX_TOKENS\" };\n  const bloco = (resp.content || []).find((c) => c.type === \"text\");\n  if (!bloco) return { ok: false, erro: \"SEM_TEXTO\" };\n  const json = safeJsonParse(bloco.text, null);\n  if (!json) return { ok: false, erro: \"JSON_INVALIDO\" };\n  return { ok: true, json, uso: resp.usage || null, modelo: resp.model };\n}\nfunction notaDiagnostico(d, meta) {\n  const linhas = [];\n  linhas.push(\"<b>Diagnóstico do site — \" + meta.versao + \"</b>\");\n  if (/PROVISORIA/.test(meta.versao)) linhas.push(\"<i>Modelo provisório (proposta). Não é o diagnóstico padrão aprovado da Atom.</i>\");\n  linhas.push(\"Site: \" + d.site + \" · Coleta: \" + d.data_coleta + \" · Status: \" + d.status);\n  linhas.push(\"<br><b>Resumo</b><br>\" + esc(d.resumo_executivo));\n  if (d.prioridades.length) linhas.push(\"<br><b>Prioridades</b><br>\" + d.prioridades.map((p) => p.ordem + \". \" + esc(p.titulo) + \" — \" + esc(p.justificativa)).join(\"<br>\"));\n  if (d.oportunidades.length) linhas.push(\"<br><b>Oportunidades</b><br>\" + d.oportunidades.map((o) => \"• [\" + o.natureza + \"/\" + o.categoria + \"] \" + esc(o.titulo) + \": \" + esc(o.descricao) + (o.evidencias_ids.length ? \" (\" + o.evidencias_ids.join(\", \") + \")\" : \"\")).join(\"<br>\"));\n  if (d.evidencias.length) linhas.push(\"<br><b>Evidências</b><br>\" + d.evidencias.map((e) => e.id + \" — \" + esc(e.observacao) + \" [\" + esc(e.url) + \"]\").join(\"<br>\"));\n  if (d.dados_indisponiveis.length) linhas.push(\"<br><b>Dados indisponíveis</b><br>\" + d.dados_indisponiveis.map(esc).join(\"<br>\"));\n  if (d.limitacoes.length) linhas.push(\"<br><b>Limitações</b><br>\" + d.limitacoes.map(esc).join(\"<br>\"));\n  if (d.perguntas_para_reuniao.length) linhas.push(\"<br><b>Perguntas para a reunião</b><br>\" + d.perguntas_para_reuniao.map((q) => \"• \" + esc(q)).join(\"<br>\"));\n  linhas.push(\"<br><small>Gerado automaticamente (n8n + Claude). Modelo: \" + esc(meta.modeloIa || \"\") + \". Evidências coletadas em \" + d.data_coleta + \".</small>\");\n  return linhas.join(\"<br>\");\n}\nfunction esc(s) {\n  return String(s || \"\").replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const x = $(\"Extrair evidências\").first().json;\n  const r = $input.first().json;\n  let res;\n  if (r.error) res = { ok: false, erros: [\"FALHA_API: \" + errorSummary(r.error)] };\n  else {\n    const lido = lerResposta(r);\n    if (!lido.ok) res = { ok: false, erros: [lido.erro] };\n    else {\n      const pv = posValidar(lido.json, { urls: x.urls, site: x.ev.url_analisada });\n      res = {\n        ok: pv.ok,\n        erros: pv.erros,\n        diag: lido.json,\n        modeloIa: lido.modelo,\n        nota: pv.ok ? notaDiagnostico(lido.json, { versao: x.versao, modeloIa: lido.modelo }) : \"\"\n      };\n    }\n  }\n  return [{ json: res }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#validar_diag + lib/{util,validate,diagnostico}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str2, max) {\n  if (typeof str2 !== \"string\") return str2;\n  return str2.length > max ? str2.slice(0, max) + \"…[truncado]\" : str2;\n}\nfunction safeJsonParse(str2, fallback) {\n  if (typeof str2 !== \"string\" || str2 === \"\") return fallback;\n  try {\n    return JSON.parse(str2);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/validate.js\nfunction tipoDe(v) {\n  if (v === null) return \"null\";\n  if (Array.isArray(v)) return \"array\";\n  if (typeof v === \"number\") return Number.isInteger(v) ? \"integer\" : \"number\";\n  return typeof v;\n}\nfunction confereTipo(v, esperado) {\n  const t = tipoDe(v);\n  const lista = Array.isArray(esperado) ? esperado : [esperado];\n  return lista.some((e) => e === t || e === \"number\" && t === \"integer\");\n}\nfunction validar(valor, schema, caminho, erros) {\n  caminho = caminho || \"$\";\n  erros = erros || [];\n  if (!schema || typeof schema !== \"object\") return erros;\n  if (schema.type && !confereTipo(valor, schema.type)) {\n    erros.push(caminho + \": tipo esperado \" + JSON.stringify(schema.type) + \", recebido \" + tipoDe(valor));\n    return erros;\n  }\n  if (schema.enum && !schema.enum.includes(valor)) erros.push(caminho + \": valor fora do enum\");\n  if (typeof valor === \"string\") {\n    if (schema.minLength !== void 0 && valor.length < schema.minLength) erros.push(caminho + \": texto curto\");\n    if (schema.maxLength !== void 0 && valor.length > schema.maxLength) erros.push(caminho + \": texto longo\");\n    if (schema.pattern && !new RegExp(schema.pattern).test(valor)) erros.push(caminho + \": formato inválido\");\n  }\n  if (Array.isArray(valor)) {\n    if (schema.minItems !== void 0 && valor.length < schema.minItems) erros.push(caminho + \": itens insuficientes\");\n    if (schema.maxItems !== void 0 && valor.length > schema.maxItems) erros.push(caminho + \": itens em excesso\");\n    if (schema.items) valor.forEach((v, i) => validar(v, schema.items, caminho + \"[\" + i + \"]\", erros));\n  }\n  if (tipoDe(valor) === \"object\") {\n    const props = schema.properties || {};\n    for (const r of schema.required || []) {\n      if (!(r in valor)) erros.push(caminho + \".\" + r + \": obrigatório\");\n    }\n    for (const k of Object.keys(valor)) {\n      if (props[k]) validar(valor[k], props[k], caminho + \".\" + k, erros);\n      else if (schema.additionalProperties === false) erros.push(caminho + \".\" + k + \": propriedade não permitida\");\n    }\n  }\n  return erros;\n}\n\n// lib/diagnostico.js\nvar str = { type: \"string\" };\nvar strList = { type: \"array\", items: str };\nvar SCHEMA_DIAGNOSTICO = {\n  type: \"object\",\n  additionalProperties: false,\n  required: [\n    \"status\",\n    \"site\",\n    \"data_coleta\",\n    \"resumo_executivo\",\n    \"evidencias\",\n    \"oportunidades\",\n    \"prioridades\",\n    \"dados_indisponiveis\",\n    \"limitacoes\",\n    \"perguntas_para_reuniao\"\n  ],\n  properties: {\n    status: { type: \"string\", enum: [\"CONCLUIDO\", \"EVIDENCIAS_INSUFICIENTES\"] },\n    site: str,\n    data_coleta: str,\n    resumo_executivo: str,\n    evidencias: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        required: [\"id\", \"url\", \"observacao\"],\n        properties: { id: str, url: str, observacao: str }\n      }\n    },\n    oportunidades: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        required: [\"titulo\", \"categoria\", \"natureza\", \"descricao\", \"evidencias_ids\", \"impacto_comercial\"],\n        properties: {\n          titulo: str,\n          categoria: { type: \"string\", enum: [\"TECNICA\", \"SEO\", \"GEO_AEO\", \"CONTEUDO\", \"CONVERSAO\", \"CONFIANCA\", \"OUTRA\"] },\n          natureza: { type: \"string\", enum: [\"FATO\", \"HIPOTESE\"] },\n          descricao: str,\n          evidencias_ids: strList,\n          impacto_comercial: str\n        }\n      }\n    },\n    prioridades: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        required: [\"ordem\", \"titulo\", \"justificativa\"],\n        properties: { ordem: { type: \"integer\" }, titulo: str, justificativa: str }\n      }\n    },\n    dados_indisponiveis: strList,\n    limitacoes: strList,\n    perguntas_para_reuniao: strList\n  }\n};\nvar PROIBIDOS = [\n  /primeir[oa]s?\\s+(lugar|posi[cç](ão|ao|ões|oes)|p[aá]gina)/i,\n  /topo\\s+do\\s+google/i,\n  /garant(ia|imos|ido|ida|imos|e)\\b/i,\n  /resultado[s]?\\s+garantid/i,\n  /\\b\\d[\\d.,]*\\s*(mil\\s+)?(visitas|acessos|visitantes|cliques|buscas|pesquisas)\\s*(\\/|por)\\s*(m[eê]s|dia|semana)/i,\n  /posi[cç][aã]o\\s*(n[ºo°]?\\s*)?\\d+\\s+(no|do)\\s+google/i\n];\nfunction textoCompleto(d) {\n  return JSON.stringify(d);\n}\nfunction posValidar(diag, ctx) {\n  const erros = validar(diag, SCHEMA_DIAGNOSTICO);\n  if (erros.length) return { ok: false, erros };\n  const urls = new Set((ctx.urls || []).map(String));\n  const ids = /* @__PURE__ */ new Set();\n  for (const ev of diag.evidencias) {\n    if (!urls.has(ev.url)) erros.push(\"evidência \" + ev.id + \" cita URL não coletada: \" + truncate(ev.url, 120));\n    ids.add(ev.id);\n  }\n  for (const op of diag.oportunidades) {\n    if (op.natureza === \"FATO\" && op.evidencias_ids.length === 0) erros.push('oportunidade \"' + truncate(op.titulo, 60) + '\" marcada como FATO sem evidência');\n    for (const id of op.evidencias_ids) if (!ids.has(id)) erros.push('oportunidade \"' + truncate(op.titulo, 60) + '\" cita evidência inexistente ' + id);\n  }\n  const txt = textoCompleto({ r: diag.resumo_executivo, o: diag.oportunidades, p: diag.prioridades });\n  for (const re of PROIBIDOS) if (re.test(txt)) erros.push(\"conteúdo proibido: \" + re.source);\n  const semBarra = (u) => String(u || \"\").trim().replace(/\\/+$/, \"\").toLowerCase();\n  if (ctx.site && semBarra(diag.site) !== semBarra(ctx.site)) erros.push(\"site divergente do analisado\");\n  return { ok: erros.length === 0, erros };\n}\nfunction lerResposta(resp) {\n  if (!resp || typeof resp !== \"object\") return { ok: false, erro: \"RESPOSTA_VAZIA\" };\n  if (resp.type === \"error\" || resp.error) return { ok: false, erro: \"API_ERRO: \" + errorSummary(resp.error || resp) };\n  if (resp.stop_reason === \"refusal\") return { ok: false, erro: \"RECUSA_DO_MODELO\" };\n  if (resp.stop_reason === \"max_tokens\") return { ok: false, erro: \"SAIDA_TRUNCADA_MAX_TOKENS\" };\n  const bloco = (resp.content || []).find((c) => c.type === \"text\");\n  if (!bloco) return { ok: false, erro: \"SEM_TEXTO\" };\n  const json = safeJsonParse(bloco.text, null);\n  if (!json) return { ok: false, erro: \"JSON_INVALIDO\" };\n  return { ok: true, json, uso: resp.usage || null, modelo: resp.model };\n}\nfunction notaDiagnostico(d, meta) {\n  const linhas = [];\n  linhas.push(\"<b>Diagnóstico do site — \" + meta.versao + \"</b>\");\n  if (/PROVISORIA/.test(meta.versao)) linhas.push(\"<i>Modelo provisório (proposta). Não é o diagnóstico padrão aprovado da Atom.</i>\");\n  linhas.push(\"Site: \" + d.site + \" · Coleta: \" + d.data_coleta + \" · Status: \" + d.status);\n  linhas.push(\"<br><b>Resumo</b><br>\" + esc(d.resumo_executivo));\n  if (d.prioridades.length) linhas.push(\"<br><b>Prioridades</b><br>\" + d.prioridades.map((p) => p.ordem + \". \" + esc(p.titulo) + \" — \" + esc(p.justificativa)).join(\"<br>\"));\n  if (d.oportunidades.length) linhas.push(\"<br><b>Oportunidades</b><br>\" + d.oportunidades.map((o) => \"• [\" + o.natureza + \"/\" + o.categoria + \"] \" + esc(o.titulo) + \": \" + esc(o.descricao) + (o.evidencias_ids.length ? \" (\" + o.evidencias_ids.join(\", \") + \")\" : \"\")).join(\"<br>\"));\n  if (d.evidencias.length) linhas.push(\"<br><b>Evidências</b><br>\" + d.evidencias.map((e) => e.id + \" — \" + esc(e.observacao) + \" [\" + esc(e.url) + \"]\").join(\"<br>\"));\n  if (d.dados_indisponiveis.length) linhas.push(\"<br><b>Dados indisponíveis</b><br>\" + d.dados_indisponiveis.map(esc).join(\"<br>\"));\n  if (d.limitacoes.length) linhas.push(\"<br><b>Limitações</b><br>\" + d.limitacoes.map(esc).join(\"<br>\"));\n  if (d.perguntas_para_reuniao.length) linhas.push(\"<br><b>Perguntas para a reunião</b><br>\" + d.perguntas_para_reuniao.map((q) => \"• \" + esc(q)).join(\"<br>\"));\n  linhas.push(\"<br><small>Gerado automaticamente (n8n + Claude). Modelo: \" + esc(meta.modeloIa || \"\") + \". Evidências coletadas em \" + d.data_coleta + \".</small>\");\n  return linhas.join(\"<br>\");\n}\nfunction esc(s) {\n  return String(s || \"\").replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const x = $(\"Extrair evidências\").first().json;\n  const r = $input.first().json;\n  let res;\n  if (r.error) res = { ok: false, erros: [\"FALHA_API: \" + errorSummary(r.error)] };\n  else {\n    const lido = lerResposta(r);\n    if (!lido.ok) res = { ok: false, erros: [lido.erro] };\n    else {\n      const pv = posValidar(lido.json, { urls: x.urls, site: x.ev.url_analisada });\n      res = {\n        ok: pv.ok,\n        erros: pv.erros,\n        diag: lido.json,\n        modeloIa: lido.modelo,\n        nota: pv.ok ? notaDiagnostico(lido.json, { versao: x.versao, modeloIa: lido.modelo }) : \"\"\n      };\n    }\n  }\n  return [{ json: res }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "a891f98f-74b6-4d79-b805-bbe68889902b",
+      "id": "3f00b0ae-f20f-48b8-8ae2-30e08826c9d7",
       "name": "Diagnóstico válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1253,7 +1253,7 @@
       }
     },
     {
-      "id": "b020304a-22a1-4fbd-88b5-2cd9637d76ab",
+      "id": "1e577823-83ee-4dac-b8fa-d539e774fb10",
       "name": "Registrar diagnóstico (nota no negócio)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1277,7 +1277,7 @@
       "credentials": {}
     },
     {
-      "id": "5a118dc6-6049-444c-8135-9c3fef004683",
+      "id": "9baddc73-438a-4d7c-bcdf-32da9cde92b5",
       "name": "Campos do diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1291,7 +1291,7 @@
       }
     },
     {
-      "id": "2ee08fc3-0084-4cf4-b4ec-2bc86a2cf829",
+      "id": "2b9f14f8-46f2-4c78-9503-19218b71a419",
       "name": "Atualizar campos do negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1323,7 +1323,7 @@
       }
     },
     {
-      "id": "09ea9ff4-4a80-455b-809b-3df88908ebd4",
+      "id": "31dcc53b-caea-4fc2-a3c3-92ac86cfefe7",
       "name": "Atualizar negócio (diagnóstico)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1348,7 +1348,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c209d62e-ea26-4c33-9f0c-364ec2e54b0c",
+      "id": "d587c1b2-84c3-4bad-8ab4-d19a8c7cc233",
       "name": "Salvar estado do diagnóstico",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1436,7 +1436,7 @@
       }
     },
     {
-      "id": "9a790539-7915-4f41-975d-2224678c77ea",
+      "id": "d4e16bcb-0ea1-43f9-af08-79f5b3c6ad2f",
       "name": "Diagnóstico inválido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1450,7 +1450,7 @@
       }
     },
     {
-      "id": "92425cb3-1223-47ee-995c-d3d138ac10f2",
+      "id": "0d0b9973-854c-4cc1-b5bb-f799a9f3d141",
       "name": "Salvar diagnóstico inválido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1538,7 +1538,7 @@
       }
     },
     {
-      "id": "df94d5c6-b430-4742-8048-16d2eae63586",
+      "id": "22e0032e-a847-438c-9ebf-f7a3d8782b33",
       "name": "Preparar alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1552,7 +1552,7 @@
       }
     },
     {
-      "id": "9a28b3a0-8d5a-4435-a0b9-6532e8be2655",
+      "id": "ae5e0cfc-6371-4a15-9fc3-9d811d6095ff",
       "name": "ATOM_11 — alerta diagnóstico",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1575,7 +1575,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "f26233fb-b7b4-46e0-8392-158744285839",
+      "id": "9d8adea2-d8dc-4393-a7b2-51c80fc1a000",
       "name": "Evidências aguardando modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1589,7 +1589,7 @@
       }
     },
     {
-      "id": "a7c574df-7279-4932-91f7-291b6d19ee60",
+      "id": "89435039-c3a1-43ff-9676-2bf85b01ed8c",
       "name": "Registrar nota de evidências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1621,7 +1621,7 @@
       }
     },
     {
-      "id": "b4b782b3-f7f1-4f3a-a7af-1a1a3d358bb8",
+      "id": "5eb8b3f3-fa28-4b2c-82cf-d4f7712ca2f4",
       "name": "Nota de evidências",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1646,7 +1646,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "24956aa2-9834-4b1d-a1c4-6a96285291b6",
+      "id": "5428f608-9312-48bd-b046-f12e86bc25ad",
       "name": "Salvar estado (diagnóstico pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1734,7 +1734,7 @@
       }
     },
     {
-      "id": "1ae3e681-027c-4fe3-b844-622dec169521",
+      "id": "de3bd873-a931-4017-9c17-fac568f5e5a8",
       "name": "Pendência de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1748,7 +1748,7 @@
       }
     },
     {
-      "id": "5e86689b-354e-4da6-8a47-13ae374a345f",
+      "id": "61bf6f75-d65e-49a3-b804-868dafca5e33",
       "name": "Registrar nota do site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1780,7 +1780,7 @@
       }
     },
     {
-      "id": "30b1e9ad-5009-45ab-a009-4d8749b8da18",
+      "id": "3f407560-f6f6-40cf-bbdc-12b77eaccc00",
       "name": "Nota de conferência do site",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1805,7 +1805,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "9ad05ed6-773d-4da6-b2f1-71533d1d0f89",
+      "id": "d1744ea1-8c48-44f6-871a-e108b7c3d44e",
       "name": "Pedir site ao cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1837,7 +1837,7 @@
       }
     },
     {
-      "id": "02e53137-508e-4315-b367-d589193ecffa",
+      "id": "31059269-0bd7-4164-9779-99c29f8b25ab",
       "name": "ATOM_10 — solicitar site",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1860,7 +1860,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "e135ed38-ee50-430c-b2d5-5bdb4014ef75",
+      "id": "51696950-bb4a-458c-adb8-f430e0a7dd22",
       "name": "Estado após pedido de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1874,8 +1874,8 @@
       }
     },
     {
-      "id": "4bb11aa1-b52d-4ba5-8e3b-0055b160258b",
-      "name": "Sticky Note 4bb11aa1",
+      "id": "db9b9fc0-5f59-46b8-b268-a9823605df49",
+      "name": "Sticky Note db9b9fc0",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -2614,6 +2614,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-27"
+    "atomBuild": "2026-09-28"
   }
 }

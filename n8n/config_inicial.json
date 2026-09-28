@@ -3,7 +3,7 @@
     "chave": "MODO_EXECUCAO",
     "valor": "SIMULACAO",
     "status": "CONFIGURADO",
-    "descricao": "SIMULACAO (nenhuma escrita externa), SANDBOX ou PRODUCAO. Portão global das ações com efeito.",
+    "descricao": "SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Clicksign, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO).",
     "usado_por": "todos"
   },
   {

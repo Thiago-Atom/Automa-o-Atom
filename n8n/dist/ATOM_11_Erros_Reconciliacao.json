@@ -2,7 +2,7 @@
   "name": "ATOM_11_Erros_Reconciliacao",
   "nodes": [
     {
-      "id": "3f0f1e61-8f9b-4bbb-9816-5773aa586a02",
+      "id": "c9d534a2-ff19-4e2b-8f40-5305e66628ca",
       "name": "Erro em workflow ATOM",
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
@@ -13,7 +13,7 @@
       "parameters": {}
     },
     {
-      "id": "1e0fc1dc-8067-4a43-94ce-e95b0f26b15e",
+      "id": "647ea7d4-a6d8-4b91-a700-1dd4033a3937",
       "name": "Normalizar alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -23,11 +23,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#alerta_normalizar + lib/{util}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token)\"?\\s*[:=]\\s*\"?[^\",\\s]+/gi, \"$1: ***\"), 500);\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const e = $input.first().json;\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  let a;\n  if (e.execution && e.workflow) {\n    a = {\n      tipo: \"ERRO_WORKFLOW\",\n      severidade: \"ALTA\",\n      workflow: String(e.workflow.name || \"\"),\n      no: String(e.execution.lastNodeExecuted || \"\"),\n      mensagem: errorSummary(e.execution.error || \"\"),\n      execucao_id: String(e.execution.id || \"\"),\n      url: String(e.execution.url || \"\"),\n      deal_id: \"\"\n    };\n  } else {\n    a = {\n      tipo: String(e.tipo || \"ALERTA\"),\n      severidade: String(e.severidade || \"MEDIA\"),\n      workflow: String(e.workflow || \"\"),\n      no: \"\",\n      mensagem: truncate(errorSummary(String(e.mensagem || \"\")), 800),\n      execucao_id: String(e.execucao_id || \"\"),\n      url: \"\",\n      deal_id: String(e.deal_id || \"\")\n    };\n  }\n  const chave = \"alerta:\" + fingerprint([a.tipo, a.workflow, a.no, a.deal_id, a.mensagem, a.execucao_id]);\n  const resumo = truncate(\"[\" + a.severidade + \"] \" + a.tipo + \" — \" + a.workflow + (a.no ? \" / \" + a.no : \"\") + (a.deal_id ? \" — negócio \" + a.deal_id : \"\") + \": \" + a.mensagem, 900);\n  return [{ json: { alerta: a, resumo, row: {\n    event_key: chave,\n    origem: \"n8n\",\n    tipo: a.tipo,\n    entidade_id: a.execucao_id,\n    deal_id: a.deal_id,\n    status: \"ALERTA_REGISTRADO\",\n    tentativas: 0,\n    ultimo_erro: \"\",\n    resumo,\n    evento_em: agora,\n    recebido_em: agora,\n    processado_em: null\n  } } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf11.js#alerta_normalizar + lib/{util}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const e = $input.first().json;\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  let a;\n  if (e.execution && e.workflow) {\n    a = {\n      tipo: \"ERRO_WORKFLOW\",\n      severidade: \"ALTA\",\n      workflow: String(e.workflow.name || \"\"),\n      no: String(e.execution.lastNodeExecuted || \"\"),\n      mensagem: errorSummary(e.execution.error || \"\"),\n      execucao_id: String(e.execution.id || \"\"),\n      url: String(e.execution.url || \"\"),\n      deal_id: \"\"\n    };\n  } else {\n    a = {\n      tipo: String(e.tipo || \"ALERTA\"),\n      severidade: String(e.severidade || \"MEDIA\"),\n      workflow: String(e.workflow || \"\"),\n      no: \"\",\n      mensagem: truncate(errorSummary(String(e.mensagem || \"\")), 800),\n      execucao_id: String(e.execucao_id || \"\"),\n      url: \"\",\n      deal_id: String(e.deal_id || \"\")\n    };\n  }\n  const chave = \"alerta:\" + fingerprint([a.tipo, a.workflow, a.no, a.deal_id, a.mensagem, a.execucao_id]);\n  const resumo = truncate(\"[\" + a.severidade + \"] \" + a.tipo + \" — \" + a.workflow + (a.no ? \" / \" + a.no : \"\") + (a.deal_id ? \" — negócio \" + a.deal_id : \"\") + \": \" + a.mensagem, 900);\n  return [{ json: { alerta: a, resumo, row: {\n    event_key: chave,\n    origem: \"n8n\",\n    tipo: a.tipo,\n    entidade_id: a.execucao_id,\n    deal_id: a.deal_id,\n    status: \"ALERTA_REGISTRADO\",\n    tentativas: 0,\n    ultimo_erro: \"\",\n    resumo,\n    evento_em: agora,\n    recebido_em: agora,\n    processado_em: null\n  } } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "5dcefe7b-a47e-48b5-9038-512ce58f682b",
+      "id": "658e46b8-1a55-4c1a-84a9-8dd52e378cec",
       "name": "Alerta interno",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -40,7 +40,7 @@
       }
     },
     {
-      "id": "0e76d6ab-b6d5-452c-8b86-97dee3117638",
+      "id": "4d44874f-3389-4d5d-aa4c-31c3da85fda5",
       "name": "Alerta já registrado?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -72,7 +72,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "8a0e25f6-a13c-4d80-ac0a-7f2a6970d6db",
+      "id": "7fb917a9-7a22-47eb-848e-f732b74a296d",
       "name": "Alerta novo?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -86,7 +86,7 @@
       }
     },
     {
-      "id": "4514e6c4-a452-4ece-a6c9-5388e5a3632a",
+      "id": "83e0a43f-104f-4a30-b88a-664941cdbfc4",
       "name": "Registrar alerta",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -234,7 +234,7 @@
       }
     },
     {
-      "id": "42f876fe-f235-4063-8acc-2433f28e663f",
+      "id": "da8ec3ed-1fbd-48b3-8055-45a3dfbb840d",
       "name": "Ler configuração (alerta)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -256,7 +256,7 @@
       "executeOnce": true
     },
     {
-      "id": "b1a0a23b-8c6e-4ec7-a629-9ae43ad0d9a4",
+      "id": "786f0231-15f8-4d18-b801-048762275594",
       "name": "Canal de alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -270,7 +270,7 @@
       }
     },
     {
-      "id": "bf24097c-2a8a-458c-a5c2-c4fe16546689",
+      "id": "3db45941-99d1-4792-8236-22910d0c983d",
       "name": "Rotear canal de alerta",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -329,7 +329,7 @@
       }
     },
     {
-      "id": "221807aa-86d1-48b6-a8df-754a70dc8d47",
+      "id": "6cc3ad4d-2eae-4306-8588-b4fe84705d02",
       "name": "Alerta como atividade no Pipedrive",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -354,7 +354,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "67bd3e0f-59a7-4e2a-bb29-46dee2b961c9",
+      "id": "0e426206-6872-4328-9968-72e4d8b482d2",
       "name": "Alerta por webhook",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -376,7 +376,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7619666f-e9f2-4106-b519-c876e15ab185",
+      "id": "ae195abb-694a-4c9a-ac56-6ee39c19c5fc",
       "name": "A cada hora",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
@@ -397,7 +397,7 @@
       }
     },
     {
-      "id": "c391009f-486d-463c-8cb7-5f3289fd6990",
+      "id": "08ba0efd-9243-42f9-bd5b-1734fd8511e7",
       "name": "Ler configuração (reconciliação)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -419,7 +419,7 @@
       "executeOnce": true
     },
     {
-      "id": "e611fe94-c2b5-4ade-aa02-23b83046f301",
+      "id": "5743bf5e-696c-4e1e-9f92-7e045ea65508",
       "name": "Liberar locks expirados",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -484,7 +484,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "e7db9ae5-3236-4f6c-ad16-9094410db51e",
+      "id": "b46bb58a-641e-41dd-aff5-7bd11e319ebf",
       "name": "Ações com falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -517,7 +517,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "d9284ec0-d27b-4f95-a49e-c76723153789",
+      "id": "9ad83f61-ca7e-4798-ba77-5af97c62fe03",
       "name": "Negócios aguardando liberação",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -555,7 +555,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "2e43403b-5d90-43b0-80c4-836d4777354e",
+      "id": "35f81305-898f-40fd-9c49-e5b61ca2240a",
       "name": "Cobranças iniciais pendentes",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -593,7 +593,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "406014ae-924c-47aa-91c0-8df708627952",
+      "id": "9e31b4f1-f8cb-46f6-87aa-7449d533eb42",
       "name": "Planejar reprocessamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -607,7 +607,7 @@
       }
     },
     {
-      "id": "c0fda103-c651-48ae-aca8-2ea87d6178fa",
+      "id": "1f879279-c6a5-48d1-8efd-7e37d4ce62dc",
       "name": "Despachar reprocessamento",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -630,7 +630,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c13cd8c1-56ba-4d1c-a4af-f634a63c2a8e",
+      "id": "0c079086-25f9-4d29-aaed-1658b240fb81",
       "name": "Painel (GET)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -646,11 +646,11 @@
         "responseData": "firstEntryJson",
         "options": {}
       },
-      "webhookId": "635d36cc-ad1c-43c9-81eb-4eb8adffb107",
+      "webhookId": "c528fce4-c74a-408d-975b-ba75e4041dd0",
       "credentials": {}
     },
     {
-      "id": "5d29a433-5018-4f1f-abbf-9de85e82e033",
+      "id": "07907748-2eb7-43db-9069-ff57478224fb",
       "name": "Painel: negócios",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -673,7 +673,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "d7aaea81-9735-42c8-8c3e-8ea8b5bacd8a",
+      "id": "c6efbf46-02e9-4f29-b436-429b34a43d74",
       "name": "Painel: agendamentos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -696,7 +696,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "7f2d9b65-0b8b-449a-858b-a267d81f9b85",
+      "id": "396916e1-35aa-406d-992e-e8f9c2fb7f1c",
       "name": "Painel: financeiro",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -719,7 +719,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "85ff91bb-3d9b-4a32-a556-1a0a2ca88099",
+      "id": "65a3d182-fa2c-465b-b037-6ae43784641d",
       "name": "Painel: ações",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -742,7 +742,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "d984e2db-2069-4d22-a81d-fcb91b425dd8",
+      "id": "ec6bb824-311d-4ec5-bcf5-32e261f1b998",
       "name": "Montar painel",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -756,8 +756,8 @@
       }
     },
     {
-      "id": "03032117-fd9b-47db-ac0e-01849eafe485",
-      "name": "Sticky Note 03032117",
+      "id": "df2613fe-d444-45ed-9cf5-7c4b4aecc177",
+      "name": "Sticky Note df2613fe",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -1017,6 +1017,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-27"
+    "atomBuild": "2026-09-28"
   }
 }

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pedido do n8n à Zayra (ATOM_10)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "action",
+    "pipedrive_deal_id",
+    "pipedrive_organization_id",
+    "conversation_id",
+    "recipient_phone",
+    "missing_fields",
+    "message_context",
+    "scheduled_at"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 8
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "SOLICITAR_SITE",
+        "COMPLETAR_DADOS",
+        "SOLICITAR_AVALIACAO_GOOGLE"
+      ]
+    },
+    "pipedrive_deal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pipedrive_organization_id": {
+      "type": "string"
+    },
+    "conversation_id": {
+      "type": "string"
+    },
+    "recipient_phone": {
+      "type": "string"
+    },
+    "missing_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "message_context": {
+      "type": "object"
+    },
+    "scheduled_at": {
+      "type": "string"
+    }
+  }
+}

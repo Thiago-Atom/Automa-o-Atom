@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lançamento interno ATOM → adaptador Controlle (contrato proposto)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "origem",
+    "chave_idempotencia",
+    "operacao",
+    "negocio_pipedrive_id",
+    "cobranca_asaas_id",
+    "valor_bruto",
+    "valor_liquido",
+    "taxas",
+    "data_referencia",
+    "detalhes"
+  ],
+  "properties": {
+    "origem": {
+      "type": "string",
+      "enum": [
+        "ATOM_N8N"
+      ]
+    },
+    "chave_idempotencia": {
+      "type": "string"
+    },
+    "operacao": {
+      "type": "string"
+    },
+    "negocio_pipedrive_id": {
+      "type": "string"
+    },
+    "cobranca_asaas_id": {
+      "type": "string"
+    },
+    "valor_bruto": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "valor_liquido": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "taxas": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "data_referencia": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "detalhes": {
+      "type": "object"
+    }
+  }
+}
