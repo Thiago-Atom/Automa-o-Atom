@@ -2,7 +2,7 @@
   "name": "ATOM_04_Conferencia_Formalizacao",
   "nodes": [
     {
-      "id": "0ba55f46-d118-4df2-a19c-2fe19f451063",
+      "id": "c6156632-3fdf-4f00-b126-b52f28b05ec7",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "235f299f-426c-40a5-96de-18b74ed4ffc5",
+      "id": "1d696aa7-c566-40e8-8ac4-ca80d674de1b",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "08d57ae2-fcac-4272-9988-2fb60989d25f",
+      "id": "76394192-da93-41b4-a62b-848637e3ea87",
       "name": "Tipo de gatilho",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -78,7 +78,7 @@
       }
     },
     {
-      "id": "c2c131fc-324c-4f83-9707-684e95385959",
+      "id": "08e97ba3-5879-499d-bad9-9c92cd79596f",
       "name": "Estado (cancelamento)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -110,7 +110,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "796faf03-8b51-4d87-8461-ec18fa249ae5",
+      "id": "8b8967b3-658e-4365-bfa4-ff062099b861",
       "name": "Cancelamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -124,7 +124,7 @@
       }
     },
     {
-      "id": "cdfed793-f4ca-4435-8ec2-ab6775342d64",
+      "id": "715366a9-86bd-45fe-a232-070b492a6ff2",
       "name": "Marcar negócio cancelado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -192,7 +192,7 @@
       }
     },
     {
-      "id": "fde4e04a-4b41-4416-b8b6-849a8a54fcbc",
+      "id": "ee5ff81a-d3c1-4c0c-ab47-2836a2cbb666",
       "name": "Cancelar avaliações agendadas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -271,7 +271,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "b9e6d992-1882-4120-8a26-0c09c10caefa",
+      "id": "6ecafe93-9838-43d3-98a4-9e194c93eec9",
       "name": "Alertar responsável?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -304,7 +304,7 @@
       "executeOnce": true
     },
     {
-      "id": "7fed859b-fac9-413e-8a58-30dbebefdc99",
+      "id": "17fc42be-f0c1-4a7d-9b5a-31753507a7d4",
       "name": "Alerta de cancelamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -318,7 +318,7 @@
       }
     },
     {
-      "id": "10ea45a3-bf22-4489-ad68-06093c768079",
+      "id": "0e8612e4-7527-441f-bee9-b263e3fe9902",
       "name": "ATOM_11 — alerta cancelamento",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -341,7 +341,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "4d13d37f-6f58-43e4-8ff1-c0629aee9fa6",
+      "id": "7ad9a78e-6ac0-409a-bc53-099eaf5c850c",
       "name": "Preparar consulta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -355,7 +355,7 @@
       }
     },
     {
-      "id": "80e86ec1-252d-4356-8100-747edb6ec923",
+      "id": "9520eac5-c480-435d-aa4c-820c6dc0118d",
       "name": "Buscar negócios (atualizados)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -381,7 +381,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "380f0550-e3b0-4115-be3a-03bf773daba8",
+      "id": "03ebcdbe-4d36-4b93-988f-72e5f68b8359",
       "name": "Selecionar negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -395,7 +395,7 @@
       }
     },
     {
-      "id": "00692469-5f4c-4762-991a-15e57c539928",
+      "id": "513bd4a3-24f0-481a-9b0b-b08878b5cc55",
       "name": "Redespachar por negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -427,7 +427,7 @@
       }
     },
     {
-      "id": "9877c13d-80ba-47c1-9017-1065833ee68e",
+      "id": "58ebf382-f536-4ea3-b378-abc3549fe5d7",
       "name": "Redespachar negócio",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -449,7 +449,7 @@
       }
     },
     {
-      "id": "8613fe6d-d37f-4dae-874d-60853b227ab7",
+      "id": "8d0fd1f2-cc72-42af-88f6-c3669fdce5c4",
       "name": "Buscar organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -477,7 +477,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "3cb664a7-2d6a-4a52-9386-6d04a2e355a7",
+      "id": "77e1c916-ea1b-4bd8-b395-de74fa123fc6",
       "name": "Buscar pessoa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -505,7 +505,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "67fb1bf4-d844-421e-81fd-6dad756cb258",
+      "id": "63231a5d-b240-49dd-9110-d31735950e3e",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -537,7 +537,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "523100e4-533e-41c4-9a69-e96f3208026d",
+      "id": "47b53aee-d260-4788-b03c-ba5b420e8882",
       "name": "Snapshots",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -570,7 +570,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "2f04f726-70b2-4ddd-bc00-6b71ff1dccf1",
+      "id": "1d5e208d-4a8b-41c6-a3bc-89bd03bf6e73",
       "name": "Conferir dados",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -584,7 +584,7 @@
       }
     },
     {
-      "id": "6d439b3b-0245-4feb-b057-e24d3a94bc3d",
+      "id": "b615b783-cd51-4343-b74a-61d82e051072",
       "name": "Decisão",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -685,7 +685,7 @@
       }
     },
     {
-      "id": "0bef25cd-059b-4ab7-a2e8-8c2a6bb8989a",
+      "id": "0467eb39-c348-4529-982b-4b357d675007",
       "name": "Salvar pendências",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -803,7 +803,7 @@
       }
     },
     {
-      "id": "dc07089f-b0b9-4a1c-a907-36992e581b99",
+      "id": "14d2830b-0430-4ae1-8e22-a403cd76cc5d",
       "name": "Pendências mudaram?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -835,7 +835,7 @@
       }
     },
     {
-      "id": "b3ff4e98-8ec9-4984-8889-d4e03cf7a02c",
+      "id": "c5d2fae4-8f6c-43b7-8e41-6da2302632ae",
       "name": "Nota de pendências",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -860,7 +860,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c9a57ddd-49c0-48d4-86c7-942fb80547e3",
+      "id": "86461f57-b651-4030-933d-9797375c493c",
       "name": "Atualizar campo de pendências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -892,7 +892,7 @@
       }
     },
     {
-      "id": "4692813e-2949-4b4b-89c7-3cdd0771ec82",
+      "id": "28a0e0c7-d946-42e3-9890-00056e1ff8f8",
       "name": "Atualizar pendências no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -917,7 +917,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "55dc5320-15fe-4505-aa76-6984352e927c",
+      "id": "5ad7439d-a368-4d3e-9f3e-f77b4b80d097",
       "name": "Pedir dados ao cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -948,7 +948,7 @@
       }
     },
     {
-      "id": "ad1a9577-2b9c-4386-b0e4-05e7703ebda7",
+      "id": "564ef71f-d17f-44ac-86fe-7b8ca9847d04",
       "name": "Marcar versão anterior como substituída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1002,7 +1002,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "c2b7a7c1-9a62-4610-9b71-6371dc76376c",
+      "id": "7fdc08b8-ebd8-423c-9f98-86cb4a393a06",
       "name": "Registrar snapshot da formalização",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1091,7 +1091,7 @@
       "executeOnce": true
     },
     {
-      "id": "69d6c643-3f9a-407d-9cba-9c0849fe01ec",
+      "id": "c7653540-3dca-4111-a1f7-e4bd65487031",
       "name": "Salvar estado conferido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1210,7 +1210,7 @@
       "executeOnce": true
     },
     {
-      "id": "69525973-fb14-40da-a612-ece68a1f684e",
+      "id": "6f3d6afc-f38e-49cb-9258-1291673b8580",
       "name": "Limpar campo de pendências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1242,7 +1242,7 @@
       }
     },
     {
-      "id": "a2a22ffc-f086-4f9c-89e9-fc4278556884",
+      "id": "3b3ce043-3115-46f5-9b57-a66d4c5e9836",
       "name": "Limpar pendências no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1267,7 +1267,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b207ea61-4839-458c-b972-450dffdaaa73",
+      "id": "c240aeb5-7483-4074-9d02-fe52419dadb8",
       "name": "Pedido de contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1281,7 +1281,7 @@
       }
     },
     {
-      "id": "d936ba4b-2b11-46c8-a1ca-d6aeb6daa391",
+      "id": "107e0c1a-9194-4520-9323-423d56152343",
       "name": "Salvar estado (mesma versão)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1399,7 +1399,7 @@
       }
     },
     {
-      "id": "16188761-e4f9-4ebd-998f-4e3f120f549b",
+      "id": "dbe13d72-333f-42e6-b6eb-2d9a27a5e50e",
       "name": "Salvar bloqueio (alteração pós-envio)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1467,7 +1467,7 @@
       }
     },
     {
-      "id": "76b6cee8-19fa-4dac-b105-0bee186fd181",
+      "id": "e6afcb75-5755-4bb3-af53-8190dc3ff7e5",
       "name": "Alerta de alteração pós-envio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1481,7 +1481,7 @@
       }
     },
     {
-      "id": "b3ac64f3-3779-4e9e-a379-e2a50d3bf601",
+      "id": "7499a3ec-f658-4179-a803-105e2c48188f",
       "name": "ATOM_11 — alerta alteração",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1504,7 +1504,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "624d9888-68d0-42d4-9e90-eb47e359aea9",
+      "id": "b7cdf059-94ee-4681-8ef2-d0eeeaf276ee",
       "name": "Pedido de dados à Zayra",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1518,7 +1518,7 @@
       }
     },
     {
-      "id": "fd0af0eb-1055-4057-8b7c-0d46439cc66f",
+      "id": "e276b97f-0936-466d-ad19-5cbab9021f4d",
       "name": "ATOM_10 — completar dados",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1541,7 +1541,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6f79e813-7028-478d-bb54-2e712d077010",
+      "id": "41cc28cf-02c0-4cd3-9c71-7d6ccac94aaf",
       "name": "ATOM_05 — criar envelope",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1564,8 +1564,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6ffee900-49e7-4c27-8633-105db31f15fa",
-      "name": "Sticky Note 6ffee900",
+      "id": "87d2cf43-febc-4414-aea6-c2263055daa5",
+      "name": "Sticky Note 87d2cf43",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

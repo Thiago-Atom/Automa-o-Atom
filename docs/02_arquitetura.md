@@ -47,6 +47,7 @@ flowchart LR
 
 | Workflow | ID | Gatilhos | Responsabilidade |
 |---|---|---|---|
+| ATOM_00_Aplicar_Config | `E3SVfrlTjba5wq8r` | Execução manual / sub-workflow | Utilitário: grava parâmetros em `atom_config` por upsert de `chave`, preservando descrição; recusa valores que pareçam segredos. |
 | ATOM_01_Eventos_Pipedrive | `TvKVsmL0ZWMuEb2S` | Webhook `POST /atom/pipedrive` (Basic Auth) | Valida payload v2, deduplica por `meta.id`, ignora alterações feitas só pelo n8n (anti-loop), classifica em gatilhos específicos e despacha. Não cria nem altera registros no Pipedrive. |
 | ATOM_02_Site_Diagnostico | `87n6QYXZBijXZPTl` | Sub-workflow (e modo `BUSCA_SEGURA` recursivo) | Escolhe o site (CRM > domínio corporativo do e-mail), busca com proteção SSRF (DNS A/AAAA, IP privado, redirecionamento revalidado a cada salto, máx. 5), classifica, pede o site à Zayra quando necessário, coleta evidências e chama a Claude com saída estruturada. |
 | ATOM_03_Cadastro_CNPJ | `KDVf93dE4xuyPLg4` | Sub-workflow | Valida CNPJ (numérico e alfanumérico), consulta provedor configurável, completa **somente campos vazios**; divergências viram pendência (nota), nunca sobrescrita. |

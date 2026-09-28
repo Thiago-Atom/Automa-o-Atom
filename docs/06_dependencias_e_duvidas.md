@@ -7,16 +7,32 @@
 | n8n Cloud (Data Tables, Code, HTTP, Webhook, Schedule, Error Trigger) | Execução | Disponível; workflows criados e desativados |
 | Pipedrive API v1/v2 + webhooks v2 | Eventos, leitura e escrita de campos/notas | Credencial `ATOM Pipedrive API` a criar; campos e etapas a mapear |
 | DNS sobre HTTPS (`dns.google/resolve`, A/AAAA) | Proteção SSRF antes de acessar sites | Serviço público, sem credencial; só nomes de domínio de sites são enviados |
-| Anthropic (Claude) | Diagnóstico e briefing | Credencial e `ANTHROPIC_MODEL` pendentes |
-| Provedor de CNPJ (proposto: BrasilAPI) | Cadastro | Autorização de uso pendente |
+| Anthropic (Claude) | Briefing opcional (o diagnóstico usará a rotina "Análise de Sites") | Só necessária se `BRIEFING_USAR_CLAUDE=true` |
+| Provedor de CNPJ: BrasilAPI | Cadastro | Decidido e configurado (2026-09-28); serviço público, sem credencial |
 | Clicksign API v3 | Contrato | Sandbox, modelos e signatários pendentes |
 | Asaas API v3 | Cliente, cobranças, pagamentos | Sandbox e regra de disparo pendentes |
-| Controlle | Financeiro | **API não fornecida** — integração desativada |
+| Controlle | Financeiro | Não usado por este projeto: os lançamentos já vêm de uma integração existente (`CONTROLLE_ORIGEM_LANCAMENTOS=INTEGRACAO_EXISTENTE`). ATOM_07 só marca a fila como não aplicável |
 | Trello API | Cartão de execução e início efetivo | Credencial existente `Trello account`; quadro/listas a definir |
 | Zayra (existente) | Mensagens ao cliente (WhatsApp) | Mecanismo de acionamento a confirmar |
 | Meta/WhatsApp | Template do pedido de avaliação | Template aprovado pendente |
 | Google Perfil da Empresa | Link direto de avaliação | Pendente |
 | Desenvolvimento local | Build e testes | Node.js 18+, `esbuild`, `luxon`, `@n8n/workflow-sdk` (ver `package.json`) |
+
+## Decisões registradas (2026-09-28)
+
+| Tema | Decisão | Chave em `atom_config` |
+|---|---|---|
+| Disparo da cobrança | Junto com o envio do contrato | `COBRANCA_DISPARO=JUNTO_COM_CONTRATO` |
+| Diagnóstico | Reaproveitar a rotina "Análise de Sites" | `DIAGNOSTICO_MODO=ROTINA_EXISTENTE` |
+| CNPJ | BrasilAPI | `CNPJ_PROVEDOR=BRASILAPI`, `CNPJ_PROVEDOR_URL` |
+| Alertas | Tarefa no Pipedrive para o usuário 26712787 | `ALERTA_CANAL=PIPEDRIVE_ATIVIDADE`, `PD_ALERTA_USER_ID` |
+| Gatilho de site/diagnóstico | Etapa "Contactado" (7) | `PD_STAGES_REUNIAO_IDS=7` |
+| Proposta aceita | Criar etapa nova entre "Reunião concluída" e "Contrato assinado" | `PD_STAGE_PROPOSTA_ACEITA_ID` (aguarda a criação) |
+| Trello | Quadro novo exclusivo para execução | `TRELLO_BOARD_ID` e listas (aguardam a criação) |
+| Controlle | Integração existente faz os lançamentos | `CONTROLLE_ORIGEM_LANCAMENTOS=INTEGRACAO_EXISTENTE` |
+
+Com `COBRANCA_DISPARO=JUNTO_COM_CONTRATO`, a cobrança é criada mesmo que o cliente ainda não tenha assinado; se o contrato for
+recusado ou o negócio perdido, a cobrança precisa ser cancelada manualmente no Asaas (ATOM_05 e ATOM_04 geram alerta; nada é cancelado sozinho).
 
 ## Dúvidas bloqueantes (lista única)
 

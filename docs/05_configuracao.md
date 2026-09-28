@@ -35,7 +35,8 @@ As URLs de produção só respondem com o workflow **ativo**. Cadastre os webhoo
 
 ## 3. `atom_config`
 
-Edite pela interface do n8n (Data tables → `atom_config`). Regra: um valor só é usado quando `status = CONFIGURADO`.
+Edite pela interface do n8n (Data tables → `atom_config`) ou execute o utilitário **ATOM_00_Aplicar_Config** com
+`{ "linhas": [{ "chave": "...", "valor": "...", "status": "CONFIGURADO" }] }` (upsert por chave; recusa segredos). Regra: um valor só é usado quando `status = CONFIGURADO`.
 Valores `PROPOSTO` são sugestões para revisão. Lista completa: `docs/03_mapeamento_campos.md`.
 
 Ordem recomendada:

@@ -2,7 +2,7 @@
   "name": "ATOM_07_Controlle",
   "nodes": [
     {
-      "id": "f020a418-aaf8-4998-9428-b28536642b71",
+      "id": "9ed6ec00-88f2-420e-ac62-7c12e6fb265e",
       "name": "A cada 30 minutos",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "id": "5f693460-e924-421a-bbd1-4e7e7111170c",
+      "id": "49161fe8-3560-4402-bf41-12aa4526e292",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -44,7 +44,7 @@
       "executeOnce": true
     },
     {
-      "id": "635c2f08-0c76-4142-a97b-f9d352504a4e",
+      "id": "1e22a278-25b0-4e97-b3ee-ac685b72efbb",
       "name": "Reprocessar agora",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -57,7 +57,7 @@
       }
     },
     {
-      "id": "8581d52f-1c79-47a9-85f0-a6d9f76c2bec",
+      "id": "be324297-bea1-4ad0-acc1-45909ef2e18b",
       "name": "Fila financeira",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -104,7 +104,7 @@
       "executeOnce": true
     },
     {
-      "id": "f316186c-20d4-4856-a86d-635dfa4bbea5",
+      "id": "1130e1d9-0fcf-401d-b420-b5c69ddce871",
       "name": "Preparar lançamentos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -118,7 +118,7 @@
       }
     },
     {
-      "id": "7102d1dc-5c16-4a6c-a89d-4bab3ae278b6",
+      "id": "968b5bb9-dce6-45eb-a2a1-0bb86ecab6dd",
       "name": "Enviar ao Controlle?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -150,7 +150,7 @@
       }
     },
     {
-      "id": "d857c30b-9c0b-44e7-942e-e2eff0ee8a15",
+      "id": "65d352ee-905f-4437-b5f1-00d47bff2df6",
       "name": "Controlle — adaptador (DESATIVADO até a API ser fornecida)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -193,7 +193,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "eecf3c48-c831-4c2f-aefc-696b64d19139",
+      "id": "0429bad3-adca-4bac-b4ee-d95186dc5d3b",
       "name": "Interpretar resposta do Controlle",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -207,7 +207,7 @@
       }
     },
     {
-      "id": "61b85e3f-3d8f-45b5-8db6-21e94e1e02d6",
+      "id": "de7e9fda-7162-487d-b5db-1ed1d38f8612",
       "name": "Atualizar lançamento enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -295,7 +295,7 @@
       }
     },
     {
-      "id": "dcfce173-bfe3-42f5-ac1b-e7e65e9d4471",
+      "id": "874dfe27-cd3d-4da0-bcef-a54c0d28f27a",
       "name": "Atualizar fila financeira",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -373,8 +373,8 @@
       }
     },
     {
-      "id": "fd9212cd-42e0-442c-9f41-9389ad483cf8",
-      "name": "Sticky Note fd9212cd",
+      "id": "34ea4843-cf59-45d6-9144-e650bb03697f",
+      "name": "Sticky Note 34ea4843",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

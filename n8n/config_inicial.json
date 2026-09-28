@@ -15,8 +15,8 @@
   },
   {
     "chave": "ALERTA_CANAL",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "PIPEDRIVE_ATIVIDADE",
+    "status": "CONFIGURADO",
     "descricao": "PIPEDRIVE_ATIVIDADE (tarefa para PD_ALERTA_USER_ID) ou WEBHOOK (ALERTA_WEBHOOK_URL). Sem canal: alertas só ficam em atom_eventos.",
     "usado_por": "ATOM_11"
   },
@@ -30,7 +30,7 @@
   {
     "chave": "PD_ALERTA_USER_ID",
     "valor": "26712787",
-    "status": "PROPOSTO",
+    "status": "CONFIGURADO",
     "descricao": "Usuário Pipedrive que recebe tarefas de alerta (26712787 = proprietário dos negócios inspecionados).",
     "usado_por": "ATOM_11"
   },
@@ -50,8 +50,8 @@
   },
   {
     "chave": "PD_STAGES_REUNIAO_IDS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "7",
+    "status": "CONFIGURADO",
     "descricao": "IDs das etapas em que o lead avançou para reunião (lista separada por vírgula). Funil 2 atual: 6 Novo negócio, 7 Contactado, 8 Proposta Enviada, 9 Reunião concluída, 11 Contrato assinado. Não há etapa \"reunião agendada\".",
     "usado_por": "ATOM_01, ATOM_02"
   },
@@ -456,8 +456,8 @@
   },
   {
     "chave": "DIAGNOSTICO_MODO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "ROTINA_EXISTENTE",
+    "status": "CONFIGURADO",
     "descricao": "PADRAO_ATOM (modelo aprovado — não fornecido), ROTINA_EXISTENTE (workflow \"Análise de Sites\" — não acessível via MCP) ou PROVISORIO (proposta).",
     "usado_por": "ATOM_02"
   },
@@ -498,15 +498,15 @@
   },
   {
     "chave": "CNPJ_PROVEDOR",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "BRASILAPI",
+    "status": "CONFIGURADO",
     "descricao": "Provedor autorizado de consulta: BRASILAPI (público) ou outro com mapeamento implementado.",
     "usado_por": "ATOM_03"
   },
   {
     "chave": "CNPJ_PROVEDOR_URL",
     "valor": "https://brasilapi.com.br/api/cnpj/v1/{cnpj}",
-    "status": "PROPOSTO",
+    "status": "CONFIGURADO",
     "descricao": "URL com {cnpj}. Endpoint documentado da BrasilAPI; uso depende de autorização.",
     "usado_por": "ATOM_03"
   },
@@ -582,9 +582,9 @@
   },
   {
     "chave": "COBRANCA_DISPARO",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "JUNTO_COM_CONTRATO ou APOS_ASSINATURAS. Decisão não tomada: nenhuma cobrança é criada até definir.",
+    "valor": "JUNTO_COM_CONTRATO",
+    "status": "CONFIGURADO",
+    "descricao": "JUNTO_COM_CONTRATO ou APOS_ASSINATURAS. Decidido em 2026-09-28: JUNTO_COM_CONTRATO.",
     "usado_por": "ATOM_05, ATOM_06"
   },
   {
@@ -631,9 +631,9 @@
   },
   {
     "chave": "CONTROLLE_ORIGEM_LANCAMENTOS",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade.",
+    "valor": "INTEGRACAO_EXISTENTE",
+    "status": "CONFIGURADO",
+    "descricao": "ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade. Decidido em 2026-09-28: INTEGRACAO_EXISTENTE.",
     "usado_por": "ATOM_07"
   },
   {
@@ -838,5 +838,12 @@
     "status": "CONFIGURADO",
     "descricao": "ID do workflow ATOM_11_Erros_Reconciliacao",
     "usado_por": "ATOM_02-09"
+  },
+  {
+    "chave": "WF_ATOM_00",
+    "valor": "E3SVfrlTjba5wq8r",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_00_Aplicar_Config (utilitário de configuração)",
+    "usado_por": "manual"
   }
 ]

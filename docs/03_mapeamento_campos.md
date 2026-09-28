@@ -10,7 +10,7 @@ Toda leitura/escrita de campo passa por uma chave de `atom_config`. Nenhum ID de
 
 Campos personalizados: informe o **hash de 40 caracteres** do campo (Pipedrive → Configurações → Campos de dados). Campos nativos: `nativo:<nome>` (ex.: `nativo:website`).
 
-Resumo: 14 CONFIGURADO, 20 PROPOSTO, 86 PENDENTE (total 120).
+Resumo: 23 CONFIGURADO, 18 PROPOSTO, 80 PENDENTE (total 121).
 
 ## Campos da organização (Pipedrive)
 
@@ -80,10 +80,10 @@ Resumo: 14 CONFIGURADO, 20 PROPOSTO, 86 PENDENTE (total 120).
 
 | Chave | Status | Valor atual | Usado por | Descrição |
 |---|---|---|---|---|
-| `PD_ALERTA_USER_ID` | PROPOSTO | `26712787` | ATOM_11 | Usuário Pipedrive que recebe tarefas de alerta (26712787 = proprietário dos negócios inspecionados). |
+| `PD_ALERTA_USER_ID` | CONFIGURADO | `26712787` | ATOM_11 | Usuário Pipedrive que recebe tarefas de alerta (26712787 = proprietário dos negócios inspecionados). |
 | `PD_APP_URL` | PENDENTE | — | ATOM_02, ATOM_08 | URL da conta Pipedrive (ex.: https://<empresa>.pipedrive.com) para links nos cartões e diagnósticos. |
 | `PD_INTEGRACAO_USER_ID` | PENDENTE | — | ATOM_01 | ID do usuário Pipedrive dono do token do n8n (recomendado: usuário dedicado) — anti-loop. |
-| `PD_STAGES_REUNIAO_IDS` | PENDENTE | — | ATOM_01, ATOM_02 | IDs das etapas em que o lead avançou para reunião (lista separada por vírgula). Funil 2 atual: 6 Novo negócio, 7 Contactado, 8 Proposta Enviada, 9 Reunião concluída, 11 Contrato assinado. Não há etapa "reunião agendada". |
+| `PD_STAGES_REUNIAO_IDS` | CONFIGURADO | `7` | ATOM_01, ATOM_02 | IDs das etapas em que o lead avançou para reunião (lista separada por vírgula). Funil 2 atual: 6 Novo negócio, 7 Contactado, 8 Proposta Enviada, 9 Reunião concluída, 11 Contrato assinado. Não há etapa "reunião agendada". |
 | `PD_STAGE_PROPOSTA_ACEITA_ID` | PENDENTE | — | ATOM_01, ATOM_04 | ID da etapa "Proposta aceita". NÃO EXISTE no funil atual: criar a etapa e informar o ID. |
 | `PD_EMAIL_REUNIAO` | PROPOSTO | `nativo:emails` | ATOM_01, ATOM_02, ATOM_04 | Origem do e-mail da reunião: nativo:emails (e-mail principal da pessoa) ou hash de campo do negócio. |
 | `PD_PERSON_NAO_CONTATAR` | PENDENTE | — | ATOM_09 | Campo da PESSOA com preferência de não ser contatada (Sim/Não). |
@@ -103,6 +103,7 @@ Resumo: 14 CONFIGURADO, 20 PROPOSTO, 86 PENDENTE (total 120).
 | `WF_ATOM_09` | CONFIGURADO | `mz3IlkB8UjriSQzO` | ATOM_08 | ID do workflow ATOM_09_Avaliacao_Google |
 | `WF_ATOM_10` | CONFIGURADO | `D0MWED51LMZE4FU7` | ATOM_02, ATOM_04, ATOM_09 | ID do workflow ATOM_10_Zayra_Interface |
 | `WF_ATOM_11` | CONFIGURADO | `vd4MLxMjp8SlGgRh` | ATOM_02-09 | ID do workflow ATOM_11_Erros_Reconciliacao |
+| `WF_ATOM_00` | CONFIGURADO | `E3SVfrlTjba5wq8r` | manual | ID do workflow ATOM_00_Aplicar_Config (utilitário de configuração) |
 
 ## Parâmetros de integração e regras
 
@@ -110,16 +111,16 @@ Resumo: 14 CONFIGURADO, 20 PROPOSTO, 86 PENDENTE (total 120).
 |---|---|---|---|---|
 | `MODO_EXECUCAO` | CONFIGURADO | `SIMULACAO` | todos | SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Clicksign, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO). |
 | `RETENTATIVAS_MAX` | PROPOSTO | `6` | ATOM_07, ATOM_11 | Máximo de retentativas automáticas (backoff exponencial em minutos). |
-| `ALERTA_CANAL` | PENDENTE | — | ATOM_11 | PIPEDRIVE_ATIVIDADE (tarefa para PD_ALERTA_USER_ID) ou WEBHOOK (ALERTA_WEBHOOK_URL). Sem canal: alertas só ficam em atom_eventos. |
+| `ALERTA_CANAL` | CONFIGURADO | `PIPEDRIVE_ATIVIDADE` | ATOM_11 | PIPEDRIVE_ATIVIDADE (tarefa para PD_ALERTA_USER_ID) ou WEBHOOK (ALERTA_WEBHOOK_URL). Sem canal: alertas só ficam em atom_eventos. |
 | `ALERTA_WEBHOOK_URL` | PENDENTE | — | ATOM_11 | URL de webhook interno para alertas (ex.: Google Chat/Slack). Contém segredo: restrinja o acesso ao n8n. |
-| `DIAGNOSTICO_MODO` | PENDENTE | — | ATOM_02 | PADRAO_ATOM (modelo aprovado — não fornecido), ROTINA_EXISTENTE (workflow "Análise de Sites" — não acessível via MCP) ou PROVISORIO (proposta). |
+| `DIAGNOSTICO_MODO` | CONFIGURADO | `ROTINA_EXISTENTE` | ATOM_02 | PADRAO_ATOM (modelo aprovado — não fornecido), ROTINA_EXISTENTE (workflow "Análise de Sites" — não acessível via MCP) ou PROVISORIO (proposta). |
 | `DIAGNOSTICO_PERMITIR_PROVISORIO` | PROPOSTO | `false` | ATOM_02 | true permite usar o modelo PROVISÓRIO (identificado como proposta no CRM). |
 | `DIAGNOSTICO_PADRAO_VERSAO` | PENDENTE | — | ATOM_02 | Versão do diagnóstico padrão aprovado da Atom (quando fornecido). |
 | `ANTHROPIC_MODEL` | PENDENTE | — | ATOM_02, ATOM_08 | ID do modelo compatível com a conta (ex.: claude-opus-5-5, claude-sonnet-5, claude-haiku-4-5). Confirmar disponibilidade. |
 | `ANTHROPIC_MAX_TOKENS` | PROPOSTO | `4000` | ATOM_02 | Limite de tokens de saída do diagnóstico. |
 | `BRIEFING_USAR_CLAUDE` | PROPOSTO | `false` | ATOM_08 | true usa a Claude para organizar o briefing do cartão (somente dados aprovados). |
-| `CNPJ_PROVEDOR` | PENDENTE | — | ATOM_03 | Provedor autorizado de consulta: BRASILAPI (público) ou outro com mapeamento implementado. |
-| `CNPJ_PROVEDOR_URL` | PROPOSTO | `https://brasilapi.com.br/api/cnpj/v1/{cnpj}` | ATOM_03 | URL com {cnpj}. Endpoint documentado da BrasilAPI; uso depende de autorização. |
+| `CNPJ_PROVEDOR` | CONFIGURADO | `BRASILAPI` | ATOM_03 | Provedor autorizado de consulta: BRASILAPI (público) ou outro com mapeamento implementado. |
+| `CNPJ_PROVEDOR_URL` | CONFIGURADO | `https://brasilapi.com.br/api/cnpj/v1/{cnpj}` | ATOM_03 | URL com {cnpj}. Endpoint documentado da BrasilAPI; uso depende de autorização. |
 | `CNPJ_PROVEDOR_ACEITA_ALFANUMERICO` | PROPOSTO | `false` | ATOM_03 | true somente após confirmar suporte do provedor a CNPJ alfanumérico. |
 | `CLICKSIGN_BASE_URL` | PROPOSTO | `https://sandbox.clicksign.com/api/v3` | ATOM_05 | Sandbox (testes) ou https://app.clicksign.com/api/v3 (produção). |
 | `CLICKSIGN_VALIDADO_SANDBOX` | PENDENTE | — | ATOM_05 | Marcar CONFIGURADO (valor SIM) após validar no sandbox: documento por modelo, signatário sem CPF, cabeçalho HMAC e payload do webhook. |
@@ -130,14 +131,14 @@ Resumo: 14 CONFIGURADO, 20 PROPOSTO, 86 PENDENTE (total 120).
 | `CLICKSIGN_HMAC_CABECALHO` | PROPOSTO | `content-hmac` | ATOM_05 | Cabeçalho com a assinatura HMAC do webhook (fontes divergem: Content-Hmac ou x-clicksign-signature). |
 | `CLICKSIGN_MODELO_EXEMPLO` | PENDENTE | — | ATOM_05 | Chave do modelo aprovado para PD_DEAL_MODELO_CONTRATO=EXEMPLO. Criar uma linha CLICKSIGN_MODELO_<CODIGO> por modelo. |
 | `CLICKSIGN_MAPA_EXEMPLO` | PENDENTE | — | ATOM_05 | JSON {"VARIAVEL_DO_MODELO":"caminho.no.snapshot"}, ex.: {"RAZAO_SOCIAL":"empresa.razao_social","VALOR_TOTAL":"financeiro.valor_total"}. |
-| `COBRANCA_DISPARO` | PENDENTE | — | ATOM_05, ATOM_06 | JUNTO_COM_CONTRATO ou APOS_ASSINATURAS. Decisão não tomada: nenhuma cobrança é criada até definir. |
+| `COBRANCA_DISPARO` | CONFIGURADO | `JUNTO_COM_CONTRATO` | ATOM_05, ATOM_06 | JUNTO_COM_CONTRATO ou APOS_ASSINATURAS. Decidido em 2026-09-28: JUNTO_COM_CONTRATO. |
 | `ASAAS_BASE_URL` | PROPOSTO | `https://api-sandbox.asaas.com/v3` | ATOM_06, ATOM_08 | Sandbox (testes) ou https://api.asaas.com/v3 (produção). |
 | `ASAAS_VALIDADO_SANDBOX` | PENDENTE | — | ATOM_06 | Marcar CONFIGURADO (valor SIM) após validar cobranças e webhooks no sandbox. |
 | `ASAAS_NOTIFICACOES_DESATIVADAS` | PROPOSTO | `false` | ATOM_06 | true desativa as notificações do próprio Asaas ao cliente (notificationDisabled). |
 | `CONTROLLE_API_HABILITADA` | CONFIGURADO | `false` | ATOM_07 | API do Controlle ainda não fornecida: chamadas reais desativadas. |
 | `CONTROLLE_BASE_URL` | PENDENTE | — | ATOM_07 | URL base da API Controlle (a fornecer). |
 | `CONTROLLE_MAPEAMENTO` | PENDENTE | — | ATOM_07 | JSON de mapeamento (categorias, conta bancária, centro de custo) — a definir com a API real. |
-| `CONTROLLE_ORIGEM_LANCAMENTOS` | PENDENTE | — | ATOM_07 | ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade. |
+| `CONTROLLE_ORIGEM_LANCAMENTOS` | CONFIGURADO | `INTEGRACAO_EXISTENTE` | ATOM_07 | ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade. Decidido em 2026-09-28: INTEGRACAO_EXISTENTE. |
 | `LIBERACAO_REGRA` | PROPOSTO | `CONTRATO_ASSINADO_E_PAGAMENTO_INICIAL` | ATOM_08 | Regra proposta: contrato assinado por todos + pagamento inicial confirmado/recebido + negócio não cancelado. |
 | `LIBERACAO_ACEITA_RECEBIDO_EM_DINHEIRO` | PROPOSTO | `false` | ATOM_08 | true considera RECEIVED_IN_CASH (baixa manual no Asaas) como pagamento inicial. |
 | `TRELLO_BOARD_ID` | PENDENTE | — | ATOM_08 | Quadro de execução (quadros existentes: ATOM, DEMANDAS, Comercial, Gear, etc. — definir). |

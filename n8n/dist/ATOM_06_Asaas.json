@@ -2,7 +2,7 @@
   "name": "ATOM_06_Asaas",
   "nodes": [
     {
-      "id": "da9ff2b6-bb99-4dce-8eec-6f948b6de8a8",
+      "id": "653dd296-ac40-4f7b-80f3-173c9f08835a",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "399f6e59-2d2f-4949-81ab-24f3f72ec2b2",
+      "id": "472bb826-eda2-4630-9697-474c3dff28ab",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "f3d66be9-0279-4b44-b1ea-80a7630d1f19",
+      "id": "fc3d03de-b5e9-4f6d-aeb0-ecf57cd5b7b0",
       "name": "Ação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -96,7 +96,7 @@
       }
     },
     {
-      "id": "3e950937-b793-42e4-9e70-110ecab3a0db",
+      "id": "0587dd2d-e550-41c8-93da-a409f69f29a6",
       "name": "Snapshot",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -133,7 +133,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "67e65473-f213-44bd-a166-f20c679baff4",
+      "id": "89a6497b-2c5a-4bf9-bdd6-2e0123b0b751",
       "name": "Vínculos Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -171,7 +171,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "9ddd574d-0901-4a9e-99b3-aa5b86e25747",
+      "id": "2062d200-ceae-47e8-98ac-09185712d79f",
       "name": "Cliente Asaas vinculado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -214,7 +214,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "085fe9ae-d8af-42b7-8ee3-84b83330611d",
+      "id": "3d8442be-95cd-4db2-a9a1-e7b253b977eb",
       "name": "Planejar cobranças",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -228,7 +228,7 @@
       }
     },
     {
-      "id": "3b378a42-8364-4159-93c9-2cb961465d2f",
+      "id": "3648eb39-0227-45f8-ba2f-0e13f1f61d22",
       "name": "Executar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -260,7 +260,7 @@
       }
     },
     {
-      "id": "96779ca9-d82f-4561-9d00-106103be5fff",
+      "id": "cf83dcac-b76e-4a59-b8c7-414f4c4296a8",
       "name": "Cliente já vinculado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -292,7 +292,7 @@
       }
     },
     {
-      "id": "56360bed-e680-41cb-9ff9-c62cfba206e0",
+      "id": "464818d2-32f5-4500-84cc-f0946b1cb4f7",
       "name": "Itens de cobrança",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -307,7 +307,7 @@
       "executeOnce": true
     },
     {
-      "id": "f472e23b-c8bb-4e8e-90f9-2f68085ecb02",
+      "id": "e04a0ab0-420f-488b-8693-170512fb9150",
       "name": "Asaas — buscar cliente por CNPJ",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -350,7 +350,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "073fa05f-00a1-4b60-b857-a0cb414b98ad",
+      "id": "d4d2c740-9fa7-4ba6-b91b-d6a5f7b488a6",
       "name": "Cliente existente?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -364,7 +364,7 @@
       }
     },
     {
-      "id": "2cc30a0f-c039-4569-9c3a-605c361fbc05",
+      "id": "f1cdb9bf-dc19-4a46-acee-c989de61c485",
       "name": "Criar cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -396,7 +396,7 @@
       }
     },
     {
-      "id": "ee74f0da-a4c4-4a6e-8ff9-e72a04bff505",
+      "id": "6162e364-9c40-41fa-aae6-267d80935823",
       "name": "Asaas — criar cliente",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -431,7 +431,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "315265ef-974c-4e44-bd94-effaaa6a9676",
+      "id": "aa88713d-e98c-4cc9-95e5-def735873623",
       "name": "Cliente criado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -445,7 +445,7 @@
       }
     },
     {
-      "id": "d3b96719-9fbd-4fff-9537-63f086f08f3b",
+      "id": "979e6940-43a0-4bc7-b240-a5842567065a",
       "name": "Registrar cliente Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -603,7 +603,7 @@
       }
     },
     {
-      "id": "f46bac57-436c-4805-8bd1-61f90b6e98b9",
+      "id": "93cd2884-b0a1-4c97-b2fc-431649b948ad",
       "name": "Registrar bloqueio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -617,7 +617,7 @@
       }
     },
     {
-      "id": "b0c8f75e-45de-48c8-a1d8-3eb7854d350e",
+      "id": "939e4c0b-e94e-42a4-a0fe-f33a8ef32f2d",
       "name": "Salvar ação bloqueada",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -775,7 +775,7 @@
       }
     },
     {
-      "id": "2966b0a7-03c2-4aa0-aa5d-73e26128630a",
+      "id": "649a1280-1cec-42d3-b60a-b03857c04426",
       "name": "Salvar cobrança aguardando configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -843,7 +843,7 @@
       }
     },
     {
-      "id": "cb7abb04-c00a-4da8-880e-7f8d689c963c",
+      "id": "5ec1a401-630c-4ba3-b8be-dc630e3fbb40",
       "name": "Pagamento a processar (reconciliação)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -857,7 +857,7 @@
       }
     },
     {
-      "id": "f5e062e7-8c4d-43e4-9817-ececd010bc95",
+      "id": "8918d014-9f9c-4b58-9e48-031717870bbc",
       "name": "Consultar pagamento",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -891,7 +891,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "9f15e524-03f0-4927-962e-5c9c925e010a",
+      "id": "fb51b9a2-c8a2-4e90-a6f4-818873b3961b",
       "name": "Asaas — verificar externalReference",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -934,7 +934,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "a563a1ab-5f20-44de-ae9f-73e8faffa762",
+      "id": "440de9d4-a371-4eae-9ebf-fe091960859a",
       "name": "Criar ou reaproveitar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -948,7 +948,7 @@
       }
     },
     {
-      "id": "50769a46-bf00-43de-bd1d-45dfba58bbf1",
+      "id": "7c6b0d78-12f9-4b3b-87ec-1fced4860984",
       "name": "Criar cobrança?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -980,7 +980,7 @@
       }
     },
     {
-      "id": "c01ca0d2-2ea5-421d-bc3f-43e0db12260b",
+      "id": "adaec46b-572c-4552-a96d-feced8e5e9f4",
       "name": "Asaas — criar cobrança/parcelamento/assinatura",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1015,7 +1015,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "14c401f6-2b10-4c2d-b2fe-1baff1dc3c22",
+      "id": "a3d289c3-657d-46fe-8730-da2c3a3d30d2",
       "name": "Resultado das cobranças",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1029,7 +1029,7 @@
       }
     },
     {
-      "id": "1538f771-2332-46ec-990c-76d4d1ee4676",
+      "id": "5b738dfc-43e0-41e9-8322-d0ba84b7a389",
       "name": "Separar vínculos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1043,7 +1043,7 @@
       }
     },
     {
-      "id": "e393f589-6402-4b7e-9850-480bf0d6bcae",
+      "id": "c94d9e03-5327-4b3b-a983-fde90383ab95",
       "name": "Registrar vínculos Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1216,7 +1216,7 @@
       }
     },
     {
-      "id": "2f06637f-77ca-46c2-8c13-065649d74b03",
+      "id": "94a57ad2-e6e7-4a73-b97a-58d8131a281f",
       "name": "Resumo das cobranças",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1231,7 +1231,7 @@
       "executeOnce": true
     },
     {
-      "id": "6b36df8f-a53d-461b-85b6-91bf61c1151a",
+      "id": "dbbf76d1-5c26-4afd-9096-027ea9561a71",
       "name": "Salvar cobrança aguardando pagamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1299,7 +1299,7 @@
       }
     },
     {
-      "id": "96da4090-ff14-459e-b181-88ce7bbf4c14",
+      "id": "11cb0703-d184-47a0-834a-31965e2377f8",
       "name": "Registrar ação concluída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1458,7 +1458,7 @@
       "executeOnce": true
     },
     {
-      "id": "9e5ceafa-cd64-4f2c-ac53-f9bae4986120",
+      "id": "b851ea47-941c-428d-9d79-ffd9f761a861",
       "name": "Contas a receber (fila Controlle)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1473,7 +1473,7 @@
       "executeOnce": true
     },
     {
-      "id": "9921c647-a7dc-44f4-810c-0f31e2a3f766",
+      "id": "7ebf77ff-c7aa-41f9-a5eb-c894293ee2fb",
       "name": "Somente lançamentos novos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1503,7 +1503,7 @@
       }
     },
     {
-      "id": "139d7155-d27f-4013-95d6-9769c83d7c62",
+      "id": "a2e748db-534e-4e9e-b5cf-06e5e3cf852d",
       "name": "Enfileirar para o Controlle",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1661,7 +1661,7 @@
       }
     },
     {
-      "id": "711e6716-8798-457d-ac90-03ccc2a5d4e2",
+      "id": "944dbaf9-7033-4919-82dd-f0cea2fe1e2c",
       "name": "Atualizar negócio (cobranças)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1693,7 +1693,7 @@
       }
     },
     {
-      "id": "35ba7c09-c43a-48d9-a48e-ac613b2b52c5",
+      "id": "83cc7973-43d3-41f2-beea-b35f06e700a1",
       "name": "Atualizar negócio (IDs Asaas)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1719,7 +1719,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "da702f21-e3bc-4a71-bb94-3c3e6fd9ed64",
+      "id": "3538c807-2f73-4b6b-90ae-e71362cf9c5b",
       "name": "Falha na criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1734,7 +1734,7 @@
       "executeOnce": true
     },
     {
-      "id": "7b810889-4076-4f7a-9c18-abda95f3e465",
+      "id": "93d4eaeb-4ec5-456a-a8c1-a90a184ca6ff",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1892,7 +1892,7 @@
       }
     },
     {
-      "id": "e11d37f3-0d6a-49ca-8481-9a67c24a2949",
+      "id": "a3f15cfa-a277-41a9-8045-c1b751f737fb",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1906,7 +1906,7 @@
       }
     },
     {
-      "id": "a18e4072-97ec-41d3-9b00-e1b7e9d2cf91",
+      "id": "91e3a405-9f96-4f16-983b-ef3fd226e2ab",
       "name": "ATOM_11 — alerta Asaas",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1929,7 +1929,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "fc63864a-8102-43c1-96e0-e7c36b504ad6",
+      "id": "e6d4ce23-2ec3-44c9-9a60-8c18700acff1",
       "name": "Webhook Asaas",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1944,11 +1944,11 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "c1fff0a5-aee0-47b0-95b1-6f6c440759bd",
+      "webhookId": "86ee2c40-42b6-456b-aeb1-9a7109a48f82",
       "credentials": {}
     },
     {
-      "id": "f338613d-b998-480c-8b5f-abd8c7543dad",
+      "id": "250fc572-ab57-40bb-9f4b-7c5169a4538b",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1970,7 +1970,7 @@
       "executeOnce": true
     },
     {
-      "id": "0b481657-7681-4bdb-ab2e-70d7091b9869",
+      "id": "e2ff9559-dc49-42e9-830c-3bd25a1daae4",
       "name": "Normalizar evento Asaas",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1984,7 +1984,7 @@
       }
     },
     {
-      "id": "1be12ce5-9f74-4352-9de2-cddc8d04af6e",
+      "id": "2fe0968b-27fc-4971-9e9e-86eaf8402490",
       "name": "Evento Asaas já recebido?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2016,7 +2016,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "7574a5bf-90de-44b4-8744-5aac3a95752a",
+      "id": "951c1908-7317-4d20-ac14-3a4769b82a50",
       "name": "Deduplicar evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2030,7 +2030,7 @@
       }
     },
     {
-      "id": "fa3ada64-9905-4783-a53e-8c497f3c42dc",
+      "id": "17c10e3f-8b37-4aea-84d8-5105ad92d758",
       "name": "Registrar evento Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2178,7 +2178,7 @@
       }
     },
     {
-      "id": "57f979c1-f023-4b86-a44f-4cca57efc198",
+      "id": "b8d2478d-e4d0-428b-83d6-1de647f2fdf3",
       "name": "Pagamento a processar (webhook)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2192,7 +2192,7 @@
       }
     },
     {
-      "id": "6c62cf5d-6356-4bc4-943f-99883a25966b",
+      "id": "bbcea478-3169-485d-9d64-fbead93f56c1",
       "name": "Vínculos do pagamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2239,7 +2239,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "3d4f1bfc-3cc7-4c88-9711-28eecc74f9c6",
+      "id": "d0be2e43-1d36-4acf-b3f0-04bb56bc52c6",
       "name": "Resolver pagamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2253,7 +2253,7 @@
       }
     },
     {
-      "id": "41f7488f-76ad-4057-abd5-f30320318927",
+      "id": "8456a771-90f1-4075-bc9b-8e7e3e71e147",
       "name": "Atualizar vínculo do pagamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2426,7 +2426,7 @@
       }
     },
     {
-      "id": "8414bc0f-fca8-49f2-9fde-9fa8adaae570",
+      "id": "29207530-0210-4d8e-bc4f-20299decd30d",
       "name": "Gera lançamento financeiro?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2458,7 +2458,7 @@
       }
     },
     {
-      "id": "772dcc7c-568a-4aa3-92db-0a3e366702ce",
+      "id": "5bbcc114-38af-45ac-aa0e-a491975d20af",
       "name": "Lançamento da transição",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2472,7 +2472,7 @@
       }
     },
     {
-      "id": "a7fd9001-1467-48a2-8788-bbd8dd0695f2",
+      "id": "854f263a-7e38-4d15-8f28-a39609754b10",
       "name": "Transição ainda não registrada?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2502,7 +2502,7 @@
       }
     },
     {
-      "id": "f1f4eaf3-b5e5-4d86-940c-286c07e73011",
+      "id": "064bb144-16c0-4392-91a5-ee19a46a4df9",
       "name": "Enfileirar transição para o Controlle",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2660,7 +2660,7 @@
       }
     },
     {
-      "id": "388b9ee7-fde7-430a-a97d-5cb93d98c553",
+      "id": "a869133c-21f4-4837-a3e2-77833cbb85a9",
       "name": "Cobrança inicial?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2692,7 +2692,7 @@
       }
     },
     {
-      "id": "02638e9d-0cfb-45e6-98da-0b2ca0dd73ed",
+      "id": "00003ae6-bbec-4bb1-be92-1961b2335547",
       "name": "Salvar situação do pagamento inicial",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2760,7 +2760,7 @@
       }
     },
     {
-      "id": "8d726803-48fc-4732-9b8a-ecbb7a66bbf2",
+      "id": "c454b4ef-12bb-4133-a219-3d3dbcf737a9",
       "name": "Campos do pagamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2774,7 +2774,7 @@
       }
     },
     {
-      "id": "026f804e-eaf5-45f4-8be2-3a60a161b015",
+      "id": "8bd9480f-b565-434b-9a9b-a66a005d1538",
       "name": "Atualizar negócio (pagamento)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2806,7 +2806,7 @@
       }
     },
     {
-      "id": "51f7469d-e4c6-410e-8a5e-425652d1fba3",
+      "id": "f7248d76-4e25-4f76-a8a0-8069dec24822",
       "name": "Atualizar negócio (situação do pagamento)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2831,7 +2831,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "bad118c4-2277-490b-82a5-e57e16197d76",
+      "id": "63e5132b-4e70-42e8-b4f3-c60e7dcbbb8e",
       "name": "Reavaliar liberação?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2863,7 +2863,7 @@
       }
     },
     {
-      "id": "aac53e3e-a7ec-49e2-9c0a-af9d97f48d0a",
+      "id": "ab83559c-4509-4334-959a-94012335c502",
       "name": "Alertar (estorno/chargeback/cancelamento)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2895,7 +2895,7 @@
       }
     },
     {
-      "id": "693b4f0a-06ef-4bb0-aa43-ec7438ee2979",
+      "id": "fe4f07ab-dedd-4291-850c-058e8075daf9",
       "name": "Pedido de reavaliação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2909,7 +2909,7 @@
       }
     },
     {
-      "id": "d3ddba84-eed6-438f-914a-8630a594569d",
+      "id": "c368e2d9-f1cd-4b69-82fb-099ee9b9f29c",
       "name": "ATOM_08 — reavaliar liberação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2932,7 +2932,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "17b45fac-ffab-4c9a-a11f-3472ec129dc6",
+      "id": "d3095bb0-a385-469c-9120-3a411f3c48ae",
       "name": "Alerta financeiro",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2946,7 +2946,7 @@
       }
     },
     {
-      "id": "aa956d68-5c42-433b-a3c3-793192bcf482",
+      "id": "f3a4b361-47a6-4238-a5c3-a527675aa0e1",
       "name": "ATOM_11 — alerta financeiro",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2969,8 +2969,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "694bbc95-e663-4ac3-a1f3-7cbe01a38ddb",
-      "name": "Sticky Note 694bbc95",
+      "id": "39396715-ef85-44c5-b807-57c5e0e68e85",
+      "name": "Sticky Note 39396715",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

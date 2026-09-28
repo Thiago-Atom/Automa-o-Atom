@@ -1,0 +1,187 @@
+{
+  "name": "ATOM_00_Aplicar_Config",
+  "nodes": [
+    {
+      "id": "5aac8cf2-60b9-4c54-881c-32f298fc0bac",
+      "name": "Entrada",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        300
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "id": "36def88c-4f91-4086-9cff-23bc13c2a337",
+      "name": "Ler configuração",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "b6414856-f5b7-4a06-9bde-d5910d64b392",
+      "name": "Validar e mesclar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00.js#preparar. Edite a fonte no repositório, não este nó.\nconst existentes = {};\nfor (const i of $('Ler configuração').all()) if (i.json && i.json.chave) existentes[i.json.chave] = i.json;\nconst pedido = $('Entrada').first().json.linhas || [];\nconst STATUS = ['CONFIGURADO', 'PROPOSTO', 'PENDENTE'];\n// Heurística contra segredos: tokens longos sem espaço, prefixos típicos de chave ou \"Bearer\".\nconst pareceSegredo = (v) => /^(sk-|pk_|ghp_|xox|U2FsdGVk|\\$aact_)/i.test(v) || /bearer\\s/i.test(v) ||\n  (/^[A-Za-z0-9+/=_-]{32,}$/.test(v) && !/^[a-f0-9]{40}$/i.test(v) && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v)); // hash de campo e UUID são permitidos\nconst out = [];\nfor (const l of pedido) {\n  const chave = String(l.chave || '').trim();\n  const valor = l.valor === null || l.valor === undefined ? '' : String(l.valor).trim();\n  const status = String(l.status || '').trim().toUpperCase();\n  if (!/^[A-Z][A-Z0-9_]{1,62}$/.test(chave)) throw new Error('Chave inválida: ' + chave);\n  if (!STATUS.includes(status)) throw new Error('Status inválido em ' + chave + ': ' + status);\n  if (pareceSegredo(valor)) throw new Error('Valor de ' + chave + ' parece um segredo. Segredos vão em Credentials do n8n.');\n  const atual = existentes[chave] || {};\n  out.push({ json: { row: { chave, valor, status,\n    descricao: l.descricao !== undefined ? String(l.descricao) : String(atual.descricao || ''),\n    usado_por: l.usado_por !== undefined ? String(l.usado_por) : String(atual.usado_por || '') } } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "e3cfc413-2d0f-4806-b437-12efb7b4c3a5",
+      "name": "Gravar em atom_config",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chave",
+              "condition": "eq",
+              "keyValue": "={{ $json.row.chave }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chave": "={{ $json.row.chave }}",
+            "valor": "={{ $json.row.valor }}",
+            "status": "={{ $json.row.status }}",
+            "descricao": "={{ $json.row.descricao }}",
+            "usado_por": "={{ $json.row.usado_por }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valor",
+              "displayName": "valor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "descricao",
+              "displayName": "descricao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "usado_por",
+              "displayName": "usado_por",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Entrada": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração": {
+      "main": [
+        [
+          {
+            "node": "Validar e mesclar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar e mesclar": {
+      "main": [
+        [
+          {
+            "node": "Gravar em atom_config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "atomBuild": "2026-09-28"
+  }
+}
