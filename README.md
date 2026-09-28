@@ -22,6 +22,7 @@ contrato assinado + pagamento inicial → Trello, e início da execução + 7 di
 | [docs/08_ativacao_e_recuperacao.md](docs/08_ativacao_e_recuperacao.md) | Ativação por etapas e recuperação de falhas |
 | [docs/09_contrato_zayra.md](docs/09_contrato_zayra.md) | Contrato proposto com a Zayra |
 | [docs/10_achados_tecnicos.md](docs/10_achados_tecnicos.md) | Falhas encontradas e corrigidas, riscos conhecidos |
+| [docs/11_guia_passo_a_passo.md](docs/11_guia_passo_a_passo.md) | **Guia do que falta configurar (parte da Atom)** |
 
 ## Estrutura
 
