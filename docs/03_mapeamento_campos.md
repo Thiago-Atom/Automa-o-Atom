@@ -10,71 +10,71 @@ Toda leitura/escrita de campo passa por uma chave de `atom_config`. Nenhum ID de
 
 Campos personalizados: informe o **hash de 40 caracteres** do campo (Pipedrive → Configurações → Campos de dados). Campos nativos: `nativo:<nome>` (ex.: `nativo:website`).
 
-Resumo: 23 CONFIGURADO, 18 PROPOSTO, 80 PENDENTE (total 121).
+Resumo: 78 CONFIGURADO, 17 PROPOSTO, 26 PENDENTE (total 121).
 
 ## Campos da organização (Pipedrive)
 
 | Chave | Status | Valor atual | Usado por | Descrição |
 |---|---|---|---|---|
-| `PD_ORG_SITE` | PROPOSTO | `nativo:website` | ATOM_01, ATOM_02 | Campo do site da organização (nativo:website é o campo padrão do Pipedrive). |
-| `PD_ORG_SEM_SITE` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Sim/Não: cliente informou que não tem site |
-| `PD_ORG_SITE_STATUS` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Status da validação do site |
-| `PD_ORG_CNPJ` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): CNPJ (informado manualmente) |
-| `PD_ORG_RAZAO_SOCIAL` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Razão social |
-| `PD_ORG_NOME_FANTASIA` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Nome fantasia |
-| `PD_ORG_LOGRADOURO` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Logradouro |
-| `PD_ORG_NUMERO` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Número |
-| `PD_ORG_COMPLEMENTO` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Complemento |
-| `PD_ORG_BAIRRO` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Bairro |
-| `PD_ORG_CIDADE` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Cidade |
-| `PD_ORG_UF` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): UF |
-| `PD_ORG_CEP` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): CEP |
-| `PD_ORG_SITUACAO_CADASTRAL` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Situação cadastral |
-| `PD_ORG_CADASTRO_ORIGEM` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Origem da consulta cadastral |
-| `PD_ORG_CADASTRO_DATA` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Data da consulta cadastral |
-| `PD_ORG_CADASTRO_STATUS` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Status da consulta cadastral (OK, DIVERGENTE...) |
-| `PD_ORG_EMAIL_FINANCEIRO` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): E-mail financeiro |
-| `PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO` | PENDENTE | — | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Sim/Não: e-mail financeiro confirmado pelo cliente |
+| `PD_ORG_SITE` | CONFIGURADO | `nativo:website` | ATOM_01, ATOM_02 | Campo do site da organização (nativo:website é o campo padrão do Pipedrive). |
+| `PD_ORG_SEM_SITE` | CONFIGURADO | `443a007f60e59601ae7bbe8ffd297a1638d1a70a` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Sim/Não: cliente informou que não tem site |
+| `PD_ORG_SITE_STATUS` | CONFIGURADO | `76a9b2e21ab35de1bd42c26d13320d81570b724c` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Status da validação do site |
+| `PD_ORG_CNPJ` | CONFIGURADO | `fddfb4e5ab947001766858b5aa2edba7173ef3a3` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): CNPJ (informado manualmente) |
+| `PD_ORG_RAZAO_SOCIAL` | CONFIGURADO | `50c2f2d1a9bd98f53a59b44c2ddb1606f6f318af` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Razão social |
+| `PD_ORG_NOME_FANTASIA` | CONFIGURADO | `e6e2e5b9a3f3736d2984e1b3924578b6a0cd3301` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Nome fantasia |
+| `PD_ORG_LOGRADOURO` | CONFIGURADO | `00d9886b048efd8d6b8b4983575bf8d63ac501ab` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Logradouro |
+| `PD_ORG_NUMERO` | CONFIGURADO | `34a2afeb76187e273238bece60a46c50c03c257e` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Número |
+| `PD_ORG_COMPLEMENTO` | CONFIGURADO | `f6e8fb28f565424ac6e7089f1ce06dd970019404` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Complemento |
+| `PD_ORG_BAIRRO` | CONFIGURADO | `21630bfd2b93d9019abbbf865b897516c193ee9c` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Bairro |
+| `PD_ORG_CIDADE` | CONFIGURADO | `7bbb3556c377a60277b9f2e02523663b031d032a` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Cidade |
+| `PD_ORG_UF` | CONFIGURADO | `cbcd6327b8d50e721545fff87b4d9d676153dfd2` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): UF |
+| `PD_ORG_CEP` | CONFIGURADO | `2e157bccefe7c595394b33ee5a74f12a7be05f05` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): CEP |
+| `PD_ORG_SITUACAO_CADASTRAL` | CONFIGURADO | `e1b14934f85b3d75df387f935e3d2c7cde1ca8df` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Situação cadastral |
+| `PD_ORG_CADASTRO_ORIGEM` | CONFIGURADO | `6aefac83ca6386610047024b4ffebf13e0d08628` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Origem da consulta cadastral |
+| `PD_ORG_CADASTRO_DATA` | CONFIGURADO | `020bd4af0a81afeed178786b105e09f2974774b3` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Data da consulta cadastral |
+| `PD_ORG_CADASTRO_STATUS` | CONFIGURADO | `d225896d53feb1d4911fc5beffa02323aac474f0` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Status da consulta cadastral (OK, DIVERGENTE...) |
+| `PD_ORG_EMAIL_FINANCEIRO` | CONFIGURADO | `f99f8255ba336fe67e01a108376ee758ad24ee10` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): E-mail financeiro |
+| `PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO` | CONFIGURADO | `afbeffdc42198d483bbe53bc17ece02e38b6b585` | ATOM_02-05 | Campo da organização (hash de 40 caracteres): Sim/Não: e-mail financeiro confirmado pelo cliente |
 
 ## Campos do negócio (Pipedrive)
 
 | Chave | Status | Valor atual | Usado por | Descrição |
 |---|---|---|---|---|
-| `PD_DEAL_SERVICO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Serviço aprovado |
-| `PD_DEAL_ESCOPO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Escopo aprovado |
-| `PD_DEAL_MODELO_CONTRATO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Modelo contratual (código) |
-| `PD_DEAL_PRAZO_EXECUCAO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Prazo acordado (texto ou AAAA-MM-DD) |
-| `PD_DEAL_DURACAO_MESES` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Duração contratual em meses |
-| `PD_DEAL_CONDICOES_APROVADAS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: condições comerciais aprovadas |
-| `PD_DEAL_TIPO_COBRANCA` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): AVULSA, PARCELADA, ENTRADA_MAIS_PARCELAS, RECORRENTE, ENTRADA_MAIS_RECORRENTE |
-| `PD_DEAL_FORMA_PAGAMENTO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): BOLETO, PIX, CREDIT_CARD ou UNDEFINED |
-| `PD_DEAL_VALOR_TOTAL` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor total |
-| `PD_DEAL_VALOR_ENTRADA` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor da entrada |
-| `PD_DEAL_NUM_PARCELAS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Número de parcelas |
-| `PD_DEAL_VALOR_PARCELA` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor da parcela |
-| `PD_DEAL_MENSALIDADE` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor da mensalidade |
-| `PD_DEAL_VENCIMENTO_ENTRADA` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Vencimento da entrada |
-| `PD_DEAL_PRIMEIRO_VENCIMENTO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Primeiro vencimento |
-| `PD_DEAL_EMAIL_ASSINATURA` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): E-mail para assinatura |
-| `PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: e-mail de assinatura confirmado |
-| `PD_DEAL_NOME_SIGNATARIO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Nome do signatário (somente se a Clicksign exigir) |
-| `PD_DEAL_PROPOSTA_LINK` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link da proposta |
-| `PD_DEAL_DIAG_STATUS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do diagnóstico |
-| `PD_DEAL_DIAG_LINK` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do diagnóstico |
-| `PD_DEAL_DIAG_DATA` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Data do diagnóstico |
-| `PD_DEAL_DIAG_VERSAO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Versão do modelo de diagnóstico |
-| `PD_DEAL_DIAG_REEXECUTAR` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: pedir nova execução do diagnóstico |
-| `PD_DEAL_PENDENCIAS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Pendências cadastrais |
-| `PD_DEAL_CONTRATO_STATUS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do contrato |
-| `PD_DEAL_CLICKSIGN_ID` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): ID do envelope Clicksign |
-| `PD_DEAL_CLICKSIGN_LINK` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do envelope |
-| `PD_DEAL_PAGAMENTO_STATUS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do pagamento inicial |
-| `PD_DEAL_ASAAS_IDS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): IDs Asaas |
+| `PD_DEAL_SERVICO` | CONFIGURADO | `932650e5e02d0c4a7c4ebc74be8eb42a23dc5790` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Serviço aprovado |
+| `PD_DEAL_ESCOPO` | CONFIGURADO | `396858c3821ab8081a3956c8d77161eb7dc36d27` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Escopo aprovado |
+| `PD_DEAL_MODELO_CONTRATO` | CONFIGURADO | `78a6922883627dfac8888c644971b245a83add8d` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Modelo contratual (código) |
+| `PD_DEAL_PRAZO_EXECUCAO` | CONFIGURADO | `94e48adef55c0437b05169d9ef9b7f5cf6615596` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Prazo acordado (texto ou AAAA-MM-DD) |
+| `PD_DEAL_DURACAO_MESES` | CONFIGURADO | `af8e2bdfbb3383304905e40cd903960995d0dbfb` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Duração contratual em meses |
+| `PD_DEAL_CONDICOES_APROVADAS` | CONFIGURADO | `0a363aafb699c66d888b61f690fd1687af28a244` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: condições comerciais aprovadas |
+| `PD_DEAL_TIPO_COBRANCA` | CONFIGURADO | `63e0cd6c4ffcd48f4d695f3460faba06120a391c` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): AVULSA, PARCELADA, ENTRADA_MAIS_PARCELAS, RECORRENTE, ENTRADA_MAIS_RECORRENTE |
+| `PD_DEAL_FORMA_PAGAMENTO` | CONFIGURADO | `619d9ae7f5c7eed1f6c53a5371eafb68992ec7e7` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): BOLETO, PIX, CREDIT_CARD ou UNDEFINED |
+| `PD_DEAL_VALOR_TOTAL` | CONFIGURADO | `5567b023d76a97d11f2b7ad2b36739365e1ba37d` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor total |
+| `PD_DEAL_VALOR_ENTRADA` | CONFIGURADO | `b8bd45f9afac1848db53f5cb9b1068a48bc4d0c6` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor da entrada |
+| `PD_DEAL_NUM_PARCELAS` | CONFIGURADO | `9694e79adc124dbcf4962369e659de9922e6f822` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Número de parcelas |
+| `PD_DEAL_VALOR_PARCELA` | CONFIGURADO | `68ddb87c91063a540aac762f860d8d89ec0eb83c` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor da parcela |
+| `PD_DEAL_MENSALIDADE` | CONFIGURADO | `ab586d8e7c9cb4201e55e555ad5da25a19c1b3b2` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Valor da mensalidade |
+| `PD_DEAL_VENCIMENTO_ENTRADA` | CONFIGURADO | `f290df1c7ee8c7b23a12c721c2ffeb0408050f61` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Vencimento da entrada |
+| `PD_DEAL_PRIMEIRO_VENCIMENTO` | CONFIGURADO | `e2178aec6db2f981557abffdac16b41b87a54503` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Primeiro vencimento |
+| `PD_DEAL_EMAIL_ASSINATURA` | CONFIGURADO | `ca1ee58132282880b33997ce476cf8ea26c72a30` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): E-mail para assinatura |
+| `PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO` | CONFIGURADO | `0ae420301f25ef2dc3a331c4c0cbd528248db9ee` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: e-mail de assinatura confirmado |
+| `PD_DEAL_NOME_SIGNATARIO` | CONFIGURADO | `7c9a537bdaa12e9e25bb7ec9454f5d6ad36d38c0` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Nome do signatário (somente se a Clicksign exigir) |
+| `PD_DEAL_PROPOSTA_LINK` | CONFIGURADO | `12420e9c8055ab9bda634214b4e6b1e898507c0f` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link da proposta |
+| `PD_DEAL_DIAG_STATUS` | CONFIGURADO | `0d0aeb53fb080fe43e7030b60685894cdb263d69` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do diagnóstico |
+| `PD_DEAL_DIAG_LINK` | CONFIGURADO | `de4ba0fc639266bfaf3b041801def421a7e6aed0` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do diagnóstico |
+| `PD_DEAL_DIAG_DATA` | CONFIGURADO | `7ba3113147bf9ac87e72cdf6c6a044ef62463d94` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Data do diagnóstico |
+| `PD_DEAL_DIAG_VERSAO` | CONFIGURADO | `75287c565520bdc7f0d50ed7798f1a30e9f5938c` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Versão do modelo de diagnóstico |
+| `PD_DEAL_DIAG_REEXECUTAR` | CONFIGURADO | `9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Sim/Não: pedir nova execução do diagnóstico |
+| `PD_DEAL_PENDENCIAS` | CONFIGURADO | `00d36a85250066580dbb4302abd87732c99067ac` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Pendências cadastrais |
+| `PD_DEAL_CONTRATO_STATUS` | CONFIGURADO | `4790cc4ebe4cc153902a6e53f97ea369deb6d2be` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do contrato |
+| `PD_DEAL_CLICKSIGN_ID` | CONFIGURADO | `5079d56f57a999807114b8d147f06460ab5c76f5` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): ID do envelope Clicksign |
+| `PD_DEAL_CLICKSIGN_LINK` | CONFIGURADO | `53d560a9b35302f0cbf2dae12b05ddf69a3d7da2` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do envelope |
+| `PD_DEAL_PAGAMENTO_STATUS` | CONFIGURADO | `f95e59d62603186a50e72fe625df0b769e9874d8` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do pagamento inicial |
+| `PD_DEAL_ASAAS_IDS` | CONFIGURADO | `95cbb1da4029f8b03b5e0ca061de33f4e4f10332` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): IDs Asaas |
 | `PD_DEAL_CONTROLLE_STATUS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status de sincronização Controlle |
-| `PD_DEAL_TRELLO_ID` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): ID do cartão Trello |
-| `PD_DEAL_TRELLO_LINK` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do cartão Trello |
-| `PD_DEAL_EXECUCAO_INICIO` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Data de início efetivo da execução |
-| `PD_DEAL_AVALIACAO_STATUS` | PENDENTE | — | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do pedido de avaliação |
+| `PD_DEAL_TRELLO_ID` | CONFIGURADO | `3fe363272f6155b4bcd729eb0809fb93e864927a` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): ID do cartão Trello |
+| `PD_DEAL_TRELLO_LINK` | CONFIGURADO | `66362692f17ee879a84ddc241b4b852eb58eee2d` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Link do cartão Trello |
+| `PD_DEAL_EXECUCAO_INICIO` | CONFIGURADO | `79a817496386e8ab3d2347186bf022d0c7e06886` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Data de início efetivo da execução |
+| `PD_DEAL_AVALIACAO_STATUS` | CONFIGURADO | `93031d81581a580180c004de25e12ff8b8ed23ad` | ATOM_02-09 | Campo do negócio (hash ou nativo:<campo>): Status do pedido de avaliação |
 
 ## Outros identificadores do Pipedrive
 
@@ -84,9 +84,9 @@ Resumo: 23 CONFIGURADO, 18 PROPOSTO, 80 PENDENTE (total 121).
 | `PD_APP_URL` | PENDENTE | — | ATOM_02, ATOM_08 | URL da conta Pipedrive (ex.: https://<empresa>.pipedrive.com) para links nos cartões e diagnósticos. |
 | `PD_INTEGRACAO_USER_ID` | PENDENTE | — | ATOM_01 | ID do usuário Pipedrive dono do token do n8n (recomendado: usuário dedicado) — anti-loop. |
 | `PD_STAGES_REUNIAO_IDS` | CONFIGURADO | `7` | ATOM_01, ATOM_02 | IDs das etapas em que o lead avançou para reunião (lista separada por vírgula). Funil 2 atual: 6 Novo negócio, 7 Contactado, 8 Proposta Enviada, 9 Reunião concluída, 11 Contrato assinado. Não há etapa "reunião agendada". |
-| `PD_STAGE_PROPOSTA_ACEITA_ID` | PENDENTE | — | ATOM_01, ATOM_04 | ID da etapa "Proposta aceita". NÃO EXISTE no funil atual: criar a etapa e informar o ID. |
+| `PD_STAGE_PROPOSTA_ACEITA_ID` | CONFIGURADO | `28` | ATOM_01, ATOM_04 | ID da etapa "Proposta aceita" (funil 2, criada em 2026-09-28, entre Reunião concluída e Contrato assinado). |
 | `PD_EMAIL_REUNIAO` | PROPOSTO | `nativo:emails` | ATOM_01, ATOM_02, ATOM_04 | Origem do e-mail da reunião: nativo:emails (e-mail principal da pessoa) ou hash de campo do negócio. |
-| `PD_PERSON_NAO_CONTATAR` | PENDENTE | — | ATOM_09 | Campo da PESSOA com preferência de não ser contatada (Sim/Não). |
+| `PD_PERSON_NAO_CONTATAR` | CONFIGURADO | `1282a70591cea7309c41092f25afc551755545e4` | ATOM_09 | Campo da PESSOA com preferência de não ser contatada (Sim/Não). |
 
 ## IDs dos workflows
 

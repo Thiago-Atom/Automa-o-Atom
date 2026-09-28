@@ -57,9 +57,9 @@
   },
   {
     "chave": "PD_STAGE_PROPOSTA_ACEITA_ID",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "ID da etapa \"Proposta aceita\". NÃO EXISTE no funil atual: criar a etapa e informar o ID.",
+    "valor": "28",
+    "status": "CONFIGURADO",
+    "descricao": "ID da etapa \"Proposta aceita\" (funil 2, criada em 2026-09-28, entre Reunião concluída e Contrato assinado).",
     "usado_por": "ATOM_01, ATOM_04"
   },
   {
@@ -72,343 +72,343 @@
   {
     "chave": "PD_ORG_SITE",
     "valor": "nativo:website",
-    "status": "PROPOSTO",
+    "status": "CONFIGURADO",
     "descricao": "Campo do site da organização (nativo:website é o campo padrão do Pipedrive).",
     "usado_por": "ATOM_01, ATOM_02"
   },
   {
     "chave": "PD_ORG_SEM_SITE",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "443a007f60e59601ae7bbe8ffd297a1638d1a70a",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Sim/Não: cliente informou que não tem site",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_SITE_STATUS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "76a9b2e21ab35de1bd42c26d13320d81570b724c",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Status da validação do site",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_CNPJ",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "fddfb4e5ab947001766858b5aa2edba7173ef3a3",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): CNPJ (informado manualmente)",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_RAZAO_SOCIAL",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "50c2f2d1a9bd98f53a59b44c2ddb1606f6f318af",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Razão social",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_NOME_FANTASIA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "e6e2e5b9a3f3736d2984e1b3924578b6a0cd3301",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Nome fantasia",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_LOGRADOURO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "00d9886b048efd8d6b8b4983575bf8d63ac501ab",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Logradouro",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_NUMERO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "34a2afeb76187e273238bece60a46c50c03c257e",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Número",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_COMPLEMENTO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "f6e8fb28f565424ac6e7089f1ce06dd970019404",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Complemento",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_BAIRRO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "21630bfd2b93d9019abbbf865b897516c193ee9c",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Bairro",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_CIDADE",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "7bbb3556c377a60277b9f2e02523663b031d032a",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Cidade",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_UF",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "cbcd6327b8d50e721545fff87b4d9d676153dfd2",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): UF",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_CEP",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "2e157bccefe7c595394b33ee5a74f12a7be05f05",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): CEP",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_SITUACAO_CADASTRAL",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "e1b14934f85b3d75df387f935e3d2c7cde1ca8df",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Situação cadastral",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_CADASTRO_ORIGEM",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "6aefac83ca6386610047024b4ffebf13e0d08628",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Origem da consulta cadastral",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_CADASTRO_DATA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "020bd4af0a81afeed178786b105e09f2974774b3",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Data da consulta cadastral",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_CADASTRO_STATUS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "d225896d53feb1d4911fc5beffa02323aac474f0",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Status da consulta cadastral (OK, DIVERGENTE...)",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_EMAIL_FINANCEIRO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "f99f8255ba336fe67e01a108376ee758ad24ee10",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): E-mail financeiro",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_ORG_EMAIL_FINANCEIRO_CONFIRMADO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "afbeffdc42198d483bbe53bc17ece02e38b6b585",
+    "status": "CONFIGURADO",
     "descricao": "Campo da organização (hash de 40 caracteres): Sim/Não: e-mail financeiro confirmado pelo cliente",
     "usado_por": "ATOM_02-05"
   },
   {
     "chave": "PD_DEAL_SERVICO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "932650e5e02d0c4a7c4ebc74be8eb42a23dc5790",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Serviço aprovado",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_ESCOPO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "396858c3821ab8081a3956c8d77161eb7dc36d27",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Escopo aprovado",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_MODELO_CONTRATO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "78a6922883627dfac8888c644971b245a83add8d",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Modelo contratual (código)",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_PRAZO_EXECUCAO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "94e48adef55c0437b05169d9ef9b7f5cf6615596",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Prazo acordado (texto ou AAAA-MM-DD)",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_DURACAO_MESES",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "af8e2bdfbb3383304905e40cd903960995d0dbfb",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Duração contratual em meses",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_CONDICOES_APROVADAS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "0a363aafb699c66d888b61f690fd1687af28a244",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Sim/Não: condições comerciais aprovadas",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_TIPO_COBRANCA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "63e0cd6c4ffcd48f4d695f3460faba06120a391c",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): AVULSA, PARCELADA, ENTRADA_MAIS_PARCELAS, RECORRENTE, ENTRADA_MAIS_RECORRENTE",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_FORMA_PAGAMENTO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "619d9ae7f5c7eed1f6c53a5371eafb68992ec7e7",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): BOLETO, PIX, CREDIT_CARD ou UNDEFINED",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_VALOR_TOTAL",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "5567b023d76a97d11f2b7ad2b36739365e1ba37d",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor total",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_VALOR_ENTRADA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "b8bd45f9afac1848db53f5cb9b1068a48bc4d0c6",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor da entrada",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_NUM_PARCELAS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "9694e79adc124dbcf4962369e659de9922e6f822",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Número de parcelas",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_VALOR_PARCELA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "68ddb87c91063a540aac762f860d8d89ec0eb83c",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor da parcela",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_MENSALIDADE",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "ab586d8e7c9cb4201e55e555ad5da25a19c1b3b2",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Valor da mensalidade",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_VENCIMENTO_ENTRADA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "f290df1c7ee8c7b23a12c721c2ffeb0408050f61",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Vencimento da entrada",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_PRIMEIRO_VENCIMENTO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "e2178aec6db2f981557abffdac16b41b87a54503",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Primeiro vencimento",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_EMAIL_ASSINATURA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "ca1ee58132282880b33997ce476cf8ea26c72a30",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): E-mail para assinatura",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_EMAIL_ASSINATURA_CONFIRMADO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "0ae420301f25ef2dc3a331c4c0cbd528248db9ee",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Sim/Não: e-mail de assinatura confirmado",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_NOME_SIGNATARIO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "7c9a537bdaa12e9e25bb7ec9454f5d6ad36d38c0",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Nome do signatário (somente se a Clicksign exigir)",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_PROPOSTA_LINK",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "12420e9c8055ab9bda634214b4e6b1e898507c0f",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Link da proposta",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_DIAG_STATUS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "0d0aeb53fb080fe43e7030b60685894cdb263d69",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do diagnóstico",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_DIAG_LINK",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "de4ba0fc639266bfaf3b041801def421a7e6aed0",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Link do diagnóstico",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_DIAG_DATA",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "7ba3113147bf9ac87e72cdf6c6a044ef62463d94",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Data do diagnóstico",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_DIAG_VERSAO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "75287c565520bdc7f0d50ed7798f1a30e9f5938c",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Versão do modelo de diagnóstico",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_DIAG_REEXECUTAR",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Sim/Não: pedir nova execução do diagnóstico",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_PENDENCIAS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "00d36a85250066580dbb4302abd87732c99067ac",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Pendências cadastrais",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_CONTRATO_STATUS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "4790cc4ebe4cc153902a6e53f97ea369deb6d2be",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do contrato",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_CLICKSIGN_ID",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "5079d56f57a999807114b8d147f06460ab5c76f5",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): ID do envelope Clicksign",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_CLICKSIGN_LINK",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "53d560a9b35302f0cbf2dae12b05ddf69a3d7da2",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Link do envelope",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_PAGAMENTO_STATUS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "f95e59d62603186a50e72fe625df0b769e9874d8",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do pagamento inicial",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_ASAAS_IDS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "95cbb1da4029f8b03b5e0ca061de33f4e4f10332",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): IDs Asaas",
     "usado_por": "ATOM_02-09"
   },
@@ -421,36 +421,36 @@
   },
   {
     "chave": "PD_DEAL_TRELLO_ID",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "3fe363272f6155b4bcd729eb0809fb93e864927a",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): ID do cartão Trello",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_TRELLO_LINK",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "66362692f17ee879a84ddc241b4b852eb58eee2d",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Link do cartão Trello",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_EXECUCAO_INICIO",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "79a817496386e8ab3d2347186bf022d0c7e06886",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Data de início efetivo da execução",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_DEAL_AVALIACAO_STATUS",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "93031d81581a580180c004de25e12ff8b8ed23ad",
+    "status": "CONFIGURADO",
     "descricao": "Campo do negócio (hash ou nativo:<campo>): Status do pedido de avaliação",
     "usado_por": "ATOM_02-09"
   },
   {
     "chave": "PD_PERSON_NAO_CONTATAR",
-    "valor": "",
-    "status": "PENDENTE",
+    "valor": "1282a70591cea7309c41092f25afc551755545e4",
+    "status": "CONFIGURADO",
     "descricao": "Campo da PESSOA com preferência de não ser contatada (Sim/Não).",
     "usado_por": "ATOM_09"
   },
