@@ -2,7 +2,7 @@
   "name": "ATOM_06_Asaas",
   "nodes": [
     {
-      "id": "13fcb0e6-4440-4297-bed6-8e4ef34ba13f",
+      "id": "c35e9744-ec98-4c59-8113-c4b620569926",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "ae09a702-1670-4f66-9dff-c6063bf32742",
+      "id": "72eeb34b-05c1-489c-a5b6-5f2b7c6bbbd2",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "1957bdc4-1e15-4d7a-aa3f-89c4ccd9e211",
+      "id": "e2b48a0c-f253-4b94-8bf6-a65c26075ab2",
       "name": "Ação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -96,7 +96,7 @@
       }
     },
     {
-      "id": "a51c88db-855e-436b-b63a-850f38de46ce",
+      "id": "6c20ef4b-1bde-4ea4-ad36-4d23e7920a6a",
       "name": "Snapshot",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -133,7 +133,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "b20b2cad-8df5-4776-b779-c96f0279ecb2",
+      "id": "59fbb2d5-4212-435f-8c97-29376fa49667",
       "name": "Vínculos Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -171,7 +171,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "df167b40-5b92-483f-bf68-039e53e97606",
+      "id": "cb96b812-2d8e-4442-8abe-1a1595777021",
       "name": "Cliente Asaas vinculado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -214,7 +214,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "62dbab60-b3b3-426d-9457-ea0958d5386d",
+      "id": "a43e3896-0e3a-4144-91ae-e970e3243d3f",
       "name": "Planejar cobranças",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -224,11 +224,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf06.js#planejar + lib/{util,config,formalizacao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction round2(n) {\n  return Math.round((n + Number.EPSILON) * 100) / 100;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// lib/formalizacao.js\nfunction planoCobranca(d) {\n  const f = d.financeiro;\n  const itens = [];\n  const ref = (parte) => \"atom-d\" + d.deal_id + (d.versao ? \"-v\" + d.versao : \"\") + \"-\" + parte;\n  const temEntrada = /^ENTRADA_/.test(f.tipo_cobranca);\n  if (temEntrada) itens.push({ parte: \"ENTRADA\", recurso: \"PAYMENT\", papel: \"INICIAL\", valor: f.valor_entrada, vencimento: f.vencimento_entrada, ref: ref(\"entrada\") });\n  if (f.tipo_cobranca === \"AVULSA\") itens.push({ parte: \"UNICA\", recurso: \"PAYMENT\", papel: \"INICIAL\", valor: f.valor_total, vencimento: f.primeiro_vencimento, ref: ref(\"unica\") });\n  if (f.tipo_cobranca === \"PARCELADA\" || f.tipo_cobranca === \"ENTRADA_MAIS_PARCELAS\") {\n    itens.push({\n      parte: \"PARCELAS\",\n      recurso: \"INSTALLMENT\",\n      papel: temEntrada ? \"POSTERIOR\" : \"INICIAL_PRIMEIRA_PARCELA\",\n      parcelas: f.num_parcelas,\n      valor_parcela: f.valor_parcela,\n      valor: round2(f.num_parcelas * f.valor_parcela),\n      vencimento: f.primeiro_vencimento,\n      ref: ref(\"parcelas\")\n    });\n  }\n  if (f.tipo_cobranca === \"RECORRENTE\" || f.tipo_cobranca === \"ENTRADA_MAIS_RECORRENTE\") {\n    itens.push({\n      parte: \"RECORRENCIA\",\n      recurso: \"SUBSCRIPTION\",\n      papel: temEntrada ? \"POSTERIOR\" : \"INICIAL_PRIMEIRA_MENSALIDADE\",\n      valor: f.mensalidade,\n      ciclo: \"MONTHLY\",\n      meses: d.comercial.duracao_meses,\n      vencimento: f.primeiro_vencimento,\n      ref: ref(\"recorrencia\")\n    });\n  }\n  return itens;\n}\nfunction corpoAsaas(item, customerId, d, descricao) {\n  const base = { customer: customerId, billingType: d.financeiro.forma_pagamento, externalReference: item.ref, description: descricao };\n  if (item.recurso === \"PAYMENT\") return Object.assign(base, { value: item.valor, dueDate: item.vencimento });\n  if (item.recurso === \"INSTALLMENT\") return Object.assign(base, { dueDate: item.vencimento, installmentCount: item.parcelas, installmentValue: item.valor_parcela });\n  if (item.recurso === \"SUBSCRIPTION\") {\n    const b = Object.assign(base, { value: item.valor, nextDueDate: item.vencimento, cycle: item.ciclo });\n    if (item.meses > 0) b.maxPayments = item.meses;\n    return b;\n  }\n  return null;\n}\nfunction corpoClienteAsaas(d, notificacoesDesativadas) {\n  return {\n    name: d.empresa.razao_social,\n    cpfCnpj: d.empresa.cnpj,\n    email: d.contatos.email_financeiro,\n    postalCode: d.empresa.endereco.cep,\n    address: d.empresa.endereco.logradouro,\n    addressNumber: d.empresa.endereco.numero,\n    complement: d.empresa.endereco.complemento || void 0,\n    province: d.empresa.endereco.bairro,\n    externalReference: \"atom-org\" + d.org_id,\n    notificationDisabled: !!notificacoesDesativadas\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos Asaas\").all().concat($(\"Cliente Asaas vinculado\").all()).map((i) => i.json).filter((r) => r && r.id_externo);\n  const base = {\n    request_id: \"asaas:cobrancas:\" + e.deal_id + \":v\" + e.versao,\n    deal_id: String(e.deal_id),\n    versao: Number(e.versao),\n    payload: JSON.stringify({ acao: \"CRIAR_COBRANCAS\", deal_id: String(e.deal_id), versao: Number(e.versao), origem: \"REPROCESSAMENTO\" })\n  };\n  if (!snap) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE\" }) }];\n  const disparo = valor(cfg, \"COBRANCA_DISPARO\", \"\");\n  if (![\"JUNTO_COM_CONTRATO\", \"APOS_ASSINATURAS\"].includes(disparo)) {\n    return [{ json: Object.assign(base, { executar: false, motivo: \"COBRANCA_DISPARO não definido (JUNTO_COM_CONTRATO ou APOS_ASSINATURAS)\" }) }];\n  }\n  const origemOk = disparo === \"JUNTO_COM_CONTRATO\" && e.origem === \"CONTRATO_ENVIADO\" || disparo === \"APOS_ASSINATURAS\" && e.origem === \"ASSINATURAS_CONCLUIDAS\" || e.origem === \"REPROCESSAMENTO\";\n  if (!origemOk) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"GATILHO_DIFERENTE_DA_REGRA \" + disparo + \"/\" + e.origem }) }];\n  if (disparo === \"APOS_ASSINATURAS\" && snap.status !== \"ASSINADO\") return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"CONTRATO_AINDA_NAO_ASSINADO\" }) }];\n  const gate = portao(cfg, [\"ASAAS_BASE_URL\", \"ASAAS_VALIDADO_SANDBOX\"]);\n  if (!gate.liberado) return [{ json: Object.assign(base, { executar: false, motivo: gate.motivo }) }];\n  const d = Object.assign(safeJsonParse(snap.dados, {}), { versao: Number(e.versao) });\n  const plano = planoCobranca(d);\n  const pend = plano.filter((it) => !vincs.some((v) => v.referencia === it.ref && [\"PAYMENT\", \"INSTALLMENT\", \"SUBSCRIPTION\"].includes(v.tipo)));\n  if (!pend.length) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"COBRANCAS_JA_CRIADAS\" }) }];\n  const cliente = vincs.find((v) => v.tipo === \"CLIENTE\" && String(v.org_id) === String(d.org_id));\n  const desc = (parte) => (\"Atom Digital — \" + d.comercial.servico + \" (\" + parte.toLowerCase() + \") — contrato ATOM-D\" + d.deal_id + \"-V\" + d.versao).slice(0, 480);\n  return [{ json: Object.assign(base, {\n    executar: true,\n    url: valor(cfg, \"ASAAS_BASE_URL\", \"\").replace(/\\/$/, \"\"),\n    org_id: String(d.org_id),\n    customer_id: cliente ? cliente.id_externo : \"\",\n    cnpj: d.empresa.cnpj,\n    corpo_cliente: corpoClienteAsaas(d, booleano(cfg, \"ASAAS_NOTIFICACOES_DESATIVADAS\")),\n    itens: pend.map((it) => ({ item: it, corpo: corpoAsaas(it, \"__CUSTOMER__\", d, desc(it.parte)) }))\n  }) }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf06.js#planejar + lib/{util,config,formalizacao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction round2(n) {\n  return Math.round((n + Number.EPSILON) * 100) / 100;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/formalizacao.js\nfunction planoCobranca(d) {\n  const f = d.financeiro;\n  const itens = [];\n  const ref = (parte) => \"atom-d\" + d.deal_id + (d.versao ? \"-v\" + d.versao : \"\") + \"-\" + parte;\n  const temEntrada = /^ENTRADA_/.test(f.tipo_cobranca);\n  if (temEntrada) itens.push({ parte: \"ENTRADA\", recurso: \"PAYMENT\", papel: \"INICIAL\", valor: f.valor_entrada, vencimento: f.vencimento_entrada, ref: ref(\"entrada\") });\n  if (f.tipo_cobranca === \"AVULSA\") itens.push({ parte: \"UNICA\", recurso: \"PAYMENT\", papel: \"INICIAL\", valor: f.valor_total, vencimento: f.primeiro_vencimento, ref: ref(\"unica\") });\n  if (f.tipo_cobranca === \"PARCELADA\" || f.tipo_cobranca === \"ENTRADA_MAIS_PARCELAS\") {\n    itens.push({\n      parte: \"PARCELAS\",\n      recurso: \"INSTALLMENT\",\n      papel: temEntrada ? \"POSTERIOR\" : \"INICIAL_PRIMEIRA_PARCELA\",\n      parcelas: f.num_parcelas,\n      valor_parcela: f.valor_parcela,\n      valor: round2(f.num_parcelas * f.valor_parcela),\n      vencimento: f.primeiro_vencimento,\n      ref: ref(\"parcelas\")\n    });\n  }\n  if (f.tipo_cobranca === \"RECORRENTE\" || f.tipo_cobranca === \"ENTRADA_MAIS_RECORRENTE\") {\n    itens.push({\n      parte: \"RECORRENCIA\",\n      recurso: \"SUBSCRIPTION\",\n      papel: temEntrada ? \"POSTERIOR\" : \"INICIAL_PRIMEIRA_MENSALIDADE\",\n      valor: f.mensalidade,\n      ciclo: \"MONTHLY\",\n      meses: d.comercial.duracao_meses,\n      vencimento: f.primeiro_vencimento,\n      ref: ref(\"recorrencia\")\n    });\n  }\n  return itens;\n}\nfunction corpoAsaas(item, customerId, d, descricao) {\n  const base = { customer: customerId, billingType: d.financeiro.forma_pagamento, externalReference: item.ref, description: descricao };\n  if (item.recurso === \"PAYMENT\") return Object.assign(base, { value: item.valor, dueDate: item.vencimento });\n  if (item.recurso === \"INSTALLMENT\") return Object.assign(base, { dueDate: item.vencimento, installmentCount: item.parcelas, installmentValue: item.valor_parcela });\n  if (item.recurso === \"SUBSCRIPTION\") {\n    const b = Object.assign(base, { value: item.valor, nextDueDate: item.vencimento, cycle: item.ciclo });\n    if (item.meses > 0) b.maxPayments = item.meses;\n    return b;\n  }\n  return null;\n}\nfunction corpoClienteAsaas(d, notificacoesDesativadas) {\n  return {\n    name: d.empresa.razao_social,\n    cpfCnpj: d.empresa.cnpj,\n    email: d.contatos.email_financeiro,\n    postalCode: d.empresa.endereco.cep,\n    address: d.empresa.endereco.logradouro,\n    addressNumber: d.empresa.endereco.numero,\n    complement: d.empresa.endereco.complemento || void 0,\n    province: d.empresa.endereco.bairro,\n    externalReference: \"atom-org\" + d.org_id,\n    notificationDisabled: !!notificacoesDesativadas\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos Asaas\").all().concat($(\"Cliente Asaas vinculado\").all()).map((i) => i.json).filter((r) => r && r.id_externo);\n  const base = {\n    request_id: \"asaas:cobrancas:\" + e.deal_id + \":v\" + e.versao,\n    deal_id: String(e.deal_id),\n    versao: Number(e.versao),\n    payload: JSON.stringify({ acao: \"CRIAR_COBRANCAS\", deal_id: String(e.deal_id), versao: Number(e.versao), origem: \"REPROCESSAMENTO\" })\n  };\n  if (!snap) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE\" }) }];\n  const disparo = valor(cfg, \"COBRANCA_DISPARO\", \"\");\n  if (![\"JUNTO_COM_CONTRATO\", \"APOS_ASSINATURAS\"].includes(disparo)) {\n    return [{ json: Object.assign(base, { executar: false, motivo: \"COBRANCA_DISPARO não definido (JUNTO_COM_CONTRATO ou APOS_ASSINATURAS)\" }) }];\n  }\n  const origemOk = disparo === \"JUNTO_COM_CONTRATO\" && e.origem === \"CONTRATO_ENVIADO\" || disparo === \"APOS_ASSINATURAS\" && e.origem === \"ASSINATURAS_CONCLUIDAS\" || e.origem === \"REPROCESSAMENTO\";\n  if (!origemOk) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"GATILHO_DIFERENTE_DA_REGRA \" + disparo + \"/\" + e.origem }) }];\n  if (disparo === \"APOS_ASSINATURAS\" && snap.status !== \"ASSINADO\") return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"CONTRATO_AINDA_NAO_ASSINADO\" }) }];\n  const gate = portao(cfg, [\"ASAAS_BASE_URL\"], { somenteProducao: [\"ASAAS_VALIDADO_SANDBOX\"], dealId: String(e.deal_id) });\n  if (!gate.liberado) return [{ json: Object.assign(base, { executar: false, motivo: gate.motivo }) }];\n  const d = Object.assign(safeJsonParse(snap.dados, {}), { versao: Number(e.versao) });\n  const plano = planoCobranca(d);\n  const pend = plano.filter((it) => !vincs.some((v) => v.referencia === it.ref && [\"PAYMENT\", \"INSTALLMENT\", \"SUBSCRIPTION\"].includes(v.tipo)));\n  if (!pend.length) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"COBRANCAS_JA_CRIADAS\" }) }];\n  const cliente = vincs.find((v) => v.tipo === \"CLIENTE\" && String(v.org_id) === String(d.org_id));\n  const desc = (parte) => (\"Atom Digital — \" + d.comercial.servico + \" (\" + parte.toLowerCase() + \") — contrato ATOM-D\" + d.deal_id + \"-V\" + d.versao).slice(0, 480);\n  return [{ json: Object.assign(base, {\n    executar: true,\n    url: valor(cfg, \"ASAAS_BASE_URL\", \"\").replace(/\\/$/, \"\"),\n    org_id: String(d.org_id),\n    customer_id: cliente ? cliente.id_externo : \"\",\n    cnpj: d.empresa.cnpj,\n    corpo_cliente: corpoClienteAsaas(d, booleano(cfg, \"ASAAS_NOTIFICACOES_DESATIVADAS\")),\n    itens: pend.map((it) => ({ item: it, corpo: corpoAsaas(it, \"__CUSTOMER__\", d, desc(it.parte)) }))\n  }) }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "6c73fb91-cf97-4bfc-8fe4-09765f37c8e2",
+      "id": "3c8f795d-b5c5-4359-aaeb-ec61987988fa",
       "name": "Executar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -260,7 +260,7 @@
       }
     },
     {
-      "id": "82b012f2-e5dd-47a8-8280-2cd12518c756",
+      "id": "04de1c5b-563d-4459-a87f-61b0f840c2aa",
       "name": "Cliente já vinculado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -292,7 +292,7 @@
       }
     },
     {
-      "id": "2ac08a20-b95d-4c8b-847c-6b498f6d661f",
+      "id": "e6dfc454-218a-4f61-adc6-a75b07c70f0e",
       "name": "Itens de cobrança",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -307,7 +307,7 @@
       "executeOnce": true
     },
     {
-      "id": "dab5a6aa-fcc0-4966-aac2-631d7b64e347",
+      "id": "933ba870-4db9-4426-bdda-4f0a87ba8e67",
       "name": "Asaas — buscar cliente por CNPJ",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -350,7 +350,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "77ddc4fb-058e-4e83-a8eb-3b1b62e42535",
+      "id": "e8ea9ae2-4642-43d1-b99c-1e8b59f7b8bb",
       "name": "Cliente existente?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -364,7 +364,7 @@
       }
     },
     {
-      "id": "3ce0c6a7-6256-4256-9705-19ccd303c5a7",
+      "id": "3638ae38-969a-4a71-928c-309354cd4066",
       "name": "Criar cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -396,7 +396,7 @@
       }
     },
     {
-      "id": "5484be97-31ef-4721-ab42-bae4777fc025",
+      "id": "d8294f5f-1396-48db-94ed-2d9918ead35b",
       "name": "Asaas — criar cliente",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -431,7 +431,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "c369238e-191f-41c6-88bd-b3923e79c0a2",
+      "id": "8fcc35f7-7bea-40a0-8ae2-482ae80258c7",
       "name": "Cliente criado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -445,7 +445,7 @@
       }
     },
     {
-      "id": "e521fef3-4f09-46f0-847b-50db2ab0766e",
+      "id": "70c37384-24ea-4ba3-b602-2a01c16cf009",
       "name": "Registrar cliente Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -603,7 +603,7 @@
       }
     },
     {
-      "id": "324d316c-99fc-4c54-955e-a93f9b754e72",
+      "id": "b3180cec-d8bc-45c0-aee2-10a7416027cb",
       "name": "Registrar bloqueio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -617,7 +617,7 @@
       }
     },
     {
-      "id": "5dc27f93-8917-4d04-a9e2-4d46ba16228d",
+      "id": "e8b53ce2-d1c4-4e84-96c7-40744a41748a",
       "name": "Salvar ação bloqueada",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -775,7 +775,7 @@
       }
     },
     {
-      "id": "c04a3ff9-3961-442b-9816-b583939fe0ec",
+      "id": "252abe7e-e26e-4bbe-9837-e452a2a06b13",
       "name": "Salvar cobrança aguardando configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -843,7 +843,7 @@
       }
     },
     {
-      "id": "f860af89-2565-4ef0-871f-85a770805aac",
+      "id": "b8e0453f-a86a-4c43-b7be-1c04fc9acf46",
       "name": "Pagamento a processar (reconciliação)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -857,7 +857,7 @@
       }
     },
     {
-      "id": "76355968-254d-4203-b8b6-6026b17ac871",
+      "id": "d8f958ab-4dcc-4692-9b53-d76ac0a8d703",
       "name": "Consultar pagamento",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -891,7 +891,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "b17f18a9-4df4-42ff-8440-6be119c50940",
+      "id": "958e93c3-6c65-48f7-8a01-fe541199e895",
       "name": "Asaas — verificar externalReference",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -934,7 +934,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "ee1ea191-aae8-47e8-9c09-a61b67c662cd",
+      "id": "890cbd37-731a-476e-8d83-4581fe5f5e0c",
       "name": "Criar ou reaproveitar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -948,7 +948,7 @@
       }
     },
     {
-      "id": "b86a19ac-b129-4df0-89c1-e833374ba67b",
+      "id": "dc1e43a7-8f73-4b54-91dd-be17d7906547",
       "name": "Criar cobrança?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -980,7 +980,7 @@
       }
     },
     {
-      "id": "6a592d7f-04fc-49de-b6ff-2131045abb94",
+      "id": "dec83377-35bb-40d0-904d-5d9a8f8c4cfa",
       "name": "Asaas — criar cobrança/parcelamento/assinatura",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1015,7 +1015,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "2ef53343-79cd-4355-88a2-951f63914f4a",
+      "id": "b1a3c355-d75d-4e06-93dd-57e3cc59b0b5",
       "name": "Resultado das cobranças",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1029,7 +1029,7 @@
       }
     },
     {
-      "id": "f7b36f09-d0b9-466f-b452-4b7ccddf7202",
+      "id": "ea56eeb3-2b46-417e-aa96-92f4fa3d6283",
       "name": "Separar vínculos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1043,7 +1043,7 @@
       }
     },
     {
-      "id": "0fedd1cc-687d-41c1-9c3e-4165881cd6b2",
+      "id": "2ff6fcc9-1138-4e55-8bcc-573843fc0c55",
       "name": "Registrar vínculos Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1216,7 +1216,7 @@
       }
     },
     {
-      "id": "1fbfd494-e9f0-4b3c-9d94-e45adf2560c6",
+      "id": "81d5d230-33b3-430b-bf3d-6cff9f1c8655",
       "name": "Resumo das cobranças",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1231,7 +1231,7 @@
       "executeOnce": true
     },
     {
-      "id": "bffc21bb-57d7-45b7-89f2-452ef86675b0",
+      "id": "6c768a1a-3626-4af3-8dde-de1adb8586fb",
       "name": "Salvar cobrança aguardando pagamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1299,7 +1299,7 @@
       }
     },
     {
-      "id": "37651aa4-5470-46f9-8023-4fed4b2a777f",
+      "id": "53a8d105-453c-4cc4-ac25-303088c1d9a9",
       "name": "Registrar ação concluída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1458,7 +1458,7 @@
       "executeOnce": true
     },
     {
-      "id": "95705f8c-aea1-40c4-a5d6-2ab978040636",
+      "id": "b1fe8ff9-aa95-4d70-b4ad-b264f55fd9b5",
       "name": "Contas a receber (fila Controlle)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1473,7 +1473,7 @@
       "executeOnce": true
     },
     {
-      "id": "5a290974-5cc5-4e47-b5ba-e33c59083405",
+      "id": "3b4b7a56-1e85-457e-b02f-0ff5d90da8b1",
       "name": "Somente lançamentos novos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1503,7 +1503,7 @@
       }
     },
     {
-      "id": "f99b80d6-c66c-4d2f-8da4-b2f2502f1eea",
+      "id": "d6e50811-fcee-4b9f-be1b-5f7097132646",
       "name": "Enfileirar para o Controlle",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1661,7 +1661,7 @@
       }
     },
     {
-      "id": "b155efbd-6ec2-456f-b982-bf3b95ac3a6d",
+      "id": "ccffc8a3-2ea7-420f-8b8d-55f4c755191c",
       "name": "Atualizar negócio (cobranças)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1693,7 +1693,7 @@
       }
     },
     {
-      "id": "4a93df2d-b6d6-4ea2-9b59-91acb52c177b",
+      "id": "50344661-e0c0-4aa7-90f7-af47cafcdfc8",
       "name": "Atualizar negócio (IDs Asaas)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1719,7 +1719,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "2a277d12-3eee-4687-87bc-13fabf43c86e",
+      "id": "f6bcef56-bab6-4bac-8360-c733b2aafbbc",
       "name": "Falha na criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1734,7 +1734,7 @@
       "executeOnce": true
     },
     {
-      "id": "dd5b6773-928a-490c-86b0-63e186e7ff87",
+      "id": "db0591a8-148f-459c-bcc2-a0096f46bc0c",
       "name": "Ação anterior",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1766,7 +1766,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "75f87c82-2a16-496a-9d76-0793c49a874d",
+      "id": "e2a25925-c764-4e47-9598-b6ebefc97548",
       "name": "Acumular tentativas",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1780,7 +1780,7 @@
       }
     },
     {
-      "id": "ba509561-63e3-4b2a-bd91-9616c60b1f27",
+      "id": "3e994de6-f6a0-41b5-8152-7fe038006ad5",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1938,7 +1938,7 @@
       }
     },
     {
-      "id": "f6b2dbc0-5856-4d7c-8709-aef2c4a2809f",
+      "id": "7249b21e-acb0-44ac-aed8-fb3d392a340c",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1952,7 +1952,7 @@
       }
     },
     {
-      "id": "3436ab16-5e4f-4115-b17e-8bac13cda2ef",
+      "id": "6e6a43f3-0318-4b6c-9907-0069b786e581",
       "name": "ATOM_11 — alerta Asaas",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1975,7 +1975,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "39e9293d-1a00-46fa-a8d4-b03e00fbd12f",
+      "id": "6c3da0ed-1c66-49ed-baff-3091314d22bc",
       "name": "Webhook Asaas",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1990,11 +1990,11 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "5ed8ab49-e35f-4f2b-92a2-2220defecbf4",
+      "webhookId": "a081a751-fa79-4a84-ab97-f12291441edc",
       "credentials": {}
     },
     {
-      "id": "ec1e6f0f-88ea-4946-809b-cd1fcde6db78",
+      "id": "4eda27c3-9c19-4b6c-a051-d61abbd69731",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2016,7 +2016,7 @@
       "executeOnce": true
     },
     {
-      "id": "9ffbe380-8184-43e8-824d-6d9ef7a5a1d5",
+      "id": "98f2b300-5378-48cc-8529-6859e413460d",
       "name": "Normalizar evento Asaas",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2030,7 +2030,7 @@
       }
     },
     {
-      "id": "1806b042-d989-4cfa-9d09-debc237fe891",
+      "id": "6ed7873c-4212-41a7-b90d-dac13ef256ed",
       "name": "Evento Asaas já recebido?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2062,7 +2062,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "1becaa2a-9057-4143-b921-662096f90497",
+      "id": "dc85fbbd-62bb-439e-b27a-13c61b5c39dd",
       "name": "Deduplicar evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2076,7 +2076,7 @@
       }
     },
     {
-      "id": "0ca09720-80e1-4d0b-bbc0-140350da3a8f",
+      "id": "275cd893-198b-4f74-93ec-41ca3993b463",
       "name": "Registrar evento Asaas",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2224,7 +2224,7 @@
       }
     },
     {
-      "id": "b432e387-bf5b-4974-8ff3-ec78d3a01203",
+      "id": "882f8d19-8d30-4a25-b6f9-b4a758dbfd38",
       "name": "Pagamento a processar (webhook)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2238,7 +2238,7 @@
       }
     },
     {
-      "id": "d0ec02b2-8746-401d-a0f1-d33b1c1e10bd",
+      "id": "4f8999d2-6d13-4f9e-92a1-6252feabce0b",
       "name": "Vínculos do pagamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2285,7 +2285,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "688ff30c-9895-4ad1-a9e2-adc8e8d31247",
+      "id": "03f20313-9593-4730-a6b5-8d239df9378b",
       "name": "Resolver pagamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2299,7 +2299,7 @@
       }
     },
     {
-      "id": "2d61ff24-d643-48a9-8b5f-3aa31c79853c",
+      "id": "8e88daef-84f5-41be-84c1-d7929c175f0f",
       "name": "Atualizar vínculo do pagamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2472,7 +2472,7 @@
       }
     },
     {
-      "id": "df5f6952-5460-4623-b3a1-a9391977df3f",
+      "id": "8b3f2c95-8336-404f-a96e-753f5fad5f57",
       "name": "Gera lançamento financeiro?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2504,7 +2504,7 @@
       }
     },
     {
-      "id": "51172b20-5b57-4056-b7b3-1a3c64dda491",
+      "id": "28dff083-4861-497f-870b-25fa0fc9067c",
       "name": "Lançamento da transição",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2518,7 +2518,7 @@
       }
     },
     {
-      "id": "3821ab7f-66f5-46ff-bb28-0c65a658c194",
+      "id": "64654794-e033-4440-8358-388abfc0c59f",
       "name": "Transição ainda não registrada?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2548,7 +2548,7 @@
       }
     },
     {
-      "id": "b1fe443d-599f-445f-92ac-eca2d64c25fd",
+      "id": "0fb8d833-e292-4abc-b5f6-f089fa6d4336",
       "name": "Enfileirar transição para o Controlle",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2706,7 +2706,7 @@
       }
     },
     {
-      "id": "dc2354f9-e6ff-4bc0-a286-c1329cf8300f",
+      "id": "8a8d0a32-c134-4584-be1e-28b7b6e716f8",
       "name": "Cobrança inicial?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2738,7 +2738,7 @@
       }
     },
     {
-      "id": "ce086a06-8c6f-4049-9c75-b367d831d869",
+      "id": "68c91cd1-4113-448d-8a1d-a87141116934",
       "name": "Salvar situação do pagamento inicial",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2806,7 +2806,7 @@
       }
     },
     {
-      "id": "62386215-3344-47f2-8c98-79c90bb2ac91",
+      "id": "137ba2a9-d48c-4eea-a1ca-b6f5c9df18b5",
       "name": "Campos do pagamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2820,7 +2820,7 @@
       }
     },
     {
-      "id": "bc7d756b-8f08-4b62-b000-d095fc35b766",
+      "id": "73b84f09-fe81-441c-9201-cf97453e5470",
       "name": "Atualizar negócio (pagamento)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2852,7 +2852,7 @@
       }
     },
     {
-      "id": "bc83a03e-d8a3-489d-b4e6-f80a57858c0f",
+      "id": "6de91fec-0878-443d-bec8-e1ee63724035",
       "name": "Atualizar negócio (situação do pagamento)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2877,7 +2877,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "e8ea5d50-520d-4903-8d4d-f83a39703373",
+      "id": "703c8955-6740-4b5d-ba30-60777282a55a",
       "name": "Reavaliar liberação?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2909,7 +2909,7 @@
       }
     },
     {
-      "id": "3b612dd3-6ca8-4cd0-9c3c-92ea989c560f",
+      "id": "4f2b696c-3576-4ed7-bc81-14eac49623cb",
       "name": "Alertar (estorno/chargeback/cancelamento)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2941,7 +2941,7 @@
       }
     },
     {
-      "id": "6f3759ee-b27b-479f-8e02-19f4b82238ff",
+      "id": "0870731b-e90d-473c-a03f-395cb113ab6f",
       "name": "Pedido de reavaliação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2955,7 +2955,7 @@
       }
     },
     {
-      "id": "a53bfda1-55b2-453d-9e22-2d0cb0fbde3d",
+      "id": "a6201a6f-a91f-4601-b5fd-5ddf5621d4a1",
       "name": "ATOM_08 — reavaliar liberação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2978,7 +2978,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "fd8d070b-3c35-4da3-aa6d-a9fe8c86b98b",
+      "id": "91af63e4-d6bb-4f85-848c-d47d1ab43c94",
       "name": "Alerta financeiro",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2992,7 +2992,7 @@
       }
     },
     {
-      "id": "df1104b4-5414-43c0-b428-8cbf2d1d26c4",
+      "id": "6dd8029b-2920-4e64-a806-2c546cb1dd2a",
       "name": "ATOM_11 — alerta financeiro",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -3015,8 +3015,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "2ef2677c-090a-4333-9f68-b14141afb4dc",
-      "name": "Sticky Note 2ef2677c",
+      "id": "8cd7dc46-ed15-4555-9b99-9c5d9ab8a66b",
+      "name": "Sticky Note 8cd7dc46",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

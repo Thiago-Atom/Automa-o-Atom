@@ -7,6 +7,13 @@
     "usado_por": "todos"
   },
   {
+    "chave": "SANDBOX_DEAL_IDS",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "IDs dos negócios de TESTE (vírgula). Em MODO_EXECUCAO=SANDBOX, contrato, cobrança, cartão e mensagens só saem para estes negócios; um cliente real nunca recebe e-mail de teste.",
+    "usado_por": "ATOM_05, ATOM_06, ATOM_08, ATOM_10"
+  },
+  {
     "chave": "RETENTATIVAS_MAX",
     "valor": "6",
     "status": "PROPOSTO",

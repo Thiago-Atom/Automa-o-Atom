@@ -2,7 +2,7 @@
   "name": "ATOM_08_Trello",
   "nodes": [
     {
-      "id": "dc5c400d-7c94-4008-94c0-8dde0a535c1c",
+      "id": "1ebd76a2-a048-4364-b8f3-152bf953508b",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "41ad8d93-4967-4faa-8de6-25d8214f7326",
+      "id": "16e6c8a6-241d-47bc-8f31-9f63d3d935c5",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "f3f56c53-ef4b-42d8-b547-49aa1355b81b",
+      "id": "a49f70fa-c005-43b8-8ec0-154d24e8366c",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -69,7 +69,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f668e447-3ec1-4f21-80a0-f37d7ef78280",
+      "id": "92a55c23-1d13-47a9-a0d6-a9f4b06680ab",
       "name": "Vínculos do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -102,7 +102,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "dd1bcd46-2010-4aec-9a09-4f4213b5d292",
+      "id": "3d128cf1-8a0c-4b60-a93d-6edf92df936a",
       "name": "Buscar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -131,7 +131,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "89c997eb-9daf-4206-a6ed-4e2eb33ce155",
+      "id": "53368f41-1dad-4eef-b985-42652c5d7b12",
       "name": "Cobrança inicial",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -145,7 +145,7 @@
       }
     },
     {
-      "id": "6ff0f1e0-a4f1-4c71-a031-7918e98ccfb2",
+      "id": "8526ba19-f8d1-41c1-8738-f2bbb35b585e",
       "name": "Consultar pagamento?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -177,7 +177,7 @@
       }
     },
     {
-      "id": "067dc58a-8eae-4687-8d41-8df8c0a6f432",
+      "id": "83d695e0-ea15-4b8c-8829-ae0f72fd65df",
       "name": "Consultar pagamento inicial",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -215,7 +215,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "c6c6f2e2-4a4f-4601-bee5-5069f95c83ed",
+      "id": "ae162c24-9027-4040-b3c0-df1a0080024f",
       "name": "Avaliar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -225,11 +225,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf08.js#avaliar + lib/{config,regras}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// lib/regras.js\nvar SITUACAO_POR_STATUS = {\n  PENDING: \"PENDENTE\",\n  AWAITING_RISK_ANALYSIS: \"EM_ANALISE\",\n  AUTHORIZED: \"PENDENTE\",\n  CONFIRMED: \"PAGAMENTO_CONFIRMADO\",\n  RECEIVED: \"RECEBIDO_DISPONIVEL\",\n  RECEIVED_IN_CASH: \"RECEBIDO_EM_DINHEIRO\",\n  OVERDUE: \"VENCIDO\",\n  REFUNDED: \"ESTORNADO\",\n  REFUND_REQUESTED: \"ESTORNO_EM_ANDAMENTO\",\n  REFUND_IN_PROGRESS: \"ESTORNO_EM_ANDAMENTO\",\n  CHARGEBACK_REQUESTED: \"CHARGEBACK\",\n  CHARGEBACK_DISPUTE: \"CHARGEBACK\",\n  AWAITING_CHARGEBACK_REVERSAL: \"CHARGEBACK\",\n  DUNNING_REQUESTED: \"NEGATIVACAO\",\n  DUNNING_RECEIVED: \"RECEBIDO_DISPONIVEL\"\n};\nfunction situacaoPagamento(p) {\n  if (!p) return \"DESCONHECIDO\";\n  if (p.deleted) return \"CANCELADO\";\n  return SITUACAO_POR_STATUS[String(p.status || \"\").toUpperCase()] || \"DESCONHECIDO\";\n}\nfunction dealDoExternalReference(ref) {\n  const m = String(ref || \"\").match(/^atom-d(\\d+)(?:-v(\\d+))?-(entrada|unica|parcelas|recorrencia)$/);\n  return m ? { deal_id: m[1], versao: m[2] ? Number(m[2]) : null, parte: m[3] } : null;\n}\nfunction avaliarLiberacao(c) {\n  const motivos = [];\n  if (!c.regraConfirmada) motivos.push(\"REGRA_DE_LIBERACAO_NAO_CONFIRMADA\");\n  if (c.cartaoExistente) return { liberar: false, jaLiberado: true, motivos: [\"CARTAO_JA_CRIADO\"] };\n  if (c.negocioCancelado || [\"lost\", \"deleted\"].includes(String(c.statusNegocio))) motivos.push(\"NEGOCIO_CANCELADO\");\n  if (c.contratoStatus !== \"ASSINADO_TODOS\") motivos.push(\"CONTRATO_NAO_ASSINADO_POR_TODOS (\" + (c.contratoStatus || \"sem status\") + \")\");\n  const v = c.vinculoInicial;\n  const p = c.pagamentoInicial;\n  if (!v) motivos.push(\"SEM_COBRANCA_INICIAL_VINCULADA\");\n  else {\n    if (String(v.deal_id) !== String(c.dealId)) motivos.push(\"COBRANCA_DE_OUTRO_NEGOCIO\");\n    if (!/^INICIAL/.test(String(v.papel || \"\"))) motivos.push(\"COBRANCA_NAO_E_ENTRADA_NEM_PRIMEIRA_PARCELA\");\n  }\n  if (!p) motivos.push(\"PAGAMENTO_INICIAL_NAO_LOCALIZADO\");\n  else {\n    const sit = situacaoPagamento(p);\n    const aceitas = [\"PAGAMENTO_CONFIRMADO\", \"RECEBIDO_DISPONIVEL\"].concat(c.aceitaRecebidoEmDinheiro ? [\"RECEBIDO_EM_DINHEIRO\"] : []);\n    if (!aceitas.includes(sit)) motivos.push(\"PAGAMENTO_INICIAL_\" + sit);\n    const ref = dealDoExternalReference(p.externalReference);\n    if (ref && ref.deal_id !== String(c.dealId)) motivos.push(\"EXTERNAL_REFERENCE_DE_OUTRO_NEGOCIO\");\n    if (v && Number(v.valor_previsto) > 0 && Number(p.value) + 9e-3 < Number(v.valor_previsto)) motivos.push(\"VALOR_PAGO_MENOR_QUE_O_PREVISTO\");\n  }\n  if (c.bloqueios && c.bloqueios.length) motivos.push(...c.bloqueios.map((b) => \"BLOQUEIO_\" + b));\n  return { liberar: motivos.length === 0, jaLiberado: false, motivos };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const est = $(\"Estado do negócio\").all().map((i) => i.json).find((r2) => r2 && r2.deal_id) || {};\n  const deal = ($(\"Buscar negócio\").first().json || {}).data || {};\n  const x = $(\"Cobrança inicial\").first().json;\n  const pag = $(\"Consultar pagamento inicial\").isExecuted ? $(\"Consultar pagamento inicial\").first().json : null;\n  const vincs = $(\"Vínculos do negócio\").all().map((i) => i.json).filter((r2) => r2 && r2.id_externo);\n  const card = vincs.find((v) => v.sistema === \"TRELLO\" && v.tipo === \"CARD\");\n  const regra = valor(cfg, \"LIBERACAO_REGRA\", \"\") === \"CONTRATO_ASSINADO_E_PAGAMENTO_INICIAL\";\n  const bloqueios = [];\n  if (/^(ESTORNADO|CHARGEBACK|ESTORNO_EM_ANDAMENTO)$/.test(String(est.pagamento_inicial_status || \"\"))) bloqueios.push(est.pagamento_inicial_status);\n  const r = avaliarLiberacao({\n    regraConfirmada: regra,\n    dealId: String(e.deal_id),\n    statusNegocio: deal.status || (deal.id ? \"open\" : \"deleted\"),\n    negocioCancelado: est.cancelado === true,\n    contratoStatus: est.contrato_status,\n    vinculoInicial: x.vinculo ? { deal_id: x.vinculo.deal_id, papel: x.vinculo.papel, valor_previsto: x.vinculo.valor_previsto } : null,\n    pagamentoInicial: pag && pag.id ? pag : null,\n    cartaoExistente: !!(card || est.trello_card_id),\n    aceitaRecebidoEmDinheiro: booleano(cfg, \"LIBERACAO_ACEITA_RECEBIDO_EM_DINHEIRO\"),\n    bloqueios\n  });\n  const gate = portao(cfg, [\"TRELLO_BOARD_ID\", \"TRELLO_LIST_ENTRADA_ID\"]);\n  let decisao;\n  if (r.jaLiberado) decisao = \"JA_LIBERADO\";\n  else if (!r.liberar) decisao = \"AGUARDAR\";\n  else if (!gate.liberado) decisao = \"AGUARDAR_CONFIG\";\n  else decisao = \"LIBERAR\";\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  return [{ json: {\n    decisao,\n    motivos: r.motivos,\n    deal_id: String(e.deal_id),\n    board: valor(cfg, \"TRELLO_BOARD_ID\", \"\"),\n    marcador: \"[ATOM-D\" + e.deal_id + \"]\",\n    row: {\n      deal_id: String(e.deal_id),\n      liberacao_status: decisao === \"AGUARDAR_CONFIG\" ? \"LIBERAVEL_AGUARDANDO_CONFIG\" : \"AGUARDANDO_CONDICOES\",\n      pendencias: est.pendencias || \"\",\n      ultimo_evento_em: agora\n    },\n    resumo: r.motivos.join(\"; \") || gate.motivo\n  } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf08.js#avaliar + lib/{config,regras}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/regras.js\nvar SITUACAO_POR_STATUS = {\n  PENDING: \"PENDENTE\",\n  AWAITING_RISK_ANALYSIS: \"EM_ANALISE\",\n  AUTHORIZED: \"PENDENTE\",\n  CONFIRMED: \"PAGAMENTO_CONFIRMADO\",\n  RECEIVED: \"RECEBIDO_DISPONIVEL\",\n  RECEIVED_IN_CASH: \"RECEBIDO_EM_DINHEIRO\",\n  OVERDUE: \"VENCIDO\",\n  REFUNDED: \"ESTORNADO\",\n  REFUND_REQUESTED: \"ESTORNO_EM_ANDAMENTO\",\n  REFUND_IN_PROGRESS: \"ESTORNO_EM_ANDAMENTO\",\n  CHARGEBACK_REQUESTED: \"CHARGEBACK\",\n  CHARGEBACK_DISPUTE: \"CHARGEBACK\",\n  AWAITING_CHARGEBACK_REVERSAL: \"CHARGEBACK\",\n  DUNNING_REQUESTED: \"NEGATIVACAO\",\n  DUNNING_RECEIVED: \"RECEBIDO_DISPONIVEL\"\n};\nfunction situacaoPagamento(p) {\n  if (!p) return \"DESCONHECIDO\";\n  if (p.deleted) return \"CANCELADO\";\n  return SITUACAO_POR_STATUS[String(p.status || \"\").toUpperCase()] || \"DESCONHECIDO\";\n}\nfunction dealDoExternalReference(ref) {\n  const m = String(ref || \"\").match(/^atom-d(\\d+)(?:-v(\\d+))?-(entrada|unica|parcelas|recorrencia)$/);\n  return m ? { deal_id: m[1], versao: m[2] ? Number(m[2]) : null, parte: m[3] } : null;\n}\nfunction avaliarLiberacao(c) {\n  const motivos = [];\n  if (!c.regraConfirmada) motivos.push(\"REGRA_DE_LIBERACAO_NAO_CONFIRMADA\");\n  if (c.cartaoExistente) return { liberar: false, jaLiberado: true, motivos: [\"CARTAO_JA_CRIADO\"] };\n  if (c.negocioCancelado || [\"lost\", \"deleted\"].includes(String(c.statusNegocio))) motivos.push(\"NEGOCIO_CANCELADO\");\n  if (c.contratoStatus !== \"ASSINADO_TODOS\") motivos.push(\"CONTRATO_NAO_ASSINADO_POR_TODOS (\" + (c.contratoStatus || \"sem status\") + \")\");\n  const v = c.vinculoInicial;\n  const p = c.pagamentoInicial;\n  if (!v) motivos.push(\"SEM_COBRANCA_INICIAL_VINCULADA\");\n  else {\n    if (String(v.deal_id) !== String(c.dealId)) motivos.push(\"COBRANCA_DE_OUTRO_NEGOCIO\");\n    if (!/^INICIAL/.test(String(v.papel || \"\"))) motivos.push(\"COBRANCA_NAO_E_ENTRADA_NEM_PRIMEIRA_PARCELA\");\n  }\n  if (!p) motivos.push(\"PAGAMENTO_INICIAL_NAO_LOCALIZADO\");\n  else {\n    const sit = situacaoPagamento(p);\n    const aceitas = [\"PAGAMENTO_CONFIRMADO\", \"RECEBIDO_DISPONIVEL\"].concat(c.aceitaRecebidoEmDinheiro ? [\"RECEBIDO_EM_DINHEIRO\"] : []);\n    if (!aceitas.includes(sit)) motivos.push(\"PAGAMENTO_INICIAL_\" + sit);\n    const ref = dealDoExternalReference(p.externalReference);\n    if (ref && ref.deal_id !== String(c.dealId)) motivos.push(\"EXTERNAL_REFERENCE_DE_OUTRO_NEGOCIO\");\n    if (v && Number(v.valor_previsto) > 0 && Number(p.value) + 9e-3 < Number(v.valor_previsto)) motivos.push(\"VALOR_PAGO_MENOR_QUE_O_PREVISTO\");\n  }\n  if (c.bloqueios && c.bloqueios.length) motivos.push(...c.bloqueios.map((b) => \"BLOQUEIO_\" + b));\n  return { liberar: motivos.length === 0, jaLiberado: false, motivos };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const est = $(\"Estado do negócio\").all().map((i) => i.json).find((r2) => r2 && r2.deal_id) || {};\n  const deal = ($(\"Buscar negócio\").first().json || {}).data || {};\n  const x = $(\"Cobrança inicial\").first().json;\n  const pag = $(\"Consultar pagamento inicial\").isExecuted ? $(\"Consultar pagamento inicial\").first().json : null;\n  const vincs = $(\"Vínculos do negócio\").all().map((i) => i.json).filter((r2) => r2 && r2.id_externo);\n  const card = vincs.find((v) => v.sistema === \"TRELLO\" && v.tipo === \"CARD\");\n  const regra = valor(cfg, \"LIBERACAO_REGRA\", \"\") === \"CONTRATO_ASSINADO_E_PAGAMENTO_INICIAL\";\n  const bloqueios = [];\n  if (/^(ESTORNADO|CHARGEBACK|ESTORNO_EM_ANDAMENTO)$/.test(String(est.pagamento_inicial_status || \"\"))) bloqueios.push(est.pagamento_inicial_status);\n  const r = avaliarLiberacao({\n    regraConfirmada: regra,\n    dealId: String(e.deal_id),\n    statusNegocio: deal.status || (deal.id ? \"open\" : \"deleted\"),\n    negocioCancelado: est.cancelado === true,\n    contratoStatus: est.contrato_status,\n    vinculoInicial: x.vinculo ? { deal_id: x.vinculo.deal_id, papel: x.vinculo.papel, valor_previsto: x.vinculo.valor_previsto } : null,\n    pagamentoInicial: pag && pag.id ? pag : null,\n    cartaoExistente: !!(card || est.trello_card_id),\n    aceitaRecebidoEmDinheiro: booleano(cfg, \"LIBERACAO_ACEITA_RECEBIDO_EM_DINHEIRO\"),\n    bloqueios\n  });\n  const gate = portao(cfg, [\"TRELLO_BOARD_ID\", \"TRELLO_LIST_ENTRADA_ID\"], { dealId: String(e.deal_id) });\n  let decisao;\n  if (r.jaLiberado) decisao = \"JA_LIBERADO\";\n  else if (!r.liberar) decisao = \"AGUARDAR\";\n  else if (!gate.liberado) decisao = \"AGUARDAR_CONFIG\";\n  else decisao = \"LIBERAR\";\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  return [{ json: {\n    decisao,\n    motivos: r.motivos,\n    deal_id: String(e.deal_id),\n    board: valor(cfg, \"TRELLO_BOARD_ID\", \"\"),\n    marcador: \"[ATOM-D\" + e.deal_id + \"]\",\n    row: {\n      deal_id: String(e.deal_id),\n      liberacao_status: decisao === \"AGUARDAR_CONFIG\" ? \"LIBERAVEL_AGUARDANDO_CONFIG\" : \"AGUARDANDO_CONDICOES\",\n      pendencias: est.pendencias || \"\",\n      ultimo_evento_em: agora\n    },\n    resumo: r.motivos.join(\"; \") || gate.motivo\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "4a0123ea-2d6d-4de2-a8b6-cafcca3430c9",
+      "id": "529c915f-40eb-4d1d-ac8f-93bf9d1ae943",
       "name": "Decisão de liberação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -296,7 +296,7 @@
       }
     },
     {
-      "id": "e9dada6e-2492-40db-9d73-b449149f33c0",
+      "id": "99db65ff-69bf-4650-87f6-abcb90dc238c",
       "name": "Reservar liberação (trava)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -375,7 +375,7 @@
       "notes": "UPDATE condicional: só uma execução consegue mudar para CRIANDO_CARTAO. Se nenhuma linha for alterada, o fluxo para (outra execução já está criando ou já liberou)."
     },
     {
-      "id": "b7a42237-cec1-4108-8d8b-cacd5aadd418",
+      "id": "46e12624-7785-4b19-bbaa-571d6ee501cf",
       "name": "Procurar cartão existente (marcador)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -430,7 +430,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "36d99099-a867-4389-a8f5-7256129b4d36",
+      "id": "6ba0fa9c-c891-4445-b543-982b54dbc809",
       "name": "Cartão já existe?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -444,7 +444,7 @@
       }
     },
     {
-      "id": "57ca24cb-0cfc-411f-af35-89d006d26af6",
+      "id": "51188ffd-4323-48a8-8833-398d61466c51",
       "name": "Reaproveitar cartão?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -476,7 +476,7 @@
       }
     },
     {
-      "id": "6bdd8b60-c789-40c6-bdcd-0c61b4d4b7f2",
+      "id": "a025f378-6e4c-4abc-b73a-6cfdd20f773c",
       "name": "Finalizar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -491,7 +491,7 @@
       "executeOnce": true
     },
     {
-      "id": "18329a39-c10c-4949-931d-3120d957e641",
+      "id": "f21bc77f-72a9-422a-a5c2-3f9833a1b931",
       "name": "Snapshot formalizado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -531,7 +531,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f70f4c10-5995-4880-9c27-e0c284024233",
+      "id": "dabfde3e-8b1b-45ec-bf29-98c58555a1c4",
       "name": "Dados do briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -545,7 +545,7 @@
       }
     },
     {
-      "id": "8d695ab1-8bba-4d84-9ac3-952a3de4b056",
+      "id": "8a1847c4-48f1-4b0a-a65f-2901bda049f0",
       "name": "Usar Claude no briefing?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -577,7 +577,7 @@
       }
     },
     {
-      "id": "1377598b-86ab-43ba-966f-392fe3e890fb",
+      "id": "63815b30-26cf-4bba-b33d-08325303e8a5",
       "name": "Claude — briefing de execução",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -615,7 +615,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "0863d6a1-6698-4cd7-b452-1b979ea831c3",
+      "id": "d1c2d9b1-0449-4683-9ef6-74c0087d1d1c",
       "name": "Validar briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -629,7 +629,7 @@
       }
     },
     {
-      "id": "2178c375-40b9-4f17-96a4-db30bcb02ab1",
+      "id": "e31386df-ebd5-4eeb-b8b9-7a072d0ee70b",
       "name": "Montar cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -643,7 +643,7 @@
       }
     },
     {
-      "id": "d38d8f0e-4d75-4925-bde7-868d30b8c4a6",
+      "id": "d2d59317-a221-4d8d-8b6b-5dddf550485e",
       "name": "Salvar situação da liberação",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -711,7 +711,7 @@
       }
     },
     {
-      "id": "13706194-f742-4381-a0bf-6f548f4029ad",
+      "id": "19be30d0-9e03-4f54-98ef-73946a40b7a9",
       "name": "Trello — criar cartão",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -741,7 +741,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "da7239ea-5080-4d4c-9a5a-cab302f4af71",
+      "id": "163aff07-37f3-4e7f-bfe6-9d1ef0aadb86",
       "name": "Cartão criado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -755,7 +755,7 @@
       }
     },
     {
-      "id": "7bd40bb5-d0d5-4bb7-90fc-bc038c2c4e4a",
+      "id": "f99d653c-f8d7-4a5f-aade-0d497f94c751",
       "name": "Registrar cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -898,7 +898,7 @@
       }
     },
     {
-      "id": "58101bd9-1689-42b0-a88c-6c5c27077068",
+      "id": "ce3eeef9-38de-4744-b364-4f0f5c217da8",
       "name": "Criar checklist?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -930,7 +930,7 @@
       }
     },
     {
-      "id": "b45c811d-3bae-44a2-af22-05cc78826f0b",
+      "id": "fd84acb9-1c01-46e3-bae0-e4649435e446",
       "name": "Trello — criar checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -960,7 +960,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5cbb299f-cb1a-4d5a-8d90-521ba8d09e61",
+      "id": "95aabff9-4c6f-4f6b-a158-1d7fb85fc703",
       "name": "Itens do checklist",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -974,7 +974,7 @@
       }
     },
     {
-      "id": "7eee67f9-ebe1-42c0-b94b-b735cfff4ccc",
+      "id": "7da78f90-16e2-47af-a6f7-85260ebcb864",
       "name": "Trello — itens do checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1010,7 +1010,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "a14317bd-0705-4217-9276-0f63163fc9c8",
+      "id": "76f67d09-1efb-4a17-b5fd-b75be8ac7e74",
       "name": "Salvar liberado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1118,7 +1118,7 @@
       }
     },
     {
-      "id": "4eecc531-cac2-4e0e-b60f-118552b1c73c",
+      "id": "a876b4f7-b5da-4f30-8904-c092c3aae306",
       "name": "Garantir vínculo do cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1261,7 +1261,7 @@
       }
     },
     {
-      "id": "3fe56594-cbc8-4fa1-bac1-b8ee9bbaa4d3",
+      "id": "e0b3634f-cdd7-470c-a0d5-211ea16db072",
       "name": "Atualizar negócio (Trello)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1293,7 +1293,7 @@
       }
     },
     {
-      "id": "3c960825-c830-4824-b1db-4dd9906016cc",
+      "id": "3b2871b5-9986-407e-9fdc-328c37349ced",
       "name": "Atualizar negócio (cartão Trello)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1318,7 +1318,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "bc2374a7-e448-4e19-953e-7461ef34a1cc",
+      "id": "f552df57-9a6e-44ac-98e6-712b1a4ca120",
       "name": "Falha no cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1332,7 +1332,7 @@
       }
     },
     {
-      "id": "7712d2ad-b45e-45b0-b74d-b291863b9cd5",
+      "id": "0677bb78-d9dc-48bc-b0d8-31e7c46d87b4",
       "name": "Liberar trava após falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1420,7 +1420,7 @@
       }
     },
     {
-      "id": "2e95bacb-b650-449b-abab-f05c3691fe1b",
+      "id": "18d9ba58-53af-44ae-a1ba-bc3fac86801f",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1578,7 +1578,7 @@
       }
     },
     {
-      "id": "574dd85e-e9a9-4e18-a400-278ab51c2d8a",
+      "id": "c0d8cfad-5205-44aa-a1f9-71608c1c4ee8",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1592,7 +1592,7 @@
       }
     },
     {
-      "id": "7aa417cb-7dc2-4b3f-9b32-74d2a156243e",
+      "id": "9fec5564-7325-4185-9455-b280ab79eea2",
       "name": "ATOM_11 — alerta Trello",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1615,7 +1615,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "24e9b2f2-4a90-415b-ba7f-77b2b7ee5078",
+      "id": "3c663a80-c8a4-453e-86de-4fe1e5239df7",
       "name": "Webhook Trello",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1635,10 +1635,10 @@
           "rawBody": true
         }
       },
-      "webhookId": "e5f30ca2-9393-4c4c-b0ff-cec65b2c6efa"
+      "webhookId": "823e60a7-083d-432a-8ffc-341b6446283f"
     },
     {
-      "id": "1856997a-be29-421e-87e1-b7b25d786818",
+      "id": "30e24755-8536-462e-ab4b-7173a44d59eb",
       "name": "Corpo bruto",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1652,7 +1652,7 @@
       }
     },
     {
-      "id": "3a2425a9-c9db-4787-94d0-9b202c0f459a",
+      "id": "2528f409-84e5-4d80-96c0-996761368a61",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1674,7 +1674,7 @@
       "executeOnce": true
     },
     {
-      "id": "bd96e8e4-1ab7-4883-9293-f6383318128f",
+      "id": "10ee2b14-68b0-4a69-a084-17e1395772d5",
       "name": "Montar verificação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1688,7 +1688,7 @@
       }
     },
     {
-      "id": "e9267d3f-b6b3-4ffc-82a3-b0dd51cd5b6b",
+      "id": "07f0d898-2d9e-4f32-9fba-9ca2717a53c6",
       "name": "Calcular HMAC-SHA1",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -1706,7 +1706,7 @@
       "credentials": {}
     },
     {
-      "id": "44257b1a-e4a6-4983-aaaa-0c05411c5efc",
+      "id": "4e529d66-22e0-465f-835a-11378ebb28dc",
       "name": "Verificar assinatura Trello",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1720,7 +1720,7 @@
       }
     },
     {
-      "id": "98314a68-a12e-48bf-8450-7b39dbf76fdf",
+      "id": "cb9c15b7-75ff-45c6-b094-f22cbbfad972",
       "name": "Ação Trello já recebida?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1752,7 +1752,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "aebc723b-9416-4a05-bdfa-e0874f760373",
+      "id": "85a62efb-21a3-4a4d-a619-e7e3d346c04a",
       "name": "Deduplicar ação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1766,7 +1766,7 @@
       }
     },
     {
-      "id": "13e1a04d-f4d2-4214-9fda-2f4818e35f8a",
+      "id": "4454f012-bb0b-4a1a-bed2-e86d01df634d",
       "name": "Registrar ação Trello",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1914,7 +1914,7 @@
       }
     },
     {
-      "id": "b0cba487-6464-4948-a96e-cc0aa0ee16d5",
+      "id": "cc1bb634-08bf-4276-af2e-7167394e15bf",
       "name": "Detectar início da execução",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1928,7 +1928,7 @@
       }
     },
     {
-      "id": "543cc52c-4b97-462f-a182-9fe2c26519df",
+      "id": "3285f3f7-6c7b-45a3-9688-42c8f4738389",
       "name": "Cartão vinculado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1965,7 +1965,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "32f3fbb6-a149-42d3-a96d-9bc7c9a01669",
+      "id": "c773f144-5bbf-4e63-acdc-ceeb7761a034",
       "name": "Estado (início)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1997,7 +1997,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "be8f9806-fd03-4389-ac04-f5e91e26ac6c",
+      "id": "d0f457cc-df27-4b06-a108-a15f595680e3",
       "name": "Registrar início",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2011,7 +2011,7 @@
       }
     },
     {
-      "id": "18cab792-8fdd-463a-a6ac-d0104682ae9f",
+      "id": "940810a6-b4b2-47fe-b19c-291b6d227731",
       "name": "Salvar início da execução",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2079,7 +2079,7 @@
       }
     },
     {
-      "id": "ba8c3c3f-8198-4da7-92e2-aa0fe624769b",
+      "id": "1d3a21fa-9b99-476b-9458-0205cf208f85",
       "name": "Atualizar negócio (início)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2111,7 +2111,7 @@
       }
     },
     {
-      "id": "e6757aba-e1b7-4ca3-aec9-5c26ca78f725",
+      "id": "da3f27b7-1bb1-4c03-9dfe-66f5ba3c6234",
       "name": "Atualizar negócio (início da execução)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2136,7 +2136,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5b8da228-ad28-4093-8536-75b2c06f2f19",
+      "id": "4def1d31-be48-4aef-95b7-633445956c37",
       "name": "Pedido de agendamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2150,7 +2150,7 @@
       }
     },
     {
-      "id": "ef9944cc-26f8-4126-8aa7-b1dd217b0608",
+      "id": "daa2eda8-f5e9-407b-8fe5-3b80f94e2b30",
       "name": "ATOM_09 — agendar avaliação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2173,8 +2173,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c91d43b6-2bd9-4e8a-819c-cffb6134da78",
-      "name": "Sticky Note c91d43b6",
+      "id": "9027ee28-bc06-43c7-b167-3b1b87e239a7",
+      "name": "Sticky Note 9027ee28",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

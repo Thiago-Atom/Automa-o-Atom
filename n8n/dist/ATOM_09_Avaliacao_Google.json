@@ -2,7 +2,7 @@
   "name": "ATOM_09_Avaliacao_Google",
   "nodes": [
     {
-      "id": "9c11165b-ba39-4da6-a531-54b079a397ae",
+      "id": "f8d0ac15-9053-4d4b-897d-d4decf6531ea",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "2b931d73-2f0b-4328-9512-32ae3fdbb8dd",
+      "id": "f7062acd-3da2-4dcf-ba5a-22d04c792cc8",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "d60eeedd-6502-4c47-8f70-a72a100fbf2a",
+      "id": "8abf1e8a-4bc2-44c1-bcc7-0ca17faa0810",
       "name": "Modo",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -96,7 +96,7 @@
       }
     },
     {
-      "id": "df0d7ece-86cd-4bfb-8039-e848bb48b05f",
+      "id": "7b2b1cbb-fda6-43a7-8f0f-6853072a7077",
       "name": "Calcular agendamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -110,7 +110,7 @@
       }
     },
     {
-      "id": "0573e6ec-44ce-46e3-ba75-04dc0d2d3618",
+      "id": "ba961ab6-a0aa-417c-9bfb-8dd15e1dfa2f",
       "name": "Agendamento existente",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -142,7 +142,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "ddb3ad91-8450-49a1-813e-617004d3cf86",
+      "id": "f24ba567-7e91-4573-83f1-4830726193bb",
       "name": "Decidir agendamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -156,7 +156,7 @@
       }
     },
     {
-      "id": "420b1a12-55b3-4d7e-b9bd-f88534566045",
+      "id": "bb412242-81cb-4166-9d74-e03c6b976b44",
       "name": "Salvar agendamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -324,7 +324,7 @@
       }
     },
     {
-      "id": "0a7d3406-c13a-45d5-bf5c-b3fb10bd7fcb",
+      "id": "8988ec2c-aa82-42a7-8bb6-47e041a43a09",
       "name": "Reivindicar agendamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -398,7 +398,7 @@
       "notes": "UPDATE condicional: só uma execução processa cada pedido; ENVIADO/CANCELADO nunca são reprocessados."
     },
     {
-      "id": "89c9479e-a386-43b8-a9cc-fd0cbd57ea44",
+      "id": "4dc9605b-f3d0-411b-be4d-7e56e2c2069f",
       "name": "Buscar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -426,7 +426,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "c295753e-8b37-4360-bc7b-c59b5257ba11",
+      "id": "c27320d1-8de5-4160-93be-baaa3c339911",
       "name": "Buscar pessoa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -454,7 +454,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "9c8336ac-d2d0-4da2-9ff1-c32c3ab7b41f",
+      "id": "dc968c46-0711-4453-9c3d-c610a4798892",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -486,7 +486,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "00bfbeb6-138f-49e6-9dd7-796f490c7374",
+      "id": "a6362d60-e1c0-46d8-b9e0-9dfecab29bf0",
       "name": "Tem cartão no Trello?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -518,7 +518,7 @@
       }
     },
     {
-      "id": "542d7ce1-ba78-4d6d-b2d0-d4464ecc0484",
+      "id": "e2c513e6-9645-434d-bce7-5d2479d268dd",
       "name": "Consultar cartão",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -561,7 +561,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "038837b3-cef0-450a-963b-99bbe1fc21ba",
+      "id": "b42a0b1f-e3cf-4b42-b406-9fc9fd211773",
       "name": "Checagens antes do envio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -575,7 +575,7 @@
       }
     },
     {
-      "id": "59512e37-f212-437e-a005-89e06986b2a0",
+      "id": "ea89f54f-9999-424b-954f-7f597d71ae48",
       "name": "Enviar agora?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -607,7 +607,7 @@
       }
     },
     {
-      "id": "39473354-4bd9-472b-a983-75038e4056de",
+      "id": "113f756f-f8f4-4dea-9e23-6935a9c0e876",
       "name": "Pedido de avaliação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -621,7 +621,7 @@
       }
     },
     {
-      "id": "a30029d2-72fc-451f-918b-5dd3511d0dcb",
+      "id": "4d2593aa-9e08-48db-8c56-c928fdd3513b",
       "name": "ATOM_10 — solicitar avaliação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -644,7 +644,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "85de32b2-6e97-4285-b648-a9d1ab95c951",
+      "id": "25a9e83d-4c0c-4070-8329-c5761f8e62aa",
       "name": "Resultado do envio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -658,7 +658,7 @@
       }
     },
     {
-      "id": "adfde795-0c3d-4f1b-8885-3f1cad40231c",
+      "id": "cca03465-77c6-42f1-86f1-98ad3c8b1b73",
       "name": "Atualizar agendamento (envio)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -766,7 +766,7 @@
       }
     },
     {
-      "id": "f4a52870-a8a9-49e8-bb88-749775ee205e",
+      "id": "e0ce552c-221c-4b14-8a10-05fd219de98c",
       "name": "Campos da avaliação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -780,7 +780,7 @@
       }
     },
     {
-      "id": "efb25b8e-030a-46e1-b948-2a37565c28b6",
+      "id": "fd1ddbf2-9d7d-4a8c-adfd-a81380b334bc",
       "name": "Atualizar negócio (avaliação)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -812,7 +812,7 @@
       }
     },
     {
-      "id": "987d2ccb-440c-4ccf-86a7-1b4ea6219b7e",
+      "id": "bd5e1c1a-31d4-4b8f-a2a7-49a6e3f49bff",
       "name": "Atualizar negócio (pedido de avaliação enviado)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -837,7 +837,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "070ec57c-95bd-4f2a-9d82-d97d22f53af4",
+      "id": "4833dee8-41d3-420e-95cc-6f95b8546b2a",
       "name": "Sem envio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -851,7 +851,7 @@
       }
     },
     {
-      "id": "fcc38df5-3fed-43f8-91ae-b44ffa8c894e",
+      "id": "e18d4893-0845-4e41-b388-c24abbcf4f3c",
       "name": "Atualizar agendamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -929,7 +929,7 @@
       }
     },
     {
-      "id": "9fbc5e5c-bef5-445d-ae51-35b63435c5ff",
+      "id": "95908844-35b5-4234-b9ba-34391841fe0a",
       "name": "A cada 15 minutos",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
@@ -949,7 +949,7 @@
       }
     },
     {
-      "id": "aa93940a-8936-4bef-822f-1e823de595c7",
+      "id": "e2574939-66df-4942-a7fe-40282b5800d4",
       "name": "Recuperar processamentos interrompidos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1005,7 +1005,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "630c24b9-482c-4af9-a117-ba2d59b7ee21",
+      "id": "d5ba11fc-90d8-4f5e-980b-7bf74c833247",
       "name": "Agendados vencidos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1043,7 +1043,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0a942da0-de35-4909-9993-a04976158b69",
+      "id": "ad683d0c-246a-4a7a-a29e-7813752dbaf2",
       "name": "Pendências de configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1076,7 +1076,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "c27e2159-2382-4e16-ae8d-4673a2ce72f6",
+      "id": "a1418055-1c1a-4ceb-970e-b7d8345c4e3a",
       "name": "Selecionar envios",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1090,7 +1090,7 @@
       }
     },
     {
-      "id": "60d60983-79d2-4368-953c-4ca4d074e313",
+      "id": "e3f6e5df-f157-4609-b7e9-801511492160",
       "name": "Processar cada pedido",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1112,8 +1112,8 @@
       }
     },
     {
-      "id": "15e72ac6-e094-41bb-9672-eb52c029b5c5",
-      "name": "Sticky Note 15e72ac6",
+      "id": "bacc5778-fda2-4150-9380-67b0b8eb78d1",
+      "name": "Sticky Note bacc5778",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

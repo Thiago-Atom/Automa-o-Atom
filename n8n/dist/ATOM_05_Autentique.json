@@ -2,7 +2,7 @@
   "name": "ATOM_05_Autentique",
   "nodes": [
     {
-      "id": "e047d3ff-2965-41f4-8fbe-0ada1c334363",
+      "id": "a201f4eb-5f60-4f22-ab03-f73f61838671",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "e0ecf137-5076-47ad-b142-ca811ad0fdd2",
+      "id": "4d1a6335-6da1-4660-a689-15b405051131",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "4e9012c7-48cf-415b-af4d-b853eacec555",
+      "id": "5bdbe0ba-d608-4fc0-b4b4-cd5570a3aaef",
       "name": "Ação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -97,7 +97,7 @@
       }
     },
     {
-      "id": "1c0bb1ba-3cbc-4a57-9363-68fb8a59715d",
+      "id": "23fba95b-a485-477a-81d9-bbfd7d0559e0",
       "name": "Snapshot",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -134,7 +134,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f9c19a77-c5a7-4ccf-9474-2af5bc5cbb03",
+      "id": "03f2e8c9-5744-4db8-a119-c1a652aeb05e",
       "name": "Vínculos do contrato",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -167,7 +167,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "1510da10-8724-4614-8d54-cfa051f83663",
+      "id": "e153d1ba-d2c8-4f5e-b7b4-d54aa1d1f433",
       "name": "Planejar contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -177,11 +177,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#planejar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction toNumber(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  if (typeof v === \"number\") return Number.isFinite(v) ? v : null;\n  if (typeof v === \"object\" && v !== null && \"value\" in v) return toNumber(v.value);\n  let s = String(v).trim().replace(/[R$\\s]/g, \"\");\n  if (/,\\d{1,2}$/.test(s)) s = s.replace(/\\./g, \"\").replace(\",\", \".\");\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// lib/autentique.js\nvar RAIZES = [\"empresa\", \"comercial\", \"financeiro\", \"contatos\", \"deal_id\", \"org_id\", \"versao\"];\nvar FORMATOS = [\"texto\", \"moeda\", \"numero\", \"inteiro\", \"data\", \"cnpj\", \"cep\", \"endereco\", \"sim_nao\"];\nfunction codigoModelo(modelo) {\n  return String(modelo || \"\").toUpperCase().normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").replace(/[^A-Z0-9]+/g, \"_\").replace(/^_+|_+$/g, \"\");\n}\nfunction ler(obj, caminho) {\n  return String(caminho).split(\".\").reduce((a, k) => a !== null && a !== void 0 && a[k] !== void 0 ? a[k] : void 0, obj);\n}\nfunction milhar(inteiro) {\n  return String(inteiro).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n}\nfunction formatar(valor2, formato) {\n  if (valor2 === void 0 || valor2 === null || valor2 === \"\") return \"\";\n  switch (formato || \"texto\") {\n    case \"moeda\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const neg = n < 0;\n      const c = Math.round(Math.abs(n) * 100);\n      return (neg ? \"-\" : \"\") + \"R$ \" + milhar(Math.floor(c / 100)) + \",\" + String(c % 100).padStart(2, \"0\");\n    }\n    case \"numero\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const c = Math.round(Math.abs(n) * 100);\n      const dec = c % 100;\n      return (n < 0 ? \"-\" : \"\") + milhar(Math.floor(c / 100)) + (dec ? \",\" + String(dec).padStart(2, \"0\") : \"\");\n    }\n    case \"inteiro\": {\n      const n = toNumber(valor2);\n      return n === null || Number.isNaN(n) || !Number.isInteger(n) ? \"\" : String(n);\n    }\n    case \"data\": {\n      const m = /^(\\d{4})-(\\d{2})-(\\d{2})/.exec(String(valor2));\n      return m ? m[3] + \"/\" + m[2] + \"/\" + m[1] : \"\";\n    }\n    case \"cnpj\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 14 ? d.replace(/^(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})$/, \"$1.$2.$3/$4-$5\") : \"\";\n    }\n    case \"cep\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 8 ? d.slice(0, 5) + \"-\" + d.slice(5) : \"\";\n    }\n    case \"endereco\": {\n      if (typeof valor2 !== \"object\") return \"\";\n      const e = valor2;\n      if (!e.logradouro || !e.cidade || !e.uf) return \"\";\n      const linha1 = [e.logradouro, e.numero].filter(Boolean).join(\", \") + (e.complemento ? \" - \" + e.complemento : \"\");\n      const cep = formatar(e.cep, \"cep\");\n      return [linha1, e.bairro, e.cidade + \"/\" + e.uf].filter(Boolean).join(\", \") + (cep ? \", CEP \" + cep : \"\");\n    }\n    case \"sim_nao\":\n      return valor2 === true ? \"Sim\" : valor2 === false ? \"Não\" : \"\";\n    default:\n      return typeof valor2 === \"object\" ? \"\" : String(valor2).trim();\n  }\n}\nfunction montarSubstituicoes(dados, mapa) {\n  const substituicoes = {};\n  const semValor = [];\n  const invalidos = [];\n  if (!mapa || typeof mapa !== \"object\" || Array.isArray(mapa) || !Object.keys(mapa).length) {\n    return { substituicoes, semValor, invalidos: [\"MAPA_VAZIO_OU_INVALIDO\"] };\n  }\n  for (const [variavel, def] of Object.entries(mapa)) {\n    const campo = typeof def === \"string\" ? def : def && def.campo;\n    const formato = typeof def === \"object\" && def && def.formato ? def.formato : \"texto\";\n    if (!/^[A-Z][A-Z0-9_]{0,60}$/.test(variavel)) {\n      invalidos.push(variavel + \": nome inválido (use MAIUSCULAS_E_SUBLINHADO)\");\n      continue;\n    }\n    if (!campo || !RAIZES.includes(String(campo).split(\".\")[0])) {\n      invalidos.push(variavel + \": campo fora do snapshot aprovado\");\n      continue;\n    }\n    if (!FORMATOS.includes(formato)) {\n      invalidos.push(variavel + \": formato desconhecido \" + formato);\n      continue;\n    }\n    const v = formatar(ler(dados, campo), formato);\n    if (v === \"\") semValor.push(variavel);\n    else substituicoes[\"{{\" + variavel + \"}}\"] = v;\n  }\n  return { substituicoes, semValor, invalidos };\n}\nfunction requisicoesDocs(substituicoes) {\n  return Object.entries(substituicoes).map(([marca, valor2]) => ({\n    replaceAllText: { containsText: { text: marca, matchCase: true }, replaceText: valor2 }\n  }));\n}\nfunction nomeDocumento(dealId, versao, razaoSocial) {\n  return (\"ATOM-D\" + dealId + \"-V\" + versao + \" — Contrato\" + (razaoSocial ? \" — \" + razaoSocial : \"\")).slice(0, 200);\n}\nvar MUTATION_CRIAR = \"mutation CreateDocumentMutation($document: DocumentInput!, $signers: [SignerInput!]!, $file: Upload!) { createDocument(sandbox: %SANDBOX%, document: $document, signers: $signers, file: $file) { id name created_at signatures { public_id name email action { name } link { short_link } } } }\";\nfunction operacoesCriacao({ nome, emails, sandbox }) {\n  return JSON.stringify({\n    query: MUTATION_CRIAR.replace(\"%SANDBOX%\", sandbox ? \"true\" : \"false\"),\n    variables: { document: { name: nome }, signers: emails.map((email) => ({ email, action: \"SIGN\" })), file: null }\n  });\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction consultaRecentes(limite) {\n  return { query: \"query { documents(limit: \" + Math.max(1, Math.min(60, Number(limite) || 30)) + \", page: 1) { data { id name created_at signatures { public_id name email action { name } link { short_link } } } } }\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const versao = Number(e.versao);\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos do contrato\").all().map((i) => i.json).filter((r) => r && r.id_externo && Number(r.snapshot_versao) === versao);\n  const reqId = \"autentique:contrato:\" + e.deal_id + \":v\" + versao;\n  const base = { request_id: reqId, deal_id: String(e.deal_id), versao };\n  const bloquear = (motivo) => [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo }) }];\n  if (!snap || ![\"ATIVO\", \"ENVIADO\"].includes(snap.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE_OU_INATIVO\" }) }];\n  if (vincs.some((v) => v.sistema === \"AUTENTIQUE\" && v.tipo === \"DOCUMENTO\")) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"CONTRATO_JA_ENVIADO\" }) }];\n  const d = safeJsonParse(snap.dados, {});\n  const cod = codigoModelo(d.comercial && d.comercial.modelo_contrato);\n  if (!cod) return bloquear(\"MODELO_DE_CONTRATO_AUSENTE_NO_SNAPSHOT\");\n  const chaveModelo = \"CONTRATO_MODELO_\" + cod;\n  const chaveMapa = \"CONTRATO_MAPA_\" + cod;\n  const modo2 = modo(cfg);\n  const exigidas = [\"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"GDRIVE_PASTA_CONTRATOS_ID\", chaveModelo, chaveMapa];\n  if (modo2 === \"PRODUCAO\") exigidas.push(\"AUTENTIQUE_VALIDADO_SANDBOX\");\n  const gate = portao(cfg, exigidas);\n  if (!gate.liberado) return bloquear(gate.motivo);\n  const mapa = safeJsonParse(valor(cfg, chaveMapa, \"\"), null);\n  const s = montarSubstituicoes(d, mapa);\n  if (s.invalidos.length) return bloquear(chaveMapa + \" inválido: \" + s.invalidos.join(\"; \"));\n  if (s.semValor.length) return bloquear(\"Variáveis do modelo sem valor no snapshot: \" + s.semValor.join(\", \"));\n  const emailCliente = normalizeEmail(d.contatos && d.contatos.email_assinatura);\n  const emailAtom = normalizeEmail(valor(cfg, \"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"\"));\n  if (!emailCliente || !emailAtom) return bloquear(\"E-MAIL_DE_SIGNATARIO_AUSENTE\");\n  if (emailCliente === emailAtom) return bloquear(\"E-MAILS_DO_CLIENTE_E_DA_ATOM_IGUAIS\");\n  const copia = vincs.find((v) => v.sistema === \"GDOCS\" && v.tipo === \"DOCUMENTO_GOOGLE\");\n  const nome = nomeDocumento(e.deal_id, versao, d.empresa && d.empresa.razao_social);\n  const sandbox = modo2 !== \"PRODUCAO\";\n  return [{ json: Object.assign(base, {\n    executar: true,\n    fim: false,\n    org_id: String(d.org_id || \"\"),\n    modelo: cod,\n    nome,\n    sandbox,\n    etapas: { copiar: !copia },\n    ids: { copia: copia ? copia.id_externo : \"\" },\n    modelo_id: valor(cfg, chaveModelo, \"\"),\n    corpo_copia: { name: nome, parents: [valor(cfg, \"GDRIVE_PASTA_CONTRATOS_ID\", \"\")] },\n    corpo_docs: { requests: requisicoesDocs(s.substituicoes) },\n    substituicoes: s.substituicoes,\n    consulta_recentes: consultaRecentes(30),\n    operations: operacoesCriacao({ nome, emails: [emailCliente, emailAtom], sandbox }),\n    mapa_arquivo: MAPA_ARQUIVO,\n    signatarios: [{ papel: \"CLIENTE\", email: emailCliente }, { papel: \"ATOM\", email: emailAtom }],\n    disparo_cobranca: valor(cfg, \"COBRANCA_DISPARO\", \"\")\n  }) }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#planejar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction toNumber(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  if (typeof v === \"number\") return Number.isFinite(v) ? v : null;\n  if (typeof v === \"object\" && v !== null && \"value\" in v) return toNumber(v.value);\n  let s = String(v).trim().replace(/[R$\\s]/g, \"\");\n  if (/,\\d{1,2}$/.test(s)) s = s.replace(/\\./g, \"\").replace(\",\", \".\");\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/autentique.js\nvar RAIZES = [\"empresa\", \"comercial\", \"financeiro\", \"contatos\", \"deal_id\", \"org_id\", \"versao\"];\nvar FORMATOS = [\"texto\", \"moeda\", \"numero\", \"inteiro\", \"data\", \"cnpj\", \"cep\", \"endereco\", \"sim_nao\"];\nfunction codigoModelo(modelo) {\n  return String(modelo || \"\").toUpperCase().normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").replace(/[^A-Z0-9]+/g, \"_\").replace(/^_+|_+$/g, \"\");\n}\nfunction ler(obj, caminho) {\n  return String(caminho).split(\".\").reduce((a, k) => a !== null && a !== void 0 && a[k] !== void 0 ? a[k] : void 0, obj);\n}\nfunction milhar(inteiro) {\n  return String(inteiro).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n}\nfunction formatar(valor2, formato) {\n  if (valor2 === void 0 || valor2 === null || valor2 === \"\") return \"\";\n  switch (formato || \"texto\") {\n    case \"moeda\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const neg = n < 0;\n      const c = Math.round(Math.abs(n) * 100);\n      return (neg ? \"-\" : \"\") + \"R$ \" + milhar(Math.floor(c / 100)) + \",\" + String(c % 100).padStart(2, \"0\");\n    }\n    case \"numero\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const c = Math.round(Math.abs(n) * 100);\n      const dec = c % 100;\n      return (n < 0 ? \"-\" : \"\") + milhar(Math.floor(c / 100)) + (dec ? \",\" + String(dec).padStart(2, \"0\") : \"\");\n    }\n    case \"inteiro\": {\n      const n = toNumber(valor2);\n      return n === null || Number.isNaN(n) || !Number.isInteger(n) ? \"\" : String(n);\n    }\n    case \"data\": {\n      const m = /^(\\d{4})-(\\d{2})-(\\d{2})/.exec(String(valor2));\n      return m ? m[3] + \"/\" + m[2] + \"/\" + m[1] : \"\";\n    }\n    case \"cnpj\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 14 ? d.replace(/^(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})$/, \"$1.$2.$3/$4-$5\") : \"\";\n    }\n    case \"cep\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 8 ? d.slice(0, 5) + \"-\" + d.slice(5) : \"\";\n    }\n    case \"endereco\": {\n      if (typeof valor2 !== \"object\") return \"\";\n      const e = valor2;\n      if (!e.logradouro || !e.cidade || !e.uf) return \"\";\n      const linha1 = [e.logradouro, e.numero].filter(Boolean).join(\", \") + (e.complemento ? \" - \" + e.complemento : \"\");\n      const cep = formatar(e.cep, \"cep\");\n      return [linha1, e.bairro, e.cidade + \"/\" + e.uf].filter(Boolean).join(\", \") + (cep ? \", CEP \" + cep : \"\");\n    }\n    case \"sim_nao\":\n      return valor2 === true ? \"Sim\" : valor2 === false ? \"Não\" : \"\";\n    default:\n      return typeof valor2 === \"object\" ? \"\" : String(valor2).trim();\n  }\n}\nfunction montarSubstituicoes(dados, mapa) {\n  const substituicoes = {};\n  const semValor = [];\n  const invalidos = [];\n  if (!mapa || typeof mapa !== \"object\" || Array.isArray(mapa) || !Object.keys(mapa).length) {\n    return { substituicoes, semValor, invalidos: [\"MAPA_VAZIO_OU_INVALIDO\"] };\n  }\n  for (const [variavel, def] of Object.entries(mapa)) {\n    const campo = typeof def === \"string\" ? def : def && def.campo;\n    const formato = typeof def === \"object\" && def && def.formato ? def.formato : \"texto\";\n    if (!/^[A-Z][A-Z0-9_]{0,60}$/.test(variavel)) {\n      invalidos.push(variavel + \": nome inválido (use MAIUSCULAS_E_SUBLINHADO)\");\n      continue;\n    }\n    if (!campo || !RAIZES.includes(String(campo).split(\".\")[0])) {\n      invalidos.push(variavel + \": campo fora do snapshot aprovado\");\n      continue;\n    }\n    if (!FORMATOS.includes(formato)) {\n      invalidos.push(variavel + \": formato desconhecido \" + formato);\n      continue;\n    }\n    const v = formatar(ler(dados, campo), formato);\n    if (v === \"\") semValor.push(variavel);\n    else substituicoes[\"{{\" + variavel + \"}}\"] = v;\n  }\n  return { substituicoes, semValor, invalidos };\n}\nfunction requisicoesDocs(substituicoes) {\n  return Object.entries(substituicoes).map(([marca, valor2]) => ({\n    replaceAllText: { containsText: { text: marca, matchCase: true }, replaceText: valor2 }\n  }));\n}\nfunction nomeDocumento(dealId, versao, razaoSocial) {\n  return (\"ATOM-D\" + dealId + \"-V\" + versao + \" — Contrato\" + (razaoSocial ? \" — \" + razaoSocial : \"\")).slice(0, 200);\n}\nvar MUTATION_CRIAR = \"mutation CreateDocumentMutation($document: DocumentInput!, $signers: [SignerInput!]!, $file: Upload!) { createDocument(sandbox: %SANDBOX%, document: $document, signers: $signers, file: $file) { id name created_at signatures { public_id name email action { name } link { short_link } } } }\";\nfunction operacoesCriacao({ nome, emails, sandbox }) {\n  return JSON.stringify({\n    query: MUTATION_CRIAR.replace(\"%SANDBOX%\", sandbox ? \"true\" : \"false\"),\n    variables: { document: { name: nome }, signers: emails.map((email) => ({ email, action: \"SIGN\" })), file: null }\n  });\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction consultaRecentes(limite) {\n  return { query: \"query { documents(limit: \" + Math.max(1, Math.min(60, Number(limite) || 30)) + \", page: 1) { data { id name created_at signatures { public_id name email action { name } link { short_link } } } } }\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const versao = Number(e.versao);\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos do contrato\").all().map((i) => i.json).filter((r) => r && r.id_externo && Number(r.snapshot_versao) === versao);\n  const reqId = \"autentique:contrato:\" + e.deal_id + \":v\" + versao;\n  const base = { request_id: reqId, deal_id: String(e.deal_id), versao };\n  const bloquear = (motivo) => [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo }) }];\n  if (!snap || ![\"ATIVO\", \"ENVIADO\"].includes(snap.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE_OU_INATIVO\" }) }];\n  if (vincs.some((v) => v.sistema === \"AUTENTIQUE\" && v.tipo === \"DOCUMENTO\")) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"CONTRATO_JA_ENVIADO\" }) }];\n  const d = safeJsonParse(snap.dados, {});\n  const cod = codigoModelo(d.comercial && d.comercial.modelo_contrato);\n  if (!cod) return bloquear(\"MODELO_DE_CONTRATO_AUSENTE_NO_SNAPSHOT\");\n  const chaveModelo = \"CONTRATO_MODELO_\" + cod;\n  const chaveMapa = \"CONTRATO_MAPA_\" + cod;\n  const modo2 = modo(cfg);\n  const exigidas = [\"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"GDRIVE_PASTA_CONTRATOS_ID\", chaveModelo, chaveMapa];\n  const gate = portao(cfg, exigidas, { somenteProducao: [\"AUTENTIQUE_VALIDADO_SANDBOX\"], dealId: String(e.deal_id) });\n  if (!gate.liberado) return bloquear(gate.motivo);\n  const mapa = safeJsonParse(valor(cfg, chaveMapa, \"\"), null);\n  const s = montarSubstituicoes(d, mapa);\n  if (s.invalidos.length) return bloquear(chaveMapa + \" inválido: \" + s.invalidos.join(\"; \"));\n  if (s.semValor.length) return bloquear(\"Variáveis do modelo sem valor no snapshot: \" + s.semValor.join(\", \"));\n  const emailCliente = normalizeEmail(d.contatos && d.contatos.email_assinatura);\n  const emailAtom = normalizeEmail(valor(cfg, \"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"\"));\n  if (!emailCliente || !emailAtom) return bloquear(\"E-MAIL_DE_SIGNATARIO_AUSENTE\");\n  if (emailCliente === emailAtom) return bloquear(\"E-MAILS_DO_CLIENTE_E_DA_ATOM_IGUAIS\");\n  const copia = vincs.find((v) => v.sistema === \"GDOCS\" && v.tipo === \"DOCUMENTO_GOOGLE\");\n  const nome = nomeDocumento(e.deal_id, versao, d.empresa && d.empresa.razao_social);\n  const sandbox = modo2 !== \"PRODUCAO\";\n  return [{ json: Object.assign(base, {\n    executar: true,\n    fim: false,\n    org_id: String(d.org_id || \"\"),\n    modelo: cod,\n    nome,\n    sandbox,\n    etapas: { copiar: !copia },\n    ids: { copia: copia ? copia.id_externo : \"\" },\n    modelo_id: valor(cfg, chaveModelo, \"\"),\n    corpo_copia: { name: nome, parents: [valor(cfg, \"GDRIVE_PASTA_CONTRATOS_ID\", \"\")] },\n    corpo_docs: { requests: requisicoesDocs(s.substituicoes) },\n    substituicoes: s.substituicoes,\n    consulta_recentes: consultaRecentes(30),\n    operations: operacoesCriacao({ nome, emails: [emailCliente, emailAtom], sandbox }),\n    mapa_arquivo: MAPA_ARQUIVO,\n    signatarios: [{ papel: \"CLIENTE\", email: emailCliente }, { papel: \"ATOM\", email: emailAtom }],\n    disparo_cobranca: valor(cfg, \"COBRANCA_DISPARO\", \"\")\n  }) }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "7af278c8-b3bb-4318-a414-9384e9001be3",
+      "id": "46f0f4fe-6467-45e3-8549-a5e9c54e716a",
       "name": "Executar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -213,7 +213,7 @@
       }
     },
     {
-      "id": "f413af07-c03d-4343-a6ae-5ec5b7095fe0",
+      "id": "1705f651-896e-4241-a92f-62cbf8effc9d",
       "name": "Copiar modelo?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -245,7 +245,7 @@
       }
     },
     {
-      "id": "fdce64d8-5ccd-4b02-9258-ff2bd79646f6",
+      "id": "ce3293ba-85d6-4d07-b732-a1ccac5552c8",
       "name": "Google Drive — copiar modelo",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -270,7 +270,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "00288e67-d7a0-4359-ae8d-652d69fb6976",
+      "id": "dd5a8820-fc59-4464-9b24-43fc218cfaa1",
       "name": "Guardar cópia",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -285,7 +285,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "7f8638a2-0b67-422d-85dd-c5859ecb5a18",
+      "id": "b4766f4d-593c-4b24-87c6-ebb3b7b2d43e",
       "name": "Registrar cópia",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -423,7 +423,7 @@
       }
     },
     {
-      "id": "5a248650-fa3a-4eb9-b7f5-81c75a75dc26",
+      "id": "609f6417-8071-4955-a110-9061878fcca8",
       "name": "Cópia do modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -437,7 +437,7 @@
       }
     },
     {
-      "id": "1537e044-2616-4da2-ac44-5306bb9ee52b",
+      "id": "99ce243e-e9ee-4417-9d4e-e7bcccda1e23",
       "name": "Registrar bloqueio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -451,7 +451,7 @@
       }
     },
     {
-      "id": "156affbe-4787-4c0c-a782-acc9446d1568",
+      "id": "3b18ecc9-3c3b-4eff-aeed-f74c074f249b",
       "name": "Salvar ação bloqueada",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -609,7 +609,7 @@
       }
     },
     {
-      "id": "12ba8d35-81b1-49b1-aea2-36139995be4f",
+      "id": "ea7614f2-4a1e-4560-a8d3-9745a4fc8c78",
       "name": "Salvar contrato aguardando configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -677,7 +677,7 @@
       }
     },
     {
-      "id": "24faa37c-578e-42d4-8c66-948c2572b807",
+      "id": "9eed4cd9-0b85-4479-8831-03001827a368",
       "name": "Documentos do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -720,7 +720,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "aa42c3fb-bdb6-47c1-b307-13aab794a193",
+      "id": "97808cae-c438-4fbb-b0ab-a93fe0efc97e",
       "name": "Resolver documento (consulta)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -734,7 +734,7 @@
       }
     },
     {
-      "id": "d5eeeb19-a8a2-4066-8c3b-be28463b081b",
+      "id": "b3befbaa-3103-4b09-8de9-30b84e5fd4f1",
       "name": "Documento a consultar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -748,7 +748,7 @@
       }
     },
     {
-      "id": "5ca959c5-5558-4844-9b0e-6ebd647f5c17",
+      "id": "7fca0a53-7dd7-4e97-bc01-d27eb954d38e",
       "name": "Google Docs — preencher",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -773,7 +773,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "c57fe065-8aa8-42f0-9bcd-dde38100bffc",
+      "id": "ab1ac86b-4754-4571-aa82-a0d2b5afd648",
       "name": "Google Docs — conferir",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -794,7 +794,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "358ec0eb-cccb-4220-8175-e4cc3bd42454",
+      "id": "8280c3b4-838f-4e19-82cc-ef2c7bef5344",
       "name": "Conferir preenchimento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -808,7 +808,7 @@
       }
     },
     {
-      "id": "57e55159-e43e-41dd-863e-a9567e66a100",
+      "id": "6bbf1dcc-1a2c-41e2-9a00-908e709009c4",
       "name": "Preenchimento completo?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -840,7 +840,7 @@
       }
     },
     {
-      "id": "bb1257b9-b9ff-4a70-a2d1-f721a0365c8c",
+      "id": "578f7e63-5864-40ea-9398-518a33ae32fd",
       "name": "Autentique — documentos recentes",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -865,7 +865,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "b8bb15f4-bd51-4ea6-97a0-21ac11d1f9f7",
+      "id": "776140eb-9cf6-4009-ae2e-caf4b6cd75b0",
       "name": "Decidir criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -880,7 +880,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "8a155d36-25fc-4d2a-b3b6-8c84ed3b785f",
+      "id": "e9127adc-ded5-4d61-b007-e1b7aeaca2e1",
       "name": "Criar documento?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -912,7 +912,7 @@
       }
     },
     {
-      "id": "5dcdabd5-8ca8-4b84-97e9-73c6de5599e9",
+      "id": "06f06f9f-83d6-4f01-8564-5c668552106e",
       "name": "Google Drive — exportar PDF",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -939,7 +939,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "e214eacd-de22-40ce-a4e2-6ad6fc2fb316",
+      "id": "dc4c2b70-c52a-4ff4-bdcc-6f8cdb6a7a34",
       "name": "Preparar arquivo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -954,7 +954,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "af1c2c0c-3ea7-42b8-b27a-3cd87f1fdfca",
+      "id": "00ca86b3-f746-4a94-a17f-9ff07c43498c",
       "name": "Autentique — criar documento",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -997,7 +997,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "e967dd34-8b56-42e8-9ae0-39c1f974a0d8",
+      "id": "251a0aa4-2cc7-49ee-af96-81545352e94b",
       "name": "Documento do contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1012,7 +1012,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "3cc81311-ee52-4eda-8e12-2af23ba9d135",
+      "id": "43cf2312-471c-40e4-9064-6f790e4e3f42",
       "name": "Registrar documento e signatários",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1150,7 +1150,7 @@
       }
     },
     {
-      "id": "b8729595-1385-4457-95f6-cb3e71bcad89",
+      "id": "563bebb9-26db-4825-8ab0-26dfc6592cfa",
       "name": "Contrato enviado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1164,7 +1164,7 @@
       }
     },
     {
-      "id": "9c1da24e-55b6-4c0c-aeed-a43a7ecc732e",
+      "id": "d91eb1c2-b3cf-454e-92d9-37a0f7ea0d48",
       "name": "Atualizar vínculo da cópia",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1228,7 +1228,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "fe617290-c323-4d54-86d4-9ed5b5c8dd1e",
+      "id": "8ff7afc3-fa4c-4c11-9a4e-b1f07aecbd44",
       "name": "Snapshot enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1283,7 +1283,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "ba150840-9819-4f76-9dc7-9a39b6e7a970",
+      "id": "0d730c17-432c-45cd-a86e-5a60b22d2607",
       "name": "Salvar contrato enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1352,7 +1352,7 @@
       "executeOnce": true
     },
     {
-      "id": "507516b0-1f8d-4b69-97bf-064249d94cc5",
+      "id": "0b5665ae-6746-46d9-a78b-9d4fbe94a01e",
       "name": "Registrar ação concluída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1511,7 +1511,7 @@
       "executeOnce": true
     },
     {
-      "id": "3b30e4aa-4a4a-4a92-8ed4-33ed752a0404",
+      "id": "79f686c6-e724-4b9a-a5f8-f8deb8b92709",
       "name": "Campos do contrato (envio)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1525,7 +1525,7 @@
       }
     },
     {
-      "id": "fac628f0-dab4-4aa1-85ea-8007dfcb3dd0",
+      "id": "febb8c0b-2233-4283-9d43-59820307bb0d",
       "name": "Atualizar negócio (envio)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1557,7 +1557,7 @@
       }
     },
     {
-      "id": "0c00cc58-c013-4f8b-8610-9458b33c39d8",
+      "id": "0d96befb-162b-4fb2-96be-c82bfd49d98c",
       "name": "Atualizar negócio (contrato enviado)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1582,7 +1582,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "525722a5-d2de-4699-bd04-3bdf8cb4a0f4",
+      "id": "70f3d9f2-a222-4c73-99f1-45e2f7d0e99e",
       "name": "Cobrar junto com o contrato?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1614,7 +1614,7 @@
       }
     },
     {
-      "id": "6de1023a-4d13-4bdd-956e-47285c8d956a",
+      "id": "fd69426b-42e9-4c25-89df-07c3fbe591e7",
       "name": "Pedido de cobrança (junto)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1628,7 +1628,7 @@
       }
     },
     {
-      "id": "d693c452-fa4e-492f-8118-1f1e8160ec69",
+      "id": "04c670dd-c481-4f49-8db2-503d019444a9",
       "name": "ATOM_06 — cobranças (junto com contrato)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1651,7 +1651,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "f9010226-ba77-470f-a86c-c72f4d4fef62",
+      "id": "46536678-e6e1-422c-8abc-204d082acdf0",
       "name": "Capturar erro",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1665,7 +1665,7 @@
       }
     },
     {
-      "id": "90b415c7-bf1b-4f45-aece-d97ada880ee9",
+      "id": "9294cf41-2093-4aec-8f16-4339b2a7aad5",
       "name": "Ação anterior",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1697,7 +1697,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "05d6ca42-1b28-47ce-a47e-13208690f9cb",
+      "id": "bf354ff2-586f-4d41-9129-12e9c33e1f9a",
       "name": "Falha na criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1711,7 +1711,7 @@
       }
     },
     {
-      "id": "bfd816f7-dd0c-4ee2-95bb-e7a7259c12c0",
+      "id": "1446fd5b-f060-470f-9c1d-db9d3da55615",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1869,7 +1869,7 @@
       }
     },
     {
-      "id": "e97e0545-5222-4992-b792-b06e153a1aed",
+      "id": "8179ee8c-3936-4bfe-ae25-49463ec76c29",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1883,7 +1883,7 @@
       }
     },
     {
-      "id": "302d7851-59ab-4b4a-8f48-076f6cb68f9e",
+      "id": "1283c20d-bae6-43c5-b0b2-1407f1684b58",
       "name": "ATOM_11 — alerta Autentique",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1906,7 +1906,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "06087dc9-aca6-4c75-9bca-47ce3c8839ca",
+      "id": "07858098-7ee0-4a64-9275-d5651706a0a1",
       "name": "Webhook Autentique",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1922,10 +1922,10 @@
           "rawBody": true
         }
       },
-      "webhookId": "656b9d9b-33ea-4503-80f6-3c9ea6b9c022"
+      "webhookId": "1db666ef-dffd-40a7-bb20-f256bae15455"
     },
     {
-      "id": "0996944e-719f-4518-82bd-6786306962fa",
+      "id": "1b682d25-5cb9-4373-868c-92254530c5fc",
       "name": "Calcular HMAC",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -1945,7 +1945,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "e5704a00-0f18-4c90-b875-571df204d35d",
+      "id": "0c21fca0-5e28-4637-b6ef-9fd0f3393541",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1967,7 +1967,7 @@
       "executeOnce": true
     },
     {
-      "id": "d16efce0-d00f-4431-b357-099b844616fb",
+      "id": "483cc071-dd87-40a7-adf1-aaeba05c46bc",
       "name": "Validar evento Autentique",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1981,7 +1981,7 @@
       }
     },
     {
-      "id": "e009f7ce-5810-4a77-adc4-8bf8dcefb6d8",
+      "id": "18147480-e54a-4fe1-bb4d-8c0cafc6b27a",
       "name": "Evento Autentique já recebido?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2013,7 +2013,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "3f58a9d7-591c-4877-9e30-a76bd0fe02d2",
+      "id": "8fa22a01-9a87-4c93-9577-028aeac9e824",
       "name": "Deduplicar evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2027,7 +2027,7 @@
       }
     },
     {
-      "id": "d67ba3e9-0787-42c8-9058-5150a64c42c4",
+      "id": "31d8bcd0-0e6d-4477-bf1e-b861e2829908",
       "name": "Registrar evento Autentique",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2175,7 +2175,7 @@
       }
     },
     {
-      "id": "3a248f9d-07ec-41a3-b77d-485939a22e18",
+      "id": "d4dccaa9-d680-442a-9ed2-fd707af21b6b",
       "name": "Evento válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2207,7 +2207,7 @@
       }
     },
     {
-      "id": "879ce85c-9544-4255-a80b-aa224482fd06",
+      "id": "d3e26136-5d60-4c91-95b0-cdd54b1c90c2",
       "name": "Documentos Autentique",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2245,7 +2245,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "61d483f0-9849-4cd4-8ec4-7eab66a915ff",
+      "id": "0ae16e46-920e-45c1-bb8f-19aa5e195c00",
       "name": "Resolver documento (webhook)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2259,7 +2259,7 @@
       }
     },
     {
-      "id": "f21d4dd1-cfe7-4603-a1d5-41aa7ed6e79d",
+      "id": "8cde1c30-e94f-423e-a1b1-6cc321837eeb",
       "name": "Autentique — consultar documento",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2292,7 +2292,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "d12ded7f-c5e2-44a9-84f2-512e97467f7b",
+      "id": "296bb9e0-4b43-4403-b30f-bd3d39aa16e5",
       "name": "Signatários do documento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2335,7 +2335,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "3f7ee28b-ff86-4589-b179-082cd45344fb",
+      "id": "03443743-ade1-4bae-85d9-5624bd80659e",
       "name": "Consolidar contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2349,7 +2349,7 @@
       }
     },
     {
-      "id": "791432cf-9582-47e4-baaa-ab6030daf177",
+      "id": "e2c0b57a-7f6a-41af-bb5f-cdc0f75dfe87",
       "name": "Gravar situação?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2381,7 +2381,7 @@
       }
     },
     {
-      "id": "8fd750da-315f-4264-9aa9-f5070721dde2",
+      "id": "1784921b-37e3-484a-8c8c-4525cfec91f2",
       "name": "Atualizar vínculo do documento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2450,7 +2450,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "610e44b3-2815-408c-9051-68014b639c2a",
+      "id": "d36d639a-85d5-4e85-990f-de1b3f10967a",
       "name": "Salvar situação do contrato",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2529,7 +2529,7 @@
       "executeOnce": true
     },
     {
-      "id": "a3e60ba2-b538-4260-ac2e-9718c2b8cd3f",
+      "id": "38a80992-858b-4f2d-a10c-895431d1212a",
       "name": "Campos do contrato (situação)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2543,7 +2543,7 @@
       }
     },
     {
-      "id": "ee494b6a-c094-44c2-ba52-4eaaad481539",
+      "id": "b8747d77-6a64-4e1e-a49a-0bb79c9363ce",
       "name": "Atualizar negócio (situação)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2575,7 +2575,7 @@
       }
     },
     {
-      "id": "2e5ab3e0-712a-445d-b358-f6a30c961f59",
+      "id": "d6b68f14-38c4-437b-b4a9-15e6fbce3ded",
       "name": "Atualizar negócio (situação do contrato)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2600,7 +2600,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "71cd52fd-c78c-43d4-b27c-03c1f36685bc",
+      "id": "f6e2d86b-2b6d-45d2-b38d-34ae9f5488b1",
       "name": "Assinado por todos?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2632,7 +2632,7 @@
       }
     },
     {
-      "id": "67fbcb77-f84c-4fd7-a780-581a263a1bee",
+      "id": "a52bf7dc-9e9c-4534-a46c-369472f3b157",
       "name": "Alertar situação do contrato?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2664,7 +2664,7 @@
       }
     },
     {
-      "id": "859e5a43-7fc4-4e17-9cda-482c8e768887",
+      "id": "706c397c-7fca-4f2d-ae9a-9238aa02b16c",
       "name": "Snapshot assinado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2718,7 +2718,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "c9edffcc-7cb8-4304-bb8a-718cfaff225f",
+      "id": "288588c0-f0d7-4bde-9046-b1f42d6cfd26",
       "name": "Cobrar após assinaturas?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2750,7 +2750,7 @@
       }
     },
     {
-      "id": "bb5f2033-4895-4f84-a059-b5eebee6f900",
+      "id": "9fe9d0f0-6c22-4ed6-acbb-f22e0b59a5fc",
       "name": "Pedido de cobrança (após assinaturas)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2764,7 +2764,7 @@
       }
     },
     {
-      "id": "37fe70e7-3d73-4840-a0e4-4320759cd79a",
+      "id": "b4589804-243f-4bfc-9adb-3c32b7fc1d27",
       "name": "ATOM_06 — cobranças (após assinaturas)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2787,7 +2787,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ef244cc4-4f18-4377-8ecf-d166842808d7",
+      "id": "bc26532e-29db-4952-a9a0-f1a0c6fda042",
       "name": "Pedido de reavaliação da liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2802,7 +2802,7 @@
       "executeOnce": true
     },
     {
-      "id": "84b3e2b4-1c5d-4d2c-abca-910546fd9982",
+      "id": "dde19b6c-770f-42f5-b4dc-e35160f42825",
       "name": "Alerta do contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2816,7 +2816,7 @@
       }
     },
     {
-      "id": "3a55bb77-634d-4c3b-b65d-5761c725268e",
+      "id": "87071f4d-64a1-49cd-ada4-27ffea03cd6f",
       "name": "ATOM_11 — alerta contrato",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2839,7 +2839,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "4829f43b-1c38-45cc-960f-f2490dc25ba3",
+      "id": "7ba24d75-5a4b-4757-a981-9c8fd2cc9aab",
       "name": "ATOM_08 — reavaliar liberação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2862,8 +2862,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "031a120c-63fe-4bdd-9176-6049d15829da",
-      "name": "Sticky Note 031a120c",
+      "id": "8461959a-5be5-483d-b355-88977d301330",
+      "name": "Sticky Note 8461959a",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

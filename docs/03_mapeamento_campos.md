@@ -10,7 +10,7 @@ Toda leitura/escrita de campo passa por uma chave de `atom_config`. Nenhum ID de
 
 Campos personalizados: informe o **hash de 40 caracteres** do campo (Pipedrive → Configurações → Campos de dados). Campos nativos: `nativo:<nome>` (ex.: `nativo:website`).
 
-Resumo: 89 CONFIGURADO, 14 PROPOSTO, 22 PENDENTE, 1 OBSOLETO (total 126).
+Resumo: 90 CONFIGURADO, 23 PENDENTE, 14 PROPOSTO, 1 OBSOLETO (total 128).
 
 ## Campos da organização (Pipedrive)
 
@@ -104,12 +104,14 @@ Resumo: 89 CONFIGURADO, 14 PROPOSTO, 22 PENDENTE, 1 OBSOLETO (total 126).
 | `WF_ATOM_10` | CONFIGURADO | `D0MWED51LMZE4FU7` | ATOM_02, ATOM_04, ATOM_09 | ID do workflow ATOM_10_Zayra_Interface |
 | `WF_ATOM_11` | CONFIGURADO | `vd4MLxMjp8SlGgRh` | ATOM_02-09 | ID do workflow ATOM_11_Erros_Reconciliacao |
 | `WF_ATOM_00` | CONFIGURADO | `E3SVfrlTjba5wq8r` | manual | ID do workflow ATOM_00_Aplicar_Config (utilitário de configuração) |
+| `WF_ATOM_00_CONTROLLE` | CONFIGURADO | `tIotzkMV81fDzkvY` | manual | ID do workflow ATOM_00_Inspecionar_Controlle (somente leitura). |
 
 ## Parâmetros de integração e regras
 
 | Chave | Status | Valor atual | Usado por | Descrição |
 |---|---|---|---|---|
 | `MODO_EXECUCAO` | CONFIGURADO | `SIMULACAO` | todos | SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Autentique/Google Docs, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO). |
+| `SANDBOX_DEAL_IDS` | PENDENTE | — | ATOM_05, ATOM_06, ATOM_08, ATOM_10 | IDs dos negócios de TESTE (vírgula). Em MODO_EXECUCAO=SANDBOX, contrato, cobrança, cartão e mensagens só saem para estes negócios; um cliente real nunca recebe e-mail de teste. |
 | `RETENTATIVAS_MAX` | PROPOSTO | `6` | ATOM_07, ATOM_11 | Máximo de retentativas automáticas (backoff exponencial em minutos). |
 | `ALERTA_CANAL` | CONFIGURADO | `PIPEDRIVE_ATIVIDADE` | ATOM_11 | PIPEDRIVE_ATIVIDADE (tarefa para PD_ALERTA_USER_ID) ou WEBHOOK (ALERTA_WEBHOOK_URL). Sem canal: alertas só ficam em atom_eventos. |
 | `ALERTA_WEBHOOK_URL` | PENDENTE | — | ATOM_11 | URL de webhook interno para alertas (ex.: Google Chat/Slack). Contém segredo: restrinja o acesso ao n8n. |

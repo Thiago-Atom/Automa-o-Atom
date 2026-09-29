@@ -13,7 +13,7 @@ const m = ATOM_ZAYRA.montar({
 // Retentativa (ATOM_11) preserva o request_id original.
 if (e.retry_request_id) m.req.request_id = String(e.retry_request_id);
 const mecanismo = ATOM_CONFIG.valor(cfg, 'ZAYRA_MECANISMO', '');
-const gate = ATOM_CONFIG.portao(cfg, ['ZAYRA_MECANISMO', 'ZAYRA_ENDPOINT_URL']);
+const gate = ATOM_CONFIG.portao(cfg, ['ZAYRA_MECANISMO', 'ZAYRA_ENDPOINT_URL'], { dealId: String(m.req.pipedrive_deal_id || '') });
 if (gate.liberado && mecanismo !== 'HTTP_WEBHOOK') { gate.liberado = false; gate.motivo = 'MECANISMO_NAO_IMPLEMENTADO: ' + mecanismo; }
 return [{ json: { req: m.req, valido: m.ok, erros: m.erros, gate, endpoint: ATOM_CONFIG.valor(cfg, 'ZAYRA_ENDPOINT_URL', '') } }];
 //#endregion

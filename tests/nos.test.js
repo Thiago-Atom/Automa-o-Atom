@@ -86,7 +86,7 @@ test('teste 17 — falha após criação externa: Asaas reaproveita cobrança ex
 const CFG_CONTRATO = {
   MODO_EXECUCAO: 'SANDBOX', GDRIVE_PASTA_CONTRATOS_ID: 'pasta-ficticia', CONTRATO_MODELO_EXEMPLO: 'modelo-ficticio',
   CONTRATO_MAPA_EXEMPLO: '{"RAZAO_SOCIAL":"empresa.razao_social","VALOR_TOTAL":{"campo":"financeiro.valor_total","formato":"moeda"}}',
-  AUTENTIQUE_SIGNATARIO_ATOM_EMAIL: 'assinatura@exemplo.invalid', COBRANCA_DISPARO: 'JUNTO_COM_CONTRATO',
+  AUTENTIQUE_SIGNATARIO_ATOM_EMAIL: 'assinatura@exemplo.invalid', COBRANCA_DISPARO: 'JUNTO_COM_CONTRATO', SANDBOX_DEAL_IDS: '900013',
 };
 const DADOS_CONTRATO = { org_id: 900113, empresa: { razao_social: 'EMPRESA FICTICIA LTDA' }, comercial: { modelo_contrato: 'EXEMPLO' },
   financeiro: { valor_total: 1500 }, contatos: { email_assinatura: 'contato@exemplo.invalid' } };
@@ -116,6 +116,8 @@ test('teste 17 — falha após criação externa: contrato retoma com a mesma c�
 
 test('contrato: bloqueios (simulação, produção sem validação, variável sem valor, modelo incompatível)', () => {
   assert.equal(planejarContrato(Object.assign({}, CFG_CONTRATO, { MODO_EXECUCAO: 'SIMULACAO' }), []).motivo, 'MODO_SIMULACAO');
+  assert.match(planejarContrato(Object.assign({}, CFG_CONTRATO, { SANDBOX_DEAL_IDS: '111,222' }), []).motivo, /SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE/,
+    'em SANDBOX um negócio real (fora da lista de teste) nunca recebe contrato');
   assert.match(planejarContrato(Object.assign({}, CFG_CONTRATO, { MODO_EXECUCAO: 'PRODUCAO' }), []).motivo, /AUTENTIQUE_VALIDADO_SANDBOX/);
   const semValor = planejarContrato(Object.assign({}, CFG_CONTRATO, { CONTRATO_MAPA_EXEMPLO: '{"PRAZO":"comercial.prazo_execucao"}' }), []);
   assert.equal(semValor.bloqueado, true); assert.match(semValor.motivo, /PRAZO/);

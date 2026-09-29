@@ -31,7 +31,7 @@ const r = ATOM_REGRAS.avaliarLiberacao({
   pagamentoInicial: pag && pag.id ? pag : null, cartaoExistente: !!(card || est.trello_card_id),
   aceitaRecebidoEmDinheiro: ATOM_CONFIG.booleano(cfg, 'LIBERACAO_ACEITA_RECEBIDO_EM_DINHEIRO'), bloqueios,
 });
-const gate = ATOM_CONFIG.portao(cfg, ['TRELLO_BOARD_ID', 'TRELLO_LIST_ENTRADA_ID']);
+const gate = ATOM_CONFIG.portao(cfg, ['TRELLO_BOARD_ID', 'TRELLO_LIST_ENTRADA_ID'], { dealId: String(e.deal_id) });
 let decisao;
 if (r.jaLiberado) decisao = 'JA_LIBERADO';
 else if (!r.liberar) decisao = 'AGUARDAR';

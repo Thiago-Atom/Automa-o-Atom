@@ -302,3 +302,14 @@ test('errorSummary mascara credencial após esquema Bearer/Basic (achado em test
   }
   assert.equal(U.errorSummary('sem segredo aqui'), 'sem segredo aqui');
 });
+
+test('portão: chaves só de produção e lista de negócios de teste no SANDBOX', () => {
+  const c = (o) => C.montar(Object.entries(o).map(([chave, valor]) => ({ chave, valor, status: 'CONFIGURADO' })));
+  const sb = c({ MODO_EXECUCAO: 'SANDBOX', X: '1', SANDBOX_DEAL_IDS: '10, 20' });
+  assert.equal(C.portao(sb, ['X'], { somenteProducao: ['VALIDADO'], dealId: '10' }).liberado, true, 'validação não é exigida no sandbox');
+  assert.match(C.portao(sb, ['X'], { dealId: '30' }).motivo, /SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE/);
+  assert.match(C.portao(c({ MODO_EXECUCAO: 'SANDBOX', X: '1' }), ['X'], { dealId: '10' }).motivo, /SANDBOX_SOMENTE/, 'sem lista: nada passa');
+  const pr = c({ MODO_EXECUCAO: 'PRODUCAO', X: '1' });
+  assert.match(C.portao(pr, ['X'], { somenteProducao: ['VALIDADO'], dealId: '30' }).motivo, /VALIDADO/);
+  assert.equal(C.portao(c({ MODO_EXECUCAO: 'PRODUCAO', X: '1', VALIDADO: 'SIM' }), ['X'], { somenteProducao: ['VALIDADO'], dealId: '30' }).liberado, true);
+});

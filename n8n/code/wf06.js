@@ -18,7 +18,7 @@ const origemOk = (disparo === 'JUNTO_COM_CONTRATO' && e.origem === 'CONTRATO_ENV
   (disparo === 'APOS_ASSINATURAS' && e.origem === 'ASSINATURAS_CONCLUIDAS') || e.origem === 'REPROCESSAMENTO';
 if (!origemOk) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: 'GATILHO_DIFERENTE_DA_REGRA ' + disparo + '/' + e.origem }) }];
 if (disparo === 'APOS_ASSINATURAS' && snap.status !== 'ASSINADO') return [{ json: Object.assign(base, { executar: false, fim: true, motivo: 'CONTRATO_AINDA_NAO_ASSINADO' }) }];
-const gate = ATOM_CONFIG.portao(cfg, ['ASAAS_BASE_URL', 'ASAAS_VALIDADO_SANDBOX']);
+const gate = ATOM_CONFIG.portao(cfg, ['ASAAS_BASE_URL'], { somenteProducao: ['ASAAS_VALIDADO_SANDBOX'], dealId: String(e.deal_id) });
 if (!gate.liberado) return [{ json: Object.assign(base, { executar: false, motivo: gate.motivo }) }];
 const d = Object.assign(ATOM_UTIL.safeJsonParse(snap.dados, {}), { versao: Number(e.versao) });
 const plano = ATOM_FORM.planoCobranca(d);

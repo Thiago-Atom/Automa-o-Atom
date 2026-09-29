@@ -2,7 +2,7 @@
   "name": "ATOM_03_Cadastro_CNPJ",
   "nodes": [
     {
-      "id": "98e76a20-be96-40f3-b443-287a6a7fdd88",
+      "id": "315b66c4-3568-4adc-bdd0-450ffff39231",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "bce5d14e-fc59-4d5f-9a70-f115b8c1549f",
+      "id": "a90ae9d5-b08b-4acd-9f36-63f6e13691c3",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "c79a510e-f8ad-4ebd-b687-2ecc38891267",
+      "id": "004c081c-ed62-495d-89dc-4563b9bf8754",
       "name": "Buscar organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -65,7 +65,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "e7b84664-84ed-4c08-a728-4f4bc72d0545",
+      "id": "40aa4c57-5b64-41e5-b120-db2d74f54a12",
       "name": "Consulta anterior",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -102,7 +102,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "5c3be0e8-3e0d-43b8-b63f-677cce5f24e9",
+      "id": "fced3692-0b34-4141-a624-0f5fd71812a2",
       "name": "Validar CNPJ",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -116,7 +116,7 @@
       }
     },
     {
-      "id": "0812f4f2-c3c6-4714-9219-bb93d5a153a0",
+      "id": "80b84c94-f8d5-4879-a11b-913d73735df8",
       "name": "Ação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -175,7 +175,7 @@
       }
     },
     {
-      "id": "c46f3677-6fe1-47e7-81d4-2aa814c64bf7",
+      "id": "153a0733-5c9d-4dd0-ba25-ddc04078877a",
       "name": "Consultar provedor de CNPJ",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -213,7 +213,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "4c16980b-9087-413e-91c5-c2df1900371e",
+      "id": "2b9d2695-5274-45cd-a024-e045af5e0209",
       "name": "Normalizar e comparar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -227,7 +227,7 @@
       }
     },
     {
-      "id": "eefefbd0-a068-420b-ba02-79940113c90f",
+      "id": "f2a7401f-25b2-4a15-ad88-469bdf04e3bd",
       "name": "Resultado CNPJ",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -241,7 +241,7 @@
       }
     },
     {
-      "id": "d5febfcf-8892-4040-8243-57dc19859ee3",
+      "id": "efd8eb70-6143-470e-954c-b1027a4f3bc8",
       "name": "Resultado sem consulta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -255,7 +255,7 @@
       }
     },
     {
-      "id": "9a3c1e10-ca92-4963-bbd0-4d2f66704bf3",
+      "id": "0dc9c513-4cab-4767-b0a2-0da8db2b616e",
       "name": "Atualizar organização?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -287,7 +287,7 @@
       }
     },
     {
-      "id": "1b6b9640-5389-4c2a-bc79-7c3d20610347",
+      "id": "61a1d253-0c95-48e2-aee4-8a3b3fffb2ee",
       "name": "Atualizar organização (campos vazios)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -312,7 +312,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "caba8997-9ac8-411c-9ef6-fae4aaca195b",
+      "id": "9b572571-5b03-4237-b022-74a79f1eeb6b",
       "name": "Registrar pendência?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -344,7 +344,7 @@
       }
     },
     {
-      "id": "01cd4906-dff0-4c89-a760-aa07dafc5ec4",
+      "id": "2efc4d62-76ab-470e-9ddd-28f6e48c63d2",
       "name": "Nota de conferência cadastral",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -369,7 +369,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7e3e46b6-0717-4cc4-bcfc-0017430997b2",
+      "id": "b0a6eb4a-ff04-4740-9488-a1d959a0afbd",
       "name": "Salvar consulta cadastral",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -502,8 +502,8 @@
       }
     },
     {
-      "id": "4f5973cd-c76a-4800-88c7-4ffca1db2c86",
-      "name": "Sticky Note 4f5973cd",
+      "id": "ea3924f8-337a-4f27-9946-ec12e3ed0392",
+      "name": "Sticky Note ea3924f8",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

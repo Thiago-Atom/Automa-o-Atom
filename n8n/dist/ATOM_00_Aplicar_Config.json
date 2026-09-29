@@ -2,7 +2,7 @@
   "name": "ATOM_00_Aplicar_Config",
   "nodes": [
     {
-      "id": "f38b8722-b87c-4d07-a3a3-de37ea56b186",
+      "id": "1220dd38-625c-4614-a2f9-fbf44dff48b6",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "3806b26a-a586-40ea-bb26-e012ec8b2626",
+      "id": "73176269-ee89-4624-802d-566d4e02850e",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -38,7 +38,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "fec76788-f7ac-4c69-bc50-2f6469ce7cd1",
+      "id": "c082c8d3-6d5f-431e-9628-450a1eeb4f11",
       "name": "Validar e mesclar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -52,7 +52,7 @@
       }
     },
     {
-      "id": "2b0d9942-0635-4ee1-bdc8-2ea12551186a",
+      "id": "fd62c52b-d0df-4620-ba84-1ceae0c05b41",
       "name": "Gravar em atom_config",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,

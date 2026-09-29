@@ -21,9 +21,8 @@ const chaveModelo = 'CONTRATO_MODELO_' + cod;
 const chaveMapa = 'CONTRATO_MAPA_' + cod;
 const modo = ATOM_CONFIG.modo(cfg);
 const exigidas = ['AUTENTIQUE_SIGNATARIO_ATOM_EMAIL', 'GDRIVE_PASTA_CONTRATOS_ID', chaveModelo, chaveMapa];
-// Em PRODUCAO o fluxo só roda depois de validado no sandbox; em SANDBOX roda para permitir essa validação.
-if (modo === 'PRODUCAO') exigidas.push('AUTENTIQUE_VALIDADO_SANDBOX');
-const gate = ATOM_CONFIG.portao(cfg, exigidas);
+// Em PRODUCAO só depois de validado no sandbox; em SANDBOX só para os negócios de teste (SANDBOX_DEAL_IDS).
+const gate = ATOM_CONFIG.portao(cfg, exigidas, { somenteProducao: ['AUTENTIQUE_VALIDADO_SANDBOX'], dealId: String(e.deal_id) });
 if (!gate.liberado) return bloquear(gate.motivo);
 const mapa = ATOM_UTIL.safeJsonParse(ATOM_CONFIG.valor(cfg, chaveMapa, ''), null);
 const s = ATOM_AUT.montarSubstituicoes(d, mapa);

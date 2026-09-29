@@ -2,7 +2,7 @@
   "name": "ATOM_00_Inspecionar_Controlle",
   "nodes": [
     {
-      "id": "30ec1d09-11b6-4144-b7f3-7415156619de",
+      "id": "b66f0938-ad89-4991-aeb8-0d7f53cf6795",
       "name": "Executar inspeção",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -16,10 +16,10 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "128269f3-314c-4ce3-b264-11f3df1bac3d"
+      "webhookId": "f67989e5-1e01-4f16-9406-a90a8fc4c4fc"
     },
     {
-      "id": "46ee187a-4aaa-4320-b3c6-e18b3d90796d",
+      "id": "e497cd00-fd06-4162-ba63-120aa68e0e4a",
       "name": "Consultas (somente leitura)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -33,7 +33,7 @@
       }
     },
     {
-      "id": "a01580b5-b6e2-4395-8fce-acb233ebabef",
+      "id": "e274fce7-a75c-4b17-8798-07767f95c74d",
       "name": "Controlle — GET",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -63,7 +63,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "4621c3d9-6243-4188-9f8a-8cbdff57a74f",
+      "id": "7ca5d445-3810-420b-8765-a7f4417e7a27",
       "name": "Resumo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
