@@ -86,7 +86,7 @@ const adaptador = node({
       method: 'POST',
       url: expr("{{ $('Decidir envio').first().json.endpoint }}"),
       authentication: 'genericCredentialType',
-      genericAuthType: 'httpTemplatedCustomAuth',
+      genericAuthType: 'httpCustomAuth',
       sendHeaders: true,
       specifyHeaders: 'keypair',
       headerParameters: { parameters: [{ name: 'Idempotency-Key', value: expr("{{ $('Decidir envio').first().json.req.request_id }}") }] },
@@ -96,7 +96,7 @@ const adaptador = node({
       jsonBody: expr("{{ JSON.stringify($('Decidir envio').first().json.req) }}"),
       options: { timeout: 20000, response: { response: { fullResponse: true, neverError: true } } }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Zayra — autenticação (PENDENTE)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Zayra — autenticação (PENDENTE)') }
   },
   output: [{ statusCode: 202, body: { message_id: 'wamid.x' } }]
 });

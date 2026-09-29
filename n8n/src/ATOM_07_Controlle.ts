@@ -46,12 +46,12 @@ const adaptador = node({
     notes: 'Endpoint, autenticação e formato NÃO definidos. Ativar somente após mapear a API real do Controlle (docs/). Enquanto desativado, nenhum item é marcado como sincronizado.',
     parameters: {
       method: 'POST', url: expr('{{ $json.url }}'),
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'Idempotency-Key', value: expr('{{ $json.corpo.chave_idempotencia }}') }] },
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr('{{ JSON.stringify($json.corpo) }}'),
       options: { timeout: 20000, response: { response: { fullResponse: true, neverError: true } } }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Controlle (PENDENTE)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Controlle (PENDENTE)') }
   },
   output: [{ statusCode: 201, body: { id: 'x' } }]
 });

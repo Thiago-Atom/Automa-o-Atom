@@ -5,11 +5,15 @@
 
 ## 1. Credenciais a criar no n8n
 
+> **Situação em 2026-09-29:** criadas e associadas aos nós: Pipedrive API, Webhook Pipedrive, Webhook interno, Google Drive,
+> Autentique (Bearer), Asaas (access_token, sandbox) e Webhook Asaas. Faltam só as de ativação (segredos HMAC da Autentique e do
+> Trello, credencial Crypto) e as pendentes (Anthropic, Controlle, Zayra).
+
 | Nome da credencial (como referenciada nos nós) | Tipo no n8n | Usada em | Observação |
 |---|---|---|---|
 | `ATOM Pipedrive API` | Pipedrive API | 02, 03, 04, 05, 06, 08, 09, 11 | Recomendado: token de um **usuário dedicado de integração**; informe o ID dele em `PD_INTEGRACAO_USER_ID` (anti-loop). |
 | `ATOM Anthropic` | Anthropic API | 02, 08 | Diagnóstico e briefing. |
-| `ATOM Autentique (Bearer)` | Custom Auth (template) — `{"headers":{"Authorization":"Bearer {{api_key}}"}}` | 05 | Token da API da Autentique (Configurações → API). Segundo o SDK público, o mesmo token serve para sandbox e produção: o modo vai no parâmetro `sandbox` da criação (confirmar no primeiro teste). |
+| `ATOM Autentique (Bearer)` | Custom Auth — `{"headers":{"Authorization":"Bearer <token>"}}` | 05 | Token da API da Autentique (Configurações → API). Segundo o SDK público, o mesmo token serve para sandbox e produção: o modo vai no parâmetro `sandbox` da criação (confirmar no primeiro teste). |
 | `ATOM Autentique — segredo HMAC do webhook` | Crypto | 05 (webhook) | Segredo do webhook da Autentique, usado para conferir o HMAC-SHA256. |
 | `ATOM Google Drive` | Google Drive OAuth2 API | 05 | Conta Google com acesso ao(s) modelo(s) e à pasta de contratos. Usada para copiar o modelo, preencher (API do Docs) e exportar PDF. |
 | `ATOM Asaas (access_token)` | Custom Auth (cabeçalho `access_token`) | 06 | Chave do **sandbox** até a validação. |

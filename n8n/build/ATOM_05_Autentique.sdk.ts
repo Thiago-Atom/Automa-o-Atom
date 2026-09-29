@@ -142,11 +142,11 @@ const httpRecentes = node({
     name: 'Autentique — documentos recentes', onError: 'continueErrorOutput',
     parameters: {
       method: 'POST', url: 'https://api.autentique.com.br/v2/graphql',
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Planejar contrato').first().json.consulta_recentes) }}"),
       options: { timeout: 30000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Autentique (Bearer)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Autentique (Bearer)') }
   },
   output: [{ data: { documents: { data: [] } } }]
 });
@@ -187,7 +187,7 @@ const httpCriar = node({
     notes: 'Envia os convites de assinatura por e-mail ao cliente e à Atom. sandbox=true fora de PRODUCAO.',
     parameters: {
       method: 'POST', url: 'https://api.autentique.com.br/v2/graphql',
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendBody: true, contentType: 'multipart-form-data',
       bodyParameters: { parameters: [
         { parameterType: 'formData', name: 'operations', value: expr("{{ $('Planejar contrato').first().json.operations }}") },
@@ -196,7 +196,7 @@ const httpCriar = node({
       ] },
       options: { timeout: 60000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Autentique (Bearer)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Autentique (Bearer)') }
   },
   output: [{ data: { createDocument: { id: 'doc-ficticio', name: 'x', signatures: [] } } }]
 });
@@ -404,12 +404,12 @@ const consultarDoc = node({
     name: 'Autentique — consultar documento', executeOnce: true, retryOnFail: true, maxTries: 3, waitBetweenTries: 3000,
     parameters: {
       method: 'POST', url: 'https://api.autentique.com.br/v2/graphql',
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendBody: true, contentType: 'json', specifyBody: 'json',
       jsonBody: expr("{{ JSON.stringify({ query: 'query { document(id: \"' + String($json.documento).replace(/[^A-Za-z0-9_-]/g, '') + '\") { id name files { original signed } signatures { public_id email action { name } signed { created_at } rejected { created_at reason } } } }' }) }}"),
       options: { timeout: 20000, response: { response: { neverError: true } } }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Autentique (Bearer)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Autentique (Bearer)') }
   },
   output: [{ data: { document: { id: 'doc-ficticio', signatures: [] } } }]
 });

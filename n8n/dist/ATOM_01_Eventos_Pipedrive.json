@@ -2,7 +2,7 @@
   "name": "ATOM_01_Eventos_Pipedrive",
   "nodes": [
     {
-      "id": "bbc69842-bc01-4353-b232-bbb2b29d509b",
+      "id": "2785b3bc-79c2-406d-a4a8-8960bf82f65a",
       "name": "Webhook Pipedrive",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -17,11 +17,11 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "c8d79f92-6da0-4467-84a0-50f39d41f832",
+      "webhookId": "020cb7c7-b2c4-4262-80b7-37cffcf6c016",
       "credentials": {}
     },
     {
-      "id": "b1968b3d-c2a4-4d08-b0ec-a1d09c863060",
+      "id": "9a7afd44-f93b-4860-834a-e7d96624882a",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -43,7 +43,7 @@
       "executeOnce": true
     },
     {
-      "id": "f936d814-ef83-4263-99b0-838c852811d1",
+      "id": "864f4df4-fc06-4695-b289-9489d8e6f5c4",
       "name": "Classificar evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -57,7 +57,7 @@
       }
     },
     {
-      "id": "ae1e01c0-dd15-4d9c-9ab0-7698c1004e52",
+      "id": "13b652ce-4f73-42a7-8452-0a568300f275",
       "name": "Evento já recebido?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -89,7 +89,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "ba2d43d1-033d-496c-abdb-6dbd6aa0d7cd",
+      "id": "2291cd67-181a-4dcd-b60b-a83b8b6e6abb",
       "name": "Deduplicar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -103,7 +103,7 @@
       }
     },
     {
-      "id": "7effde50-6568-410d-b521-122ab2f6b6d8",
+      "id": "888dc8a8-bfac-432b-b4a1-d95a90916a18",
       "name": "Registrar evento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -251,7 +251,7 @@
       }
     },
     {
-      "id": "1fc8ad8c-e017-4e82-b4ad-d8498d257cc3",
+      "id": "8c71fdf5-d3de-4cc6-acc3-961cfd39b97e",
       "name": "Separar gatilhos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -265,7 +265,7 @@
       }
     },
     {
-      "id": "319b30da-e356-428b-8ba8-61d5e60b3262",
+      "id": "3fb7a4d3-67b4-468c-9dda-112bd121a1e2",
       "name": "Despachar gatilho",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -287,7 +287,7 @@
       }
     },
     {
-      "id": "c2104658-840a-4f07-85db-405d33ccba42",
+      "id": "e9dae45f-10e5-4ff1-8f6c-47d09faa2cda",
       "name": "Marcar despachado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -346,8 +346,8 @@
       "executeOnce": true
     },
     {
-      "id": "6b453e11-7ef1-4dd9-b1cc-046e9aca20af",
-      "name": "Sticky Note 6b453e11",
+      "id": "e9b06af7-19fc-4bd0-ad7b-8a0e4fa570d9",
+      "name": "Sticky Note e9b06af7",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -456,6 +456,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-28"
+    "atomBuild": "2026-09-29"
   }
 }

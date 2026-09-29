@@ -46,11 +46,11 @@ const pagamento = node({
     name: 'Consultar pagamento inicial', retryOnFail: true, maxTries: 3, waitBetweenTries: 3000,
     parameters: {
       method: 'GET', url: expr('{{ $json.base_url }}/payments/{{ $json.payment_id }}'),
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'User-Agent', value: 'AtomDigital-n8n' }] },
       options: { timeout: 20000, response: { response: { neverError: true } } }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Asaas (access_token)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Asaas (access_token)') }
   },
   output: [{ id: 'pay_1', status: 'CONFIRMED', value: 1000, externalReference: 'atom-d70-v1-entrada' }]
 });

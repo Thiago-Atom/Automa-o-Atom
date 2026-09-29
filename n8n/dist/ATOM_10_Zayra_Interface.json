@@ -2,7 +2,7 @@
   "name": "ATOM_10_Zayra_Interface",
   "nodes": [
     {
-      "id": "cc05f411-5808-4617-aac1-7fe7c2d5c698",
+      "id": "41b13993-7f2b-40dc-980f-8c88e9daa849",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "b09b9655-e89a-4b9e-bc11-89cd8637996e",
+      "id": "8ebdf2e6-75f3-4fcf-953f-755c8acc87d7",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "e140cedb-c885-4025-b1bc-9ae8561705a4",
+      "id": "f3bee836-6f9b-45a5-bc95-3921f67610f5",
       "name": "Montar pedido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -51,7 +51,7 @@
       }
     },
     {
-      "id": "c1be4932-cedb-4a4d-ab23-b67890be5e99",
+      "id": "c1579a2c-1df2-4ab5-b99d-2e4c87506a99",
       "name": "Buscar pedido existente",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -83,7 +83,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "81797ef2-ff65-4f67-adfa-eff9db46073d",
+      "id": "c262a659-0558-4252-ace4-e1f51eb4677b",
       "name": "Decidir envio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -97,7 +97,7 @@
       }
     },
     {
-      "id": "9173592e-2779-410e-9c59-53e051d7bd9c",
+      "id": "0709d761-ec10-461a-9a07-24b193dec0a0",
       "name": "Registrar pedido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -255,7 +255,7 @@
       }
     },
     {
-      "id": "3bdec0ee-9559-4258-ad1d-21ec69b8ca12",
+      "id": "6f7d488d-55d2-4277-bd17-e7ac108ae68f",
       "name": "Enviar à Zayra?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -287,7 +287,7 @@
       }
     },
     {
-      "id": "2188c4db-8ec7-476c-843d-f9210ee18afb",
+      "id": "a19a4741-603e-4726-b7f4-b44285676030",
       "name": "Zayra — adaptador HTTP (contrato proposto)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -299,7 +299,7 @@
         "method": "POST",
         "url": "={{ $('Decidir envio').first().json.endpoint }}",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
+        "genericAuthType": "httpCustomAuth",
         "sendHeaders": true,
         "specifyHeaders": "keypair",
         "headerParameters": {
@@ -329,7 +329,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "6ffc268b-4327-46ce-b776-2957e6fdeb28",
+      "id": "f9a34988-83a0-457c-b7ef-f603df66d3ed",
       "name": "Interpretar resposta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -343,7 +343,7 @@
       }
     },
     {
-      "id": "b71298c7-92c6-4cf4-884d-c5ffc398c94e",
+      "id": "810811a4-5c5d-46eb-b0df-d7dc2ff4f1ba",
       "name": "Atualizar pedido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -441,7 +441,7 @@
       }
     },
     {
-      "id": "cb086cdb-b961-4ba0-ab4f-eb1110ff7545",
+      "id": "dc472525-ccb0-419e-869c-6e0fd6d664bd",
       "name": "Resultado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -455,7 +455,7 @@
       }
     },
     {
-      "id": "4438b530-ca97-4495-8903-0eb67b12ed2d",
+      "id": "680efeeb-f71c-4f8d-92a9-24cbd0986007",
       "name": "Status de entrega (Zayra)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -470,11 +470,11 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "c027183e-28f9-4171-8f9d-bf35a2e5d45c",
+      "webhookId": "988a40c3-ba73-4b8d-987a-41fa2971aa4e",
       "credentials": {}
     },
     {
-      "id": "e8b1a414-0623-44a9-b3a1-d2bdf3082b02",
+      "id": "55da97c1-b72a-4eaf-9d7c-389d9fa651b9",
       "name": "Normalizar status",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -488,7 +488,7 @@
       }
     },
     {
-      "id": "0572395f-0a78-4042-b108-40e453611fb1",
+      "id": "98f7a0a0-d37e-43a2-bdb5-3b14292c292d",
       "name": "Atualizar entrega no agendamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -556,8 +556,8 @@
       }
     },
     {
-      "id": "39589cf0-399d-4cc2-82f0-9385871ed4b2",
-      "name": "Sticky Note 39589cf0",
+      "id": "98ebc898-3587-4120-b1a3-a0a378b65ceb",
+      "name": "Sticky Note 98ebc898",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -725,6 +725,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-28"
+    "atomBuild": "2026-09-29"
   }
 }

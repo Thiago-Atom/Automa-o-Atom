@@ -76,12 +76,12 @@ const buscarCliente = node({
     name: 'Asaas — buscar cliente por CNPJ', retryOnFail: true, maxTries: 3, waitBetweenTries: 3000,
     parameters: {
       method: 'GET', url: expr("{{ $('Planejar cobranças').first().json.url }}/customers"),
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'cpfCnpj', value: expr("{{ $('Planejar cobranças').first().json.cnpj }}") }] },
       sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'User-Agent', value: 'AtomDigital-n8n' }] },
       options: { timeout: 20000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Asaas (access_token)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Asaas (access_token)') }
   },
   output: [{ data: [] }]
 });
@@ -100,12 +100,12 @@ const postCliente = node({
     name: 'Asaas — criar cliente', onError: 'continueErrorOutput',
     parameters: {
       method: 'POST', url: expr("{{ $('Planejar cobranças').first().json.url }}/customers"),
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'User-Agent', value: 'AtomDigital-n8n' }] },
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Planejar cobranças').first().json.corpo_cliente) }}"),
       options: { timeout: 30000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Asaas (access_token)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Asaas (access_token)') }
   },
   output: [{ id: 'cus_1' }]
 });
@@ -134,12 +134,12 @@ const verificar = node({
     name: 'Asaas — verificar externalReference', retryOnFail: true, maxTries: 3, waitBetweenTries: 3000,
     parameters: {
       method: 'GET', url: expr("{{ $('Planejar cobranças').first().json.url }}{{ $json.caminho_busca }}"),
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'externalReference', value: expr('{{ $json.ref }}') }] },
       sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'User-Agent', value: 'AtomDigital-n8n' }] },
       options: { timeout: 20000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Asaas (access_token)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Asaas (access_token)') }
   },
   output: [{ data: [] }]
 });
@@ -158,12 +158,12 @@ const postCobranca = node({
     name: 'Asaas — criar cobrança/parcelamento/assinatura', onError: 'continueErrorOutput',
     parameters: {
       method: 'POST', url: expr("{{ $('Planejar cobranças').first().json.url }}{{ $json.caminho_criacao }}"),
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'User-Agent', value: 'AtomDigital-n8n' }] },
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr('{{ JSON.stringify($json.corpo) }}'),
       options: { timeout: 30000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Asaas (access_token)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Asaas (access_token)') }
   },
   output: [{ id: 'pay_1', value: 1000, dueDate: '2026-10-05', invoiceUrl: 'https://sandbox.asaas.com/i/1' }]
 });
@@ -329,11 +329,11 @@ const consultarPagamento = node({
     notes: 'Sempre consulta o estado atual: eventos fora de ordem ou repetidos não regridem a situação.',
     parameters: {
       method: 'GET', url: expr('{{ $json.base_url }}/payments/{{ $json.payment_id }}'),
-      authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
       sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'User-Agent', value: 'AtomDigital-n8n' }] },
       options: { timeout: 20000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Asaas (access_token)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Asaas (access_token)') }
   },
   output: [{ id: 'pay_1', status: 'CONFIRMED', value: 1000, netValue: 970, externalReference: 'atom-d70-v1-entrada' }]
 });

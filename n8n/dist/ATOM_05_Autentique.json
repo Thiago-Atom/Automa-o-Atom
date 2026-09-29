@@ -2,7 +2,7 @@
   "name": "ATOM_05_Autentique",
   "nodes": [
     {
-      "id": "e7bbb5ce-d7a2-4889-9344-a76f68342ea4",
+      "id": "0125a120-0b9c-4c67-a908-95b8b6ab35e3",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "b58e51a6-ef2d-4746-8249-994e8a17af45",
+      "id": "37b318af-91a7-4219-a753-9def6faf47e8",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "c756f29f-e7a3-4ba3-82bd-750d7ee7f40e",
+      "id": "89542b78-cbea-4628-aa59-575475903837",
       "name": "Ação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -97,7 +97,7 @@
       }
     },
     {
-      "id": "c4105e35-01b1-4a84-a12d-13c092317e95",
+      "id": "6baff140-39cc-4570-a490-ef59f9949611",
       "name": "Snapshot",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -134,7 +134,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0d828b01-6225-4969-8a20-ed8976f497c4",
+      "id": "19cf7e61-a67d-40ab-bf8f-b6be5e108ebe",
       "name": "Vínculos do contrato",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -167,7 +167,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f57600eb-0feb-4fe4-88a2-78f392b7e61c",
+      "id": "cb96d04b-1350-44f2-ac62-353b1094ca8c",
       "name": "Planejar contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -181,7 +181,7 @@
       }
     },
     {
-      "id": "64557607-b4f9-4ac6-8fee-c0a54b62773e",
+      "id": "efc9f217-e990-47ea-87ff-a8b2ec96b209",
       "name": "Executar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -213,7 +213,7 @@
       }
     },
     {
-      "id": "95fc38bd-f3ef-498a-9791-acb7cafa8e39",
+      "id": "80da9d6c-cfbb-473f-86fa-dcd7384aa9f8",
       "name": "Copiar modelo?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -245,7 +245,7 @@
       }
     },
     {
-      "id": "4f9719b1-26d5-4603-a099-d70540378c8f",
+      "id": "5f7471a7-f9fa-4b9e-8919-13ebb7951bad",
       "name": "Google Drive — copiar modelo",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -270,7 +270,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "85cf28fd-543a-407c-992f-b74acf668abc",
+      "id": "f34a05e7-91fd-4bc9-bbd3-54523237e412",
       "name": "Guardar cópia",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -285,7 +285,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "aec72b4d-656a-4b8c-a0e1-58d1e24b28f4",
+      "id": "115caa32-9be7-4776-9b74-392a8fa5594f",
       "name": "Registrar cópia",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -423,7 +423,7 @@
       }
     },
     {
-      "id": "59807b8e-ce1a-4f03-8b38-b8faeb3a7611",
+      "id": "8b1b98f1-456a-41c5-a263-f95b0302f5c3",
       "name": "Cópia do modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -437,7 +437,7 @@
       }
     },
     {
-      "id": "394c0d6e-098f-4520-8607-86fc1460cc89",
+      "id": "12c18b49-dc58-4599-af19-2ae7fb71608b",
       "name": "Registrar bloqueio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -451,7 +451,7 @@
       }
     },
     {
-      "id": "8c636791-77cf-4e9d-98bd-fd55b38fa7a0",
+      "id": "8af8e327-5448-4b49-ab77-cc4474182f07",
       "name": "Salvar ação bloqueada",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -609,7 +609,7 @@
       }
     },
     {
-      "id": "3b86406b-b791-47cf-9aa4-35fa4fc1b0bd",
+      "id": "8559495f-5170-41dc-bfaa-12db359fa8f5",
       "name": "Salvar contrato aguardando configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -677,7 +677,7 @@
       }
     },
     {
-      "id": "56bbdb73-204e-47b7-a831-f6e0e6a115f0",
+      "id": "37329cd3-a496-4a40-9d6a-b1626c7fb74a",
       "name": "Documentos do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -720,7 +720,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "47e19d4d-a9f6-428b-89e7-8b5eebae43bf",
+      "id": "f1372ff3-4b24-4ff6-8810-ffdf6d74eeeb",
       "name": "Resolver documento (consulta)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -734,7 +734,7 @@
       }
     },
     {
-      "id": "42b166f3-b512-46a3-a639-6a8bc61db3b4",
+      "id": "41301cb7-aa76-4e87-9ad1-873a496b5415",
       "name": "Documento a consultar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -748,7 +748,7 @@
       }
     },
     {
-      "id": "1e80ef62-f680-4bb3-b412-2216f802dcb0",
+      "id": "3fe073d6-660a-4baa-a609-38fcb02a111e",
       "name": "Google Docs — preencher",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -773,7 +773,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "06d31b3f-c36d-4de6-b854-95da55571fa9",
+      "id": "a4e57a46-e2bb-4735-801e-73c2e79c1198",
       "name": "Google Docs — conferir",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -794,7 +794,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "1b74a75f-465d-4949-9012-11aebcf9941b",
+      "id": "25b403fd-9c95-4fd7-ba41-2ee6335a4279",
       "name": "Conferir preenchimento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -808,7 +808,7 @@
       }
     },
     {
-      "id": "70f3da9b-0ce8-4c4f-8727-bf4e5d7fdb43",
+      "id": "e6bd7f9e-8e57-44eb-b5e6-c20478a0c146",
       "name": "Preenchimento completo?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -840,7 +840,7 @@
       }
     },
     {
-      "id": "ae695bc9-110a-449f-9bc4-5a70a8e345ad",
+      "id": "9aef2c26-3ac6-4367-bb86-4f9729da1009",
       "name": "Autentique — documentos recentes",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -852,7 +852,7 @@
         "method": "POST",
         "url": "https://api.autentique.com.br/v2/graphql",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
+        "genericAuthType": "httpCustomAuth",
         "sendBody": true,
         "contentType": "json",
         "specifyBody": "json",
@@ -865,7 +865,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "329a2095-dfd3-40c0-a79d-c5aa0cbace4b",
+      "id": "a5517249-a4bc-487a-ab2f-7fa8534a2644",
       "name": "Decidir criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -880,7 +880,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "60e61caf-930d-4c90-b699-571e6ea9cfaa",
+      "id": "9a7f7ee3-c097-49c0-affa-f62cc36e0293",
       "name": "Criar documento?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -912,7 +912,7 @@
       }
     },
     {
-      "id": "d1a546a5-98fd-46b9-b92a-58a73834af28",
+      "id": "122c77cb-57b9-485e-968e-888d714fe513",
       "name": "Google Drive — exportar PDF",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -939,7 +939,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "e2b7edee-d7a7-4342-82b5-f778cceaea47",
+      "id": "b5a65b6b-fdcd-4637-b81d-ef4710d9a95d",
       "name": "Preparar arquivo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -954,7 +954,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "39abe337-0924-4200-a6c9-0ee912f78d60",
+      "id": "62a07b18-b110-492c-9cb2-34a25d06fbb5",
       "name": "Autentique — criar documento",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -966,7 +966,7 @@
         "method": "POST",
         "url": "https://api.autentique.com.br/v2/graphql",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
+        "genericAuthType": "httpCustomAuth",
         "sendBody": true,
         "contentType": "multipart-form-data",
         "bodyParameters": {
@@ -997,7 +997,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "315efb9f-7b83-4e3e-8c8a-37ace75aa887",
+      "id": "55787a95-500f-45e9-9557-153557fa27dc",
       "name": "Documento do contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1012,7 +1012,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "98ffc8f7-394b-43d3-8169-5944a254d4f6",
+      "id": "0f1f5daa-a397-462e-a4ba-ea14c4cf8ecc",
       "name": "Registrar documento e signatários",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1150,7 +1150,7 @@
       }
     },
     {
-      "id": "ce638b80-0a8d-4238-b2b6-19ef49c34538",
+      "id": "494e25a6-c9bc-4503-b757-fcd53aa23a66",
       "name": "Contrato enviado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1164,7 +1164,7 @@
       }
     },
     {
-      "id": "19f20d7b-a9a7-401a-bd46-d4d9834d9087",
+      "id": "165603af-c877-43dd-9611-b21359b8b204",
       "name": "Atualizar vínculo da cópia",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1228,7 +1228,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "e292a857-338f-4d48-8680-618b2d42d378",
+      "id": "be16175a-5983-4446-bbfb-cc14d874c15d",
       "name": "Snapshot enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1283,7 +1283,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "233f8ecf-8d0e-458a-9915-ce054c82a231",
+      "id": "0b4b5ad6-b42d-4933-aaab-e7701c0adc95",
       "name": "Salvar contrato enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1352,7 +1352,7 @@
       "executeOnce": true
     },
     {
-      "id": "fd992a33-8bb5-474e-94c6-12b8937778ff",
+      "id": "d2cfafb8-d3ba-4a07-a9cf-96984638cd08",
       "name": "Registrar ação concluída",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1511,7 +1511,7 @@
       "executeOnce": true
     },
     {
-      "id": "d4f08457-e614-4db5-8036-e367b292b00b",
+      "id": "4d8c3fdd-4b1a-4283-a149-260452066fb8",
       "name": "Campos do contrato (envio)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1525,7 +1525,7 @@
       }
     },
     {
-      "id": "0d9bf627-e374-459f-b086-7b97de4d3694",
+      "id": "5e6157c4-5117-49e7-b474-e563ddd85d52",
       "name": "Atualizar negócio (envio)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1557,7 +1557,7 @@
       }
     },
     {
-      "id": "584c338e-9e19-4319-b064-0c88af0467d9",
+      "id": "ebc77a29-2733-4b70-a73b-2825ed2785de",
       "name": "Atualizar negócio (contrato enviado)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1582,7 +1582,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6cfbd6a8-cc4d-4d86-8c3d-d5749a8ef7ab",
+      "id": "0a9931c9-17a2-42f1-9ce3-0391ea977d37",
       "name": "Cobrar junto com o contrato?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1614,7 +1614,7 @@
       }
     },
     {
-      "id": "c49c1836-fe7c-4538-87df-a3d18babbd41",
+      "id": "2b56f8d5-e614-460f-bab9-dce9714493ce",
       "name": "Pedido de cobrança (junto)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1628,7 +1628,7 @@
       }
     },
     {
-      "id": "807fd3ce-b137-40e9-925d-2ba9f5adfadd",
+      "id": "f5eaf2cd-2214-466b-b609-12360e52f638",
       "name": "ATOM_06 — cobranças (junto com contrato)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1651,7 +1651,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5d2575f5-eacd-4036-894a-4c91c6d4a602",
+      "id": "44c27989-0132-4197-a302-7d8690d9ac1b",
       "name": "Capturar erro",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1665,7 +1665,7 @@
       }
     },
     {
-      "id": "306919a2-b20f-4366-bb6e-fb316c990519",
+      "id": "613df6ff-7f14-4c68-b237-750a42dae1b9",
       "name": "Ação anterior",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1697,7 +1697,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "0db87592-43d6-4ece-a80c-a3d9b6f998f6",
+      "id": "87e9e26a-c707-4744-9aaa-b03d0ec07455",
       "name": "Falha na criação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1711,7 +1711,7 @@
       }
     },
     {
-      "id": "8f553b2d-200e-4f4c-9bb0-511ad5bc9404",
+      "id": "ba5878af-47bf-4893-aa6e-13a7ea167f24",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1869,7 +1869,7 @@
       }
     },
     {
-      "id": "cf7139de-009c-4d3f-93b3-67f589d2671e",
+      "id": "dec517a4-582c-4608-97c2-888af5c06f1a",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1883,7 +1883,7 @@
       }
     },
     {
-      "id": "390060a7-c9a5-4e25-80ac-50fc04132844",
+      "id": "540944b4-f966-4c85-87cf-c0becc2f5d5b",
       "name": "ATOM_11 — alerta Autentique",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1906,7 +1906,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "1de36ada-8ec8-4ab3-a601-77ddaa61cb00",
+      "id": "550e629c-2380-406f-bcde-c4fc4ceb9167",
       "name": "Webhook Autentique",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1922,10 +1922,10 @@
           "rawBody": true
         }
       },
-      "webhookId": "08da9aea-8898-4104-84ea-1fc474fc38f3"
+      "webhookId": "bd324473-70c4-48ee-a856-8880df7caef5"
     },
     {
-      "id": "e93b4acb-ef87-46dc-9cb4-2d2b98b0df98",
+      "id": "15bed878-037a-4c4a-9a00-a0c9dcf36299",
       "name": "Calcular HMAC",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -1945,7 +1945,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6de57818-1000-43f7-bd0f-fb13cc590e20",
+      "id": "16f39df1-d049-4dee-9667-30f2cef1ac33",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1967,7 +1967,7 @@
       "executeOnce": true
     },
     {
-      "id": "bac067ce-1521-4ace-9cd5-280e2cdc8f77",
+      "id": "cf1095f1-820e-44b9-bc76-b57f324806ff",
       "name": "Validar evento Autentique",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1981,7 +1981,7 @@
       }
     },
     {
-      "id": "20aad054-511c-42d8-96d8-020ed98a3642",
+      "id": "f558f546-f1ec-4b46-b361-6be8a0ae3ea7",
       "name": "Evento Autentique já recebido?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2013,7 +2013,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "2207d376-3c39-4797-8e4d-f5a8f0bd1b4c",
+      "id": "b5021bf8-103d-4d31-8fcc-4c205b971f78",
       "name": "Deduplicar evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2027,7 +2027,7 @@
       }
     },
     {
-      "id": "b130d72c-f7aa-48ed-9347-db9e17f26bb0",
+      "id": "72ab61d6-10b4-494d-b77a-fef771ad9868",
       "name": "Registrar evento Autentique",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2175,7 +2175,7 @@
       }
     },
     {
-      "id": "1ecff4f1-d342-484e-b84d-2d7acdf11133",
+      "id": "488f00b4-a8a4-4966-840f-2cfc4f08365a",
       "name": "Evento válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2207,7 +2207,7 @@
       }
     },
     {
-      "id": "104c82f3-000d-4e78-839f-3bff11fc95d2",
+      "id": "777c99eb-eaa5-4e38-ac45-cdf16bee1663",
       "name": "Documentos Autentique",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2245,7 +2245,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "613421e8-bf70-4452-a2a7-91f0dbe22dc2",
+      "id": "32c52733-1a4d-415a-a8c4-82ca29324044",
       "name": "Resolver documento (webhook)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2259,7 +2259,7 @@
       }
     },
     {
-      "id": "b3a547ba-6198-4490-bfb0-19e02f795903",
+      "id": "90cd937e-c82e-49c1-84d9-50696bfcee59",
       "name": "Autentique — consultar documento",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2271,7 +2271,7 @@
         "method": "POST",
         "url": "https://api.autentique.com.br/v2/graphql",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpTemplatedCustomAuth",
+        "genericAuthType": "httpCustomAuth",
         "sendBody": true,
         "contentType": "json",
         "specifyBody": "json",
@@ -2292,7 +2292,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "b871a0c6-a486-4a08-8a67-98d0ef939676",
+      "id": "3aadc5d2-53c1-42c9-b82e-7e45f151dc3d",
       "name": "Signatários do documento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2335,7 +2335,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "8385015d-5fb4-4bd9-8ef7-56c0715ed3dd",
+      "id": "3b0ce8fc-f05c-4a60-8f17-6979fa6da227",
       "name": "Consolidar contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2349,7 +2349,7 @@
       }
     },
     {
-      "id": "21f0586e-d023-4bff-8b8a-2c82dfe9b009",
+      "id": "a50a43e8-4775-486f-808e-9b8768f3a169",
       "name": "Gravar situação?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2381,7 +2381,7 @@
       }
     },
     {
-      "id": "6a94f095-b162-4bef-b5ee-aab8fcf8c6e7",
+      "id": "97fbb76a-023a-43dc-9503-923c188e0a41",
       "name": "Atualizar vínculo do documento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2450,7 +2450,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "07e9aea7-d578-44e9-889c-5258f88cf104",
+      "id": "8bf11f3d-044c-4bb5-b16a-fff0fcb94c19",
       "name": "Salvar situação do contrato",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2529,7 +2529,7 @@
       "executeOnce": true
     },
     {
-      "id": "18451b54-916e-40c8-9c4b-03e915cb9313",
+      "id": "99c7543c-c9ae-421f-a245-d05ae9d83d4e",
       "name": "Campos do contrato (situação)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2543,7 +2543,7 @@
       }
     },
     {
-      "id": "c8d2999e-64ec-4b7c-9abe-aeb61240c98c",
+      "id": "ffd38dc6-11c7-408f-9136-3ee87c024e89",
       "name": "Atualizar negócio (situação)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2575,7 +2575,7 @@
       }
     },
     {
-      "id": "5d62807b-13a1-4763-b1fd-f9caa9e197f6",
+      "id": "1a0864d2-86f6-4cdc-8a43-62c276b63217",
       "name": "Atualizar negócio (situação do contrato)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2600,7 +2600,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7ae4144c-64b4-4293-bab4-321c60f44455",
+      "id": "6425599f-2e6a-41dc-8f64-8b4483699eb9",
       "name": "Assinado por todos?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2632,7 +2632,7 @@
       }
     },
     {
-      "id": "962ad1f1-ade4-4e91-95f1-2f796ae5e243",
+      "id": "64155520-fd17-410f-b079-c53b1311514c",
       "name": "Alertar situação do contrato?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2664,7 +2664,7 @@
       }
     },
     {
-      "id": "17219757-de64-4b93-a8c5-2349a4e61689",
+      "id": "35bf993a-7565-4135-9977-4316e05af3eb",
       "name": "Snapshot assinado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2718,7 +2718,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f3b80341-4923-4df4-8168-ae57026f556b",
+      "id": "0c67371c-5b1c-4050-896d-aeee2c8ea845",
       "name": "Cobrar após assinaturas?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2750,7 +2750,7 @@
       }
     },
     {
-      "id": "84d4fa27-43f5-442c-9a95-88320c0f0276",
+      "id": "04655799-868e-43cd-a00e-37ec085d4d55",
       "name": "Pedido de cobrança (após assinaturas)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2764,7 +2764,7 @@
       }
     },
     {
-      "id": "8cfd17e6-1378-48a9-b103-d5df56c1b8e2",
+      "id": "001c950c-83bd-41a6-8d83-7c3c5cd442f1",
       "name": "ATOM_06 — cobranças (após assinaturas)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2787,7 +2787,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "2c7c775e-2535-453f-b43a-9797d8dc1198",
+      "id": "b2a9a82f-b088-4b64-a4e8-30e0219abfe1",
       "name": "Pedido de reavaliação da liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2802,7 +2802,7 @@
       "executeOnce": true
     },
     {
-      "id": "454585f2-b3f7-4e4a-ac41-a3b455c25dbe",
+      "id": "98ea6dbd-b36a-4994-852e-ad934cae50e4",
       "name": "Alerta do contrato",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2816,7 +2816,7 @@
       }
     },
     {
-      "id": "c9b92af7-db3a-48b5-a33d-54c6ef45370e",
+      "id": "0c883a9c-6d8f-4a84-8082-4f534195f033",
       "name": "ATOM_11 — alerta contrato",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2839,7 +2839,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "f36f45a0-f0eb-4fba-8701-84a784b098e6",
+      "id": "7069eb66-ae60-45ba-aa07-6e5b4c8164a4",
       "name": "ATOM_08 — reavaliar liberação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2862,8 +2862,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "49d83675-6f8e-4dc8-91f4-87154c47849f",
-      "name": "Sticky Note 49d83675",
+      "id": "764ae1b7-c914-487e-88a3-1ae2cc252566",
+      "name": "Sticky Note 764ae1b7",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -3806,6 +3806,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-28"
+    "atomBuild": "2026-09-29"
   }
 }
