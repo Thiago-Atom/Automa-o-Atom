@@ -59,7 +59,11 @@
 | 39 | ATOM_05_Autentique | Webhook de assinatura (cliente e Atom assinaram) | **Falha encontrada**: "Consolidar contrato" lia a resposta do nó errado (situação `FALHA`) — corrigida |
 | 40 | ATOM_05_Autentique | Mesmo cenário após correção | `ASSINADO_TODOS` (assinatura do dono da conta ignorada); snapshot assinado; pedido ao ATOM_08; sem cobrança duplicada |
 
-Em todas as execuções do ATOM_05, Google Drive/Docs e Autentique foram **fixados** (nenhuma chamada real) e todos os nós de
+| 69 | ATOM_07_Controlle | 3 itens: recebimento novo, recebimento já lançado, estorno | Novo → criado; já lançado → reconhecido pelo marcador (sem duplicar); estorno → `REQUER_ACAO_MANUAL` |
+| 71 | ATOM_07_Controlle | Duas fases com o mapeamento real | Recebimento → `TARIFA_PENDENTE` (ID guardado); tarifa → `SINCRONIZADO` sem sobrescrever o ID |
+| 73 | ATOM_00_Inspecionar_Controlle | **API real, somente leitura** | Token aceito (200); contas, categorias, centros de custo, tags; formato real da lista de lançamentos |
+
+Nas execuções 69 e 71 o Controlle foi fixado (nada gravado). Em todas as execuções do ATOM_05, Google Drive/Docs e Autentique foram **fixados** (nenhuma chamada real) e todos os nós de
 escrita foram fixados (nada gravado). Execuções 41–42 aplicaram a configuração da Autentique em `atom_config` via ATOM_00.
 
 Execuções 19 e 29 foram chamadas com o campo de roteamento errado (encerraram no nó "Modo", sem efeito) e foram repetidas como 20 e 30.

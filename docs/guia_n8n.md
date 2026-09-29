@@ -37,7 +37,8 @@ Segredos (tokens, chaves, senhas) ficam **somente** nas Credentials do n8n — n
 | ATOM_04_Conferencia_Formalizacao | `lvvOD7G5O8ym33m8` | Conferência de dados e pendências |
 | ATOM_05_Autentique | `LSf8X0ufNXEY8mDY` | Contrato (Google Docs + Autentique). O antigo ATOM_05_Clicksign foi arquivado |
 | ATOM_06_Asaas | `BlrMhSwF0m6y2s9z` | Cobranças e pagamentos |
-| ATOM_07_Controlle | `eyLqBdUcfmq9hzeS` | Fila financeira (lançamentos feitos pela integração existente) |
+| ATOM_07_Controlle | `eyLqBdUcfmq9hzeS` | Lança recebimentos e tarifas do Asaas no Controlle (API v1; envio desligado até o teste supervisionado) |
+| ATOM_00_Inspecionar_Controlle | `tIotzkMV81fDzkvY` | Consulta somente leitura do Controlle (contas, categorias) |
 | ATOM_08_Trello | `86LFoss4Pzbj4cQy` | Cartão de execução |
 | ATOM_09_Avaliacao_Google | `mz3IlkB8UjriSQzO` | Pedido de avaliação |
 | ATOM_10_Zayra_Interface | `D0MWED51LMZE4FU7` | Pedidos à Zayra |
@@ -72,8 +73,7 @@ renomeie para o **nome exato** da tabela → **Save**.
 
 Se o tipo **Custom Auth** não aparecer na lista, crie como **Header Auth** com o mesmo nome, e os nós são ajustados depois.
 
-Não é preciso criar agora: `ATOM Anthropic` (o diagnóstico usará a rotina existente), `ATOM Controlle (PENDENTE)`
-(Controlle continua com a integração existente) e `ATOM Zayra — autenticação (PENDENTE)` (depende da resposta de quem mantém a Zayra).
+Não é preciso criar agora: `ATOM Anthropic` (o diagnóstico usará a rotina existente), `ATOM Zayra — autenticação (PENDENTE)` (depende da resposta de quem mantém a Zayra).
 A credencial **`Trello account`** já existe e será reaproveitada.
 
 **Prioridade:** crie primeiro a **1 (Pipedrive)**. Com ela, os códigos dos campos criados no Pipedrive são lidos

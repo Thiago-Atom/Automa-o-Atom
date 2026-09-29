@@ -41,3 +41,7 @@
 - **Prazo de execução no contrato**: `{{PRAZO_EXECUCAO}}` usa o texto do campo `ATOM · Prazo de execução` como está; se a
   equipe preencher uma data `AAAA-MM-DD`, ela aparecerá nesse formato no contrato. Preferir texto ("60 dias") ou pedir
   o formato `data` no mapa.
+- **Controlle (2026-09-29)**: a busca anti-duplicidade só aceita o formato real `results.transactionsList`; a lista
+  `configurationColumns` da mesma resposta não conta (uma leitura genérica acharia "não existe" e duplicaria se o formato mudasse).
+  O marcador é casado inteiro (`ATOM-ASAAS-pay_1` ≠ `ATOM-ASAAS-pay_12`). O filtro `filter` da listagem ainda precisa ser
+  confirmado com um lançamento real (teste supervisionado).

@@ -2,7 +2,7 @@
   "name": "ATOM_08_Trello",
   "nodes": [
     {
-      "id": "a854b9cb-2713-4ace-be63-0743bafb9c89",
+      "id": "dc5c400d-7c94-4008-94c0-8dde0a535c1c",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "9d3b5a5a-1127-444c-8137-69ee6d746f75",
+      "id": "41ad8d93-4967-4faa-8de6-25d8214f7326",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "c45daa6b-2745-45c0-a3ed-db30c479e333",
+      "id": "f3f56c53-ef4b-42d8-b547-49aa1355b81b",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -69,7 +69,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "5ef176b5-00ea-480b-a3d1-f1d9ed015af0",
+      "id": "f668e447-3ec1-4f21-80a0-f37d7ef78280",
       "name": "Vínculos do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -102,7 +102,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "88568ea8-3122-4ae6-826e-cc7d8fb8300e",
+      "id": "dd1bcd46-2010-4aec-9a09-4f4213b5d292",
       "name": "Buscar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -131,7 +131,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "2e1a061a-d251-4966-8f6a-3d02287729f1",
+      "id": "89c997eb-9daf-4206-a6ed-4e2eb33ce155",
       "name": "Cobrança inicial",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -145,7 +145,7 @@
       }
     },
     {
-      "id": "f9cae799-4d93-4592-bd07-a70371fa532f",
+      "id": "6ff0f1e0-a4f1-4c71-a031-7918e98ccfb2",
       "name": "Consultar pagamento?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -177,7 +177,7 @@
       }
     },
     {
-      "id": "c10995f9-0b64-4e98-8ec8-d182616af094",
+      "id": "067dc58a-8eae-4687-8d41-8df8c0a6f432",
       "name": "Consultar pagamento inicial",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -215,7 +215,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "e68d571d-c52f-4fb5-a7a3-42d4fe15f1cb",
+      "id": "c6c6f2e2-4a4f-4601-bee5-5069f95c83ed",
       "name": "Avaliar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -229,7 +229,7 @@
       }
     },
     {
-      "id": "f53806e5-0deb-4043-8dab-b03e05179536",
+      "id": "4a0123ea-2d6d-4de2-a8b6-cafcca3430c9",
       "name": "Decisão de liberação",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -296,7 +296,7 @@
       }
     },
     {
-      "id": "cdf2374d-38d3-4706-814e-a75705067ede",
+      "id": "e9dada6e-2492-40db-9d73-b449149f33c0",
       "name": "Reservar liberação (trava)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -375,7 +375,7 @@
       "notes": "UPDATE condicional: só uma execução consegue mudar para CRIANDO_CARTAO. Se nenhuma linha for alterada, o fluxo para (outra execução já está criando ou já liberou)."
     },
     {
-      "id": "46bbf73d-d76d-4e65-a21f-9997a2ee438a",
+      "id": "b7a42237-cec1-4108-8d8b-cacd5aadd418",
       "name": "Procurar cartão existente (marcador)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -430,7 +430,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "126c10eb-c587-429f-9eea-003ef9aab46f",
+      "id": "36d99099-a867-4389-a8f5-7256129b4d36",
       "name": "Cartão já existe?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -444,7 +444,7 @@
       }
     },
     {
-      "id": "a276064e-bbb8-4b39-8636-b14d3847a8c0",
+      "id": "57ca24cb-0cfc-411f-af35-89d006d26af6",
       "name": "Reaproveitar cartão?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -476,7 +476,7 @@
       }
     },
     {
-      "id": "e630b4e3-55cc-47e4-a435-26fe24491802",
+      "id": "6bdd8b60-c789-40c6-bdcd-0c61b4d4b7f2",
       "name": "Finalizar liberação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -491,7 +491,7 @@
       "executeOnce": true
     },
     {
-      "id": "df5a933b-8ed8-4cb0-bdf3-6b11cdcc5c80",
+      "id": "18329a39-c10c-4949-931d-3120d957e641",
       "name": "Snapshot formalizado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -531,7 +531,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "85900b91-cb8a-441a-b099-fc8f2ee0f419",
+      "id": "f70f4c10-5995-4880-9c27-e0c284024233",
       "name": "Dados do briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -545,7 +545,7 @@
       }
     },
     {
-      "id": "7eeb3538-c18f-406a-befd-a40666c5c01a",
+      "id": "8d695ab1-8bba-4d84-9ac3-952a3de4b056",
       "name": "Usar Claude no briefing?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -577,7 +577,7 @@
       }
     },
     {
-      "id": "1f63d439-6247-41b5-8edf-095d0972ff30",
+      "id": "1377598b-86ab-43ba-966f-392fe3e890fb",
       "name": "Claude — briefing de execução",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -615,7 +615,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "c7d0ca1a-4e43-4f64-9b07-b9c7f5f8087f",
+      "id": "0863d6a1-6698-4cd7-b452-1b979ea831c3",
       "name": "Validar briefing",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -629,7 +629,7 @@
       }
     },
     {
-      "id": "a1997cb5-b67c-4437-8cb7-e83031d234f9",
+      "id": "2178c375-40b9-4f17-96a4-db30bcb02ab1",
       "name": "Montar cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -643,7 +643,7 @@
       }
     },
     {
-      "id": "fb9f3a7d-2f26-4356-843e-4a1880d9dc9a",
+      "id": "d38d8f0e-4d75-4925-bde7-868d30b8c4a6",
       "name": "Salvar situação da liberação",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -711,7 +711,7 @@
       }
     },
     {
-      "id": "7c0c0ec9-c815-4d4a-a3d2-b742e44e6944",
+      "id": "13706194-f742-4381-a0bf-6f548f4029ad",
       "name": "Trello — criar cartão",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -741,7 +741,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "d4de3588-602c-40fb-86e6-5ce9a1d1abc6",
+      "id": "da7239ea-5080-4d4c-9a5a-cab302f4af71",
       "name": "Cartão criado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -755,7 +755,7 @@
       }
     },
     {
-      "id": "1dcf3c60-9dd4-40c8-9a9d-972504cb5c84",
+      "id": "7bd40bb5-d0d5-4bb7-90fc-bc038c2c4e4a",
       "name": "Registrar cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -898,7 +898,7 @@
       }
     },
     {
-      "id": "2e60ae3a-9d03-4406-8690-96bd9911a0d6",
+      "id": "58101bd9-1689-42b0-a88c-6c5c27077068",
       "name": "Criar checklist?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -930,7 +930,7 @@
       }
     },
     {
-      "id": "e9cb5123-9d7e-4a9d-a03a-dd30cfdd8190",
+      "id": "b45c811d-3bae-44a2-af22-05cc78826f0b",
       "name": "Trello — criar checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -960,7 +960,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "8442e380-7a16-45ac-96dd-2aa571645bb7",
+      "id": "5cbb299f-cb1a-4d5a-8d90-521ba8d09e61",
       "name": "Itens do checklist",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -974,7 +974,7 @@
       }
     },
     {
-      "id": "56a64de4-d848-41d2-a3fd-5a2f0f5cd714",
+      "id": "7eee67f9-ebe1-42c0-b94b-b735cfff4ccc",
       "name": "Trello — itens do checklist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1010,7 +1010,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "10ad302c-d023-44ff-86dd-40e5fe454446",
+      "id": "a14317bd-0705-4217-9276-0f63163fc9c8",
       "name": "Salvar liberado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1118,7 +1118,7 @@
       }
     },
     {
-      "id": "28f22f1d-53d2-425d-a43b-8beeca1c292f",
+      "id": "4eecc531-cac2-4e0e-b60f-118552b1c73c",
       "name": "Garantir vínculo do cartão",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1261,7 +1261,7 @@
       }
     },
     {
-      "id": "38cf2aa8-420b-4688-8423-1ae14877983a",
+      "id": "3fe56594-cbc8-4fa1-bac1-b8ee9bbaa4d3",
       "name": "Atualizar negócio (Trello)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1293,7 +1293,7 @@
       }
     },
     {
-      "id": "a3c2f5e0-8f88-41e9-8f73-b93cfcadc174",
+      "id": "3c960825-c830-4824-b1db-4dd9906016cc",
       "name": "Atualizar negócio (cartão Trello)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1318,7 +1318,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c76e3b85-3c05-4276-bcfe-71d24f356ea3",
+      "id": "bc2374a7-e448-4e19-953e-7461ef34a1cc",
       "name": "Falha no cartão",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1332,7 +1332,7 @@
       }
     },
     {
-      "id": "e2ca8dd1-50f9-4383-8ba9-365dfd206f25",
+      "id": "7712d2ad-b45e-45b0-b74d-b291863b9cd5",
       "name": "Liberar trava após falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1420,7 +1420,7 @@
       }
     },
     {
-      "id": "0768252c-b49b-4cd0-9a82-f0854694ec77",
+      "id": "2e95bacb-b650-449b-abab-f05c3691fe1b",
       "name": "Registrar falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1578,7 +1578,7 @@
       }
     },
     {
-      "id": "f435706b-d772-482f-9582-16686c401e09",
+      "id": "574dd85e-e9a9-4e18-a400-278ab51c2d8a",
       "name": "Alerta de falha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1592,7 +1592,7 @@
       }
     },
     {
-      "id": "09e4932b-849a-46a6-a409-586408c918c2",
+      "id": "7aa417cb-7dc2-4b3f-9b32-74d2a156243e",
       "name": "ATOM_11 — alerta Trello",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1615,7 +1615,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "8814b564-e4ab-424d-b546-8d8aa030235e",
+      "id": "24e9b2f2-4a90-415b-ba7f-77b2b7ee5078",
       "name": "Webhook Trello",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1635,10 +1635,10 @@
           "rawBody": true
         }
       },
-      "webhookId": "61f15b30-c065-4ade-873e-33d8cf5b89dc"
+      "webhookId": "e5f30ca2-9393-4c4c-b0ff-cec65b2c6efa"
     },
     {
-      "id": "1c88afa4-62a0-40cd-b7eb-39731aea698b",
+      "id": "1856997a-be29-421e-87e1-b7b25d786818",
       "name": "Corpo bruto",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1652,7 +1652,7 @@
       }
     },
     {
-      "id": "8f8acaf8-a3e8-4296-894f-65ea146db106",
+      "id": "3a2425a9-c9db-4787-94d0-9b202c0f459a",
       "name": "Ler configuração (webhook)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1674,7 +1674,7 @@
       "executeOnce": true
     },
     {
-      "id": "2ecbde2e-f275-4992-afef-9249e6a8c064",
+      "id": "bd96e8e4-1ab7-4883-9293-f6383318128f",
       "name": "Montar verificação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1688,7 +1688,7 @@
       }
     },
     {
-      "id": "294dd8ca-fb5f-4091-9473-10ccdb9f9bc4",
+      "id": "e9267d3f-b6b3-4ffc-82a3-b0dd51cd5b6b",
       "name": "Calcular HMAC-SHA1",
       "type": "n8n-nodes-base.crypto",
       "typeVersion": 2,
@@ -1706,7 +1706,7 @@
       "credentials": {}
     },
     {
-      "id": "eea93888-e19a-4ea3-943e-a74724904c79",
+      "id": "44257b1a-e4a6-4983-aaaa-0c05411c5efc",
       "name": "Verificar assinatura Trello",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1720,7 +1720,7 @@
       }
     },
     {
-      "id": "9740c9c7-9ed1-4774-ba5a-2c6c192f5282",
+      "id": "98314a68-a12e-48bf-8450-7b39dbf76fdf",
       "name": "Ação Trello já recebida?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1752,7 +1752,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "e0750c03-f863-4600-bce3-c89e012808ed",
+      "id": "aebc723b-9416-4a05-bdfa-e0874f760373",
       "name": "Deduplicar ação",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1766,7 +1766,7 @@
       }
     },
     {
-      "id": "a9a714b2-1bfe-4abc-8c59-229934690246",
+      "id": "13e1a04d-f4d2-4214-9fda-2f4818e35f8a",
       "name": "Registrar ação Trello",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1914,7 +1914,7 @@
       }
     },
     {
-      "id": "f1ad6f5f-9fa6-49c4-a1ce-a620ed9d6e98",
+      "id": "b0cba487-6464-4948-a96e-cc0aa0ee16d5",
       "name": "Detectar início da execução",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1928,7 +1928,7 @@
       }
     },
     {
-      "id": "cbea029b-0744-47ff-87e5-a324a3680712",
+      "id": "543cc52c-4b97-462f-a182-9fe2c26519df",
       "name": "Cartão vinculado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1965,7 +1965,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "052ba6a9-d57a-4121-a4d5-1d9aeea80c66",
+      "id": "32f3fbb6-a149-42d3-a96d-9bc7c9a01669",
       "name": "Estado (início)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1997,7 +1997,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "3feb392b-9160-4e25-a6d9-0cc4943ca9d5",
+      "id": "be8f9806-fd03-4389-ac04-f5e91e26ac6c",
       "name": "Registrar início",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2011,7 +2011,7 @@
       }
     },
     {
-      "id": "4faf55d8-9174-44c5-bf67-132f452dff21",
+      "id": "18cab792-8fdd-463a-a6ac-d0104682ae9f",
       "name": "Salvar início da execução",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2079,7 +2079,7 @@
       }
     },
     {
-      "id": "766bf3bc-ab24-43b6-8394-3fdbe2fbe46a",
+      "id": "ba8c3c3f-8198-4da7-92e2-aa0fe624769b",
       "name": "Atualizar negócio (início)?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -2111,7 +2111,7 @@
       }
     },
     {
-      "id": "0332851e-b21f-4682-9864-b4635c3e8915",
+      "id": "e6757aba-e1b7-4ca3-aec9-5c26ca78f725",
       "name": "Atualizar negócio (início da execução)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -2136,7 +2136,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7bd308b3-72c9-4aab-af92-ab00762734bf",
+      "id": "5b8da228-ad28-4093-8536-75b2c06f2f19",
       "name": "Pedido de agendamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2150,7 +2150,7 @@
       }
     },
     {
-      "id": "aa52874c-6235-48af-8386-d15a9244b5d8",
+      "id": "ef9944cc-26f8-4126-8aa7-b1dd217b0608",
       "name": "ATOM_09 — agendar avaliação",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -2173,8 +2173,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "268383b6-1e22-4eda-8b9f-4a3f82d4752c",
-      "name": "Sticky Note 268383b6",
+      "id": "c91d43b6-2bd9-4e8a-819c-cffb6134da78",
+      "name": "Sticky Note c91d43b6",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

@@ -21,7 +21,7 @@
 | `ATOM Webhook Pipedrive (Basic Auth)` | Basic Auth | 01 (webhook) | Usuário/senha cadastrados no webhook do Pipedrive. |
 | `ATOM Trello — segredo do app (webhook)` | Custom Auth | 08 (webhook) | Segredo do app Trello para conferir `X-Trello-Webhook`. |
 | `Trello account` (**já existe**, id `sm5JkfUmfVVLuaWv`) | Trello API | 08, 09 | Credencial existente associada automaticamente. Confirme se tem permissão de escrita no quadro de execução ou troque por uma credencial dedicada. |
-| `ATOM Controlle (PENDENTE)` | Custom Auth | 07 | Só quando a API do Controlle for fornecida. O nó HTTP está **desativado**. |
+| `ATOM Controlle (Bearer)` (**já existe**) | Custom Auth — cabeçalho `Authorization` | 07 e ATOM_00_Inspecionar_Controlle | Token em Controlle → Configurações → API. Ver `docs/12_controlle_api.md`. |
 | `ATOM Zayra — autenticação (PENDENTE)` | Custom Auth | 10 | Depende do mecanismo real da Zayra. |
 | `ATOM Webhook interno (header)` | Header Auth | 10 (status Zayra), 11 (painel) | Token para chamadas internas. |
 

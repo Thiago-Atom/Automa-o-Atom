@@ -1,0 +1,123 @@
+{
+  "name": "ATOM_00_Inspecionar_Controlle",
+  "nodes": [
+    {
+      "id": "30ec1d09-11b6-4144-b7f3-7415156619de",
+      "name": "Executar inspeção",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "atom/inspecionar-controlle",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "128269f3-314c-4ce3-b264-11f3df1bac3d"
+    },
+    {
+      "id": "46ee187a-4aaa-4320-b3c6-e18b3d90796d",
+      "name": "Consultas (somente leitura)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00c.js#consultas. Edite a fonte no repositório, não este nó.\nconst hoje = new Date().toISOString().slice(0, 10);\nconst ini = hoje.slice(0, 8) + '01';\nreturn [\n  { nome: 'contas', caminho: '/account/v1/accounts', query: { status: 1 } },\n  { nome: 'categorias_entrada', caminho: '/plan-account/v1/planAccountsEntities', query: { movement: 1 } },\n  { nome: 'centros_de_custo', caminho: '/cost-center/v1/costCenters/', query: {} },\n  { nome: 'tags', caminho: '/tag/v1/tags', query: {} },\n  { nome: 'lancamentos_mes_atual', caminho: '/transaction/v1/transactions/list', query: { start_date: ini, end_date: hoje, page: 1, orderBy: 'dt_due', orderByCardinality: 'DESC', filter: 'ATOM' } },\n].map((json) => ({ json }));"
+      }
+    },
+    {
+      "id": "a01580b5-b6e2-4395-8fce-acb233ebabef",
+      "name": "Controlle — GET",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api-v1.controlle.com{{ $json.caminho }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={{ JSON.stringify($json.query) }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "4621c3d9-6243-4188-9f8a-8cbdff57a74f",
+      "name": "Resumo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00c.js#resumo. Edite a fonte no repositório, não este nó.\n// Só IDs, nomes e a estrutura: nada de valores financeiros nem dados de clientes.\nconst pedidos = $('Consultas (somente leitura)').all().map((i) => i.json);\nconst nomeDe = (o) => o.ds_account || o.ds_plan_account || o.description || o.ds_cost_center || o.ds_tag || o.name || o.ds_transaction || '';\nconst listas = (v, prof = 0, acc = []) => {\n  if (prof > 4 || v === null || typeof v !== 'object') return acc;\n  if (Array.isArray(v)) { acc.push(v); v.forEach((x) => listas(x, prof + 1, acc)); } else Object.values(v).forEach((x) => listas(x, prof + 1, acc));\n  return acc;\n};\nreturn $input.all().map((it, i) => {\n  const r = it.json || {};\n  const p = pedidos[i] || {};\n  const ls = listas(r.body);\n  const maior = ls.sort((a, b) => b.length - a.length)[0] || [];\n  const estrutura = r.body && typeof r.body === 'object' && !Array.isArray(r.body) ? Object.keys(r.body).slice(0, 15) : (Array.isArray(r.body) ? ['<lista>'] : [typeof r.body]);\n  const itens = p.nome === 'lancamentos_mes_atual'\n    ? maior.slice(0, 3).map((o) => ({ chaves: o && typeof o === 'object' ? Object.keys(o).slice(0, 25) : [] }))\n    : maior.slice(0, 200).map((o) => ({ id: o && (o.id || o.id_accounts || o.id_plan_accounts_entities || o.id_cost_centers || o.id_tags), nome: o && typeof o === 'object' ? nomeDe(o) : '', nivel: o && o.level }));\n  const erro = r.statusCode >= 400 ? String(JSON.stringify(r.body || '')).slice(0, 200) : '';\n  return { json: { nome: p.nome, status: r.statusCode, estrutura, total: maior.length, itens, erro } };\n});"
+      }
+    }
+  ],
+  "connections": {
+    "Executar inspeção": {
+      "main": [
+        [
+          {
+            "node": "Consultas (somente leitura)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultas (somente leitura)": {
+      "main": [
+        [
+          {
+            "node": "Controlle — GET",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Controlle — GET": {
+      "main": [
+        [
+          {
+            "node": "Resumo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "atomBuild": "2026-09-29"
+  }
+}

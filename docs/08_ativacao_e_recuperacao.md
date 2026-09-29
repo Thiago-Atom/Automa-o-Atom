@@ -20,7 +20,7 @@ Zayra, Trello, Controlle, Claude, provedor de CNPJ) não foram configuradas nem 
 | 4 | Autentique e Asaas **em sandbox**: `MODO_EXECUCAO=SANDBOX` (a Autentique recebe `sandbox: true`), credencial Asaas sandbox, `COBRANCA_DISPARO` definido. Negócio fictício com e-mails **internos da Atom** nos dois signatários. Publicar **ATOM_05** e **ATOM_06**, cadastrar os webhooks. | Cópia preenchida sem `{{...}}` restante; PDF correto; documento criado uma única vez; os dois assinam; webhook recebido → cabeçalho HMAC anotado em `AUTENTIQUE_HMAC_CABECALHO`; situação `ASSINADO_TODOS`; cobranças criadas uma única vez. Marcar `AUTENTIQUE_VALIDADO_SANDBOX` e `ASAAS_VALIDADO_SANDBOX`. |
 | 5 | Trello: configurar quadro/listas/regra de início; publicar **ATOM_08** e registrar o webhook do quadro. | Um cartão por negócio liberado; início efetivo registrado. |
 | 6 | Avaliação: link Google + template aprovado; publicar **ATOM_09**. | Agendamento correto na janela comercial; envio apenas via Zayra real. |
-| 7 | Controlle: quando a API for fornecida, implementar o adaptador, ativar o nó HTTP e `CONTROLLE_API_HABILITADA=true`; publicar **ATOM_07**. | Lançamento confirmado por resposta 2xx real, sem duplicidade. |
+| 7 | Controlle: teste supervisionado de `docs/12_controlle_api.md` (uma cobrança sandbox, `CONTROLLE_PERMITIR_EM_SANDBOX=true`); depois `CONTROLLE_API_HABILITADA=true` e publicar **ATOM_07**. | 1 entrada + 1 tarifa no Controlle; segunda execução não duplica. Excluir os lançamentos de teste. |
 | 8 | Produção: trocar URLs/credenciais sandbox por produção, `MODO_EXECUCAO=PRODUCAO`, recadastrar webhooks de produção. | Primeiro negócio real acompanhado manualmente do início ao fim. |
 
 ## 2. Painel de acompanhamento

@@ -21,7 +21,8 @@ function executarNo(workflow, no, { nos = {}, entrada = [] } = {}) {
   };
   const $input = { first: () => ({ json: entrada[0] }), all: () => itens(entrada), item: { json: entrada[0] } };
   const fn = new Function('$', '$input', '$json', '$now', 'DateTime', n.parameters.jsCode);
-  return fn($, $input, entrada[0], DateTime.now(), DateTime).map((i) => i.json);
+  const r = fn($, $input, entrada[0], DateTime.now(), DateTime);
+  return (Array.isArray(r) ? r : [r]).map((i) => i.json); // nós "runOnceForEachItem" devolvem um item só
 }
 
 const cfg = (pares) => Object.entries(pares).map(([chave, valor]) => ({ chave, valor, status: 'CONFIGURADO' }));
@@ -167,4 +168,42 @@ test('retentativas acumulam (ATOM_06): o limite RETENTATIVAS_MAX pode ser atingi
   assert.equal(terceira.acao.tentativas, 3);
   assert.equal(terceira.acao.criado_em, '2026-09-27T10:00:00.000Z');
   assert.ok(Date.parse(terceira.acao.proxima_tentativa) > Date.parse(primeira.acao.proxima_tentativa) - 1000);
+});
+
+test('ATOM_07 Controlle: só lança recebimento em PRODUCAO com origem ATOM_N8N; SANDBOX e origem externa não lançam', () => {
+  const item = { event_key: 'asaas:pay_ficticio01:RECEBIDO_DISPONIVEL', asaas_payment_id: 'pay_ficticio01', deal_id: '900013', operacao: 'REGISTRAR_RECEBIMENTO',
+    valor_bruto: 1000, valor_liquido: 990, data_referencia: '2026-10-16', dados: JSON.stringify({ dueDate: '2026-10-15' }), tentativas: 0 };
+  const base = { CONTROLLE_ORIGEM_LANCAMENTOS: 'ATOM_N8N', CONTROLLE_API_HABILITADA: 'true', CONTROLLE_MAPEAMENTO: '{"conta_id":4,"categoria_receita_id":701}' };
+  const rodar = (extra, itens = [item]) => executarNo('ATOM_07_Controlle', 'Preparar lançamentos', { nos: {
+    'Ler configuração': cfg(Object.assign({}, base, extra)), 'Fila financeira': itens } });
+  const ok = rodar({ MODO_EXECUCAO: 'PRODUCAO' })[0];
+  assert.equal(ok.enviar, true); assert.equal(ok.corpo.payments[0].value_in_cent, 100000); assert.equal(ok.consulta.filter, 'ATOM-ASAAS-pay_ficticio01');
+  const sb = rodar({ MODO_EXECUCAO: 'SANDBOX' })[0];
+  assert.equal(sb.enviar, false); assert.match(sb.row.ultimo_erro, /não tem sandbox/);
+  assert.equal(rodar({ MODO_EXECUCAO: 'SANDBOX', CONTROLLE_PERMITIR_EM_SANDBOX: 'true' })[0].enviar, true);
+  assert.equal(rodar({ MODO_EXECUCAO: 'PRODUCAO', CONTROLLE_ORIGEM_LANCAMENTOS: 'INTEGRACAO_EXISTENTE' })[0].row.status_sync, 'NAO_APLICAVEL_ORIGEM_EXTERNA');
+  assert.equal(rodar({ MODO_EXECUCAO: 'PRODUCAO' }, [Object.assign({}, item, { operacao: 'REGISTRAR_ESTORNO' })])[0].row.status_sync, 'REQUER_ACAO_MANUAL');
+  assert.match(rodar({ MODO_EXECUCAO: 'PRODUCAO', CONTROLLE_MAPEAMENTO: '{"conta_id":4}' })[0].row.ultimo_erro, /categoria_receita_id/);
+  // Busca anti-duplicidade: marcador encontrado → não cria; formato desconhecido → verificação manual.
+  const dec = (body) => executarNo('ATOM_07_Controlle', 'Decidir criação', { nos: { 'Preparar lançamentos': [ok] }, entrada: [{ statusCode: 200, body }] })[0];
+  assert.equal(dec({ data: [{ id: 5, ds_transaction: 'x ATOM-ASAAS-pay_ficticio01' }] }).criar, false);
+  assert.equal(dec({ data: [] }).criar, true);
+  assert.equal(dec({}).row.status_sync, 'VERIFICAR_MANUAL');
+});
+
+test('ATOM_07 Controlle: recebimento e depois tarifa (duas fases, cada uma com o próprio marcador)', () => {
+  const item = { event_key: 'asaas:pay_ficticio01:RECEBIDO_DISPONIVEL', asaas_payment_id: 'pay_ficticio01', deal_id: '900013', operacao: 'REGISTRAR_RECEBIMENTO',
+    valor_bruto: 1000, valor_liquido: 990.01, data_referencia: '2026-10-16', dados: JSON.stringify({ dueDate: '2026-10-15' }), tentativas: 0, status_sync: 'PENDENTE' };
+  const config = cfg({ MODO_EXECUCAO: 'PRODUCAO', CONTROLLE_ORIGEM_LANCAMENTOS: 'ATOM_N8N', CONTROLLE_API_HABILITADA: 'true',
+    CONTROLLE_MAPEAMENTO: '{"conta_bancaria_id":229618,"categoria_receita_servicos_id":10342304,"categoria_tarifas_id":10342391,"centro_custo_id":null}' });
+  const rodar = (it) => executarNo('ATOM_07_Controlle', 'Preparar lançamentos', { nos: { 'Ler configuração': config, 'Fila financeira': [it] } })[0];
+  const f1 = rodar(item);
+  assert.equal(f1.fase, 'RECEBIMENTO'); assert.equal(f1.proximo, 'TARIFA_PENDENTE'); assert.equal(f1.corpo.id_accounts_main, 229618);
+  const f2 = rodar(Object.assign({}, item, { status_sync: 'TARIFA_PENDENTE' }));
+  assert.equal(f2.fase, 'TARIFA'); assert.equal(f2.proximo, 'SINCRONIZADO'); assert.equal(f2.corpo.itens[0].value_in_cent, 999);
+  assert.equal(f2.consulta.filter, 'ATOM-ASAAS-TARIFA-pay_ficticio01');
+  // Criação da fase 1 bem-sucedida grava TARIFA_PENDENTE (volta na próxima rodada para a fase 2).
+  const dec = executarNo('ATOM_07_Controlle', 'Decidir criação', { nos: { 'Preparar lançamentos': [f1] }, entrada: [{ statusCode: 200, body: { data: [] } }] })[0];
+  const fim = executarNo('ATOM_07_Controlle', 'Interpretar resposta do Controlle', { nos: { 'Decidir criação': [dec] }, entrada: [{ statusCode: 201, body: { id: 555 } }] })[0];
+  assert.equal(fim.row.status_sync, 'TARIFA_PENDENTE'); assert.equal(fim.row.controlle_id, '555');
 });

@@ -2,7 +2,7 @@
   "name": "ATOM_10_Zayra_Interface",
   "nodes": [
     {
-      "id": "41b13993-7f2b-40dc-980f-8c88e9daa849",
+      "id": "1268b374-3381-452b-a3cb-25bbd05e21bc",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "8ebdf2e6-75f3-4fcf-953f-755c8acc87d7",
+      "id": "0c6cd8d2-5d93-4394-ab7b-f0261102b97b",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "f3bee836-6f9b-45a5-bc95-3921f67610f5",
+      "id": "b4e62972-3276-4a53-9217-ccc7bb092b8d",
       "name": "Montar pedido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -51,7 +51,7 @@
       }
     },
     {
-      "id": "c1579a2c-1df2-4ab5-b99d-2e4c87506a99",
+      "id": "47871370-4601-4836-91cb-741dd0904ca3",
       "name": "Buscar pedido existente",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -83,7 +83,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "c262a659-0558-4252-ace4-e1f51eb4677b",
+      "id": "dc31dee5-ae31-4ebe-8a1d-1d187fd685b1",
       "name": "Decidir envio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -97,7 +97,7 @@
       }
     },
     {
-      "id": "0709d761-ec10-461a-9a07-24b193dec0a0",
+      "id": "ec721b25-6631-4fe9-8852-06e7aee33dfd",
       "name": "Registrar pedido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -255,7 +255,7 @@
       }
     },
     {
-      "id": "6f7d488d-55d2-4277-bd17-e7ac108ae68f",
+      "id": "3fb44134-3ed5-4486-a70f-ac1f26e780c6",
       "name": "Enviar à Zayra?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -287,7 +287,7 @@
       }
     },
     {
-      "id": "a19a4741-603e-4726-b7f4-b44285676030",
+      "id": "472e2d51-967d-465a-b3fa-b51e3e3d42e0",
       "name": "Zayra — adaptador HTTP (contrato proposto)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -329,7 +329,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "f9a34988-83a0-457c-b7ef-f603df66d3ed",
+      "id": "f629361d-62f1-462f-a1c2-d4db99f7bf94",
       "name": "Interpretar resposta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -343,7 +343,7 @@
       }
     },
     {
-      "id": "810811a4-5c5d-46eb-b0df-d7dc2ff4f1ba",
+      "id": "47dd4d5e-e6c0-4e40-a687-720e6c98dd4b",
       "name": "Atualizar pedido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -441,7 +441,7 @@
       }
     },
     {
-      "id": "dc472525-ccb0-419e-869c-6e0fd6d664bd",
+      "id": "2a27a277-0783-4095-ae28-7f9604416301",
       "name": "Resultado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -455,7 +455,7 @@
       }
     },
     {
-      "id": "680efeeb-f71c-4f8d-92a9-24cbd0986007",
+      "id": "66aabdf5-683e-492e-8b5d-43df12dacc78",
       "name": "Status de entrega (Zayra)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -470,11 +470,11 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "988a40c3-ba73-4b8d-987a-41fa2971aa4e",
+      "webhookId": "350b04cf-756d-418c-8aca-6ce22cc2eb69",
       "credentials": {}
     },
     {
-      "id": "55da97c1-b72a-4eaf-9d7c-389d9fa651b9",
+      "id": "e1b086c7-9ed8-460c-b7c1-935c456de5f9",
       "name": "Normalizar status",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -488,7 +488,7 @@
       }
     },
     {
-      "id": "98f7a0a0-d37e-43a2-bdb5-3b14292c292d",
+      "id": "586deba8-4f43-40c6-9bf1-087acbc2cca5",
       "name": "Atualizar entrega no agendamento",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -556,8 +556,8 @@
       }
     },
     {
-      "id": "98ebc898-3587-4120-b1a3-a0a378b65ceb",
-      "name": "Sticky Note 98ebc898",
+      "id": "59e5644f-d770-4516-91aa-ed923d1dc2d0",
+      "name": "Sticky Note 59e5644f",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [

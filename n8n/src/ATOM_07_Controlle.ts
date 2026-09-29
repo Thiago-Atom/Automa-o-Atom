@@ -22,7 +22,7 @@ const fila = node({
     name: 'Fila financeira', executeOnce: true,
     parameters: {
       resource: 'row', operation: 'get', dataTableId: @@{TABLE('atom_financeiro')}@@, matchType: 'anyCondition',
-      filters: @@{FILTER([['status_sync', 'eq', '"PENDENTE"'], ['status_sync', 'eq', '"FALHA"'], ['status_sync', 'eq', '"AGUARDANDO_API"'], ['status_sync', 'eq', '"NAO_ENVIADO_ADAPTADOR_DESATIVADO"']])}@@,
+      filters: @@{FILTER([['status_sync', 'eq', '"PENDENTE"'], ['status_sync', 'eq', '"FALHA"'], ['status_sync', 'eq', '"AGUARDANDO_API"'], ['status_sync', 'eq', '"NAO_ENVIADO_ADAPTADOR_DESATIVADO"'], ['status_sync', 'eq', '"TARIFA_PENDENTE"']])}@@,
       returnAll: true
     }
   },
@@ -37,29 +37,50 @@ const preparar = node({
 
 const enviar = @@{IFB('Enviar ao Controlle?', '$json.enviar')}@@;
 
+const buscar = node({
+  type: 'n8n-nodes-base.httpRequest', version: 4.5,
+  config: {
+    name: 'Controlle — procurar lançamento (marcador)', onError: 'continueRegularOutput',
+    notes: 'GET /transaction/v1/transactions/list (API v1). Filtro pela descrição: marcador ATOM-ASAAS-<id>. Evita duplicidade.',
+    parameters: {
+      method: 'GET', url: expr('{{ $json.base }}/transaction/v1/transactions/list'),
+      authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
+      sendQuery: true, specifyQuery: 'json', jsonQuery: expr('{{ JSON.stringify($json.consulta) }}'),
+      options: { timeout: 20000, response: { response: { fullResponse: true, neverError: true } } }
+    },
+    credentials: { httpCustomAuth: newCredential('ATOM Controlle (Bearer)') }
+  },
+  output: [{ statusCode: 200, body: { data: [] } }]
+});
+
+const decidir = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Decidir criação', parameters: { mode: 'runOnceForEachItem', jsCode: @@{CODE('wf07', 'decidir')}@@ } },
+  output: [{ criar: true, row: { event_key: 'x' }, corpo: {}, base: 'https://api-v1.controlle.com', fase: 'RECEBIMENTO', proximo: 'SINCRONIZADO' }]
+});
+
+const criar = @@{IFB('Criar no Controlle?', '$json.criar')}@@;
+
 const adaptador = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
-    name: 'Controlle — adaptador (DESATIVADO até a API ser fornecida)',
-    disabled: true,
-    onError: 'continueRegularOutput',
-    notes: 'Endpoint, autenticação e formato NÃO definidos. Ativar somente após mapear a API real do Controlle (docs/). Enquanto desativado, nenhum item é marcado como sincronizado.',
+    name: 'Controlle — criar lançamento de entrada (pago)', onError: 'continueRegularOutput',
+    notes: 'POST /transaction/v1/transactions (API v1): entrada única já paga (situation 1).',
     parameters: {
-      method: 'POST', url: expr('{{ $json.url }}'),
+      method: 'POST', url: expr('{{ $json.base }}/transaction/v1/transactions'),
       authentication: 'genericCredentialType', genericAuthType: 'httpCustomAuth',
-      sendHeaders: true, specifyHeaders: 'keypair', headerParameters: { parameters: [{ name: 'Idempotency-Key', value: expr('{{ $json.corpo.chave_idempotencia }}') }] },
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr('{{ JSON.stringify($json.corpo) }}'),
       options: { timeout: 20000, response: { response: { fullResponse: true, neverError: true } } }
     },
-    credentials: { httpCustomAuth: newCredential('ATOM Controlle (PENDENTE)') }
+    credentials: { httpCustomAuth: newCredential('ATOM Controlle (Bearer)') }
   },
-  output: [{ statusCode: 201, body: { id: 'x' } }]
+  output: [{ statusCode: 200, body: {} }]
 });
 
 const interpretar = node({
   type: 'n8n-nodes-base.code', version: 2,
   config: { name: 'Interpretar resposta do Controlle', parameters: { mode: 'runOnceForEachItem', jsCode: @@{CODE('wf07', 'interpretar')}@@ } },
-  output: [{ row: { event_key: 'x', status_sync: 'NAO_ENVIADO_ADAPTADOR_DESATIVADO' } }]
+  output: [{ row: { event_key: 'x', status_sync: 'SINCRONIZADO' } }]
 });
 
 const atualizar = node({
@@ -74,7 +95,7 @@ const atualizarEnviado = node({
   output: [{}]
 });
 
-const nota = sticky('## ATOM_07 — Controlle (módulo independente)\n- Fila persistente `atom_financeiro`, alimentada pelo ATOM_06 (conta a receber, confirmação, recebimento com bruto/líquido/taxas, vencimento, cancelamento, estorno, chargeback).\n- **API do Controlle ainda não fornecida**: adaptador HTTP desativado; itens ficam `AGUARDANDO_API` (nunca "sincronizado" sem 2xx real).\n- Origem única: `CONTROLLE_ORIGEM_LANCAMENTOS` = ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (não lança, evita duplicidade).\n- Pagamento confirmado ≠ dinheiro disponível: operações distintas (REGISTRAR_CONFIRMACAO x REGISTRAR_RECEBIMENTO).\n- Reprocessamento: a cada 30 min ou pelo gatilho "Reprocessar agora".', [], { color: 6 });
+const nota = sticky('## ATOM_07 — Controlle (API v1)\n- Fila `atom_financeiro` (ATOM_06). Lança **uma entrada única já paga por cobrança Asaas** (valor bruto) e, depois, a **tarifa Asaas** como saída (bruto − líquido, `TARIFA_PENDENTE`), no recebimento (`CONTROLLE_REGISTRAR_EM`=RECEBIMENTO ou CONFIRMACAO).\n- Antes de criar, procura o marcador `ATOM-ASAAS-<id>` na descrição: sem duplicidade, retentativa segura. Formato de listagem desconhecido → `VERIFICAR_MANUAL` (não cria).\n- Estorno/cancelamento/chargeback → `REQUER_ACAO_MANUAL`. Conta a receber pendente não é lançada (API sem endpoint documentado de baixa).\n- Só envia com `CONTROLLE_ORIGEM_LANCAMENTOS`=ATOM_N8N, `CONTROLLE_API_HABILITADA`=true, `CONTROLLE_MAPEAMENTO` e MODO_EXECUCAO=PRODUCAO (SANDBOX só com `CONTROLLE_PERMITIR_EM_SANDBOX`=true: o Controlle não tem sandbox).', [], { color: 6 });
 
 export default workflow('atom-07', 'ATOM_07_Controlle', { settings: { timezone: 'America/Sao_Paulo', executionOrder: 'v1', callerPolicy: 'workflowsFromSameOwner' } })
   .add(agenda)
@@ -84,6 +105,8 @@ export default workflow('atom-07', 'ATOM_07_Controlle', { settings: { timezone: 
   .to(fila)
   .to(preparar)
   .to(enviar
-    .onTrue(adaptador.to(interpretar).to(atualizarEnviado))
+    .onTrue(buscar.to(decidir).to(criar
+      .onTrue(adaptador.to(interpretar).to(atualizarEnviado))
+      .onFalse(atualizarEnviado)))
     .onFalse(atualizar))
   .add(nota);

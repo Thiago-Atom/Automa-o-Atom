@@ -11,7 +11,7 @@
 | Provedor de CNPJ: BrasilAPI | Cadastro | Decidido e configurado (2026-09-28); serviço público, sem credencial |
 | Autentique API v2 (GraphQL) + Google Drive/Docs | Contrato | Token, modelo(s) no Google Docs, pasta de contratos e signatário da Atom pendentes; cabeçalho HMAC e payload do webhook a confirmar no sandbox |
 | Asaas API v3 | Cliente, cobranças, pagamentos | Sandbox e regra de disparo pendentes |
-| Controlle | Financeiro | Não usado por este projeto: os lançamentos já vêm de uma integração existente (`CONTROLLE_ORIGEM_LANCAMENTOS=INTEGRACAO_EXISTENTE`). ATOM_07 só marca a fila como não aplicável |
+| Controlle API v1 | Financeiro | ATOM_07 lança recebimentos e tarifas do Asaas (`CONTROLLE_ORIGEM_LANCAMENTOS=ATOM_N8N`). Credencial e mapeamento prontos; leitura real OK; envio desligado até o teste supervisionado (ver `docs/12_controlle_api.md`) |
 | Trello API | Cartão de execução e início efetivo | Credencial existente `Trello account`; quadro/listas a definir |
 | Zayra (existente) | Mensagens ao cliente (WhatsApp) | Mecanismo de acionamento a confirmar |
 | Meta/WhatsApp | Template do pedido de avaliação | Template aprovado pendente |
@@ -29,7 +29,7 @@
 | Gatilho de site/diagnóstico | Etapa "Contactado" (7) | `PD_STAGES_REUNIAO_IDS=7` |
 | Proposta aceita | Criar etapa nova entre "Reunião concluída" e "Contrato assinado" | `PD_STAGE_PROPOSTA_ACEITA_ID` (aguarda a criação) |
 | Trello | Quadro novo exclusivo para execução | `TRELLO_BOARD_ID` e listas (aguardam a criação) |
-| Controlle | Integração existente faz os lançamentos | `CONTROLLE_ORIGEM_LANCAMENTOS=INTEGRACAO_EXISTENTE` |
+| Controlle | O n8n faz os lançamentos (não há integração Asaas → Controlle ativa) — 2026-09-29 | `CONTROLLE_ORIGEM_LANCAMENTOS=ATOM_N8N` |
 
 Com `COBRANCA_DISPARO=JUNTO_COM_CONTRATO`, a cobrança é criada mesmo que o cliente ainda não tenha assinado; se o contrato for
 recusado ou o negócio perdido, a cobrança precisa ser cancelada manualmente no Asaas (ATOM_05 e ATOM_04 geram alerta; nada é cancelado sozinho).

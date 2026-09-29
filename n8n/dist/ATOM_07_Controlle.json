@@ -2,7 +2,7 @@
   "name": "ATOM_07_Controlle",
   "nodes": [
     {
-      "id": "0ebfe18f-62bf-4015-9876-9f4abc4ef738",
+      "id": "ad38b964-291e-49b7-974f-71abd9611f7c",
       "name": "A cada 30 minutos",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "id": "252ee635-a25e-4c5a-87cc-e3c76d44c69c",
+      "id": "3a6cf8e2-76f9-41f4-a7c4-64d9565490f8",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -44,7 +44,7 @@
       "executeOnce": true
     },
     {
-      "id": "1e3ce1d2-4b25-4655-b595-314064803b9b",
+      "id": "d4eb3089-b764-461b-89b3-64104de04477",
       "name": "Reprocessar agora",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -57,7 +57,7 @@
       }
     },
     {
-      "id": "3abe7b9f-a1a2-4f2e-9db4-ea1de025ca81",
+      "id": "b22511ca-6a40-499c-814e-c04c673731d8",
       "name": "Fila financeira",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -96,6 +96,11 @@
               "keyName": "status_sync",
               "condition": "eq",
               "keyValue": "={{ \"NAO_ENVIADO_ADAPTADOR_DESATIVADO\" }}"
+            },
+            {
+              "keyName": "status_sync",
+              "condition": "eq",
+              "keyValue": "={{ \"TARIFA_PENDENTE\" }}"
             }
           ]
         },
@@ -104,7 +109,7 @@
       "executeOnce": true
     },
     {
-      "id": "6fbe1d16-83ff-4eeb-81f7-8e2607548554",
+      "id": "4401b9a2-9b7e-4224-b7db-87abe25a88ca",
       "name": "Preparar lançamentos",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -114,11 +119,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf07.js#preparar + lib/{util,config}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction round2(n) {\n  return Math.round((n + Number.EPSILON) * 100) / 100;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const linhas = $(\"Fila financeira\").all().map((i) => i.json).filter((r) => r && r.event_key);\n  const MAX = Number(valor(cfg, \"RETENTATIVAS_MAX\", \"6\")) || 6;\n  const origem = valor(cfg, \"CONTROLLE_ORIGEM_LANCAMENTOS\", \"\");\n  const habilitada = booleano(cfg, \"CONTROLLE_API_HABILITADA\");\n  const gate = portao(cfg, [\"CONTROLLE_BASE_URL\", \"CONTROLLE_MAPEAMENTO\", \"CONTROLLE_ORIGEM_LANCAMENTOS\"]);\n  const agora = /* @__PURE__ */ new Date();\n  const out = [];\n  for (const r of linhas) {\n    if (Number(r.tentativas || 0) >= MAX) continue;\n    const row = { event_key: r.event_key, tentativas: Number(r.tentativas || 0), atualizado_em: agora.toISOString() };\n    if (origem === \"INTEGRACAO_EXISTENTE\") {\n      out.push({ json: { enviar: false, row: Object.assign(row, { status_sync: \"NAO_APLICAVEL_ORIGEM_EXTERNA\", ultimo_erro: \"\" }) } });\n      continue;\n    }\n    if (!habilitada || !gate.liberado || origem !== \"ATOM_N8N\") {\n      out.push({ json: { enviar: false, row: Object.assign(row, { status_sync: \"AGUARDANDO_API\", ultimo_erro: (!habilitada ? \"CONTROLLE_API_HABILITADA=false; \" : \"\") + (gate.motivo || \"\") }) } });\n      continue;\n    }\n    const bruto = Number(r.valor_bruto);\n    const liquido = r.valor_liquido === null || r.valor_liquido === void 0 || r.valor_liquido === \"\" ? null : Number(r.valor_liquido);\n    const corpo = {\n      origem: \"ATOM_N8N\",\n      chave_idempotencia: r.event_key,\n      operacao: r.operacao,\n      negocio_pipedrive_id: r.deal_id,\n      cobranca_asaas_id: r.asaas_payment_id,\n      valor_bruto: Number.isFinite(bruto) ? bruto : null,\n      valor_liquido: liquido,\n      taxas: Number.isFinite(bruto) && liquido !== null ? round2(bruto - liquido) : null,\n      data_referencia: r.data_referencia || null,\n      detalhes: safeJsonParse(r.dados, {})\n    };\n    out.push({ json: { enviar: true, corpo, url: valor(cfg, \"CONTROLLE_BASE_URL\", \"\"), row } });\n  }\n  return out;\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf07.js#preparar + lib/{util,config,controlle}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction toNumber(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  if (typeof v === \"number\") return Number.isFinite(v) ? v : null;\n  if (typeof v === \"object\" && v !== null && \"value\" in v) return toNumber(v.value);\n  let s = String(v).trim().replace(/[R$\\s]/g, \"\");\n  if (/,\\d{1,2}$/.test(s)) s = s.replace(/\\./g, \"\").replace(\",\", \".\");\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias) {\n  const falta = faltando(cfg, chavesNecessarias);\n  const m = modo(cfg);\n  const liberado = falta.length === 0 && m !== \"SIMULACAO\";\n  return {\n    liberado,\n    modo: m,\n    faltando: falta,\n    motivo: liberado ? \"\" : falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : \"MODO_SIMULACAO\"\n  };\n}\n\n// lib/controlle.js\nvar BASE = \"https://api-v1.controlle.com\";\nvar OPERACOES_LANCAVEIS = { RECEBIMENTO: [\"REGISTRAR_RECEBIMENTO\"], CONFIRMACAO: [\"REGISTRAR_CONFIRMACAO\", \"REGISTRAR_RECEBIMENTO\"] };\nfunction marcador(paymentId) {\n  return \"ATOM-ASAAS-\" + String(paymentId || \"\").replace(/[^A-Za-z0-9_-]/g, \"\");\n}\nfunction centavos(v) {\n  const n = toNumber(v);\n  return n === null ? null : Math.round(n * 100);\n}\nfunction data(v) {\n  const m = /^(\\d{4}-\\d{2}-\\d{2})/.exec(String(v || \"\"));\n  return m ? m[1] : \"\";\n}\nfunction somarDias(iso, dias) {\n  const d = /* @__PURE__ */ new Date(iso + \"T12:00:00Z\");\n  d.setUTCDate(d.getUTCDate() + dias);\n  return d.toISOString().slice(0, 10);\n}\nfunction normalizarMapa(m) {\n  if (!m || typeof m !== \"object\" || Array.isArray(m)) return null;\n  const n = (v) => v === null || v === void 0 || v === \"\" ? void 0 : Number(v);\n  return {\n    conta_id: n(m.conta_id !== void 0 ? m.conta_id : m.conta_bancaria_id),\n    categoria_receita_id: n(m.categoria_receita_id !== void 0 ? m.categoria_receita_id : m.categoria_receita_servicos_id),\n    categoria_tarifa_id: n(m.categoria_tarifa_id !== void 0 ? m.categoria_tarifa_id : m.categoria_tarifas_id),\n    centro_custo_id: n(m.centro_custo_id),\n    tag_id: n(m.tag_id)\n  };\n}\nfunction validarMapa(mapa) {\n  const erros = [];\n  if (!mapa || typeof mapa !== \"object\") return [\"CONTROLLE_MAPEAMENTO inválido (JSON)\"];\n  for (const k of [\"conta_id\", \"categoria_receita_id\"]) if (!(Number.isInteger(mapa[k]) && mapa[k] > 0)) erros.push(k + \" obrigatório (inteiro)\");\n  for (const k of [\"centro_custo_id\", \"tag_id\", \"categoria_tarifa_id\"]) if (mapa[k] !== void 0 && mapa[k] !== null && !(Number.isInteger(mapa[k]) && mapa[k] > 0)) erros.push(k + \" inválido\");\n  return erros;\n}\nfunction decidir(item, registrarEm) {\n  const ops = OPERACOES_LANCAVEIS[registrarEm] || OPERACOES_LANCAVEIS.RECEBIMENTO;\n  if (ops.includes(item.operacao)) return { acao: \"LANCAR\" };\n  if ([\"REGISTRAR_ESTORNO\", \"SINALIZAR_ESTORNO\", \"SINALIZAR_CHARGEBACK\", \"CANCELAR_TITULO\"].includes(item.operacao)) return { acao: \"MANUAL\", status: \"REQUER_ACAO_MANUAL\" };\n  return { acao: \"IGNORAR\", status: \"NAO_APLICAVEL\" };\n}\nfunction corpoRecebimento(item, mapa) {\n  const det = safeJsonParse(item.dados, {});\n  const valor2 = centavos(item.valor_bruto);\n  const pago = data(item.data_referencia);\n  const venc = data(det.dueDate) || pago;\n  const erros = [];\n  if (!(valor2 > 0)) erros.push(\"valor_bruto inválido\");\n  if (!pago) erros.push(\"data de pagamento ausente\");\n  if (!item.asaas_payment_id) erros.push(\"asaas_payment_id ausente\");\n  if (erros.length) return { erros };\n  const m = marcador(item.asaas_payment_id);\n  const itemCat = { id_plan_accounts_entities: mapa.categoria_receita_id, value_in_cent: valor2 };\n  if (mapa.centro_custo_id) itemCat.id_cost_centers = mapa.centro_custo_id;\n  const corpo = {\n    ds_transaction: (\"ATOM D\" + item.deal_id + \" — recebimento Asaas \" + m).slice(0, 200),\n    dt_competence: venc,\n    activity_type: 1,\n    repeat_type: 1,\n    type: 0,\n    id_accounts_main: mapa.conta_id,\n    obs_transaction: truncate(\"Lançado pela automação ATOM (n8n). Negócio Pipedrive \" + item.deal_id + \"; cobrança Asaas \" + item.asaas_payment_id + (det.billingType ? \"; forma \" + det.billingType : \"\") + (item.valor_liquido !== null && item.valor_liquido !== void 0 && item.valor_liquido !== \"\" ? \"; valor líquido \" + item.valor_liquido : \"\") + \".\", 480),\n    itens: [itemCat],\n    payments: [{ situation: 1, value_in_cent: valor2, dt_due: venc, id_accounts_paid: mapa.conta_id, payment_in_cent: valor2, dt_billing: pago }]\n  };\n  if (mapa.tag_id) corpo.tags = [{ id_tags: mapa.tag_id }];\n  return { erros: [], corpo, marcador: m };\n}\nfunction tarifa(item) {\n  const b = centavos(item.valor_bruto);\n  const l = centavos(item.valor_liquido);\n  return b > 0 && l !== null && l >= 0 && l < b ? b - l : 0;\n}\nfunction corpoTarifa(item, mapa) {\n  const valor2 = tarifa(item);\n  const pago = data(item.data_referencia);\n  if (!(valor2 > 0) || !pago || !mapa.categoria_tarifa_id) return { erros: [\"sem tarifa a lançar\"] };\n  const m = marcador(item.asaas_payment_id).replace(\"ATOM-ASAAS-\", \"ATOM-ASAAS-TARIFA-\");\n  const itemCat = { id_plan_accounts_entities: mapa.categoria_tarifa_id, value_in_cent: valor2 };\n  if (mapa.centro_custo_id) itemCat.id_cost_centers = mapa.centro_custo_id;\n  const corpo = {\n    ds_transaction: (\"ATOM D\" + item.deal_id + \" — tarifa Asaas \" + m).slice(0, 200),\n    dt_competence: pago,\n    activity_type: 0,\n    repeat_type: 1,\n    type: 0,\n    id_accounts_main: mapa.conta_id,\n    obs_transaction: \"Tarifa Asaas (valor bruto \" + item.valor_bruto + \" − líquido \" + item.valor_liquido + \") da cobrança \" + item.asaas_payment_id + \". Lançado pela automação ATOM (n8n).\",\n    itens: [itemCat],\n    payments: [{ situation: 1, value_in_cent: valor2, dt_due: pago, id_accounts_paid: mapa.conta_id, payment_in_cent: valor2, dt_billing: pago }]\n  };\n  if (mapa.tag_id) corpo.tags = [{ id_tags: mapa.tag_id }];\n  return { erros: [], corpo, marcador: m };\n}\nfunction consultaExistente(item, ordem, m) {\n  const det = safeJsonParse(item.dados, {});\n  const datas = [data(det.dueDate), data(item.data_referencia)].filter(Boolean).sort();\n  const ini = somarDias(datas[0], -45);\n  const fim = somarDias(datas[datas.length - 1], 45);\n  return { start_date: ini, end_date: fim, page: 1, orderBy: ordem || \"dt_due\", orderByCardinality: \"DESC\", filter: m || marcador(item.asaas_payment_id) };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const linhas = $(\"Fila financeira\").all().map((i) => i.json).filter((r) => r && r.event_key);\n  const MAX = Number(valor(cfg, \"RETENTATIVAS_MAX\", \"6\")) || 6;\n  const origem = valor(cfg, \"CONTROLLE_ORIGEM_LANCAMENTOS\", \"\");\n  const habilitada = booleano(cfg, \"CONTROLLE_API_HABILITADA\");\n  const gate = portao(cfg, [\"CONTROLLE_MAPEAMENTO\", \"CONTROLLE_ORIGEM_LANCAMENTOS\"]);\n  const sandboxBloqueado = gate.modo === \"SANDBOX\" && !booleano(cfg, \"CONTROLLE_PERMITIR_EM_SANDBOX\");\n  const mapa = normalizarMapa(safeJsonParse(valor(cfg, \"CONTROLLE_MAPEAMENTO\", \"\"), null));\n  const errosMapa = validarMapa(mapa);\n  const registrarEm = valor(cfg, \"CONTROLLE_REGISTRAR_EM\", \"RECEBIMENTO\");\n  const ordem = valor(cfg, \"CONTROLLE_LISTA_ORDEM\", \"\");\n  const agora = /* @__PURE__ */ new Date();\n  const out = [];\n  for (const r of linhas) {\n    if (Number(r.tentativas || 0) >= MAX) continue;\n    const row = { event_key: r.event_key, tentativas: Number(r.tentativas || 0), atualizado_em: agora.toISOString(), controlle_id: r.controlle_id || \"\" };\n    const parar = (status, erro) => out.push({ json: { enviar: false, row: Object.assign(row, { status_sync: status, ultimo_erro: String(erro || \"\").slice(0, 300) }) } });\n    if (origem === \"INTEGRACAO_EXISTENTE\") {\n      parar(\"NAO_APLICAVEL_ORIGEM_EXTERNA\", \"\");\n      continue;\n    }\n    const faseTarifa = r.status_sync === \"TARIFA_PENDENTE\";\n    const d = faseTarifa ? { acao: \"LANCAR\" } : decidir(r, registrarEm);\n    if (d.acao !== \"LANCAR\") {\n      parar(d.status, d.status === \"REQUER_ACAO_MANUAL\" ? \"Operação \" + r.operacao + \": ajuste manual no Controlle\" : \"\");\n      continue;\n    }\n    const faltas = [];\n    if (!habilitada) faltas.push(\"CONTROLLE_API_HABILITADA=false\");\n    if (origem !== \"ATOM_N8N\") faltas.push(\"CONTROLLE_ORIGEM_LANCAMENTOS≠ATOM_N8N\");\n    if (!gate.liberado) faltas.push(gate.motivo);\n    if (sandboxBloqueado) faltas.push(\"MODO SANDBOX: Controlle não tem sandbox (CONTROLLE_PERMITIR_EM_SANDBOX=false)\");\n    if (!faltas.length && errosMapa.length) faltas.push(errosMapa.join(\"; \"));\n    if (faltas.length) {\n      parar(\"AGUARDANDO_API\", faltas.join(\"; \"));\n      continue;\n    }\n    const c = faseTarifa ? corpoTarifa(r, mapa) : corpoRecebimento(r, mapa);\n    if (faseTarifa && c.erros.length) {\n      parar(\"SINCRONIZADO\", \"\");\n      continue;\n    }\n    if (c.erros.length) {\n      parar(\"DADOS_INVALIDOS\", c.erros.join(\"; \"));\n      continue;\n    }\n    const proximo = !faseTarifa && mapa.categoria_tarifa_id && tarifa(r) > 0 ? \"TARIFA_PENDENTE\" : \"SINCRONIZADO\";\n    out.push({ json: {\n      enviar: true,\n      row,\n      corpo: c.corpo,\n      marcador: c.marcador,\n      fase: faseTarifa ? \"TARIFA\" : \"RECEBIMENTO\",\n      proximo,\n      consulta: consultaExistente(r, ordem, c.marcador),\n      base: BASE\n    } });\n  }\n  return out;\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "88429100-efef-4c19-b990-4c08ef1a5bb7",
+      "id": "d4aa6743-6ea4-4fcd-bb30-bd23505ade22",
       "name": "Enviar ao Controlle?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -150,8 +155,8 @@
       }
     },
     {
-      "id": "5eac326a-99a8-4917-88f4-dc240b6ee099",
-      "name": "Controlle — adaptador (DESATIVADO até a API ser fornecida)",
+      "id": "e939556d-e8ea-4215-b512-fa30c7a08047",
+      "name": "Controlle — procurar lançamento (marcador)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
@@ -159,20 +164,87 @@
         300
       ],
       "parameters": {
-        "method": "POST",
-        "url": "={{ $json.url }}",
+        "method": "GET",
+        "url": "={{ $json.base }}/transaction/v1/transactions/list",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpCustomAuth",
-        "sendHeaders": true,
-        "specifyHeaders": "keypair",
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Idempotency-Key",
-              "value": "={{ $json.corpo.chave_idempotencia }}"
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={{ JSON.stringify($json.consulta) }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
             }
-          ]
-        },
+          }
+        }
+      },
+      "credentials": {},
+      "notes": "GET /transaction/v1/transactions/list (API v1). Filtro pela descrição: marcador ATOM-ASAAS-<id>. Evita duplicidade.",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "096f7794-bb80-40d6-957b-680e85d983c1",
+      "name": "Decidir criação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf07.js#decidir + lib/{controlle}. Edite a fonte no repositório, não este nó.\n// lib/controlle.js\nfunction listaDeLancamentos(resposta) {\n  if (!resposta || typeof resposta !== \"object\") return null;\n  const r = resposta.results;\n  if (r && typeof r === \"object\" && Array.isArray(r.transactionsList)) return r.transactionsList;\n  if (Array.isArray(resposta.transactionsList)) return resposta.transactionsList;\n  if (Array.isArray(resposta.data)) return resposta.data;\n  return null;\n}\nfunction procurarExistente(resposta, m) {\n  const lista = listaDeLancamentos(resposta);\n  if (!lista) return { ok: false, motivo: \"FORMATO_DE_LISTAGEM_NAO_RECONHECIDO\" };\n  const re = new RegExp(m.replace(/[.*+?^${}()|[\\]\\\\]/g, \"\\\\$&\") + \"(?![A-Za-z0-9_-])\");\n  for (const x of lista) {\n    if (x && typeof x === \"object\" && re.test(JSON.stringify(x))) {\n      const id = x.id || x.id_transactions || x.id_transaction || x.transaction_id || \"\";\n      return { ok: true, existe: true, id: String(id) };\n    }\n  }\n  return { ok: true, existe: false };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const ctx = $(\"Preparar lançamentos\").item.json;\n  const r = $json;\n  const row = Object.assign({}, ctx.row, { atualizado_em: (/* @__PURE__ */ new Date()).toISOString() });\n  if (typeof r.statusCode !== \"number\" || r.statusCode < 200 || r.statusCode >= 300) {\n    row.tentativas = Number(row.tentativas || 0) + 1;\n    row.status_sync = \"FALHA\";\n    row.ultimo_erro = (\"Busca: HTTP \" + (r.statusCode || \"?\") + \" \" + JSON.stringify(r.body || \"\")).slice(0, 300);\n    return { json: { criar: false, row } };\n  }\n  const achado = procurarExistente(r.body, ctx.marcador);\n  if (!achado.ok) {\n    row.status_sync = \"VERIFICAR_MANUAL\";\n    row.ultimo_erro = achado.motivo;\n    return { json: { criar: false, row } };\n  }\n  if (achado.existe) {\n    row.status_sync = ctx.proximo;\n    row.controlle_id = ctx.fase === \"TARIFA\" ? row.controlle_id : achado.id || row.controlle_id;\n    row.ultimo_erro = \"Já existia no Controlle (marcador \" + ctx.marcador + \")\";\n    return { json: { criar: false, row } };\n  }\n  return { json: { criar: true, row, corpo: ctx.corpo, base: ctx.base, fase: ctx.fase, proximo: ctx.proximo } };\n})();\nreturn __resultado;"
+      }
+    },
+    {
+      "id": "7d4547b1-271b-40c1-9f23-c2e1d22ae86b",
+      "name": "Criar no Controlle?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1500,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.criar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "6e47e931-8189-4210-8451-d89cdf875952",
+      "name": "Controlle — criar lançamento de entrada (pago)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1700,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.base }}/transaction/v1/transactions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
         "sendBody": true,
         "contentType": "json",
         "specifyBody": "json",
@@ -188,32 +260,31 @@
         }
       },
       "credentials": {},
-      "disabled": true,
-      "notes": "Endpoint, autenticação e formato NÃO definidos. Ativar somente após mapear a API real do Controlle (docs/). Enquanto desativado, nenhum item é marcado como sincronizado.",
+      "notes": "POST /transaction/v1/transactions (API v1): entrada única já paga (situation 1).",
       "onError": "continueRegularOutput"
     },
     {
-      "id": "d106b821-9433-439f-8ceb-0e051100fa28",
+      "id": "3c02e0e9-0f75-4fba-bca9-420cd8ffa950",
       "name": "Interpretar resposta do Controlle",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1300,
+        1900,
         300
       ],
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf07.js#interpretar. Edite a fonte no repositório, não este nó.\nconst ctx = $('Preparar lançamentos').item.json;\nconst r = $json;\nconst agora = new Date();\nconst row = Object.assign({}, ctx.row, { atualizado_em: agora.toISOString() });\n// Nó HTTP desativado repassa a entrada sem statusCode: NÃO conta como sincronizado.\nif (typeof r.statusCode !== 'number') { row.status_sync = 'NAO_ENVIADO_ADAPTADOR_DESATIVADO'; row.ultimo_erro = 'Adaptador HTTP do Controlle desativado'; return { json: { row } }; }\nif (r.statusCode >= 200 && r.statusCode < 300) {\n  const b = r.body || {};\n  row.status_sync = 'SINCRONIZADO'; row.controlle_id = String(b.id || b.uuid || ''); row.ultimo_erro = '';\n} else {\n  row.tentativas = Number(row.tentativas || 0) + 1;\n  row.status_sync = 'FALHA';\n  row.ultimo_erro = ('HTTP ' + r.statusCode + ' ' + JSON.stringify(r.body || '')).slice(0, 300);\n}\nreturn { json: { row } };"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf07.js#interpretar. Edite a fonte no repositório, não este nó.\n// Resposta da criação não documentada: 2xx = criado; o ID é guardado se vier no corpo.\nconst ctx = $('Decidir criação').item.json;\nconst r = $json;\nconst row = Object.assign({}, ctx.row, { atualizado_em: new Date().toISOString() });\nif (typeof r.statusCode === 'number' && r.statusCode >= 200 && r.statusCode < 300) {\n  const b = r.body && typeof r.body === 'object' ? r.body : {};\n  row.status_sync = ctx.proximo;\n  if (ctx.fase !== 'TARIFA') row.controlle_id = String(b.id || b.id_transactions || (b.data && b.data.id) || '');\n  row.ultimo_erro = '';\n} else {\n  row.tentativas = Number(row.tentativas || 0) + 1;\n  // Retentativa é segura mesmo após timeout/5xx: a próxima busca encontra o marcador se o lançamento foi criado.\n  row.status_sync = 'FALHA';\n  row.ultimo_erro = ('Criação: HTTP ' + (r.statusCode || '?') + ' ' + JSON.stringify(r.body || '')).slice(0, 300);\n}\nreturn { json: { row } };"
       }
     },
     {
-      "id": "a22c53a3-c375-41a2-a4c6-8ecdbe6d69b1",
+      "id": "624cea6d-a680-47ed-8c31-b606358760cf",
       "name": "Atualizar lançamento enviado",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1500,
-        300
+        1700,
+        450
       ],
       "parameters": {
         "resource": "row",
@@ -295,7 +366,7 @@
       }
     },
     {
-      "id": "e224b814-2d02-4849-a11d-18e9004bc24f",
+      "id": "f44da1c7-d538-4c5d-b520-1a752bf9f3f0",
       "name": "Atualizar fila financeira",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -373,8 +444,8 @@
       }
     },
     {
-      "id": "589fb1e5-7e91-4f11-b811-00047ea1163e",
-      "name": "Sticky Note 589fb1e5",
+      "id": "fe697206-5266-4b02-9a51-2ecdec87575e",
+      "name": "Sticky Note fe697206",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -382,7 +453,7 @@
         600
       ],
       "parameters": {
-        "content": "## ATOM_07 — Controlle (módulo independente)\n- Fila persistente `atom_financeiro`, alimentada pelo ATOM_06 (conta a receber, confirmação, recebimento com bruto/líquido/taxas, vencimento, cancelamento, estorno, chargeback).\n- **API do Controlle ainda não fornecida**: adaptador HTTP desativado; itens ficam `AGUARDANDO_API` (nunca \"sincronizado\" sem 2xx real).\n- Origem única: `CONTROLLE_ORIGEM_LANCAMENTOS` = ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (não lança, evita duplicidade).\n- Pagamento confirmado ≠ dinheiro disponível: operações distintas (REGISTRAR_CONFIRMACAO x REGISTRAR_RECEBIMENTO).\n- Reprocessamento: a cada 30 min ou pelo gatilho \"Reprocessar agora\".",
+        "content": "## ATOM_07 — Controlle (API v1)\n- Fila `atom_financeiro` (ATOM_06). Lança **uma entrada única já paga por cobrança Asaas** (valor bruto) e, depois, a **tarifa Asaas** como saída (bruto − líquido, `TARIFA_PENDENTE`), no recebimento (`CONTROLLE_REGISTRAR_EM`=RECEBIMENTO ou CONFIRMACAO).\n- Antes de criar, procura o marcador `ATOM-ASAAS-<id>` na descrição: sem duplicidade, retentativa segura. Formato de listagem desconhecido → `VERIFICAR_MANUAL` (não cria).\n- Estorno/cancelamento/chargeback → `REQUER_ACAO_MANUAL`. Conta a receber pendente não é lançada (API sem endpoint documentado de baixa).\n- Só envia com `CONTROLLE_ORIGEM_LANCAMENTOS`=ATOM_N8N, `CONTROLLE_API_HABILITADA`=true, `CONTROLLE_MAPEAMENTO` e MODO_EXECUCAO=PRODUCAO (SANDBOX só com `CONTROLLE_PERMITIR_EM_SANDBOX`=true: o Controlle não tem sandbox).",
         "color": 6
       }
     }
@@ -447,7 +518,7 @@
       "main": [
         [
           {
-            "node": "Controlle — adaptador (DESATIVADO até a API ser fornecida)",
+            "node": "Controlle — procurar lançamento (marcador)",
             "type": "main",
             "index": 0
           }
@@ -461,7 +532,47 @@
         ]
       ]
     },
-    "Controlle — adaptador (DESATIVADO até a API ser fornecida)": {
+    "Controlle — procurar lançamento (marcador)": {
+      "main": [
+        [
+          {
+            "node": "Decidir criação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decidir criação": {
+      "main": [
+        [
+          {
+            "node": "Criar no Controlle?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar no Controlle?": {
+      "main": [
+        [
+          {
+            "node": "Controlle — criar lançamento de entrada (pago)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar lançamento enviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Controlle — criar lançamento de entrada (pago)": {
       "main": [
         [
           {

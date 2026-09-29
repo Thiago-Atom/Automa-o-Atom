@@ -10,7 +10,7 @@ Toda leitura/escrita de campo passa por uma chave de `atom_config`. Nenhum ID de
 
 Campos personalizados: informe o **hash de 40 caracteres** do campo (Pipedrive → Configurações → Campos de dados). Campos nativos: `nativo:<nome>` (ex.: `nativo:website`).
 
-Resumo: 85 CONFIGURADO, 13 PROPOSTO, 24 PENDENTE (total 122).
+Resumo: 89 CONFIGURADO, 14 PROPOSTO, 22 PENDENTE, 1 OBSOLETO (total 126).
 
 ## Campos da organização (Pipedrive)
 
@@ -136,10 +136,14 @@ Resumo: 85 CONFIGURADO, 13 PROPOSTO, 24 PENDENTE (total 122).
 | `ASAAS_BASE_URL` | PROPOSTO | `https://api-sandbox.asaas.com/v3` | ATOM_06, ATOM_08 | Sandbox (testes) ou https://api.asaas.com/v3 (produção). |
 | `ASAAS_VALIDADO_SANDBOX` | PENDENTE | — | ATOM_06 | Marcar CONFIGURADO (valor SIM) após validar cobranças e webhooks no sandbox. |
 | `ASAAS_NOTIFICACOES_DESATIVADAS` | PROPOSTO | `false` | ATOM_06 | true desativa as notificações do próprio Asaas ao cliente (notificationDisabled). |
-| `CONTROLLE_API_HABILITADA` | CONFIGURADO | `false` | ATOM_07 | API do Controlle ainda não fornecida: chamadas reais desativadas. |
-| `CONTROLLE_BASE_URL` | PENDENTE | — | ATOM_07 | URL base da API Controlle (a fornecer). |
-| `CONTROLLE_MAPEAMENTO` | PENDENTE | — | ATOM_07 | JSON de mapeamento (categorias, conta bancária, centro de custo) — a definir com a API real. |
-| `CONTROLLE_ORIGEM_LANCAMENTOS` | CONFIGURADO | `INTEGRACAO_EXISTENTE` | ATOM_07 | ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade. Decidido em 2026-09-28: INTEGRACAO_EXISTENTE. |
+| `CONTROLLE_API_HABILITADA` | CONFIGURADO | `false` | ATOM_07 | Mantenha false até o teste supervisionado do primeiro lançamento (docs/12_controlle_api.md). true libera o envio pelo ATOM_07. |
+| `CONTROLLE_BASE_URL` | CONFIGURADO | `https://api-v1.controlle.com` | ATOM_07 | Informativo: URL base da API v1 (fixa no código do ATOM_07). Autenticação na credencial ATOM Controlle (Bearer). |
+| `CONTROLLE_MAPEAMENTO` | CONFIGURADO | `{"conta_bancaria_id": 229618, "conta_bancaria_nome": "Asaas", "categoria_receita_servicos_id": 10342304, "categoria_receita_servicos_nome": "Receitas de Serviços", "categoria_tarifas_id": 10342391, "categoria_tarifas_nome": "Tarifas de Boletos", "centro_custo_id": null}` | ATOM_07 | Mapeamento Controlle (lido da API em 2026-09-29): conta Asaas, categoria Receitas de Serviços, tarifas em Tarifas de Boletos; sem centro de custo cadastrado. |
+| `CONTROLLE_ORIGEM_LANCAMENTOS` | CONFIGURADO | `ATOM_N8N` | ATOM_07 | ATOM_N8N: o n8n lança no Controlle (não há integração Asaas→Controlle ativa). INTEGRACAO_EXISTENTE: não lança. |
+| `CONTROLLE_REGISTRAR_EM` | PROPOSTO | `RECEBIMENTO` | ATOM_07 | RECEBIMENTO (padrão: lança quando o valor fica disponível no Asaas) ou CONFIRMACAO (lança já na confirmação, ex.: cartão). |
+| `CONTROLLE_PERMITIR_EM_SANDBOX` | CONFIGURADO | `false` | ATOM_07 | O Controlle não tem sandbox: em MODO_EXECUCAO=SANDBOX nada é lançado, salvo true (teste controlado, gera lançamento REAL). |
+| `CONTROLLE_LISTA_ORDEM` | CONFIGURADO | `dt_due` | ATOM_07 | Parâmetro orderBy da listagem de lançamentos (aceito pela API em 2026-09-29). |
+| `CONTROLLE_WEBHOOK_SECRET` | OBSOLETO | — |  | NÃO APLICÁVEL — o Controlle não oferece webhooks (verificado em 2026-09-29 na API e nas configurações). A sincronização é só de ida (n8n → Controlle). |
 | `LIBERACAO_REGRA` | PROPOSTO | `CONTRATO_ASSINADO_E_PAGAMENTO_INICIAL` | ATOM_08 | Regra proposta: contrato assinado por todos + pagamento inicial confirmado/recebido + negócio não cancelado. |
 | `LIBERACAO_ACEITA_RECEBIDO_EM_DINHEIRO` | PROPOSTO | `false` | ATOM_08 | true considera RECEIVED_IN_CASH (baixa manual no Asaas) como pagamento inicial. |
 | `TRELLO_BOARD_ID` | PENDENTE | — | ATOM_08 | Quadro de execução (quadros existentes: ATOM, DEMANDAS, Comercial, Gear, etc. — definir). |

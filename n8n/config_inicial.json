@@ -619,29 +619,57 @@
     "chave": "CONTROLLE_API_HABILITADA",
     "valor": "false",
     "status": "CONFIGURADO",
-    "descricao": "API do Controlle ainda não fornecida: chamadas reais desativadas.",
+    "descricao": "Mantenha false até o teste supervisionado do primeiro lançamento (docs/12_controlle_api.md). true libera o envio pelo ATOM_07.",
     "usado_por": "ATOM_07"
   },
   {
     "chave": "CONTROLLE_BASE_URL",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "URL base da API Controlle (a fornecer).",
+    "valor": "https://api-v1.controlle.com",
+    "status": "CONFIGURADO",
+    "descricao": "Informativo: URL base da API v1 (fixa no código do ATOM_07). Autenticação na credencial ATOM Controlle (Bearer).",
     "usado_por": "ATOM_07"
   },
   {
     "chave": "CONTROLLE_MAPEAMENTO",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "JSON de mapeamento (categorias, conta bancária, centro de custo) — a definir com a API real.",
+    "valor": "{\"conta_bancaria_id\": 229618, \"conta_bancaria_nome\": \"Asaas\", \"categoria_receita_servicos_id\": 10342304, \"categoria_receita_servicos_nome\": \"Receitas de Serviços\", \"categoria_tarifas_id\": 10342391, \"categoria_tarifas_nome\": \"Tarifas de Boletos\", \"centro_custo_id\": null}",
+    "status": "CONFIGURADO",
+    "descricao": "Mapeamento Controlle (lido da API em 2026-09-29): conta Asaas, categoria Receitas de Serviços, tarifas em Tarifas de Boletos; sem centro de custo cadastrado.",
     "usado_por": "ATOM_07"
   },
   {
     "chave": "CONTROLLE_ORIGEM_LANCAMENTOS",
-    "valor": "INTEGRACAO_EXISTENTE",
+    "valor": "ATOM_N8N",
     "status": "CONFIGURADO",
-    "descricao": "ATOM_N8N (este fluxo lança) ou INTEGRACAO_EXISTENTE (outra integração lança; este não) — evita duplicidade. Decidido em 2026-09-28: INTEGRACAO_EXISTENTE.",
+    "descricao": "ATOM_N8N: o n8n lança no Controlle (não há integração Asaas→Controlle ativa). INTEGRACAO_EXISTENTE: não lança.",
     "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "CONTROLLE_REGISTRAR_EM",
+    "valor": "RECEBIMENTO",
+    "status": "PROPOSTO",
+    "descricao": "RECEBIMENTO (padrão: lança quando o valor fica disponível no Asaas) ou CONFIRMACAO (lança já na confirmação, ex.: cartão).",
+    "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "CONTROLLE_PERMITIR_EM_SANDBOX",
+    "valor": "false",
+    "status": "CONFIGURADO",
+    "descricao": "O Controlle não tem sandbox: em MODO_EXECUCAO=SANDBOX nada é lançado, salvo true (teste controlado, gera lançamento REAL).",
+    "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "CONTROLLE_LISTA_ORDEM",
+    "valor": "dt_due",
+    "status": "CONFIGURADO",
+    "descricao": "Parâmetro orderBy da listagem de lançamentos (aceito pela API em 2026-09-29).",
+    "usado_por": "ATOM_07"
+  },
+  {
+    "chave": "CONTROLLE_WEBHOOK_SECRET",
+    "valor": "",
+    "status": "OBSOLETO",
+    "descricao": "NÃO APLICÁVEL — o Controlle não oferece webhooks (verificado em 2026-09-29 na API e nas configurações). A sincronização é só de ida (n8n → Controlle).",
+    "usado_por": ""
   },
   {
     "chave": "LIBERACAO_REGRA",
@@ -851,6 +879,13 @@
     "valor": "E3SVfrlTjba5wq8r",
     "status": "CONFIGURADO",
     "descricao": "ID do workflow ATOM_00_Aplicar_Config (utilitário de configuração)",
+    "usado_por": "manual"
+  },
+  {
+    "chave": "WF_ATOM_00_CONTROLLE",
+    "valor": "tIotzkMV81fDzkvY",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_00_Inspecionar_Controlle (somente leitura).",
     "usado_por": "manual"
   }
 ]
