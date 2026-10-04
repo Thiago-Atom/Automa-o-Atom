@@ -1,16 +1,16 @@
 [
   {
     "chave": "MODO_EXECUCAO",
-    "valor": "SIMULACAO",
+    "valor": "SANDBOX",
     "status": "CONFIGURADO",
-    "descricao": "SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Autentique/Google Docs, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO).",
+    "descricao": "SIMULACAO, SANDBOX ou PRODUCAO. SIMULACAO bloqueia efeitos em terceiros (Autentique/Google Docs, Asaas, Controlle, Trello, Zayra, Claude no briefing). NÃO bloqueia notas/campos no Pipedrive (ATOM_02/03/04) nem a chamada de diagnóstico, que tem portão próprio (DIAGNOSTICO_MODO). Em SANDBOX só passam os negócios de SANDBOX_DEAL_IDS.",
     "usado_por": "todos"
   },
   {
     "chave": "SANDBOX_DEAL_IDS",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "IDs dos negócios de TESTE (vírgula). Em MODO_EXECUCAO=SANDBOX, contrato, cobrança, cartão e mensagens só saem para estes negócios; um cliente real nunca recebe e-mail de teste.",
+    "valor": "100",
+    "status": "CONFIGURADO",
+    "descricao": "IDs dos negócios de TESTE (vírgula). Em MODO_EXECUCAO=SANDBOX, contrato, cobrança, cartão e mensagens só saem para estes negócios; um cliente real nunca recebe e-mail de teste. 100 = [TESTE] ATOM Sandbox — fluxo completo.",
     "usado_por": "ATOM_05, ATOM_06, ATOM_08, ATOM_10"
   },
   {

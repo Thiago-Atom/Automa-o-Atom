@@ -62,6 +62,7 @@
 | 69 | ATOM_07_Controlle | 3 itens: recebimento novo, recebimento já lançado, estorno | Novo → criado; já lançado → reconhecido pelo marcador (sem duplicar); estorno → `REQUER_ACAO_MANUAL` |
 | 71 | ATOM_07_Controlle | Duas fases com o mapeamento real | Recebimento → `TARIFA_PENDENTE` (ID guardado); tarifa → `SINCRONIZADO` sem sobrescrever o ID |
 | 73 | ATOM_00_Inspecionar_Controlle | **API real, somente leitura** | Token aceito (200); contas, categorias, centros de custo, tags; formato real da lista de lançamentos |
+| 2228 | ATOM_00_Aplicar_Config | Início do teste em sandbox (2026-10-04) | `SANDBOX_DEAL_IDS=100` (negócio "[TESTE] ATOM Sandbox — fluxo completo") e `MODO_EXECUCAO=SANDBOX` gravados em `atom_config` |
 
 Nas execuções 69 e 71 o Controlle foi fixado (nada gravado). Em todas as execuções do ATOM_05, Google Drive/Docs e Autentique foram **fixados** (nenhuma chamada real) e todos os nós de
 escrita foram fixados (nada gravado). Execuções 41–42 aplicaram a configuração da Autentique em `atom_config` via ATOM_00.
