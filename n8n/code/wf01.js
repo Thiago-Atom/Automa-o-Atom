@@ -34,13 +34,14 @@ const c = $('Deduplicar').first().json;
 if (!c.r.valido || c.r.ignorar) return [];
 const MAPA = {
   EMAIL_ALTERADO: 'WF_ATOM_02', ETAPA_REUNIAO: 'WF_ATOM_02', SITE_ALTERADO: 'WF_ATOM_02', DIAGNOSTICO_REEXECUTAR: 'WF_ATOM_02',
+  DIAG_PROSPECCAO: 'WF_ATOM_14',
   CNPJ_ALTERADO: 'WF_ATOM_03', PROPOSTA_ACEITA: 'WF_ATOM_04', CONDICOES_ALTERADAS: 'WF_ATOM_04', CANCELAMENTO: 'WF_ATOM_04',
 };
 const out = [];
 for (const i of c.r.intents) {
   const id = ATOM_CONFIG.valor(cfg, MAPA[i.tipo], '');
   if (!id) continue;
-  out.push({ json: Object.assign({}, i, { forcar: i.tipo === 'DIAGNOSTICO_REEXECUTAR', event_key: c.row.event_key, _workflow_id: id }) });
+  out.push({ json: Object.assign({}, i, { forcar: i.tipo === 'DIAGNOSTICO_REEXECUTAR' || !!i.forcar, event_key: c.row.event_key, _workflow_id: id }) });
 }
 return out;
 //#endregion

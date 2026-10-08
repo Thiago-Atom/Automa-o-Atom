@@ -316,7 +316,7 @@ const salvarDrive = node({
     name: 'Salvar no Drive',
     parameters: { resource: 'file', operation: 'upload', name: expr("{{ $('Montar diagnóstico').first().json.nomeArq }}"),
       driveId: { __rl: true, mode: 'list', value: 'My Drive' },
-      folderId: { __rl: true, mode: 'id', value: expr("{{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'DIAG_PROSP_PASTA_ID' && r.status === 'CONFIGURADO') || {}).valor || '' }}") },
+      folderId: { __rl: true, mode: 'id', value: expr("{{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'GDRIVE_PASTA_DIAGNOSTICOS_ID' && r.status === 'CONFIGURADO') || {}).valor || '' }}") },
       inputDataFieldName: 'data', options: {} },
     credentials: { googleDriveOAuth2Api: newCredential('ATOM Google Drive') }
   },
@@ -357,7 +357,7 @@ const semPdf = node({
   output: [{ webViewLink: '', id: '' }]
 });
 
-const notaFixa = sticky('## ATOM_14 — Diagnóstico de prospecção\nGera o PDF de um dos modelos aprovados (docs/13): **Geral** (negócio local: mapa, avaliações, site, Instagram, IAs) ou **SEO/GEO** (site com presença orgânica ≥ DIAG_PROSP_MIN_PALAVRAS palavras fora da marca).\n\nFontes: Pipedrive, Semrush (MCP), PageSpeed, Firecrawl, Apify (Maps/Instagram), ChatGPT e Gemini com busca, Claude (só classificação; contagens conferidas no código). Fonte indisponível = página omitida ou "não medido" — nada é inventado.\n\nSaída: PDF no Drive (DIAG_PROSP_PASTA_ID), campos de diagnóstico e nota no negócio. **Nada é enviado ao prospect.**\n\nPortão: DIAG_PROSP_MODO=ATIVO + MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).', [], { color: 4 });
+const notaFixa = sticky('## ATOM_14 — Diagnóstico de prospecção\nGera o PDF de um dos modelos aprovados (docs/13): **Geral** (negócio local: mapa, avaliações, site, Instagram, IAs) ou **SEO/GEO** (site com presença orgânica ≥ DIAG_PROSP_MIN_PALAVRAS palavras fora da marca).\n\nFontes: Pipedrive, Semrush (MCP), PageSpeed, Firecrawl, Apify (Maps/Instagram), ChatGPT e Gemini com busca, Claude (só classificação; contagens conferidas no código). Fonte indisponível = página omitida ou "não medido" — nada é inventado.\n\nSaída: PDF no Drive (GDRIVE_PASTA_DIAGNOSTICOS_ID), campos de diagnóstico e nota no negócio. **Nada é enviado ao prospect.**\n\nPortão: DIAG_PROSP_MODO=ATIVO + MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).', [], { color: 4 });
 
 export default workflow('atom-14', 'ATOM_14_Diagnostico_Prospeccao', { settings: { timezone: 'America/Sao_Paulo', executionOrder: 'v1', callerPolicy: 'workflowsFromSameOwner', executionTimeout: 1800 } })
   .add(entrada)

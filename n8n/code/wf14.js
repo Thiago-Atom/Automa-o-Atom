@@ -11,7 +11,7 @@ const org = (g('Organização (Pipedrive)') || {}).data || {};
 const dealId = String(e.deal_id || deal.id || '');
 const motivos = [];
 if (ATOM_CONFIG.valor(cfg, 'DIAG_PROSP_MODO', 'DESLIGADO') !== 'ATIVO') motivos.push('DIAG_PROSP_MODO diferente de ATIVO');
-const p = ATOM_CONFIG.portao(cfg, ['DIAG_PROSP_PASTA_ID', 'DIAG_ASSETS_BASE_URL', 'DIAG_PROSP_MODELO_CLAUDE'], { dealId });
+const p = ATOM_CONFIG.portao(cfg, ['GDRIVE_PASTA_DIAGNOSTICOS_ID', 'DIAG_ASSETS_BASE_URL', 'DIAG_PROSP_MODELO_CLAUDE'], { dealId });
 if (!p.liberado) motivos.push(p.motivo);
 if (!deal.id) motivos.push('negócio não encontrado no Pipedrive');
 const lerCampo = (obj, chaveCfg) => {

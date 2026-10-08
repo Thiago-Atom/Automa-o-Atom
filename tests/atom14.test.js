@@ -21,7 +21,7 @@ function executarNo(no, { nos = {}, entrada = [] } = {}) {
   return fn($, $input, entrada[0], DateTime.now(), DateTime).map((i) => i.json);
 }
 const cfg = (pares) => Object.entries(pares).map(([chave, valor]) => ({ chave, valor, status: 'CONFIGURADO' }));
-const CONFIG = cfg({ DIAG_PROSP_MODO: 'ATIVO', MODO_EXECUCAO: 'SANDBOX', SANDBOX_DEAL_IDS: '100', DIAG_PROSP_PASTA_ID: 'pasta', DIAG_ASSETS_BASE_URL: 'https://raw.example/', DIAG_PROSP_MODELO_CLAUDE: 'claude-opus-5-5', PD_ORG_CIDADE: '7bbb3556c377a60277b9f2e02523663b031d032a', DIAG_ABREVIACOES_CIDADE: '{"bh":"belo horizonte"}' });
+const CONFIG = cfg({ DIAG_PROSP_MODO: 'ATIVO', MODO_EXECUCAO: 'SANDBOX', SANDBOX_DEAL_IDS: '100', GDRIVE_PASTA_DIAGNOSTICOS_ID: 'pasta', DIAG_ASSETS_BASE_URL: 'https://raw.example/', DIAG_PROSP_MODELO_CLAUDE: 'claude-opus-5-5', PD_ORG_CIDADE: '7bbb3556c377a60277b9f2e02523663b031d032a', DIAG_ABREVIACOES_CIDADE: '{"bh":"belo horizonte"}' });
 const mcp = (csv) => [{ content: [{ type: 'text', text: JSON.stringify({ data: csv, metadata: {} }) }] }];
 
 test('ATOM_14 Preparar: portão e dados da organização', () => {

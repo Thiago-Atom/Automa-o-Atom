@@ -2,7 +2,7 @@
   "name": "ATOM_11_Erros_Reconciliacao",
   "nodes": [
     {
-      "id": "756b4757-15ad-4cf0-b417-80b9b3fefa09",
+      "id": "ddf0b066-8d0b-43b3-acfb-22aada32e461",
       "name": "Erro em workflow ATOM",
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
@@ -13,7 +13,7 @@
       "parameters": {}
     },
     {
-      "id": "89ceb92a-ad53-4eb6-89c8-36711a5b57f2",
+      "id": "bf0bdc23-2a80-4f05-85e2-aaa5e28beab1",
       "name": "Normalizar alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -27,7 +27,7 @@
       }
     },
     {
-      "id": "66f81c6a-dd58-47d2-881e-919aba2ae5ba",
+      "id": "5951c872-d39d-48e4-a8ed-7061bcd73dbd",
       "name": "Alerta interno",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -40,7 +40,7 @@
       }
     },
     {
-      "id": "52721ee9-05a4-4f50-9ac8-6880a9dc2379",
+      "id": "19d92d46-886c-4db6-b9a5-40e0567293e7",
       "name": "Alerta já registrado?",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -72,7 +72,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "fed08c6f-0438-4ac1-ae10-a22b6a9d5036",
+      "id": "d5384e4d-19fc-4946-a46f-0604a1388185",
       "name": "Alerta novo?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -86,7 +86,7 @@
       }
     },
     {
-      "id": "abab2e7d-1b93-4b5d-b2b3-11c08cd834bc",
+      "id": "11e838d0-bf6b-4889-a4fd-4aaf4fb44731",
       "name": "Registrar alerta",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -234,7 +234,7 @@
       }
     },
     {
-      "id": "6028dc16-68e4-4fa0-899c-b31bdbc84ea5",
+      "id": "483d9fe0-9355-44a9-96ce-cf7f02d2b716",
       "name": "Ler configuração (alerta)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -256,7 +256,7 @@
       "executeOnce": true
     },
     {
-      "id": "1d666bb2-3414-41b5-aa21-9105cd008e7e",
+      "id": "59d99d63-d8a4-42aa-841a-250763f7476c",
       "name": "Canal de alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -270,7 +270,7 @@
       }
     },
     {
-      "id": "cb012ae7-435e-4684-aa99-0089e738e6e7",
+      "id": "1792596a-f868-461c-ac73-83ba7ce2408d",
       "name": "Rotear canal de alerta",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -329,7 +329,7 @@
       }
     },
     {
-      "id": "f84eadf0-2ab7-4963-857d-a9f592ac066a",
+      "id": "b17d85b0-9580-469c-97ab-bec30c14dfe7",
       "name": "Alerta como atividade no Pipedrive",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -354,7 +354,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c54e7c7c-d189-4398-a486-e1c3ed84624c",
+      "id": "610faf66-0256-426b-983b-86b644cb876b",
       "name": "Alerta por webhook",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -376,7 +376,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "66021e22-1da3-4208-bb6e-85f766f8672d",
+      "id": "4c59a73f-5a04-40f5-a19f-4bc2e4c6bc62",
       "name": "A cada hora",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
@@ -397,7 +397,7 @@
       }
     },
     {
-      "id": "d89b8bfb-959f-4608-9dd6-28288b0eb5c0",
+      "id": "31a2b229-f1e0-4fed-8065-a9c810106108",
       "name": "Ler configuração (reconciliação)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -419,7 +419,7 @@
       "executeOnce": true
     },
     {
-      "id": "c16bda30-3d4e-47d7-90e1-d505885c06de",
+      "id": "7d492d11-0414-46b0-a855-16787da0d6f2",
       "name": "Liberar locks expirados",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -484,7 +484,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "cdf46e7b-7b4b-4ea1-bf2a-79c213cf214b",
+      "id": "436f438e-3956-4af6-a591-927c314d187e",
       "name": "Ações com falha",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -517,7 +517,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f679f457-ef90-463d-ae6c-a0e1355fcecf",
+      "id": "021433a6-0f41-47e9-b7b9-5ea7d62b7614",
       "name": "Negócios aguardando liberação",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -555,7 +555,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "7d66b0ab-eb8c-4496-9af8-b5baea699ca8",
+      "id": "09fe5bb6-5dc0-43df-9f81-f4708413399f",
       "name": "Cobranças iniciais pendentes",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -593,7 +593,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "d18af198-efd2-4614-a20c-adf507b1306e",
+      "id": "05c09f59-84fc-41c3-92f6-47447b0eece4",
       "name": "Planejar reprocessamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -607,7 +607,7 @@
       }
     },
     {
-      "id": "98f6d136-8707-447f-b07f-023eb9f585ac",
+      "id": "8305d33b-ec4d-4bc8-9c59-beba83e6678b",
       "name": "Despachar reprocessamento",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -630,7 +630,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "4f8cdbaf-d300-4eb6-b82c-a1e8442bede1",
+      "id": "862aa543-0e7e-41eb-bbd0-be12b69f3512",
       "name": "Painel (GET)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -646,11 +646,11 @@
         "responseData": "firstEntryJson",
         "options": {}
       },
-      "webhookId": "4f9a4308-c861-4891-a5d0-2d8eca42868b",
+      "webhookId": "5b8fdd75-76d7-464e-9acc-c55a91fa1fcd",
       "credentials": {}
     },
     {
-      "id": "57edd8da-c6d2-45b2-ad7f-cc7ea764b057",
+      "id": "eab4a1d1-82fe-4560-bed5-a8038ffb96a9",
       "name": "Painel: negócios",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -673,7 +673,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "ba2f4e68-9467-4758-9ad9-0398dbe7e2cc",
+      "id": "695935ea-ac22-4748-b00b-832d143e3ce1",
       "name": "Painel: agendamentos",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -696,7 +696,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "e7738606-085e-41ba-b052-1ec6d8e95a78",
+      "id": "01291037-2dc5-44df-8471-e2672e04a624",
       "name": "Painel: financeiro",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -719,7 +719,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "f42406ef-4ff4-4c6c-bff1-d88323687b02",
+      "id": "d449c9b8-2999-41ec-a45e-cc1aa7a97adf",
       "name": "Painel: ações",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -742,7 +742,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "69e884d6-100c-4f46-9ac7-e2438aaf886f",
+      "id": "7276f793-3188-4e42-8e65-429956ae092e",
       "name": "Montar painel",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -756,8 +756,8 @@
       }
     },
     {
-      "id": "066dfe86-fab0-4d67-94da-3196c2bae799",
-      "name": "Sticky Note 066dfe86",
+      "id": "1fc3a46b-62be-4afd-9b29-710a49059a48",
+      "name": "Sticky Note 1fc3a46b",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -1017,6 +1017,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-29"
+    "atomBuild": "2026-10-08"
   }
 }

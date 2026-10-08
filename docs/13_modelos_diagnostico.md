@@ -133,3 +133,60 @@ No SEO/GEO, os 6 itens são binários e vêm das págs. 11–19, por exemplo:
 | Lista de buscas por segmento | **Falta.** Ex.: odontologia → "dentista [cidade]", "implante dentário [cidade]"… |
 | Lista de cases por segmento | **Falta** |
 | Imagens das páginas fixas | Extrair dos PDFs (corrigindo S1) e guardar no Drive |
+
+## 6. Automação implementada (ATOM_14_Diagnostico_Prospeccao)
+
+Escolhas de Thiago (2026-10-08):
+- disparo pelo Pipedrive;
+- modelo escolhido automaticamente;
+- Apify para mapa, avaliações e Instagram;
+- PDF no Drive com link no negócio, sem envio ao prospect.
+
+**Disparo** (ATOM_01 → intent `DIAG_PROSPECCAO` → ATOM_14):
+- campo do negócio "Sim/Não: pedir nova execução do diagnóstico" = Sim (força nova geração);
+- criação do negócio, quando `DIAG_PROSP_AO_CRIAR=true`.
+
+Com `DIAGNOSTICO_MODO=PROSPECCAO_ATOM`, o ATOM_02 só valida o site e não gera diagnóstico próprio.
+
+**Escolha do modelo:** com site e pelo menos `DIAG_PROSP_MIN_PALAVRAS` palavras orgânicas fora da marca, o modelo é o SEO/GEO. Nos demais casos, o Geral. A entrada `modelo` na chamada força um dos dois.
+
+**Fluxo de execução:**
+1. Pipedrive: negócio e organização (nome, site, cidade).
+2. Portão: `DIAG_PROSP_MODO=ATIVO`, `MODO_EXECUCAO` e, em SANDBOX, só `SANDBOX_DEAL_IDS`.
+3. Firecrawl (página inicial), PageSpeed (celular) e `/llms.txt`.
+4. Claude (`DIAG_PROSP_MODELO_CLAUDE`) lista serviços e buscas candidatas com a cidade. É só uma sugestão de termos: o volume vem do Semrush.
+5. Semrush MCP:
+   - `phrase_these`: volumes;
+   - `resource_organic`: palavras do site;
+   - `resource_rank_history`: 12 meses;
+   - `phrase_organic`: topo da busca principal.
+6. Conforme o modelo:
+   - SEO/GEO: rastreio Firecrawl de até 40 páginas;
+   - Geral: Apify Google Maps (busca do mapa + o cliente, 30 avaliações) e Apify Instagram (perfil achado no site).
+7. ChatGPT (busca na web) e Gemini (Google Search) recebem a mesma pergunta.
+8. Claude agrupa os temas das avaliações citando os índices; a contagem de menções é refeita no código.
+9. HTML (`lib/relatorio.js`) → PDF.co → Drive (`GDRIVE_PASTA_DIAGNOSTICOS_ID`).
+10. Registro no negócio: campos de diagnóstico (status, link, data, versão) e uma nota fixada com o boletim e as fontes indisponíveis.
+
+**Garantias contra dado inventado:**
+- toda página traz fonte e data;
+- fonte indisponível omite a página ou mostra "não medido";
+- números saem de APIs, e as contas são feitas em código;
+- a régua de notas é a da seção 4;
+- as variações da mesma busca são agrupadas (S4);
+- a conta do valor usa inteiros coerentes (G1).
+
+As páginas que dependem de dado que a automação não tem ficam de fora e só entram quando o dado existir:
+- cliente oculto no WhatsApp;
+- "quanto isso vale", que exige o ticket médio;
+- case do segmento.
+
+Imagens fixas: `n8n/assets/diagnostico/`, servidas pelo GitHub em `DIAG_ASSETS_BASE_URL`, fixada num commit. Para trocar uma imagem, faça o commit da nova versão e atualize a URL.
+
+Prévia local:
+
+```
+node scripts/previa_diagnostico.mjs <geral|seogeo> <dados.json> <saida.pdf> [pasta_png]
+```
+
+Os exemplos ficam em `tests/fixtures/diag_*_exemplo.json`.

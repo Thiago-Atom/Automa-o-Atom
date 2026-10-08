@@ -2,7 +2,7 @@
   "name": "ATOM_14_Diagnostico_Prospeccao",
   "nodes": [
     {
-      "id": "2597d066-7c96-403f-bd8a-a1bd08f06313",
+      "id": "1af442ce-0487-4a17-8a56-828652dd2384",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "4e69f4da-dbf6-412f-a118-e80399f06f5a",
+      "id": "f2822da8-4ea8-4e9a-a5c2-88ec9fc59f8f",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "208dca26-3a30-44a4-a30b-3777fa4f75a0",
+      "id": "e4022b90-1bf4-4b28-8900-ebe4a026372b",
       "name": "Negócio (Pipedrive)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -59,7 +59,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "63ebe956-f307-49b0-8d67-b9b1bc8cfebe",
+      "id": "aeb12b04-dbff-43c1-ba68-bd67447d7c2b",
       "name": "Organização (Pipedrive)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -86,7 +86,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "3fd9f19d-7a5b-4a70-a088-99359e63ddac",
+      "id": "a3a25e9e-b641-4544-a8df-58e75a21afed",
       "name": "Preparar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -96,11 +96,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#preparar + lib/{util,config,prospeccao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/prospeccao.js\nfunction dominioDe(url) {\n  const m = /^(?:https?:\\/\\/)?([^/?#]+)/i.exec(String(url || \"\").trim());\n  return m ? m[1].toLowerCase().replace(/^www\\./, \"\") : \"\";\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const g = (n) => {\n    try {\n      return $(n).first().json;\n    } catch (x) {\n      return null;\n    }\n  };\n  const deal = (g(\"Negócio (Pipedrive)\") || {}).data || {};\n  const org = (g(\"Organização (Pipedrive)\") || {}).data || {};\n  const dealId = String(e.deal_id || deal.id || \"\");\n  const motivos = [];\n  if (valor(cfg, \"DIAG_PROSP_MODO\", \"DESLIGADO\") !== \"ATIVO\") motivos.push(\"DIAG_PROSP_MODO diferente de ATIVO\");\n  const p = portao(cfg, [\"DIAG_PROSP_PASTA_ID\", \"DIAG_ASSETS_BASE_URL\", \"DIAG_PROSP_MODELO_CLAUDE\"], { dealId });\n  if (!p.liberado) motivos.push(p.motivo);\n  if (!deal.id) motivos.push(\"negócio não encontrado no Pipedrive\");\n  const lerCampo = (obj, chaveCfg) => {\n    const id = valor(cfg, chaveCfg, \"\");\n    if (!id) return \"\";\n    if (id.startsWith(\"nativo:\")) {\n      const v2 = obj[id.slice(7)];\n      return v2 && typeof v2 === \"object\" ? v2.value || v2.label || \"\" : v2 || \"\";\n    }\n    const v = (obj.custom_fields || {})[id];\n    return v && typeof v === \"object\" ? v.value || v.label || \"\" : v || \"\";\n  };\n  const endereco = org.address && typeof org.address === \"object\" ? org.address : {};\n  const siteBruto = String(lerCampo(org, \"PD_ORG_SITE\") || org.website || \"\").trim();\n  const site = siteBruto ? /^https?:\\/\\//i.test(siteBruto) ? siteBruto : \"https://\" + siteBruto : \"\";\n  const dominio = dominioDe(site);\n  const hostOk = dominio && /\\.[a-z]{2,}$/i.test(dominio) && !/^(\\d+\\.){3}\\d+$/.test(dominio) && !/localhost|\\.local$|\\.internal$/i.test(dominio);\n  const cidade = String(lerCampo(org, \"PD_ORG_CIDADE\") || endereco.locality || endereco.admin_area_level_2 || \"\").trim();\n  const uf = String(endereco.admin_area_level_1 || \"\").trim();\n  if (!cidade) motivos.push(\"cidade da organização vazia (campo PD_ORG_CIDADE ou endereço)\");\n  const nome = String(org.name || deal.title || \"\").trim();\n  const ab = safeJsonParse(valor(cfg, \"DIAG_ABREVIACOES_CIDADE\", \"{}\"), {});\n  return [{ json: {\n    continuar: motivos.length === 0,\n    motivos,\n    deal_id: dealId,\n    org_id: String(org.id || \"\"),\n    empresa: { nome, site: hostOk ? site : \"\", dominio: hostOk ? dominio : \"\", cidade, uf, bairros: [] },\n    temSite: !!hostOk,\n    abreviacoes: ab,\n    agora: (/* @__PURE__ */ new Date()).toISOString()\n  } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#preparar + lib/{util,config,prospeccao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/prospeccao.js\nfunction dominioDe(url) {\n  const m = /^(?:https?:\\/\\/)?([^/?#]+)/i.exec(String(url || \"\").trim());\n  return m ? m[1].toLowerCase().replace(/^www\\./, \"\") : \"\";\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const g = (n) => {\n    try {\n      return $(n).first().json;\n    } catch (x) {\n      return null;\n    }\n  };\n  const deal = (g(\"Negócio (Pipedrive)\") || {}).data || {};\n  const org = (g(\"Organização (Pipedrive)\") || {}).data || {};\n  const dealId = String(e.deal_id || deal.id || \"\");\n  const motivos = [];\n  if (valor(cfg, \"DIAG_PROSP_MODO\", \"DESLIGADO\") !== \"ATIVO\") motivos.push(\"DIAG_PROSP_MODO diferente de ATIVO\");\n  const p = portao(cfg, [\"GDRIVE_PASTA_DIAGNOSTICOS_ID\", \"DIAG_ASSETS_BASE_URL\", \"DIAG_PROSP_MODELO_CLAUDE\"], { dealId });\n  if (!p.liberado) motivos.push(p.motivo);\n  if (!deal.id) motivos.push(\"negócio não encontrado no Pipedrive\");\n  const lerCampo = (obj, chaveCfg) => {\n    const id = valor(cfg, chaveCfg, \"\");\n    if (!id) return \"\";\n    if (id.startsWith(\"nativo:\")) {\n      const v2 = obj[id.slice(7)];\n      return v2 && typeof v2 === \"object\" ? v2.value || v2.label || \"\" : v2 || \"\";\n    }\n    const v = (obj.custom_fields || {})[id];\n    return v && typeof v === \"object\" ? v.value || v.label || \"\" : v || \"\";\n  };\n  const endereco = org.address && typeof org.address === \"object\" ? org.address : {};\n  const siteBruto = String(lerCampo(org, \"PD_ORG_SITE\") || org.website || \"\").trim();\n  const site = siteBruto ? /^https?:\\/\\//i.test(siteBruto) ? siteBruto : \"https://\" + siteBruto : \"\";\n  const dominio = dominioDe(site);\n  const hostOk = dominio && /\\.[a-z]{2,}$/i.test(dominio) && !/^(\\d+\\.){3}\\d+$/.test(dominio) && !/localhost|\\.local$|\\.internal$/i.test(dominio);\n  const cidade = String(lerCampo(org, \"PD_ORG_CIDADE\") || endereco.locality || endereco.admin_area_level_2 || \"\").trim();\n  const uf = String(endereco.admin_area_level_1 || \"\").trim();\n  if (!cidade) motivos.push(\"cidade da organização vazia (campo PD_ORG_CIDADE ou endereço)\");\n  const nome = String(org.name || deal.title || \"\").trim();\n  const ab = safeJsonParse(valor(cfg, \"DIAG_ABREVIACOES_CIDADE\", \"{}\"), {});\n  return [{ json: {\n    continuar: motivos.length === 0,\n    motivos,\n    deal_id: dealId,\n    org_id: String(org.id || \"\"),\n    empresa: { nome, site: hostOk ? site : \"\", dominio: hostOk ? dominio : \"\", cidade, uf, bairros: [] },\n    temSite: !!hostOk,\n    abreviacoes: ab,\n    agora: (/* @__PURE__ */ new Date()).toISOString()\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "7eb02786-34f6-4af2-bda9-97eda8c48a81",
+      "id": "579d7780-b6f1-46d3-b5a7-1e3bba397f46",
       "name": "Liberado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -132,7 +132,7 @@
       }
     },
     {
-      "id": "03f5eda6-263a-449f-8733-b81be04990b8",
+      "id": "c0c84aa9-6ef7-4bb4-b668-eb795ad0318d",
       "name": "Tem site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -164,7 +164,7 @@
       }
     },
     {
-      "id": "b4ec317d-982d-43d9-9da9-e11e2f468217",
+      "id": "f02bc76f-9047-4711-ab97-f317ae43ee37",
       "name": "Site — página inicial (Firecrawl)",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
@@ -198,7 +198,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "4fd808ad-c122-4951-b2ed-ac1c56468ac1",
+      "id": "1097495e-488e-4296-a781-c815ae9abf88",
       "name": "PageSpeed (celular)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -240,7 +240,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "3bfe70a3-8700-472a-81f1-9fa88f1ecefb",
+      "id": "6a4178b3-f81b-40e6-a10f-dada9c4a155a",
       "name": "llms.txt",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -272,7 +272,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "84a0a76c-5cab-45af-b3a6-bf6d40fb6384",
+      "id": "bca5528d-9f81-4d0e-9128-3933d091ead9",
       "name": "Pedido — entender o negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -286,7 +286,7 @@
       }
     },
     {
-      "id": "80f4bc58-bbcb-40ea-b066-88341ba0e3ca",
+      "id": "1438650f-6ab5-4059-bab3-582f7d6e8c5e",
       "name": "Bloqueado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -300,7 +300,7 @@
       }
     },
     {
-      "id": "b0af9ea6-1671-43bb-8cc6-47afd3a12dc5",
+      "id": "499116a4-4333-4b91-8d6c-6dffe19cc6b6",
       "name": "Claude — entender o negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -338,7 +338,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "878198d8-a375-4a9d-99fb-2785dd0dc561",
+      "id": "82e2aa08-9256-4599-baf6-3be72d732b52",
       "name": "Termos de busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -352,7 +352,7 @@
       }
     },
     {
-      "id": "aff3d9bc-993a-4531-91f3-fd61ce575054",
+      "id": "6eebe332-366e-4a1b-b2ab-a478f980aa3e",
       "name": "Semrush — volumes",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -380,7 +380,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "fe3d6a53-e53e-4a6f-a402-aac1f9fb11cc",
+      "id": "6469a7a3-96fb-4973-9b66-0aa41ca62a6a",
       "name": "Tem site? (Semrush)",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -412,7 +412,7 @@
       }
     },
     {
-      "id": "25bcb59e-33aa-4651-b355-27c79bf5a612",
+      "id": "76ec5907-35af-4758-aed7-3763625bc4a0",
       "name": "Semrush — palavras do site",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -440,7 +440,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "434acb4c-56c0-4c31-ac50-7bec08e2f64b",
+      "id": "b7b5a19f-1736-4866-a38f-1a7eb9924050",
       "name": "Semrush — histórico",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -468,7 +468,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "41291923-c550-4536-871a-10fd79731ae9",
+      "id": "9a308857-1aa4-4553-a6ab-02a84a0339f9",
       "name": "Decidir modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -482,7 +482,7 @@
       }
     },
     {
-      "id": "450ce9f6-2ebb-4b62-998c-0703726ff04e",
+      "id": "56e08166-3de4-41a4-8604-6006fc14aa9f",
       "name": "Tem busca principal?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -514,7 +514,7 @@
       }
     },
     {
-      "id": "3640e757-acd5-4ecc-b4e7-794d972e4613",
+      "id": "ae6c4bb4-41ae-435d-916d-daa0c190717b",
       "name": "Semrush — SERP da busca principal",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -542,7 +542,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "a9875861-7688-4f0c-ae95-5829fc8abb39",
+      "id": "abe68975-6db5-4e71-bec1-fdc378a662a1",
       "name": "Modelo SEO/GEO?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -574,7 +574,7 @@
       }
     },
     {
-      "id": "ac8abd43-123b-468e-b623-2907ea1161d1",
+      "id": "a64496da-eafb-4373-b7ef-20bc165cec7a",
       "name": "Rastreio — iniciar",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
@@ -605,7 +605,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7c337795-584f-4ceb-819e-1f2fafb935aa",
+      "id": "fe45a731-cb44-4db0-984d-5775172d3964",
       "name": "Aguardar rastreio",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
@@ -620,7 +620,7 @@
       }
     },
     {
-      "id": "97550ac9-30f3-4e85-908d-616377d8e46b",
+      "id": "88202175-2685-47bf-b1ab-f7975a594d39",
       "name": "Rastreio — status",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
@@ -638,7 +638,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "dbbdcfdb-9e4f-4840-bf4f-900600201cc5",
+      "id": "0072d866-2f99-494a-82e0-c8145273843b",
       "name": "Rastreio terminou?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -670,7 +670,7 @@
       }
     },
     {
-      "id": "1ef6f178-0db4-4957-82b2-350f0dc0b72e",
+      "id": "b59d7a29-ec40-48d9-a2c2-5c454ef28fa5",
       "name": "Pergunta às IAs",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -684,7 +684,7 @@
       }
     },
     {
-      "id": "aa4a7ba8-2256-4d7b-8ac8-ef7760e52948",
+      "id": "01769ec0-3656-475f-9715-7d0172a9065b",
       "name": "Entrada do mapa",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -698,7 +698,7 @@
       }
     },
     {
-      "id": "43847bdc-9600-4968-9f36-53d1bec6d6df",
+      "id": "b7f3f422-edc1-46ca-ab4d-948ac343f5a8",
       "name": "Google Maps — busca (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -735,7 +735,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "2cf3f82e-bd90-4e4a-91ac-aa2c513bbd50",
+      "id": "e4d0eeb9-a4fe-4ab1-b7e3-de174e61d766",
       "name": "Google Maps — cliente (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -772,7 +772,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ff0b95b2-e65a-45ca-a76f-a6e5b00dc215",
+      "id": "576203b7-d771-4a59-b5d3-2052ffb37955",
       "name": "Entrada do Instagram",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -786,7 +786,7 @@
       }
     },
     {
-      "id": "da0812ce-fefc-47da-a829-f74c30859422",
+      "id": "dc9dcfb1-dbc7-42a5-813e-bbb7b7de1a98",
       "name": "Tem Instagram?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -818,7 +818,7 @@
       }
     },
     {
-      "id": "4406c6b4-0473-4857-9bf8-6617a1021695",
+      "id": "985b5137-3ff8-4a61-afb0-a2a33ccce27d",
       "name": "Instagram (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -855,7 +855,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "337efc2f-1176-455a-b300-ef7915249f24",
+      "id": "d0014f73-0860-498e-ad83-860f0f92d7cf",
       "name": "ChatGPT (busca na web)",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
@@ -896,7 +896,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "433f3299-83b3-442a-a089-3315334cd5b8",
+      "id": "c27a25d1-6a87-4212-9400-271d3121b7f3",
       "name": "Gemini (Google Search)",
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1.2,
@@ -933,7 +933,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "8f133906-fb50-4edd-a378-c8d89a30b3f9",
+      "id": "e7e7852f-2be8-46ca-a473-a3201537b577",
       "name": "Pedido de temas",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -947,7 +947,7 @@
       }
     },
     {
-      "id": "5266d5e8-6eec-4871-968b-78801f768e39",
+      "id": "7887bb6a-9274-446f-8889-2a2059c72afa",
       "name": "Claude — temas e páginas",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -986,7 +986,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "a0703aa0-e2b3-432d-a623-b1dfb3df12fd",
+      "id": "d3287ecb-3ec7-4271-99d9-1d5d8fa25ef8",
       "name": "Montar diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1000,7 +1000,7 @@
       }
     },
     {
-      "id": "3851bd4d-8f28-4aeb-b8d5-7fb86bb6cb50",
+      "id": "3e367907-b4b6-41b0-b885-13e5c6d16e13",
       "name": "Gerar PDF (PDF.co)",
       "type": "n8n-nodes-pdfco.PDFco Api",
       "typeVersion": 1.1,
@@ -1025,7 +1025,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5f9d153e-7122-41a9-8a1c-44f0a3c157ce",
+      "id": "74c494e2-56ea-4eda-a586-25d0faae0d43",
       "name": "Link do PDF",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1039,7 +1039,7 @@
       }
     },
     {
-      "id": "67eee046-e9bd-4b94-b616-a436c80fa2cc",
+      "id": "f3225c43-0367-4d60-a480-0b1e6a83ea23",
       "name": "PDF gerado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1071,7 +1071,7 @@
       }
     },
     {
-      "id": "ae7f4e83-af76-48e0-8a18-6d4d401873ea",
+      "id": "4a2f5d8d-c20f-49fe-9438-2cedc81e7693",
       "name": "Baixar PDF",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1094,7 +1094,7 @@
       }
     },
     {
-      "id": "1db39d63-7b6f-4b41-a2d8-6bc434e3cdc6",
+      "id": "e73ea8b7-7d52-499d-9a62-bbff7f4cb8ff",
       "name": "Salvar no Drive",
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
@@ -1114,7 +1114,7 @@
         "folderId": {
           "__rl": true,
           "mode": "id",
-          "value": "={{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'DIAG_PROSP_PASTA_ID' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+          "value": "={{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'GDRIVE_PASTA_DIAGNOSTICOS_ID' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
         },
         "inputDataFieldName": "data",
         "options": {}
@@ -1122,7 +1122,7 @@
       "credentials": {}
     },
     {
-      "id": "3da759f9-ceee-4866-a6f3-37dec0dcbf98",
+      "id": "212d5485-c68f-48f3-9524-7ed7100f9ae0",
       "name": "Campos do negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1136,7 +1136,7 @@
       }
     },
     {
-      "id": "d070431b-8ab9-4f9b-95af-3873e02f4e17",
+      "id": "45318a66-a8f7-4792-a5cb-f089008e8c24",
       "name": "Sem PDF",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1150,7 +1150,7 @@
       }
     },
     {
-      "id": "a62b2d49-24e0-4809-ad04-c76e2875bd91",
+      "id": "220e9d0a-0eab-4404-8cdb-c7409098ac69",
       "name": "Atualizar negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1182,7 +1182,7 @@
       }
     },
     {
-      "id": "a11ae025-5594-423b-9d52-6ebb8fe2fe9a",
+      "id": "31f2950b-b10a-41b9-ae24-991540c3947e",
       "name": "Atualizar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1207,7 +1207,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "83c8bc36-b07a-45f4-ac21-69c958359cef",
+      "id": "e67fbfdf-cf68-41fe-a17d-07571f32cbff",
       "name": "Nota no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1232,8 +1232,8 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "8d476e94-8eb9-420e-add3-d46f054b5036",
-      "name": "Sticky Note 8d476e94",
+      "id": "27ff4dcc-6e31-4274-b162-ca275793ae3b",
+      "name": "Sticky Note 27ff4dcc",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -1241,7 +1241,7 @@
         450
       ],
       "parameters": {
-        "content": "## ATOM_14 — Diagnóstico de prospecção\nGera o PDF de um dos modelos aprovados (docs/13): **Geral** (negócio local: mapa, avaliações, site, Instagram, IAs) ou **SEO/GEO** (site com presença orgânica ≥ DIAG_PROSP_MIN_PALAVRAS palavras fora da marca).\n\nFontes: Pipedrive, Semrush (MCP), PageSpeed, Firecrawl, Apify (Maps/Instagram), ChatGPT e Gemini com busca, Claude (só classificação; contagens conferidas no código). Fonte indisponível = página omitida ou \"não medido\" — nada é inventado.\n\nSaída: PDF no Drive (DIAG_PROSP_PASTA_ID), campos de diagnóstico e nota no negócio. **Nada é enviado ao prospect.**\n\nPortão: DIAG_PROSP_MODO=ATIVO + MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).",
+        "content": "## ATOM_14 — Diagnóstico de prospecção\nGera o PDF de um dos modelos aprovados (docs/13): **Geral** (negócio local: mapa, avaliações, site, Instagram, IAs) ou **SEO/GEO** (site com presença orgânica ≥ DIAG_PROSP_MIN_PALAVRAS palavras fora da marca).\n\nFontes: Pipedrive, Semrush (MCP), PageSpeed, Firecrawl, Apify (Maps/Instagram), ChatGPT e Gemini com busca, Claude (só classificação; contagens conferidas no código). Fonte indisponível = página omitida ou \"não medido\" — nada é inventado.\n\nSaída: PDF no Drive (GDRIVE_PASTA_DIAGNOSTICOS_ID), campos de diagnóstico e nota no negócio. **Nada é enviado ao prospect.**\n\nPortão: DIAG_PROSP_MODO=ATIVO + MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).",
         "color": 4
       }
     }

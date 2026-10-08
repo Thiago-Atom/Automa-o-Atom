@@ -138,3 +138,17 @@ test('Montagem + render do SEO/GEO', () => {
   const html = renderSeoGeo(d, ASS);
   assert.doesNotMatch(html, /undefined|NaN|\[object/);
 });
+
+test('Pipedrive: gatilho do diagnóstico de prospecção (ATOM_14)', async () => {
+  const PD = await import('../lib/pipedrive.js');
+  const C = await import('../lib/config.js');
+  const campo = '9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751';
+  const base = [{ chave: 'PD_DEAL_DIAG_REEXECUTAR', valor: campo, status: 'CONFIGURADO' }];
+  const ev = (action, data, previous) => ({ meta: { entity: 'deal', action, entity_id: 100, version: '2.0', id: 'e' + Math.random() }, data, previous });
+  const r1 = PD.classificar(ev('change', { custom_fields: { [campo]: { value: 'Sim' } } }, { custom_fields: { [campo]: null } }), C.montar(base));
+  assert.ok(r1.intents.some((i) => i.tipo === 'DIAG_PROSPECCAO' && i.forcar === true));
+  const r2 = PD.classificar(ev('create', { stage_id: 1 }, null), C.montar(base));
+  assert.ok(!r2.intents.some((i) => i.tipo === 'DIAG_PROSPECCAO'), 'criação não dispara sem DIAG_PROSP_AO_CRIAR');
+  const r3 = PD.classificar(ev('create', { stage_id: 1 }, null), C.montar(base.concat([{ chave: 'DIAG_PROSP_AO_CRIAR', valor: 'true', status: 'CONFIGURADO' }])));
+  assert.ok(r3.intents.some((i) => i.tipo === 'DIAG_PROSPECCAO' && i.forcar === false));
+});

@@ -2,7 +2,7 @@
   "name": "ATOM_02_Site_Diagnostico",
   "nodes": [
     {
-      "id": "12a3431f-6427-40d0-8ce2-c1295851eec0",
+      "id": "2389eff9-650f-4759-b361-35cb9f16749e",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "35e7cc52-e6e9-4709-b765-2ac5d71e3f8e",
+      "id": "756e8a6a-3c62-49e1-be43-1c35b01b9115",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -37,7 +37,7 @@
       "executeOnce": true
     },
     {
-      "id": "e110db4a-68e0-4f78-951f-6238d1e4e3f1",
+      "id": "559a77a7-f3db-4547-ac3c-55c65379d61b",
       "name": "Modo",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -78,7 +78,7 @@
       }
     },
     {
-      "id": "f78443dd-77c7-4285-9c9f-a9f19f54018e",
+      "id": "644dca97-3b45-4f34-99bc-e9a84841da1c",
       "name": "Preparar busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -92,7 +92,7 @@
       }
     },
     {
-      "id": "02247768-feb4-45d7-87b9-59a76b48c167",
+      "id": "e0062538-423d-4102-b686-5e4e48e74dea",
       "name": "Busca permitida?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -124,7 +124,7 @@
       }
     },
     {
-      "id": "9facd5e1-492d-4ec1-90cd-de27c1fe6be3",
+      "id": "990e9dbe-4b8e-45f8-a243-5db8c21e0906",
       "name": "DNS (A)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -158,7 +158,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "7bc3d3c8-156d-4cba-9777-500e732ea52a",
+      "id": "29d4321d-e86d-45b7-8e67-cca834027b55",
       "name": "DNS (AAAA)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -192,7 +192,7 @@
       "waitBetweenTries": 1000
     },
     {
-      "id": "07265108-0544-4e52-bb3c-b680763d5ba7",
+      "id": "532c70d1-f05f-415e-a538-606049460f39",
       "name": "Avaliar DNS",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -206,7 +206,7 @@
       }
     },
     {
-      "id": "908e9ce7-d035-4793-bf91-e7e7d84caf5f",
+      "id": "b4f21980-6d5c-421c-a8f5-1d409369df28",
       "name": "DNS seguro?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -238,7 +238,7 @@
       }
     },
     {
-      "id": "cd7aa0f9-f141-4423-983a-b6df70933fa0",
+      "id": "7355d21e-d1c0-45f4-8e08-0d3a7daabb41",
       "name": "Acessar URL (sem seguir redirecionamento)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -282,7 +282,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "fb690ab8-ce2d-4c1e-869d-bd1466f2558e",
+      "id": "41c51b6f-2a0b-44c1-870a-3828f22edf21",
       "name": "Avaliar resposta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -296,7 +296,7 @@
       }
     },
     {
-      "id": "a0006aa4-7339-47ba-93c1-b889261c694f",
+      "id": "c4388e33-70ad-49f3-9cee-a5c1585e517c",
       "name": "Redirecionar?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -328,7 +328,7 @@
       }
     },
     {
-      "id": "0db26d49-f2f2-45e5-9de4-7176807232f2",
+      "id": "ec2f981e-8799-49f9-842a-6f28bd7a3836",
       "name": "Próximo salto (validação repetida)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -350,7 +350,7 @@
       }
     },
     {
-      "id": "c0062c4d-dd9c-429a-b1cf-3cd63d23d25c",
+      "id": "b27dc5fd-4285-42e0-9764-fd244bbd995e",
       "name": "Resultado da busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -364,7 +364,7 @@
       }
     },
     {
-      "id": "71013b91-052d-4982-8621-e1be4c396cf0",
+      "id": "c825ca5f-9e5b-40f5-b8c8-80e1d9073d1b",
       "name": "Preparar consulta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -378,7 +378,7 @@
       }
     },
     {
-      "id": "91d096f6-309d-4b1e-81c3-aa0d2edfcb69",
+      "id": "06ecc2fe-6817-4cbf-aa33-6c5bd5e8c336",
       "name": "Buscar negócios (atualizados)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -404,7 +404,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "8f9b13a5-2b5f-445a-bb86-a6c6264a363f",
+      "id": "bfe8f597-ff48-4cf8-817b-7faf473c8f0e",
       "name": "Selecionar negócios",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -418,7 +418,7 @@
       }
     },
     {
-      "id": "04d2c681-955c-48f6-a6b9-1e90fffd9592",
+      "id": "f431f2c6-4445-4b13-8ba2-99746bfdd9e6",
       "name": "Redespachar por negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -450,7 +450,7 @@
       }
     },
     {
-      "id": "10c213a6-c4df-40d4-acd3-12512f77f6f7",
+      "id": "098ec7e0-1101-4818-b2fe-1110047b5716",
       "name": "Redespachar negócio",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -472,7 +472,7 @@
       }
     },
     {
-      "id": "63189132-8559-43e2-933c-0b46f98c0da4",
+      "id": "4c035a6f-6ff2-4960-884a-855d8b722e21",
       "name": "Buscar organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -500,7 +500,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "feeefe84-d972-4053-b762-d66ea4b0b68f",
+      "id": "3518aa64-b223-4b98-aac0-bc3920b1ae02",
       "name": "Buscar pessoa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -528,7 +528,7 @@
       "waitBetweenTries": 3000
     },
     {
-      "id": "1801e69d-c04c-4d8b-8321-9aa8c4019dfa",
+      "id": "5296aa48-3a21-448c-86a9-ac4e448aba6d",
       "name": "Estado do negócio",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -560,7 +560,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "2da0532a-1241-487b-be43-0d08f76ae4d5",
+      "id": "f507aa84-d09f-44c7-b69e-4bd048534228",
       "name": "Escolher site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -574,7 +574,7 @@
       }
     },
     {
-      "id": "2752fb6a-9531-4b31-a97d-bf15a9081041",
+      "id": "fe036d10-a0c9-4562-9974-db2aacbdbef8",
       "name": "Ação do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -662,7 +662,7 @@
       }
     },
     {
-      "id": "6b733377-7b11-4991-ab8b-4b77158ad2ad",
+      "id": "737d8be2-7137-4274-80cb-661f12463e22",
       "name": "Buscar página (segura)",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -684,7 +684,7 @@
       }
     },
     {
-      "id": "2eef695b-bf53-4755-8568-e05fe01f194b",
+      "id": "08de4110-93d0-4651-ba7a-3a78e8113d27",
       "name": "Estado do site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -698,7 +698,7 @@
       }
     },
     {
-      "id": "724f3311-be06-4782-a907-f7be76df3a54",
+      "id": "4109417f-1408-4400-bbe3-cff9fe0a1449",
       "name": "Salvar estado do site",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -816,7 +816,7 @@
       }
     },
     {
-      "id": "fd0bc713-a4f5-4d1b-bf86-f58b7af67fe2",
+      "id": "41f048a7-389b-4ac8-999b-1b5a8df5e48f",
       "name": "Atualização da organização",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -830,7 +830,7 @@
       }
     },
     {
-      "id": "3563dcd4-14a6-4371-a9c5-03d53c44ed79",
+      "id": "47677c84-0126-4459-8552-0b6902763c86",
       "name": "Atualizar organização?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -862,7 +862,7 @@
       }
     },
     {
-      "id": "172d9723-0461-4195-8c16-065bb5d6e6f7",
+      "id": "416eeba0-aeae-458b-bb9b-adfff2b7aa95",
       "name": "Atualizar organização no Pipedrive",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -887,7 +887,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c061b705-a135-4acd-b3f5-d998837bb6e1",
+      "id": "c89cbf50-bffe-4b6e-a5ce-3382c1652937",
       "name": "Resultado do site",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
@@ -928,7 +928,7 @@
       }
     },
     {
-      "id": "0df6e28f-c55a-48d6-8d00-cbeceb87e144",
+      "id": "a213d8c3-f25a-4e11-a706-820328b18305",
       "name": "Pedido de site à Zayra",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -942,7 +942,7 @@
       }
     },
     {
-      "id": "3f81fd09-1220-4fa6-af40-a1a4c1f28d9f",
+      "id": "a2a6d14a-ba1f-4ee1-aa23-78fe4bd9467f",
       "name": "Estado: cliente sem site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -956,7 +956,7 @@
       }
     },
     {
-      "id": "d73cd4a7-2e44-45e7-99d3-c6caa09aae42",
+      "id": "c40d19fb-2223-4850-8609-5b9939034255",
       "name": "Salvar estado (site pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1074,7 +1074,7 @@
       }
     },
     {
-      "id": "62879c39-ef7a-46f2-9e5b-81d108bb3647",
+      "id": "e0ce8db8-1876-4e7c-9129-b84d549961da",
       "name": "Diagnóstico necessário?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1084,11 +1084,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#diag_necessario + lib/{util,config,versoes,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\n\n// lib/versoes.js\nvar DIAGNOSTICO_PROVISORIO_VERSAO = \"PROPOSTA-PROVISORIA-0.1\";\n\n// lib/site.js\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const s = $(\"Estado do site\").first().json;\n  const modoDiag = valor(cfg, \"DIAGNOSTICO_MODO\", \"\");\n  const provisorio = modoDiag === \"PROVISORIO\" && booleano(cfg, \"DIAGNOSTICO_PERMITIR_PROVISORIO\");\n  const versao = modoDiag === \"PADRAO_ATOM\" ? valor(cfg, \"DIAGNOSTICO_PADRAO_VERSAO\", \"PADRAO-SEM-VERSAO\") : DIAGNOSTICO_PROVISORIO_VERSAO;\n  const fp = fingerprint([s.url, versao]);\n  let decisao;\n  if (!s.ctx.forcar && s.ctx.estado_anterior.diag_status === \"CONCLUIDO\" && s.ctx.estado_anterior.diag_entrada_fp === fp) decisao = \"NADA\";\n  else if (modoDiag === \"ROTINA_EXISTENTE\") decisao = \"INTEGRACAO_ROTINA_EXISTENTE_PENDENTE\";\n  else if (modoDiag === \"PADRAO_ATOM\") decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (!provisorio) decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (faltando(cfg, [\"ANTHROPIC_MODEL\", \"ANTHROPIC_MAX_TOKENS\"]).length) decisao = \"CONFIG_IA_PENDENTE\";\n  else decisao = \"EXECUTAR\";\n  if (decisao === \"NADA\") return [];\n  const origem = parsearUrl(s.url).origin;\n  return [\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/robots.txt\", hop: 0, url_inicial: origem + \"/robots.txt\", decisao, versao, fp } },\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/sitemap.xml\", hop: 0, url_inicial: origem + \"/sitemap.xml\", decisao, versao, fp } }\n  ];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf02.js#diag_necessario + lib/{util,config,versoes,site}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction booleano(cfg, chave) {\n  return /^(true|sim|1|yes)$/i.test(valor(cfg, chave, \"false\"));\n}\n\n// lib/versoes.js\nvar DIAGNOSTICO_PROVISORIO_VERSAO = \"PROPOSTA-PROVISORIA-0.1\";\n\n// lib/site.js\nvar RE_URL = /^([a-z][a-z0-9+.-]*):\\/\\/([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?$/i;\nvar PORTA_PADRAO = { \"http:\": \"80\", \"https:\": \"443\" };\nfunction removerPontos(caminho) {\n  const saida = [];\n  for (const seg of caminho.split(\"/\").slice(1)) {\n    if (seg === \"..\") {\n      if (saida.length) saida.pop();\n    } else if (seg !== \".\") saida.push(seg);\n  }\n  const ultimo = caminho.split(\"/\").pop();\n  if ((ultimo === \".\" || ultimo === \"..\") && saida[saida.length - 1] !== \"\") saida.push(\"\");\n  return \"/\" + saida.join(\"/\");\n}\nfunction parsearUrl(texto) {\n  const s = String(texto || \"\");\n  if (!s || /[\\s\\\\\\u0000-\\u001f\\u007f]/.test(s) || /[^\\x20-\\x7e]/.test(s)) return null;\n  const m = s.match(RE_URL);\n  if (!m) return null;\n  const protocol = m[1].toLowerCase() + \":\";\n  let autoridade = m[2];\n  let username = \"\";\n  let password = \"\";\n  const arroba = autoridade.lastIndexOf(\"@\");\n  if (arroba >= 0) {\n    const info = autoridade.slice(0, arroba);\n    autoridade = autoridade.slice(arroba + 1);\n    const dp = info.indexOf(\":\");\n    username = dp >= 0 ? info.slice(0, dp) : info;\n    password = dp >= 0 ? info.slice(dp + 1) : \"\";\n    if (!username && !password) username = \"@\";\n  }\n  let hostname;\n  let port = \"\";\n  const v6 = autoridade.match(/^(\\[[^\\]]*\\])(?::(\\d*))?$/);\n  if (v6) {\n    hostname = v6[1];\n    port = v6[2] || \"\";\n  } else {\n    const dp = autoridade.lastIndexOf(\":\");\n    if (dp >= 0) {\n      hostname = autoridade.slice(0, dp);\n      port = autoridade.slice(dp + 1);\n    } else hostname = autoridade;\n    if (port && !/^\\d+$/.test(port)) return null;\n  }\n  hostname = hostname.toLowerCase();\n  if (!hostname) return null;\n  if (port) port = String(Number(port));\n  if (PORTA_PADRAO[protocol] === port) port = \"\";\n  const pathname = removerPontos(m[3] || \"/\");\n  const search = m[4] && m[4] !== \"?\" ? m[4] : \"\";\n  const hash = m[5] && m[5] !== \"#\" ? m[5] : \"\";\n  const host = hostname + (port ? \":\" + port : \"\");\n  const origin = protocol + \"//\" + host;\n  const cred = username || password ? username + (password ? \":\" + password : \"\") + \"@\" : \"\";\n  return {\n    protocol,\n    username,\n    password,\n    hostname,\n    port,\n    host,\n    pathname,\n    search,\n    hash,\n    origin,\n    href: protocol + \"//\" + cred + host + pathname + search + hash\n  };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const s = $(\"Estado do site\").first().json;\n  const modoDiag = valor(cfg, \"DIAGNOSTICO_MODO\", \"\");\n  const provisorio = modoDiag === \"PROVISORIO\" && booleano(cfg, \"DIAGNOSTICO_PERMITIR_PROVISORIO\");\n  const versao = modoDiag === \"PADRAO_ATOM\" ? valor(cfg, \"DIAGNOSTICO_PADRAO_VERSAO\", \"PADRAO-SEM-VERSAO\") : DIAGNOSTICO_PROVISORIO_VERSAO;\n  const fp = fingerprint([s.url, versao]);\n  let decisao;\n  if (modoDiag === \"PROSPECCAO_ATOM\") decisao = \"NADA\";\n  else if (!s.ctx.forcar && s.ctx.estado_anterior.diag_status === \"CONCLUIDO\" && s.ctx.estado_anterior.diag_entrada_fp === fp) decisao = \"NADA\";\n  else if (modoDiag === \"ROTINA_EXISTENTE\") decisao = \"INTEGRACAO_ROTINA_EXISTENTE_PENDENTE\";\n  else if (modoDiag === \"PADRAO_ATOM\") decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (!provisorio) decisao = \"MODELO_DIAGNOSTICO_PENDENTE\";\n  else if (faltando(cfg, [\"ANTHROPIC_MODEL\", \"ANTHROPIC_MAX_TOKENS\"]).length) decisao = \"CONFIG_IA_PENDENTE\";\n  else decisao = \"EXECUTAR\";\n  if (decisao === \"NADA\") return [];\n  const origem = parsearUrl(s.url).origin;\n  return [\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/robots.txt\", hop: 0, url_inicial: origem + \"/robots.txt\", decisao, versao, fp } },\n    { json: { modo: \"BUSCA_SEGURA\", url: origem + \"/sitemap.xml\", hop: 0, url_inicial: origem + \"/sitemap.xml\", decisao, versao, fp } }\n  ];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "f26052f8-7857-442f-9ad3-728b20f3c1ea",
+      "id": "a56cb836-fb2f-4c9c-98fe-d74462856107",
       "name": "Buscar robots e sitemap",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1110,7 +1110,7 @@
       }
     },
     {
-      "id": "238a695b-81fd-4160-bb5c-b6ab00fda9e9",
+      "id": "99c4b2e9-c62f-4566-bb0c-ccfb1f38d066",
       "name": "Extrair evidências",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1124,7 +1124,7 @@
       }
     },
     {
-      "id": "f73dfa1e-64bd-47b5-bad0-86cc8de95d2d",
+      "id": "73c71659-5b78-4a53-89ee-f0ba0a39f5d5",
       "name": "Executar Claude?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1155,7 +1155,7 @@
       }
     },
     {
-      "id": "468411fc-eae1-491d-a215-05155577da69",
+      "id": "01765471-d8a4-4e25-8ef2-2199c1b96868",
       "name": "Montar pedido à Claude",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1169,7 +1169,7 @@
       }
     },
     {
-      "id": "c123c0e8-29f8-4a6c-be46-b4de179bbf32",
+      "id": "baf3df40-a644-4047-a918-520be26bf8e1",
       "name": "Claude — diagnóstico",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1207,7 +1207,7 @@
       "onError": "continueErrorOutput"
     },
     {
-      "id": "1dd6e570-7b60-4e82-a296-19a57e12a982",
+      "id": "109a8a59-319a-442f-b772-c55a9756d82c",
       "name": "Validar diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1221,7 +1221,7 @@
       }
     },
     {
-      "id": "3c9e3a1b-5a31-46c5-939d-2ca0a673c203",
+      "id": "a86d0c49-9a74-4cb0-8b01-d26176e796e8",
       "name": "Diagnóstico válido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1253,7 +1253,7 @@
       }
     },
     {
-      "id": "cc582c95-05fc-4c0c-84bb-d4be03482941",
+      "id": "39851501-6043-43fc-8c45-9d034cac7988",
       "name": "Registrar diagnóstico (nota no negócio)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1277,7 +1277,7 @@
       "credentials": {}
     },
     {
-      "id": "e1553f10-9004-4cf6-84d5-70e7581419a6",
+      "id": "3ce0d73c-33f0-4cbe-8f90-5060ea7dae14",
       "name": "Campos do diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1291,7 +1291,7 @@
       }
     },
     {
-      "id": "71e7830a-0e91-47ab-8c49-fa7e1734950d",
+      "id": "ed21ccb1-997b-4c21-9a96-0021bef5ce5e",
       "name": "Atualizar campos do negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1323,7 +1323,7 @@
       }
     },
     {
-      "id": "995bf253-cd1e-4d6d-8321-fb4256d0b956",
+      "id": "a9a27ce9-9b6a-4c85-92be-2826282e7278",
       "name": "Atualizar negócio (diagnóstico)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1348,7 +1348,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "f2984fd7-cd4f-44f8-8df7-51492b3c745c",
+      "id": "fdce9142-ddd2-46b6-9c02-5766f022f544",
       "name": "Salvar estado do diagnóstico",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1436,7 +1436,7 @@
       }
     },
     {
-      "id": "b161657a-3f7f-4844-a627-9898946eac4a",
+      "id": "7eebf154-bb67-469b-a279-ca078f5f78ce",
       "name": "Diagnóstico inválido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1450,7 +1450,7 @@
       }
     },
     {
-      "id": "68a585ef-8d12-4fcb-8674-7b5f4f59bbf8",
+      "id": "a356f8ca-b114-4302-bb76-d967a33e37ab",
       "name": "Salvar diagnóstico inválido",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1538,7 +1538,7 @@
       }
     },
     {
-      "id": "697e86ea-ec3b-47aa-9fa1-283c6931d769",
+      "id": "ca72f615-9756-4e64-8554-601b75b5b0b9",
       "name": "Preparar alerta",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1552,7 +1552,7 @@
       }
     },
     {
-      "id": "1f648d09-70d9-4e5b-907d-6f0552507c5f",
+      "id": "13136aa5-0c7a-4778-9494-0486ac19130d",
       "name": "ATOM_11 — alerta diagnóstico",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1575,7 +1575,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ac183301-d585-4ac4-b5e7-27a893404b6b",
+      "id": "57c5a9b9-e32f-4eb8-8b2d-ca2d4a21f19e",
       "name": "Evidências aguardando modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1589,7 +1589,7 @@
       }
     },
     {
-      "id": "93f49485-26ef-4894-af71-f13d90f771b8",
+      "id": "c5ac5140-3512-4204-a625-688d70adaba7",
       "name": "Registrar nota de evidências?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1621,7 +1621,7 @@
       }
     },
     {
-      "id": "303fa2e3-0ffb-4203-a0dc-7414822bcc74",
+      "id": "1dafd29d-a65a-4392-9772-8114c4115b3b",
       "name": "Nota de evidências",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1646,7 +1646,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "69ceab3c-b1cc-4066-9a0a-3874894c1aec",
+      "id": "f898a512-7bb2-48c7-8a66-d1e40cfcfda3",
       "name": "Salvar estado (diagnóstico pendente)",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1734,7 +1734,7 @@
       }
     },
     {
-      "id": "08d7c7c7-d202-4a5a-a4f0-ec14c6fb71dd",
+      "id": "e28b0e31-7acf-48c2-b152-b4fea2ace980",
       "name": "Pendência de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1748,7 +1748,7 @@
       }
     },
     {
-      "id": "e34eb2be-6b4a-4c69-8e59-c3902bd9a3bf",
+      "id": "a12c2058-950a-4112-8503-6e5dc9f97055",
       "name": "Registrar nota do site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1780,7 +1780,7 @@
       }
     },
     {
-      "id": "da33537a-53fb-463a-bcde-dd2408a79ef7",
+      "id": "b379495d-2121-4ba0-9968-4bda3939f1bd",
       "name": "Nota de conferência do site",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1805,7 +1805,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "199fc6ce-b989-48ee-81db-b8e1ada05638",
+      "id": "6f231916-eaa7-46ac-bc33-2caab897f3b3",
       "name": "Pedir site ao cliente?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1837,7 +1837,7 @@
       }
     },
     {
-      "id": "48d8be1a-d6cf-4791-9ed8-f6cd227790f3",
+      "id": "e17d6453-aa1e-4c77-b471-bec23e62f37f",
       "name": "ATOM_10 — solicitar site",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
@@ -1860,7 +1860,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "58770a99-62ea-4fda-a200-e5467111f24e",
+      "id": "2ff9c84f-1195-49f0-ab69-ff9b91d2b656",
       "name": "Estado após pedido de site",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1874,8 +1874,8 @@
       }
     },
     {
-      "id": "6339ee7b-c371-411f-9f91-a825272a6b22",
-      "name": "Sticky Note 6339ee7b",
+      "id": "2a9d1c10-e601-444a-a46c-e2f3ac0be157",
+      "name": "Sticky Note 2a9d1c10",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -2614,6 +2614,6 @@
   },
   "pinData": {},
   "meta": {
-    "atomBuild": "2026-09-29"
+    "atomBuild": "2026-10-08"
   }
 }

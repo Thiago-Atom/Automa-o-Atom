@@ -172,7 +172,8 @@ const provisorio = modoDiag === 'PROVISORIO' && ATOM_CONFIG.booleano(cfg, 'DIAGN
 const versao = modoDiag === 'PADRAO_ATOM' ? ATOM_CONFIG.valor(cfg, 'DIAGNOSTICO_PADRAO_VERSAO', 'PADRAO-SEM-VERSAO') : ATOM_VERSOES.DIAGNOSTICO_PROVISORIO_VERSAO;
 const fp = ATOM_UTIL.fingerprint([s.url, versao]);
 let decisao;
-if (!s.ctx.forcar && s.ctx.estado_anterior.diag_status === 'CONCLUIDO' && s.ctx.estado_anterior.diag_entrada_fp === fp) decisao = 'NADA';
+if (modoDiag === 'PROSPECCAO_ATOM') decisao = 'NADA'; // diagnóstico feito pelo ATOM_14 (modelos aprovados em 2026-10)
+else if (!s.ctx.forcar && s.ctx.estado_anterior.diag_status === 'CONCLUIDO' && s.ctx.estado_anterior.diag_entrada_fp === fp) decisao = 'NADA';
 else if (modoDiag === 'ROTINA_EXISTENTE') decisao = 'INTEGRACAO_ROTINA_EXISTENTE_PENDENTE';
 else if (modoDiag === 'PADRAO_ATOM') decisao = 'MODELO_DIAGNOSTICO_PENDENTE'; // prompt padrão ainda não fornecido
 else if (!provisorio) decisao = 'MODELO_DIAGNOSTICO_PENDENTE';
