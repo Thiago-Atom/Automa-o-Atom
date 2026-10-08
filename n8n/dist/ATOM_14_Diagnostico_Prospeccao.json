@@ -2,7 +2,7 @@
   "name": "ATOM_14_Diagnostico_Prospeccao",
   "nodes": [
     {
-      "id": "edaaaa95-413d-4030-bbb0-835790411607",
+      "id": "6cb2a36c-62da-46ae-b443-d493f18d75f8",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "351dbb83-6fd2-4fad-87aa-5ffd071a3f51",
+      "id": "3aa3ddd6-20fc-423a-99dc-33e6de962c95",
       "name": "Pedido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -25,11 +25,11 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#pedido. Edite a fonte no repositório, não este nó.\nconst viaWebhook = (() => { try { return $('Executar (interno)').first().json.body || null; } catch (x) { return null; } })();\nconst e = viaWebhook || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();\nreturn [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : 'ATOM_01' } }];"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#pedido. Edite a fonte no repositório, não este nó.\nconst viaWebhook = (() => { try { return $('Executar (interno)').first().json.body || null; } catch (x) { return null; } })();\nconst viaTeste = (() => { try { return $('Dados do teste').first().json; } catch (x) { return null; } })();\nconst e = viaWebhook || viaTeste || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();\nreturn [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : viaTeste ? 'TESTE_MANUAL' : 'ATOM_01' } }];"
       }
     },
     {
-      "id": "1643744b-45ca-4c59-89c4-cae53732743d",
+      "id": "f252fbe9-1e66-453a-9aac-099edb879f3d",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -51,7 +51,7 @@
       "executeOnce": true
     },
     {
-      "id": "38149556-9e1c-4c9b-a4b0-0ec766fc81aa",
+      "id": "e4e7e1df-db0b-4cf3-ac56-b3298443ac80",
       "name": "Negócio (Pipedrive)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -73,7 +73,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "12f9f644-8170-4c43-b4d2-1aac9a569d7f",
+      "id": "17a6dea1-2642-4c3b-9852-2983748dd111",
       "name": "Organização (Pipedrive)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -100,7 +100,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "34963fb4-1392-45f7-b8ab-62e9c673da77",
+      "id": "f0c46fc1-06fb-45be-9c2c-a1a122db9891",
       "name": "Preparar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -114,7 +114,7 @@
       }
     },
     {
-      "id": "74315836-93b3-40c1-b0ab-c5f67ad1083b",
+      "id": "d3185248-14b8-4c46-9079-777823097b7b",
       "name": "Liberado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -146,7 +146,7 @@
       }
     },
     {
-      "id": "76ba45e1-3ece-4f58-a96d-59c4a5276c26",
+      "id": "ecc3253a-47a5-46b7-be94-c86202c9afae",
       "name": "Tem site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -178,7 +178,7 @@
       }
     },
     {
-      "id": "60020171-2c4a-4899-8bff-21448af63e04",
+      "id": "f819d8b6-0e4f-49db-8f00-4f11172f8f20",
       "name": "Site — página inicial (Firecrawl)",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
@@ -212,7 +212,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6e73e16c-0488-4390-baa6-0250f1b862ac",
+      "id": "40a30a45-5a59-4cd3-b42b-836e1f5714e8",
       "name": "PageSpeed (celular)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -254,7 +254,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "2274b960-f9da-4e93-8943-9c699393dd32",
+      "id": "e61a5571-8564-40e2-b667-fcc070753aaf",
       "name": "llms.txt",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -286,7 +286,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "89f88a25-8093-40a3-9b84-3364f42f706f",
+      "id": "c042d787-10c9-4c5a-bd3b-e98d687504d4",
       "name": "Pedido — entender o negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -300,7 +300,7 @@
       }
     },
     {
-      "id": "0ab417a1-0b81-4253-8cf7-0121c24008c0",
+      "id": "41ee9641-d3d9-4a0a-a84b-36a4dd2954be",
       "name": "Bloqueado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -314,7 +314,7 @@
       }
     },
     {
-      "id": "3c3c0c49-39c4-40a6-b33b-09cd294fcda9",
+      "id": "d55cd1a2-2268-484b-9dad-c9540eba59e8",
       "name": "Claude — entender o negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -352,7 +352,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "8efff383-e18a-4b8a-a8d6-01b2d1f040aa",
+      "id": "9cd5cf7c-d607-4046-b465-7bbfd18b0b32",
       "name": "Termos de busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -366,7 +366,7 @@
       }
     },
     {
-      "id": "7ee026d3-b0bc-4541-a58a-c10047875609",
+      "id": "6e7f0c10-4049-4a21-9d04-706b530c92eb",
       "name": "Semrush — volumes",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -394,7 +394,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "818f7fd7-b745-4c83-9360-fe347f22cc19",
+      "id": "14025fe2-bdc9-4e99-80cf-6c7cc40d47a0",
       "name": "Tem site? (Semrush)",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -426,7 +426,7 @@
       }
     },
     {
-      "id": "018ddc15-9a35-408d-8e60-53f1c7436b3b",
+      "id": "86d0db00-d93a-46f9-b915-c918b59412db",
       "name": "Semrush — palavras do site",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -454,7 +454,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7ba7ebf8-15d1-4235-8216-2ee3ed7d9f2d",
+      "id": "8a48c8e0-8f57-4705-b8cd-331433779138",
       "name": "Semrush — histórico",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -482,7 +482,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "d5ec2039-b6ff-4899-98ba-9581ca490f01",
+      "id": "47f8065e-5a90-410c-89ae-7e761dfeaeec",
       "name": "Decidir modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -496,7 +496,7 @@
       }
     },
     {
-      "id": "57013169-1952-46bd-91ad-7e0fb0b0ea27",
+      "id": "69ce35e3-ef7a-4c87-b3ca-8bb45d0afd9c",
       "name": "Tem busca principal?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -528,7 +528,7 @@
       }
     },
     {
-      "id": "181c6957-4cd8-44ab-aea1-c056f980d18e",
+      "id": "799ca873-1437-4c63-b7a3-e1d673563e21",
       "name": "Semrush — SERP da busca principal",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
@@ -556,7 +556,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c02b2f05-f1e6-4c9c-b422-052c8797cb7b",
+      "id": "70a5bfd5-8e4c-4cc7-ac35-a9b8778d3947",
       "name": "Modelo SEO/GEO?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -588,7 +588,7 @@
       }
     },
     {
-      "id": "2b2ac2ee-f804-4a6d-9f78-d998661b3ab8",
+      "id": "e8bbc37c-9930-4fc5-bf9f-7e6dc7564e74",
       "name": "Rastreio — iniciar",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
@@ -619,7 +619,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "d6ee953a-1db2-4325-aec2-3b7c6341284e",
+      "id": "f94be0ff-685f-4a32-85e9-7339e6b8bf08",
       "name": "Aguardar rastreio",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
@@ -634,7 +634,7 @@
       }
     },
     {
-      "id": "6f926ebe-6afa-4fdb-95c1-32db3ad9965e",
+      "id": "4ffc9a37-d424-4fe6-9919-9b87343ebf9c",
       "name": "Rastreio — status",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
@@ -652,7 +652,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "f3d9e489-9ece-4bf4-811b-60a15a950d42",
+      "id": "902c81c9-c5a2-4655-a45a-de01f55f82fa",
       "name": "Rastreio terminou?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -684,7 +684,7 @@
       }
     },
     {
-      "id": "44eaf968-423f-4923-8f7d-e3d06a1f610c",
+      "id": "e65d9751-047b-4dbc-81cd-a0b87ef9f39a",
       "name": "Pergunta às IAs",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -698,7 +698,7 @@
       }
     },
     {
-      "id": "0dbd5ac4-8dce-4770-a34c-2f5d423e7898",
+      "id": "6ccf1d50-0556-459e-8153-a48c3f0016bc",
       "name": "Entrada do mapa",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -712,7 +712,7 @@
       }
     },
     {
-      "id": "b3c91385-5a8d-4d98-8958-c429e61f1a92",
+      "id": "fadee34d-55a0-499c-be77-4a45711fbb61",
       "name": "Google Maps — busca (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -749,7 +749,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "eb84bdc5-a896-487b-8168-f61ab26a2b3d",
+      "id": "0b1c2649-5bf6-4cd2-ae1f-45a3dc85f6fc",
       "name": "Google Maps — cliente (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -786,7 +786,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7c6b89ad-97bc-416f-b0a0-6f22faa889ff",
+      "id": "c391c786-2c25-4be5-b32f-076055bf94cd",
       "name": "Entrada do Instagram",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -800,7 +800,7 @@
       }
     },
     {
-      "id": "cc1ee889-4a96-4b05-87bc-95432ed2026a",
+      "id": "257d6b73-20f3-40ca-abe0-35478c647759",
       "name": "Tem Instagram?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -832,7 +832,7 @@
       }
     },
     {
-      "id": "f4b3b6a2-25f0-4ff9-b96c-da738cc27b77",
+      "id": "3471b87f-4b6c-4414-97c2-8cf6de085253",
       "name": "Instagram (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -869,7 +869,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "80dae133-6dd8-4ed9-827a-5d6bfaa539b3",
+      "id": "c672816d-700e-474f-b1ab-b442e4974c84",
       "name": "ChatGPT (busca na web)",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
@@ -910,7 +910,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "dab9e8c2-53c0-49cc-b409-394099f5db94",
+      "id": "3fc9a8d8-e435-4b6d-bc5a-8a10349b5125",
       "name": "Gemini (Google Search)",
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1.2,
@@ -947,7 +947,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b3707c30-4a1a-4bc0-a024-e689ade1b5fd",
+      "id": "eaa20c74-cf9f-4552-b5ca-e085f6a3a739",
       "name": "Pedido de temas",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -961,7 +961,7 @@
       }
     },
     {
-      "id": "1b823fed-2135-4042-a0c2-1038ae101318",
+      "id": "370e766b-70e6-4ce3-901f-059d0f56de02",
       "name": "Claude — temas e páginas",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1000,7 +1000,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "f95c8f9f-a71b-4cfb-a7ae-1ad1063c63c5",
+      "id": "c0d7b8a5-29b1-4738-935a-63ae4ee9ef2f",
       "name": "Montar diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1014,7 +1014,7 @@
       }
     },
     {
-      "id": "f46bef9b-709e-4203-95a5-3b9b19628b39",
+      "id": "d0d5439e-47e8-4900-bc1e-66f71c126eb4",
       "name": "Gerar PDF (PDF.co)",
       "type": "n8n-nodes-pdfco.PDFco Api",
       "typeVersion": 1.1,
@@ -1039,7 +1039,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "5b31d937-16de-4ced-a59e-56f2378af723",
+      "id": "8ee28f0d-5ffe-4386-95d7-9ff24277c652",
       "name": "Link do PDF",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1053,7 +1053,7 @@
       }
     },
     {
-      "id": "e05cf3d7-236d-465e-ae28-6e18c3fe4b81",
+      "id": "ecba8da8-ff07-4dc1-a37e-436ac43c6590",
       "name": "PDF gerado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1085,7 +1085,7 @@
       }
     },
     {
-      "id": "ee5836de-28be-45be-b3f3-89552c0d7784",
+      "id": "eda687df-a1c1-427c-bc9b-88387485859d",
       "name": "Baixar PDF",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1108,7 +1108,7 @@
       }
     },
     {
-      "id": "b168cb3f-a4be-44ac-999e-d2469f32d29f",
+      "id": "00620cca-b3a0-4144-96bc-539092f3760f",
       "name": "Salvar no Drive",
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
@@ -1136,7 +1136,7 @@
       "credentials": {}
     },
     {
-      "id": "e508aeb8-577b-4304-914a-21876c72bb66",
+      "id": "d813c260-b00c-472d-94f3-493799ead02c",
       "name": "Campos do negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1150,7 +1150,7 @@
       }
     },
     {
-      "id": "75a36c2f-23e6-4acc-adf5-e579af26cd95",
+      "id": "fe0172e2-b55a-48d6-aaad-b5c04f552104",
       "name": "Sem PDF",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1164,7 +1164,7 @@
       }
     },
     {
-      "id": "9ea5f352-8a54-4cad-a7be-ca4103f19935",
+      "id": "c04e5a91-56a8-4e1a-ab85-8a932051b335",
       "name": "Atualizar negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -1196,7 +1196,7 @@
       }
     },
     {
-      "id": "d473344d-3b3c-4e04-a5f9-f0b800a61cd6",
+      "id": "f86efa83-6491-4afc-9c6f-02a8928a193e",
       "name": "Atualizar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1221,7 +1221,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "55fa312d-986d-43f1-8bae-92f4ef92b0cf",
+      "id": "49ede64b-faa9-40f2-b0b6-8cc1d2170f8c",
       "name": "Nota no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -1246,7 +1246,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "1a3d75ee-fa23-49c3-9bd4-0ccfa499d0cc",
+      "id": "0cfae727-dc52-4efe-8a3d-9d65c5f5edd7",
       "name": "Executar (interno)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -1261,17 +1261,42 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "821c698e-5175-46cb-8c9f-625c5ed7f2f8",
+      "webhookId": "a1c9ec7e-5bab-4b54-9164-ad22b53655e7",
       "credentials": {}
     },
     {
-      "id": "78874d0d-1300-414c-bcc2-336620b15e87",
-      "name": "Sticky Note 78874d0d",
-      "type": "n8n-nodes-base.stickyNote",
+      "id": "479b79ab-2780-40a9-8083-6cd10f3751e1",
+      "name": "Teste manual",
+      "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
         100,
         600
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "70e871e1-a7c9-4ea7-993c-e3f01f0bd015",
+      "name": "Dados do teste",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Negócio de teste (deve estar em SANDBOX_DEAL_IDS enquanto MODO_EXECUCAO=SANDBOX). Troque o deal_id para testar outro.\nreturn [{ json: { deal_id: '100', modelo: '', forcar: true } }];"
+      }
+    },
+    {
+      "id": "438b5594-9e9f-4ff6-b789-3781c885963b",
+      "name": "Sticky Note 438b5594",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        750
       ],
       "parameters": {
         "content": "## ATOM_14 — Diagnóstico de prospecção\nGera o PDF de um dos modelos aprovados (docs/13): **Geral** (negócio local: mapa, avaliações, site, Instagram, IAs) ou **SEO/GEO** (site com presença orgânica ≥ DIAG_PROSP_MIN_PALAVRAS palavras fora da marca).\n\nFontes: Pipedrive, Semrush (MCP), PageSpeed, Firecrawl, Apify (Maps/Instagram), ChatGPT e Gemini com busca, Claude (só classificação; contagens conferidas no código). Fonte indisponível = página omitida ou \"não medido\" — nada é inventado.\n\nSaída: PDF no Drive (GDRIVE_PASTA_DIAGNOSTICOS_ID), campos de diagnóstico e nota no negócio. **Nada é enviado ao prospect.**\n\nPortão: DIAG_PROSP_MODO=ATIVO + MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).",
@@ -1861,6 +1886,28 @@
       ]
     },
     "Executar (interno)": {
+      "main": [
+        [
+          {
+            "node": "Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Teste manual": {
+      "main": [
+        [
+          {
+            "node": "Dados do teste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados do teste": {
       "main": [
         [
           {

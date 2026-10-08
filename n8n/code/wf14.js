@@ -4,8 +4,9 @@
 
 //#region pedido
 const viaWebhook = (() => { try { return $('Executar (interno)').first().json.body || null; } catch (x) { return null; } })();
-const e = viaWebhook || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();
-return [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : 'ATOM_01' } }];
+const viaTeste = (() => { try { return $('Dados do teste').first().json; } catch (x) { return null; } })();
+const e = viaWebhook || viaTeste || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();
+return [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : viaTeste ? 'TESTE_MANUAL' : 'ATOM_01' } }];
 //#endregion
 
 //#region preparar @include util,config,prospeccao

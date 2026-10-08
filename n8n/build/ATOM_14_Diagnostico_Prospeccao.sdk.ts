@@ -14,9 +14,21 @@ const webhook = trigger({
   output: [{ body: { deal_id: '100', modelo: '' } }]
 });
 
+const testeManual = trigger({
+  type: 'n8n-nodes-base.manualTrigger', version: 1,
+  config: { name: 'Teste manual', parameters: {} },
+  output: [{}]
+});
+
+const dadosTeste = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Dados do teste', parameters: { mode: 'runOnceForAllItems', jsCode: "// Negócio de teste (deve estar em SANDBOX_DEAL_IDS enquanto MODO_EXECUCAO=SANDBOX). Troque o deal_id para testar outro.\nreturn [{ json: { deal_id: '100', modelo: '', forcar: true } }];" } },
+  output: [{ deal_id: '100', modelo: '', forcar: true }]
+});
+
 const pedido = node({
   type: 'n8n-nodes-base.code', version: 2,
-  config: { name: 'Pedido', parameters: { mode: 'runOnceForAllItems', jsCode: "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#pedido. Edite a fonte no repositório, não este nó.\nconst viaWebhook = (() => { try { return $('Executar (interno)').first().json.body || null; } catch (x) { return null; } })();\nconst e = viaWebhook || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();\nreturn [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : 'ATOM_01' } }];" } },
+  config: { name: 'Pedido', parameters: { mode: 'runOnceForAllItems', jsCode: "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#pedido. Edite a fonte no repositório, não este nó.\nconst viaWebhook = (() => { try { return $('Executar (interno)').first().json.body || null; } catch (x) { return null; } })();\nconst viaTeste = (() => { try { return $('Dados do teste').first().json; } catch (x) { return null; } })();\nconst e = viaWebhook || viaTeste || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();\nreturn [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : viaTeste ? 'TESTE_MANUAL' : 'ATOM_01' } }];" } },
   output: [{ deal_id: '100', modelo: '', forcar: true, origem: 'ATOM_01' }]
 });
 
@@ -407,4 +419,5 @@ export default workflow('atom-14', 'ATOM_14_Diagnostico_Prospeccao', { settings:
     .onTrue(patchDeal.to(nota))
     .onFalse(nota)))
   .add(webhook.to(pedido))
+  .add(testeManual.to(dadosTeste).to(pedido))
   .add(notaFixa);
