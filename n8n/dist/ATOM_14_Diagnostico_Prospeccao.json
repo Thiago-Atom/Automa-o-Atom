@@ -2,7 +2,7 @@
   "name": "ATOM_14_Diagnostico_Prospeccao",
   "nodes": [
     {
-      "id": "1af442ce-0487-4a17-8a56-828652dd2384",
+      "id": "edaaaa95-413d-4030-bbb0-835790411607",
       "name": "Entrada",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
@@ -15,12 +15,26 @@
       }
     },
     {
-      "id": "f2822da8-4ea8-4e9a-a5c2-88ec9fc59f8f",
+      "id": "351dbb83-6fd2-4fad-87aa-5ffd071a3f51",
+      "name": "Pedido",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#pedido. Edite a fonte no repositório, não este nó.\nconst viaWebhook = (() => { try { return $('Executar (interno)').first().json.body || null; } catch (x) { return null; } })();\nconst e = viaWebhook || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();\nreturn [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : 'ATOM_01' } }];"
+      }
+    },
+    {
+      "id": "1643744b-45ca-4c59-89c4-cae53732743d",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        300,
+        500,
         300
       ],
       "parameters": {
@@ -37,17 +51,17 @@
       "executeOnce": true
     },
     {
-      "id": "e4022b90-1bf4-4b28-8900-ebe4a026372b",
+      "id": "38149556-9e1c-4c9b-a4b0-0ec766fc81aa",
       "name": "Negócio (Pipedrive)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        500,
+        700,
         300
       ],
       "parameters": {
         "method": "GET",
-        "url": "=https://api.pipedrive.com/api/v2/deals/{{ $('Entrada').first().json.deal_id }}",
+        "url": "=https://api.pipedrive.com/api/v2/deals/{{ $('Pedido').first().json.deal_id }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "pipedriveApi",
         "options": {
@@ -59,12 +73,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "aeb12b04-dbff-43c1-ba68-bd67447d7c2b",
+      "id": "12f9f644-8170-4c43-b4d2-1aac9a569d7f",
       "name": "Organização (Pipedrive)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        700,
+        900,
         300
       ],
       "parameters": {
@@ -86,26 +100,26 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "a3a25e9e-b641-4544-a8df-58e75a21afed",
+      "id": "34963fb4-1392-45f7-b8ab-62e9c673da77",
       "name": "Preparar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        900,
+        1100,
         300
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#preparar + lib/{util,config,prospeccao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/prospeccao.js\nfunction dominioDe(url) {\n  const m = /^(?:https?:\\/\\/)?([^/?#]+)/i.exec(String(url || \"\").trim());\n  return m ? m[1].toLowerCase().replace(/^www\\./, \"\") : \"\";\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const g = (n) => {\n    try {\n      return $(n).first().json;\n    } catch (x) {\n      return null;\n    }\n  };\n  const deal = (g(\"Negócio (Pipedrive)\") || {}).data || {};\n  const org = (g(\"Organização (Pipedrive)\") || {}).data || {};\n  const dealId = String(e.deal_id || deal.id || \"\");\n  const motivos = [];\n  if (valor(cfg, \"DIAG_PROSP_MODO\", \"DESLIGADO\") !== \"ATIVO\") motivos.push(\"DIAG_PROSP_MODO diferente de ATIVO\");\n  const p = portao(cfg, [\"GDRIVE_PASTA_DIAGNOSTICOS_ID\", \"DIAG_ASSETS_BASE_URL\", \"DIAG_PROSP_MODELO_CLAUDE\"], { dealId });\n  if (!p.liberado) motivos.push(p.motivo);\n  if (!deal.id) motivos.push(\"negócio não encontrado no Pipedrive\");\n  const lerCampo = (obj, chaveCfg) => {\n    const id = valor(cfg, chaveCfg, \"\");\n    if (!id) return \"\";\n    if (id.startsWith(\"nativo:\")) {\n      const v2 = obj[id.slice(7)];\n      return v2 && typeof v2 === \"object\" ? v2.value || v2.label || \"\" : v2 || \"\";\n    }\n    const v = (obj.custom_fields || {})[id];\n    return v && typeof v === \"object\" ? v.value || v.label || \"\" : v || \"\";\n  };\n  const endereco = org.address && typeof org.address === \"object\" ? org.address : {};\n  const siteBruto = String(lerCampo(org, \"PD_ORG_SITE\") || org.website || \"\").trim();\n  const site = siteBruto ? /^https?:\\/\\//i.test(siteBruto) ? siteBruto : \"https://\" + siteBruto : \"\";\n  const dominio = dominioDe(site);\n  const hostOk = dominio && /\\.[a-z]{2,}$/i.test(dominio) && !/^(\\d+\\.){3}\\d+$/.test(dominio) && !/localhost|\\.local$|\\.internal$/i.test(dominio);\n  const cidade = String(lerCampo(org, \"PD_ORG_CIDADE\") || endereco.locality || endereco.admin_area_level_2 || \"\").trim();\n  const uf = String(endereco.admin_area_level_1 || \"\").trim();\n  if (!cidade) motivos.push(\"cidade da organização vazia (campo PD_ORG_CIDADE ou endereço)\");\n  const nome = String(org.name || deal.title || \"\").trim();\n  const ab = safeJsonParse(valor(cfg, \"DIAG_ABREVIACOES_CIDADE\", \"{}\"), {});\n  return [{ json: {\n    continuar: motivos.length === 0,\n    motivos,\n    deal_id: dealId,\n    org_id: String(org.id || \"\"),\n    empresa: { nome, site: hostOk ? site : \"\", dominio: hostOk ? dominio : \"\", cidade, uf, bairros: [] },\n    temSite: !!hostOk,\n    abreviacoes: ab,\n    agora: (/* @__PURE__ */ new Date()).toISOString()\n  } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#preparar + lib/{util,config,prospeccao}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/prospeccao.js\nfunction dominioDe(url) {\n  const m = /^(?:https?:\\/\\/)?([^/?#]+)/i.exec(String(url || \"\").trim());\n  return m ? m[1].toLowerCase().replace(/^www\\./, \"\") : \"\";\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Pedido\").first().json;\n  const g = (n) => {\n    try {\n      return $(n).first().json;\n    } catch (x) {\n      return null;\n    }\n  };\n  const deal = (g(\"Negócio (Pipedrive)\") || {}).data || {};\n  const org = (g(\"Organização (Pipedrive)\") || {}).data || {};\n  const dealId = String(e.deal_id || deal.id || \"\");\n  const motivos = [];\n  if (valor(cfg, \"DIAG_PROSP_MODO\", \"DESLIGADO\") !== \"ATIVO\") motivos.push(\"DIAG_PROSP_MODO diferente de ATIVO\");\n  const p = portao(cfg, [\"GDRIVE_PASTA_DIAGNOSTICOS_ID\", \"DIAG_ASSETS_BASE_URL\", \"DIAG_PROSP_MODELO_CLAUDE\"], { dealId });\n  if (!p.liberado) motivos.push(p.motivo);\n  if (!deal.id) motivos.push(\"negócio não encontrado no Pipedrive\");\n  const lerCampo = (obj, chaveCfg) => {\n    const id = valor(cfg, chaveCfg, \"\");\n    if (!id) return \"\";\n    if (id.startsWith(\"nativo:\")) {\n      const v2 = obj[id.slice(7)];\n      return v2 && typeof v2 === \"object\" ? v2.value || v2.label || \"\" : v2 || \"\";\n    }\n    const v = (obj.custom_fields || {})[id];\n    return v && typeof v === \"object\" ? v.value || v.label || \"\" : v || \"\";\n  };\n  const endereco = org.address && typeof org.address === \"object\" ? org.address : {};\n  const siteBruto = String(lerCampo(org, \"PD_ORG_SITE\") || org.website || \"\").trim();\n  const site = siteBruto ? /^https?:\\/\\//i.test(siteBruto) ? siteBruto : \"https://\" + siteBruto : \"\";\n  const dominio = dominioDe(site);\n  const hostOk = dominio && /\\.[a-z]{2,}$/i.test(dominio) && !/^(\\d+\\.){3}\\d+$/.test(dominio) && !/localhost|\\.local$|\\.internal$/i.test(dominio);\n  const cidade = String(lerCampo(org, \"PD_ORG_CIDADE\") || endereco.locality || endereco.admin_area_level_2 || \"\").trim();\n  const uf = String(endereco.admin_area_level_1 || \"\").trim();\n  if (!cidade) motivos.push(\"cidade da organização vazia (campo PD_ORG_CIDADE ou endereço)\");\n  const nome = String(org.name || deal.title || \"\").trim();\n  const ab = safeJsonParse(valor(cfg, \"DIAG_ABREVIACOES_CIDADE\", \"{}\"), {});\n  return [{ json: {\n    continuar: motivos.length === 0,\n    motivos,\n    deal_id: dealId,\n    org_id: String(org.id || \"\"),\n    empresa: { nome, site: hostOk ? site : \"\", dominio: hostOk ? dominio : \"\", cidade, uf, bairros: [] },\n    temSite: !!hostOk,\n    abreviacoes: ab,\n    agora: (/* @__PURE__ */ new Date()).toISOString()\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "579d7780-b6f1-46d3-b5a7-1e3bba397f46",
+      "id": "74315836-93b3-40c1-b0ab-c5f67ad1083b",
       "name": "Liberado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1100,
+        1300,
         300
       ],
       "parameters": {
@@ -132,12 +146,12 @@
       }
     },
     {
-      "id": "c0c84aa9-6ef7-4bb4-b668-eb795ad0318d",
+      "id": "76ba45e1-3ece-4f58-a96d-59c4a5276c26",
       "name": "Tem site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1300,
+        1500,
         300
       ],
       "parameters": {
@@ -164,12 +178,12 @@
       }
     },
     {
-      "id": "f02bc76f-9047-4711-ab97-f317ae43ee37",
+      "id": "60020171-2c4a-4899-8bff-21448af63e04",
       "name": "Site — página inicial (Firecrawl)",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
       "position": [
-        1500,
+        1700,
         300
       ],
       "parameters": {
@@ -198,12 +212,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "1097495e-488e-4296-a781-c815ae9abf88",
+      "id": "6e73e16c-0488-4390-baa6-0250f1b862ac",
       "name": "PageSpeed (celular)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1700,
+        1900,
         300
       ],
       "parameters": {
@@ -240,12 +254,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6a4178b3-f81b-40e6-a10f-dada9c4a155a",
+      "id": "2274b960-f9da-4e93-8943-9c699393dd32",
       "name": "llms.txt",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1900,
+        2100,
         300
       ],
       "parameters": {
@@ -272,12 +286,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "bca5528d-9f81-4d0e-9128-3933d091ead9",
+      "id": "89f88a25-8093-40a3-9b84-3364f42f706f",
       "name": "Pedido — entender o negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1500,
+        1700,
         450
       ],
       "parameters": {
@@ -286,12 +300,12 @@
       }
     },
     {
-      "id": "1438650f-6ab5-4059-bab3-582f7d6e8c5e",
+      "id": "0ab417a1-0b81-4253-8cf7-0121c24008c0",
       "name": "Bloqueado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1300,
+        1500,
         450
       ],
       "parameters": {
@@ -300,12 +314,12 @@
       }
     },
     {
-      "id": "499116a4-4333-4b91-8d6c-6dffe19cc6b6",
+      "id": "3c3c0c49-39c4-40a6-b33b-09cd294fcda9",
       "name": "Claude — entender o negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1700,
+        1900,
         450
       ],
       "parameters": {
@@ -338,12 +352,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "82e2aa08-9256-4599-baf6-3be72d732b52",
+      "id": "8efff383-e18a-4b8a-a8d6-01b2d1f040aa",
       "name": "Termos de busca",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1900,
+        2100,
         450
       ],
       "parameters": {
@@ -352,12 +366,12 @@
       }
     },
     {
-      "id": "6eebe332-366e-4a1b-b2ab-a478f980aa3e",
+      "id": "7ee026d3-b0bc-4541-a58a-c10047875609",
       "name": "Semrush — volumes",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
       "position": [
-        2100,
+        2300,
         450
       ],
       "parameters": {
@@ -380,12 +394,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6469a7a3-96fb-4973-9b66-0aa41ca62a6a",
+      "id": "818f7fd7-b745-4c83-9360-fe347f22cc19",
       "name": "Tem site? (Semrush)",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2300,
+        2500,
         450
       ],
       "parameters": {
@@ -412,12 +426,12 @@
       }
     },
     {
-      "id": "76ec5907-35af-4758-aed7-3763625bc4a0",
+      "id": "018ddc15-9a35-408d-8e60-53f1c7436b3b",
       "name": "Semrush — palavras do site",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
       "position": [
-        2500,
+        2700,
         450
       ],
       "parameters": {
@@ -440,12 +454,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "b7b5a19f-1736-4866-a38f-1a7eb9924050",
+      "id": "7ba7ebf8-15d1-4235-8216-2ee3ed7d9f2d",
       "name": "Semrush — histórico",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
       "position": [
-        2700,
+        2900,
         450
       ],
       "parameters": {
@@ -468,26 +482,26 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "9a308857-1aa4-4553-a6ab-02a84a0339f9",
+      "id": "d5ec2039-b6ff-4899-98ba-9581ca490f01",
       "name": "Decidir modelo",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2500,
+        2700,
         600
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#decidir + lib/{util,prospeccao,diag_montar}. Edite a fonte no repositório, não este nó.\n// lib/prospeccao.js\nfunction semAcento(s) {\n  return String(s || \"\").normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").toLowerCase();\n}\nfunction n(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  const x = Number(v);\n  return Number.isFinite(x) ? x : null;\n}\nfunction mcpResultado(j) {\n  if (!j) return null;\n  if (j.error) return { erro: String(j.error.message || j.error) };\n  let x = j.result !== void 0 ? j.result : j;\n  if (x && x.isError) return { erro: JSON.stringify(x.content || x).slice(0, 300) };\n  if (x && x.structuredContent !== void 0) x = x.structuredContent;\n  else if (x && Array.isArray(x.content)) {\n    const p = x.content.map((c) => c.text);\n    x = p.length === 1 ? p[0] : p.join(\"\");\n  }\n  if (typeof x === \"string\") {\n    try {\n      x = JSON.parse(x);\n    } catch (e) {\n      return { texto: x };\n    }\n  }\n  return x;\n}\nfunction semrushLinhas(resp) {\n  const r = mcpResultado(resp);\n  if (!r) return [];\n  if (r.erro) return [];\n  const t = typeof r === \"string\" ? r : r.data !== void 0 ? r.data : r.texto;\n  if (Array.isArray(t)) return t;\n  const ls = String(t || \"\").trim().split(/\\r?\\n/).filter(Boolean);\n  if (ls.length < 2 || /^ERROR/i.test(ls[0])) return [];\n  const h = ls[0].split(\";\").map((s) => s.trim());\n  return ls.slice(1).map((l) => {\n    const v = l.split(\";\");\n    const o = {};\n    h.forEach((k, i) => {\n      o[k] = v[i] === void 0 ? \"\" : v[i];\n    });\n    return o;\n  });\n}\nfunction semrushErro(resp) {\n  const r = mcpResultado(resp);\n  if (!r) return \"sem resposta\";\n  if (r.erro) return r.erro;\n  const t = typeof r === \"string\" ? r : r.data !== void 0 ? r.data : r.texto;\n  return /^ERROR/i.test(String(t || \"\").trim()) ? String(t).trim().slice(0, 200) : \"\";\n}\nfunction ehMarca(termo, nomeEmpresa, dominio) {\n  const t = semAcento(termo).replace(/[^a-z0-9 ]/g, \" \");\n  const tj = t.replace(/ /g, \"\");\n  const miolo = semAcento(String(dominio || \"\").split(\".\")[0]).replace(/[^a-z0-9]/g, \"\");\n  const nomes = semAcento(nomeEmpresa).replace(/[^a-z0-9 ]/g, \" \").split(\" \").filter((p) => p.length >= 4 && !GENERICAS.includes(p));\n  if (miolo.length >= 4 && (tj.includes(miolo) || miolo.includes(tj) && tj.length >= 4)) return true;\n  return nomes.some((p) => t.split(\" \").includes(p));\n}\nvar GENERICAS = [\"clinica\", \"odontologia\", \"advocacia\", \"advogados\", \"escritorio\", \"consultoria\", \"engenharia\", \"medicina\", \"saude\", \"servicos\", \"comercio\", \"ltda\", \"grupo\", \"centro\", \"instituto\", \"digital\", \"brasil\", \"empresa\", \"solucoes\", \"associados\"];\nvar STOP = [\"de\", \"da\", \"do\", \"das\", \"dos\", \"em\", \"no\", \"na\", \"nos\", \"nas\", \"para\", \"pra\", \"a\", \"o\", \"e\", \"com\"];\nfunction chaveFamilia(termo, abreviacoes) {\n  const ab = abreviacoes || {};\n  let s = \" \" + semAcento(termo).replace(/[^a-z0-9 ]/g, \" \").replace(/\\s+/g, \" \").trim() + \" \";\n  Object.keys(ab).forEach((k) => {\n    s = s.split(\" \" + semAcento(k) + \" \").join(\" \" + semAcento(ab[k]) + \" \");\n  });\n  const ps = s.trim().split(\" \").filter((p) => p && !STOP.includes(p)).map((p) => p.length > 4 && /[^s]s$/.test(p) ? p.slice(0, -1) : p);\n  return Array.from(new Set(ps)).sort().join(\" \");\n}\nfunction agruparFamilias(buscas, abreviacoes) {\n  const fam = {};\n  (buscas || []).forEach((b) => {\n    if (!(n(b.volume) > 0)) return;\n    const k = chaveFamilia(b.termo, abreviacoes);\n    if (!fam[k] || n(b.volume) > n(fam[k].volume)) fam[k] = Object.assign({}, b, { volume: n(b.volume), variacoes: (fam[k] ? fam[k].variacoes : 0) + 1 });\n    else fam[k].variacoes += 1;\n  });\n  return Object.values(fam).sort((x, y) => y.volume - x.volume);\n}\nfunction citaCidade(termo, cidade, bairros, abreviacoes) {\n  const t = \" \" + semAcento(termo) + \" \";\n  const alvos = [cidade].concat(bairros || []).concat(Object.keys(abreviacoes || {}).filter((k) => semAcento((abreviacoes || {})[k]) === semAcento(cidade)));\n  return alvos.filter(Boolean).some((c) => t.includes(\" \" + semAcento(c) + \" \"));\n}\nfunction escolherModelo(temSite, organicas, minPalavras) {\n  if (!temSite) return \"GERAL\";\n  const naoMarca = n(organicas && organicas.naoMarca) || 0;\n  return naoMarca >= (n(minPalavras) || 20) ? \"SEOGEO\" : \"GERAL\";\n}\n\n// lib/diag_montar.js\nfunction procuraLocal(c) {\n  const e = c.empresa || {};\n  const ab = c.cfg && c.cfg.abreviacoes || {};\n  const locais = (c.volumes || []).filter((v) => citaCidade(v.termo, e.cidade, e.bairros, ab));\n  const fam = agruparFamilias(locais, ab);\n  const top = fam.slice(0, 5);\n  const total = fam.reduce((s, x) => s + x.volume, 0);\n  return { familias: fam, top, total };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const c = $(\"Preparar\").first().json;\n  const g = (n2) => {\n    try {\n      return $(n2).first().json;\n    } catch (x) {\n      return null;\n    }\n  };\n  const cfg0 = $(\"Ler configuração\").all();\n  const minPal = Number((cfg0.map((i) => i.json).find((r) => r.chave === \"DIAG_PROSP_MIN_PALAVRAS\" && r.status === \"CONFIGURADO\") || {}).valor || 20);\n  const vol = semrushLinhas(g(\"Semrush — volumes\")).map((l) => ({ termo: l.Keyword, volume: Number(l[\"Search Volume\"]) || 0 }));\n  const org = semrushLinhas(g(\"Semrush — palavras do site\")).map((l) => ({ termo: l.Keyword, posicao: Number(l.Position), volume: Number(l[\"Search Volume\"]) || 0, url: l.Url, trafego: Number(l.Traffic) || 0 }));\n  const hist = semrushLinhas(g(\"Semrush — histórico\")).map((l) => ({ data: l.Date, palavras: Number(l[\"Organic Keywords\"]) || 0, trafego: Number(l[\"Organic Traffic\"]) || 0 }));\n  const naoMarca = org.filter((r) => !ehMarca(r.termo, c.empresa.nome, c.empresa.dominio)).length;\n  const forcado = String($(\"Entrada\").first().json.modelo || \"\").toUpperCase();\n  const modelo = [\"GERAL\", \"SEOGEO\"].includes(forcado) ? forcado : escolherModelo(c.temSite, { naoMarca }, minPal);\n  const pr = procuraLocal({ empresa: c.empresa, volumes: vol, cfg: { abreviacoes: c.abreviacoes } });\n  const principal = pr.familias[0] ? pr.familias[0].termo : \"\";\n  return [{ json: {\n    modelo,\n    naoMarca,\n    volumes: vol,\n    organicas: org,\n    historico: hist,\n    principal,\n    seo: modelo === \"SEOGEO\",\n    geral: modelo === \"GERAL\",\n    avisos: [semrushErro(g(\"Semrush — volumes\")), semrushErro(g(\"Semrush — palavras do site\"))].filter((x) => x && !/NOTHING FOUND/i.test(x))\n  } }];\n})();\nreturn __resultado;"
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf14.js#decidir + lib/{util,prospeccao,diag_montar}. Edite a fonte no repositório, não este nó.\n// lib/prospeccao.js\nfunction semAcento(s) {\n  return String(s || \"\").normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").toLowerCase();\n}\nfunction n(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  const x = Number(v);\n  return Number.isFinite(x) ? x : null;\n}\nfunction mcpResultado(j) {\n  if (!j) return null;\n  if (j.error) return { erro: String(j.error.message || j.error) };\n  let x = j.result !== void 0 ? j.result : j;\n  if (x && x.isError) return { erro: JSON.stringify(x.content || x).slice(0, 300) };\n  if (x && x.structuredContent !== void 0) x = x.structuredContent;\n  else if (x && Array.isArray(x.content)) {\n    const p = x.content.map((c) => c.text);\n    x = p.length === 1 ? p[0] : p.join(\"\");\n  }\n  if (typeof x === \"string\") {\n    try {\n      x = JSON.parse(x);\n    } catch (e) {\n      return { texto: x };\n    }\n  }\n  return x;\n}\nfunction semrushLinhas(resp) {\n  const r = mcpResultado(resp);\n  if (!r) return [];\n  if (r.erro) return [];\n  const t = typeof r === \"string\" ? r : r.data !== void 0 ? r.data : r.texto;\n  if (Array.isArray(t)) return t;\n  const ls = String(t || \"\").trim().split(/\\r?\\n/).filter(Boolean);\n  if (ls.length < 2 || /^ERROR/i.test(ls[0])) return [];\n  const h = ls[0].split(\";\").map((s) => s.trim());\n  return ls.slice(1).map((l) => {\n    const v = l.split(\";\");\n    const o = {};\n    h.forEach((k, i) => {\n      o[k] = v[i] === void 0 ? \"\" : v[i];\n    });\n    return o;\n  });\n}\nfunction semrushErro(resp) {\n  const r = mcpResultado(resp);\n  if (!r) return \"sem resposta\";\n  if (r.erro) return r.erro;\n  const t = typeof r === \"string\" ? r : r.data !== void 0 ? r.data : r.texto;\n  return /^ERROR/i.test(String(t || \"\").trim()) ? String(t).trim().slice(0, 200) : \"\";\n}\nfunction ehMarca(termo, nomeEmpresa, dominio) {\n  const t = semAcento(termo).replace(/[^a-z0-9 ]/g, \" \");\n  const tj = t.replace(/ /g, \"\");\n  const miolo = semAcento(String(dominio || \"\").split(\".\")[0]).replace(/[^a-z0-9]/g, \"\");\n  const nomes = semAcento(nomeEmpresa).replace(/[^a-z0-9 ]/g, \" \").split(\" \").filter((p) => p.length >= 4 && !GENERICAS.includes(p));\n  if (miolo.length >= 4 && (tj.includes(miolo) || miolo.includes(tj) && tj.length >= 4)) return true;\n  return nomes.some((p) => t.split(\" \").includes(p));\n}\nvar GENERICAS = [\"clinica\", \"odontologia\", \"advocacia\", \"advogados\", \"escritorio\", \"consultoria\", \"engenharia\", \"medicina\", \"saude\", \"servicos\", \"comercio\", \"ltda\", \"grupo\", \"centro\", \"instituto\", \"digital\", \"brasil\", \"empresa\", \"solucoes\", \"associados\"];\nvar STOP = [\"de\", \"da\", \"do\", \"das\", \"dos\", \"em\", \"no\", \"na\", \"nos\", \"nas\", \"para\", \"pra\", \"a\", \"o\", \"e\", \"com\"];\nfunction chaveFamilia(termo, abreviacoes) {\n  const ab = abreviacoes || {};\n  let s = \" \" + semAcento(termo).replace(/[^a-z0-9 ]/g, \" \").replace(/\\s+/g, \" \").trim() + \" \";\n  Object.keys(ab).forEach((k) => {\n    s = s.split(\" \" + semAcento(k) + \" \").join(\" \" + semAcento(ab[k]) + \" \");\n  });\n  const ps = s.trim().split(\" \").filter((p) => p && !STOP.includes(p)).map((p) => p.length > 4 && /[^s]s$/.test(p) ? p.slice(0, -1) : p);\n  return Array.from(new Set(ps)).sort().join(\" \");\n}\nfunction agruparFamilias(buscas, abreviacoes) {\n  const fam = {};\n  (buscas || []).forEach((b) => {\n    if (!(n(b.volume) > 0)) return;\n    const k = chaveFamilia(b.termo, abreviacoes);\n    if (!fam[k] || n(b.volume) > n(fam[k].volume)) fam[k] = Object.assign({}, b, { volume: n(b.volume), variacoes: (fam[k] ? fam[k].variacoes : 0) + 1 });\n    else fam[k].variacoes += 1;\n  });\n  return Object.values(fam).sort((x, y) => y.volume - x.volume);\n}\nfunction citaCidade(termo, cidade, bairros, abreviacoes) {\n  const t = \" \" + semAcento(termo) + \" \";\n  const alvos = [cidade].concat(bairros || []).concat(Object.keys(abreviacoes || {}).filter((k) => semAcento((abreviacoes || {})[k]) === semAcento(cidade)));\n  return alvos.filter(Boolean).some((c) => t.includes(\" \" + semAcento(c) + \" \"));\n}\nfunction escolherModelo(temSite, organicas, minPalavras) {\n  if (!temSite) return \"GERAL\";\n  const naoMarca = n(organicas && organicas.naoMarca) || 0;\n  return naoMarca >= (n(minPalavras) || 20) ? \"SEOGEO\" : \"GERAL\";\n}\n\n// lib/diag_montar.js\nfunction procuraLocal(c) {\n  const e = c.empresa || {};\n  const ab = c.cfg && c.cfg.abreviacoes || {};\n  const locais = (c.volumes || []).filter((v) => citaCidade(v.termo, e.cidade, e.bairros, ab));\n  const fam = agruparFamilias(locais, ab);\n  const top = fam.slice(0, 5);\n  const total = fam.reduce((s, x) => s + x.volume, 0);\n  return { familias: fam, top, total };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const c = $(\"Preparar\").first().json;\n  const g = (n2) => {\n    try {\n      return $(n2).first().json;\n    } catch (x) {\n      return null;\n    }\n  };\n  const cfg0 = $(\"Ler configuração\").all();\n  const minPal = Number((cfg0.map((i) => i.json).find((r) => r.chave === \"DIAG_PROSP_MIN_PALAVRAS\" && r.status === \"CONFIGURADO\") || {}).valor || 20);\n  const vol = semrushLinhas(g(\"Semrush — volumes\")).map((l) => ({ termo: l.Keyword, volume: Number(l[\"Search Volume\"]) || 0 }));\n  const org = semrushLinhas(g(\"Semrush — palavras do site\")).map((l) => ({ termo: l.Keyword, posicao: Number(l.Position), volume: Number(l[\"Search Volume\"]) || 0, url: l.Url, trafego: Number(l.Traffic) || 0 }));\n  const hist = semrushLinhas(g(\"Semrush — histórico\")).map((l) => ({ data: l.Date, palavras: Number(l[\"Organic Keywords\"]) || 0, trafego: Number(l[\"Organic Traffic\"]) || 0 }));\n  const naoMarca = org.filter((r) => !ehMarca(r.termo, c.empresa.nome, c.empresa.dominio)).length;\n  const forcado = String($(\"Pedido\").first().json.modelo || \"\").toUpperCase();\n  const modelo = [\"GERAL\", \"SEOGEO\"].includes(forcado) ? forcado : escolherModelo(c.temSite, { naoMarca }, minPal);\n  const pr = procuraLocal({ empresa: c.empresa, volumes: vol, cfg: { abreviacoes: c.abreviacoes } });\n  const principal = pr.familias[0] ? pr.familias[0].termo : \"\";\n  return [{ json: {\n    modelo,\n    naoMarca,\n    volumes: vol,\n    organicas: org,\n    historico: hist,\n    principal,\n    seo: modelo === \"SEOGEO\",\n    geral: modelo === \"GERAL\",\n    avisos: [semrushErro(g(\"Semrush — volumes\")), semrushErro(g(\"Semrush — palavras do site\"))].filter((x) => x && !/NOTHING FOUND/i.test(x))\n  } }];\n})();\nreturn __resultado;"
       }
     },
     {
-      "id": "56e08166-3de4-41a4-8604-6006fc14aa9f",
+      "id": "57013169-1952-46bd-91ad-7e0fb0b0ea27",
       "name": "Tem busca principal?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2700,
+        2900,
         600
       ],
       "parameters": {
@@ -514,12 +528,12 @@
       }
     },
     {
-      "id": "ae6c4bb4-41ae-435d-916d-daa0c190717b",
+      "id": "181c6957-4cd8-44ab-aea1-c056f980d18e",
       "name": "Semrush — SERP da busca principal",
       "type": "@n8n/n8n-nodes-langchain.mcpClient",
       "typeVersion": 1.1,
       "position": [
-        2900,
+        3100,
         600
       ],
       "parameters": {
@@ -542,12 +556,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "abe68975-6db5-4e71-bec1-fdc378a662a1",
+      "id": "c02b2f05-f1e6-4c9c-b422-052c8797cb7b",
       "name": "Modelo SEO/GEO?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2900,
+        3100,
         750
       ],
       "parameters": {
@@ -574,12 +588,12 @@
       }
     },
     {
-      "id": "a64496da-eafb-4373-b7ef-20bc165cec7a",
+      "id": "2b2ac2ee-f804-4a6d-9f78-d998661b3ab8",
       "name": "Rastreio — iniciar",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
       "position": [
-        3100,
+        3300,
         750
       ],
       "parameters": {
@@ -605,12 +619,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "fe45a731-cb44-4db0-984d-5775172d3964",
+      "id": "d6ee953a-1db2-4325-aec2-3b7c6341284e",
       "name": "Aguardar rastreio",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3300,
+        3500,
         750
       ],
       "parameters": {
@@ -620,12 +634,12 @@
       }
     },
     {
-      "id": "88202175-2685-47bf-b1ab-f7975a594d39",
+      "id": "6f926ebe-6afa-4fdb-95c1-32db3ad9965e",
       "name": "Rastreio — status",
       "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
       "typeVersion": 1,
       "position": [
-        3500,
+        3700,
         750
       ],
       "parameters": {
@@ -638,12 +652,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "0072d866-2f99-494a-82e0-c8145273843b",
+      "id": "f3d9e489-9ece-4bf4-811b-60a15a950d42",
       "name": "Rastreio terminou?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3700,
+        3900,
         750
       ],
       "parameters": {
@@ -670,12 +684,12 @@
       }
     },
     {
-      "id": "b59d7a29-ec40-48d9-a2c2-5c454ef28fa5",
+      "id": "44eaf968-423f-4923-8f7d-e3d06a1f610c",
       "name": "Pergunta às IAs",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3900,
+        4100,
         750
       ],
       "parameters": {
@@ -684,12 +698,12 @@
       }
     },
     {
-      "id": "01769ec0-3656-475f-9715-7d0172a9065b",
+      "id": "0dbd5ac4-8dce-4770-a34c-2f5d423e7898",
       "name": "Entrada do mapa",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3100,
+        3300,
         900
       ],
       "parameters": {
@@ -698,19 +712,19 @@
       }
     },
     {
-      "id": "b7f3f422-edc1-46ca-ab4d-948ac343f5a8",
+      "id": "b3c91385-5a8d-4d98-8958-c429e61f1a92",
       "name": "Google Maps — busca (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        3300,
+        3500,
         900
       ],
       "parameters": {
         "method": "POST",
         "url": "https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "genericAuthType": "httpTemplatedCustomAuth",
         "sendQuery": true,
         "specifyQuery": "keypair",
         "queryParameters": {
@@ -735,19 +749,19 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "e4d0eeb9-a4fe-4ab1-b7e3-de174e61d766",
+      "id": "eb84bdc5-a896-487b-8168-f61ab26a2b3d",
       "name": "Google Maps — cliente (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        3500,
+        3700,
         900
       ],
       "parameters": {
         "method": "POST",
         "url": "https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "genericAuthType": "httpTemplatedCustomAuth",
         "sendQuery": true,
         "specifyQuery": "keypair",
         "queryParameters": {
@@ -772,12 +786,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "576203b7-d771-4a59-b5d3-2052ffb37955",
+      "id": "7c6b89ad-97bc-416f-b0a0-6f22faa889ff",
       "name": "Entrada do Instagram",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3700,
+        3900,
         900
       ],
       "parameters": {
@@ -786,12 +800,12 @@
       }
     },
     {
-      "id": "dc9dcfb1-dbc7-42a5-813e-bbb7b7de1a98",
+      "id": "cc1ee889-4a96-4b05-87bc-95432ed2026a",
       "name": "Tem Instagram?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3900,
+        4100,
         900
       ],
       "parameters": {
@@ -818,19 +832,19 @@
       }
     },
     {
-      "id": "985b5137-3ff8-4a61-afb0-a2a33ccce27d",
+      "id": "f4b3b6a2-25f0-4ff9-b96c-da738cc27b77",
       "name": "Instagram (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        4100,
+        4300,
         900
       ],
       "parameters": {
         "method": "POST",
         "url": "https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "genericAuthType": "httpTemplatedCustomAuth",
         "sendQuery": true,
         "specifyQuery": "keypair",
         "queryParameters": {
@@ -855,12 +869,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "d0014f73-0860-498e-ad83-860f0f92d7cf",
+      "id": "80dae133-6dd8-4ed9-827a-5d6bfaa539b3",
       "name": "ChatGPT (busca na web)",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        4100,
+        4300,
         750
       ],
       "parameters": {
@@ -896,12 +910,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "c27a25d1-6a87-4212-9400-271d3121b7f3",
+      "id": "dab9e8c2-53c0-49cc-b409-394099f5db94",
       "name": "Gemini (Google Search)",
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1.2,
       "position": [
-        4300,
+        4500,
         750
       ],
       "parameters": {
@@ -933,12 +947,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "e7e7852f-2be8-46ca-a473-a3201537b577",
+      "id": "b3707c30-4a1a-4bc0-a024-e689ade1b5fd",
       "name": "Pedido de temas",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4500,
+        4700,
         750
       ],
       "parameters": {
@@ -947,12 +961,12 @@
       }
     },
     {
-      "id": "7887bb6a-9274-446f-8889-2a2059c72afa",
+      "id": "1b823fed-2135-4042-a0c2-1038ae101318",
       "name": "Claude — temas e páginas",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        4700,
+        4900,
         750
       ],
       "parameters": {
@@ -986,12 +1000,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "d3287ecb-3ec7-4271-99d9-1d5d8fa25ef8",
+      "id": "f95c8f9f-a71b-4cfb-a7ae-1ad1063c63c5",
       "name": "Montar diagnóstico",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4900,
+        5100,
         750
       ],
       "parameters": {
@@ -1000,12 +1014,12 @@
       }
     },
     {
-      "id": "3e367907-b4b6-41b0-b885-13e5c6d16e13",
+      "id": "f46bef9b-709e-4203-95a5-3b9b19628b39",
       "name": "Gerar PDF (PDF.co)",
       "type": "n8n-nodes-pdfco.PDFco Api",
       "typeVersion": 1.1,
       "position": [
-        5100,
+        5300,
         750
       ],
       "parameters": {
@@ -1025,12 +1039,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "74c494e2-56ea-4eda-a586-25d0faae0d43",
+      "id": "5b31d937-16de-4ced-a59e-56f2378af723",
       "name": "Link do PDF",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5300,
+        5500,
         750
       ],
       "parameters": {
@@ -1039,12 +1053,12 @@
       }
     },
     {
-      "id": "f3225c43-0367-4d60-a480-0b1e6a83ea23",
+      "id": "e05cf3d7-236d-465e-ae28-6e18c3fe4b81",
       "name": "PDF gerado?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        5500,
+        5700,
         750
       ],
       "parameters": {
@@ -1071,12 +1085,12 @@
       }
     },
     {
-      "id": "4a2f5d8d-c20f-49fe-9438-2cedc81e7693",
+      "id": "ee5836de-28be-45be-b3f3-89552c0d7784",
       "name": "Baixar PDF",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        5700,
+        5900,
         750
       ],
       "parameters": {
@@ -1094,12 +1108,12 @@
       }
     },
     {
-      "id": "e73ea8b7-7d52-499d-9a62-bbff7f4cb8ff",
+      "id": "b168cb3f-a4be-44ac-999e-d2469f32d29f",
       "name": "Salvar no Drive",
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        5900,
+        6100,
         750
       ],
       "parameters": {
@@ -1122,12 +1136,12 @@
       "credentials": {}
     },
     {
-      "id": "212d5485-c68f-48f3-9524-7ed7100f9ae0",
+      "id": "e508aeb8-577b-4304-914a-21876c72bb66",
       "name": "Campos do negócio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5900,
+        6100,
         900
       ],
       "parameters": {
@@ -1136,12 +1150,12 @@
       }
     },
     {
-      "id": "45318a66-a8f7-4792-a5cb-f089008e8c24",
+      "id": "75a36c2f-23e6-4acc-adf5-e579af26cd95",
       "name": "Sem PDF",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5700,
+        5900,
         900
       ],
       "parameters": {
@@ -1150,12 +1164,12 @@
       }
     },
     {
-      "id": "220e9d0a-0eab-4404-8cdb-c7409098ac69",
+      "id": "9ea5f352-8a54-4cad-a7be-ca4103f19935",
       "name": "Atualizar negócio?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6100,
+        6300,
         900
       ],
       "parameters": {
@@ -1182,12 +1196,12 @@
       }
     },
     {
-      "id": "31f2950b-b10a-41b9-ae24-991540c3947e",
+      "id": "d473344d-3b3c-4e04-a5f9-f0b800a61cd6",
       "name": "Atualizar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        6300,
+        6500,
         900
       ],
       "parameters": {
@@ -1207,12 +1221,12 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "e67fbfdf-cf68-41fe-a17d-07571f32cbff",
+      "id": "55fa312d-986d-43f1-8bae-92f4ef92b0cf",
       "name": "Nota no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        6300,
+        6500,
         1050
       ],
       "parameters": {
@@ -1232,13 +1246,32 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "27ff4dcc-6e31-4274-b162-ca275793ae3b",
-      "name": "Sticky Note 27ff4dcc",
+      "id": "1a3d75ee-fa23-49c3-9bd4-0ccfa499d0cc",
+      "name": "Executar (interno)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        450
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atom/diagnostico",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "821c698e-5175-46cb-8c9f-625c5ed7f2f8",
+      "credentials": {}
+    },
+    {
+      "id": "78874d0d-1300-414c-bcc2-336620b15e87",
+      "name": "Sticky Note 78874d0d",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         100,
-        450
+        600
       ],
       "parameters": {
         "content": "## ATOM_14 — Diagnóstico de prospecção\nGera o PDF de um dos modelos aprovados (docs/13): **Geral** (negócio local: mapa, avaliações, site, Instagram, IAs) ou **SEO/GEO** (site com presença orgânica ≥ DIAG_PROSP_MIN_PALAVRAS palavras fora da marca).\n\nFontes: Pipedrive, Semrush (MCP), PageSpeed, Firecrawl, Apify (Maps/Instagram), ChatGPT e Gemini com busca, Claude (só classificação; contagens conferidas no código). Fonte indisponível = página omitida ou \"não medido\" — nada é inventado.\n\nSaída: PDF no Drive (GDRIVE_PASTA_DIAGNOSTICOS_ID), campos de diagnóstico e nota no negócio. **Nada é enviado ao prospect.**\n\nPortão: DIAG_PROSP_MODO=ATIVO + MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).",
@@ -1248,6 +1281,17 @@
   ],
   "connections": {
     "Entrada": {
+      "main": [
+        [
+          {
+            "node": "Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedido": {
       "main": [
         [
           {
@@ -1810,6 +1854,17 @@
         [
           {
             "node": "Nota no negócio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar (interno)": {
+      "main": [
+        [
+          {
+            "node": "Pedido",
             "type": "main",
             "index": 0
           }

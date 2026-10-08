@@ -4,6 +4,22 @@ const entrada = trigger({
   output: [{ tipo: 'DIAG_PROSPECCAO', deal_id: '100', forcar: true, modelo: '' }]
 });
 
+const webhook = trigger({
+  type: 'n8n-nodes-base.webhook', version: 2.1,
+  config: {
+    name: 'Executar (interno)',
+    parameters: { httpMethod: 'POST', path: 'atom/diagnostico', authentication: 'headerAuth', responseMode: 'onReceived', options: {} },
+    credentials: { httpHeaderAuth: newCredential('ATOM Webhook interno (header)') }
+  },
+  output: [{ body: { deal_id: '100', modelo: '' } }]
+});
+
+const pedido = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Pedido', parameters: { mode: 'runOnceForAllItems', jsCode: @@{CODE('wf14', 'pedido')}@@ } },
+  output: [{ deal_id: '100', modelo: '', forcar: true, origem: 'ATOM_01' }]
+});
+
 const lerConfig = node({
   type: 'n8n-nodes-base.dataTable', version: 1.1,
   config: { name: 'Ler configuração', executeOnce: true, parameters: { resource: 'row', operation: 'get', dataTableId: @@{TABLE('atom_config')}@@, returnAll: true } },
@@ -14,7 +30,7 @@ const negocio = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
     name: 'Negócio (Pipedrive)', executeOnce: true, onError: 'continueRegularOutput',
-    parameters: { method: 'GET', url: expr("https://api.pipedrive.com/api/v2/deals/{{ $('Entrada').first().json.deal_id }}"), authentication: 'predefinedCredentialType', nodeCredentialType: 'pipedriveApi', options: { timeout: 20000 } },
+    parameters: { method: 'GET', url: expr("https://api.pipedrive.com/api/v2/deals/{{ $('Pedido').first().json.deal_id }}"), authentication: 'predefinedCredentialType', nodeCredentialType: 'pipedriveApi', options: { timeout: 20000 } },
     credentials: { pipedriveApi: newCredential('ATOM Pipedrive API') }
   },
   output: [{ success: true, data: { id: 100, title: 'Negócio fictício', org_id: 537, value: 1500 } }]
@@ -190,10 +206,10 @@ const mapaBusca = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
     name: 'Google Maps — busca (Apify)', executeOnce: true, onError: 'continueRegularOutput', alwaysOutputData: true,
-    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpHeaderAuth',
+    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
       sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'timeout', value: '240' }] },
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Entrada do mapa').first().json.busca) }}"), options: { timeout: 300000 } },
-    credentials: { httpHeaderAuth: newCredential('ATOM Apify (token)') }
+    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Apify (token)') }
   },
   output: [{ title: 'Concorrente A', totalScore: 4.9, reviewsCount: 312, imagesCount: 140, website: 'https://a.com.br', reviews: [] }]
 });
@@ -201,10 +217,10 @@ const mapaCliente = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
     name: 'Google Maps — cliente (Apify)', executeOnce: true, onError: 'continueRegularOutput', alwaysOutputData: true,
-    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpHeaderAuth',
+    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
       sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'timeout', value: '240' }] },
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Entrada do mapa').first().json.cliente) }}"), options: { timeout: 300000 } },
-    credentials: { httpHeaderAuth: newCredential('ATOM Apify (token)') }
+    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Apify (token)') }
   },
   output: [{ title: 'Empresa Fictícia', totalScore: 4.6, reviewsCount: 48, imagesCount: 22, reviews: [] }]
 });
@@ -219,10 +235,10 @@ const instagram = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
     name: 'Instagram (Apify)', executeOnce: true, onError: 'continueRegularOutput', alwaysOutputData: true,
-    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpHeaderAuth',
+    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth',
       sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'timeout', value: '240' }] },
       sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Entrada do Instagram').first().json.corpo) }}"), options: { timeout: 300000 } },
-    credentials: { httpHeaderAuth: newCredential('ATOM Apify (token)') }
+    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Apify (token)') }
   },
   output: [{ username: 'empresaficticia', followersCount: 3100, biography: '', externalUrl: '', latestPosts: [] }]
 });
@@ -361,6 +377,7 @@ const notaFixa = sticky('## ATOM_14 — Diagnóstico de prospecção\nGera o PDF
 
 export default workflow('atom-14', 'ATOM_14_Diagnostico_Prospeccao', { settings: { timezone: 'America/Sao_Paulo', executionOrder: 'v1', callerPolicy: 'workflowsFromSameOwner', executionTimeout: 1800 } })
   .add(entrada)
+  .to(pedido)
   .to(lerConfig)
   .to(negocio)
   .to(organizacao)
@@ -389,4 +406,5 @@ export default workflow('atom-14', 'ATOM_14_Diagnostico_Prospeccao', { settings:
   .add(campos.to(atualizar
     .onTrue(patchDeal.to(nota))
     .onFalse(nota)))
+  .add(webhook.to(pedido))
   .add(notaFixa);

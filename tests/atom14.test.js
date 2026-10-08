@@ -25,13 +25,13 @@ const CONFIG = cfg({ DIAG_PROSP_MODO: 'ATIVO', MODO_EXECUCAO: 'SANDBOX', SANDBOX
 const mcp = (csv) => [{ content: [{ type: 'text', text: JSON.stringify({ data: csv, metadata: {} }) }] }];
 
 test('ATOM_14 Preparar: portão e dados da organização', () => {
-  const nos = { 'Ler configuração': CONFIG, Entrada: [{ deal_id: '100' }], 'Negócio (Pipedrive)': [{ data: { id: 100, title: 'X', org_id: 5 } }],
+  const nos = { 'Ler configuração': CONFIG, Pedido: [{ deal_id: '100' }], 'Negócio (Pipedrive)': [{ data: { id: 100, title: 'X', org_id: 5 } }],
     'Organização (Pipedrive)': [{ data: { id: 5, name: 'Clínica X', website: 'clinicax.com.br', custom_fields: { '7bbb3556c377a60277b9f2e02523663b031d032a': 'Belo Horizonte' }, address: { admin_area_level_1: 'MG' } } }] };
   const [p] = executarNo('Preparar', { nos });
   assert.equal(p.continuar, true, p.motivos.join(';'));
   assert.equal(p.empresa.dominio, 'clinicax.com.br');
   assert.equal(p.empresa.cidade, 'Belo Horizonte');
-  const fora = executarNo('Preparar', { nos: Object.assign({}, nos, { Entrada: [{ deal_id: '999' }], 'Negócio (Pipedrive)': [{ data: { id: 999, org_id: 5 } }] }) })[0];
+  const fora = executarNo('Preparar', { nos: Object.assign({}, nos, { Pedido: [{ deal_id: '999' }], 'Negócio (Pipedrive)': [{ data: { id: 999, org_id: 5 } }] }) })[0];
   assert.equal(fora.continuar, false);
   assert.match(fora.motivos.join(';'), /SANDBOX/);
   const ip = executarNo('Preparar', { nos: Object.assign({}, nos, { 'Organização (Pipedrive)': [{ data: { id: 5, name: 'X', website: 'http://10.0.0.1', custom_fields: { '7bbb3556c377a60277b9f2e02523663b031d032a': 'BH' } } }] }) })[0];
@@ -46,7 +46,7 @@ test('ATOM_14 ponta a ponta (dados simulados): termos → modelo → HTML', () =
   assert.ok(!t.phrase.includes('dentista sem cidade'));
 
   const org = 'Keyword;Position;Search Volume;Url;Traffic\nclinica x;1;90;https://clinicax.com.br/;50\n' + Array.from({ length: 25 }, (_, i) => 'termo servico ' + i + ';' + (5 + i) + ';100;https://clinicax.com.br/s' + i + ';3').join('\n') + '\n';
-  const nosBase = { Preparar: [prep], 'Ler configuração': CONFIG, Entrada: [{ deal_id: '100' }], 'Termos de busca': [t],
+  const nosBase = { Preparar: [prep], 'Ler configuração': CONFIG, Pedido: [{ deal_id: '100' }], 'Termos de busca': [t],
     'Semrush — volumes': mcp('Keyword;Search Volume\ndentista belo horizonte;1600\ndentista bh;720\nimplante dentário belo horizonte;260\n'),
     'Semrush — palavras do site': mcp(org), 'Semrush — histórico': mcp('Organic Keywords;Organic Traffic;Date\n612;683;20260915\n631;716;20260815\n645;773;20260715\n') };
   const [d] = executarNo('Decidir modelo', { nos: nosBase });
@@ -54,7 +54,7 @@ test('ATOM_14 ponta a ponta (dados simulados): termos → modelo → HTML', () =
   assert.equal(d.principal, 'dentista belo horizonte');
 
   // Geral forçado, sem Apify (fontes indisponíveis viram aviso, não erro)
-  const [dg] = executarNo('Decidir modelo', { nos: Object.assign({}, nosBase, { Entrada: [{ deal_id: '100', modelo: 'GERAL' }] }) });
+  const [dg] = executarNo('Decidir modelo', { nos: Object.assign({}, nosBase, { Pedido: [{ deal_id: '100', modelo: 'GERAL' }] }) });
   assert.equal(dg.modelo, 'GERAL');
   const comum = { 'PageSpeed (celular)': [{ lighthouseResult: { finalUrl: 'https://clinicax.com.br/', categories: { performance: { score: 0.41 } }, audits: { 'largest-contentful-paint': { numericValue: 9100 } } } }],
     'Site — página inicial (Firecrawl)': [{ data: { markdown: '# Clínica X', rawHtml: '<a href="tel:1">t</a>' } }], 'llms.txt': [{ statusCode: 404, body: '' }],

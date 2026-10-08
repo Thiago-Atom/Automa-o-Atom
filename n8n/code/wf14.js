@@ -2,9 +2,15 @@
 // Coleta dados reais (Pipedrive, Semrush, PageSpeed, Firecrawl, Apify, IAs), monta um dos modelos aprovados
 // (Geral ou SEO/GEO), gera PDF, salva no Drive e registra o link no negócio. Nada é enviado ao prospect.
 
+//#region pedido
+const viaWebhook = (() => { try { return $('Executar (interno)').first().json.body || null; } catch (x) { return null; } })();
+const e = viaWebhook || (() => { try { return $('Entrada').first().json; } catch (x) { return {}; } })();
+return [{ json: { deal_id: String(e.deal_id || ''), modelo: String(e.modelo || ''), forcar: !!e.forcar, origem: viaWebhook ? 'WEBHOOK_INTERNO' : 'ATOM_01' } }];
+//#endregion
+
 //#region preparar @include util,config,prospeccao
 const cfg = ATOM_CONFIG.montar($('Ler configuração').all());
-const e = $('Entrada').first().json;
+const e = $('Pedido').first().json;
 const g = (n) => { try { return $(n).first().json; } catch (x) { return null; } };
 const deal = (g('Negócio (Pipedrive)') || {}).data || {};
 const org = (g('Organização (Pipedrive)') || {}).data || {};
@@ -82,7 +88,7 @@ const vol = ATOM_PROSP.semrushLinhas(g('Semrush — volumes')).map((l) => ({ ter
 const org = ATOM_PROSP.semrushLinhas(g('Semrush — palavras do site')).map((l) => ({ termo: l.Keyword, posicao: Number(l.Position), volume: Number(l['Search Volume']) || 0, url: l.Url, trafego: Number(l.Traffic) || 0 }));
 const hist = ATOM_PROSP.semrushLinhas(g('Semrush — histórico')).map((l) => ({ data: l.Date, palavras: Number(l['Organic Keywords']) || 0, trafego: Number(l['Organic Traffic']) || 0 }));
 const naoMarca = org.filter((r) => !ATOM_PROSP.ehMarca(r.termo, c.empresa.nome, c.empresa.dominio)).length;
-const forcado = String($('Entrada').first().json.modelo || '').toUpperCase();
+const forcado = String($('Pedido').first().json.modelo || '').toUpperCase();
 const modelo = ['GERAL', 'SEOGEO'].includes(forcado) ? forcado : ATOM_PROSP.escolherModelo(c.temSite, { naoMarca }, minPal);
 const pr = ATOM_DIAG_MONTAR.procuraLocal({ empresa: c.empresa, volumes: vol, cfg: { abreviacoes: c.abreviacoes } });
 const principal = pr.familias[0] ? pr.familias[0].termo : '';

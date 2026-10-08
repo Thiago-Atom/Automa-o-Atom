@@ -463,9 +463,9 @@
   },
   {
     "chave": "DIAGNOSTICO_MODO",
-    "valor": "ROTINA_EXISTENTE",
+    "valor": "PROSPECCAO_ATOM",
     "status": "CONFIGURADO",
-    "descricao": "PADRAO_ATOM (modelo aprovado — não fornecido), ROTINA_EXISTENTE (workflow \"Análise de Sites\" — não acessível via MCP) ou PROVISORIO (proposta).",
+    "descricao": "PROSPECCAO_ATOM (ATOM_14 gera o diagnóstico com os modelos aprovados em 2026-10; ATOM_02 só valida o site), PROVISORIO, PADRAO_ATOM ou ROTINA_EXISTENTE.",
     "usado_por": "ATOM_02"
   },
   {
@@ -477,10 +477,10 @@
   },
   {
     "chave": "DIAGNOSTICO_PADRAO_VERSAO",
-    "valor": "",
-    "status": "PENDENTE",
-    "descricao": "Versão do diagnóstico padrão aprovado da Atom (quando fornecido).",
-    "usado_por": "ATOM_02"
+    "valor": "ATOM-2026-10",
+    "status": "CONFIGURADO",
+    "descricao": "Versão dos modelos de diagnóstico aprovados (Geral e SEO/GEO, docs/13).",
+    "usado_por": "ATOM_14"
   },
   {
     "chave": "ANTHROPIC_MODEL",
@@ -894,5 +894,145 @@
     "status": "CONFIGURADO",
     "descricao": "ID do workflow ATOM_00_Inspecionar_Controlle (somente leitura).",
     "usado_por": "manual"
+  },
+  {
+    "chave": "WF_ATOM_14",
+    "valor": "wQZr43bZcwreJzFJ",
+    "status": "CONFIGURADO",
+    "descricao": "ID do workflow ATOM_14_Diagnostico_Prospeccao",
+    "usado_por": "ATOM_01"
+  },
+  {
+    "chave": "DIAG_PROSP_MODO",
+    "valor": "ATIVO",
+    "status": "CONFIGURADO",
+    "descricao": "ATIVO ou DESLIGADO: liga o ATOM_14 (diagnóstico de prospecção). Respeita MODO_EXECUCAO/SANDBOX_DEAL_IDS.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_PROSP_AO_CRIAR",
+    "valor": "true",
+    "status": "CONFIGURADO",
+    "descricao": "true: gera o diagnóstico quando um negócio é criado no Pipedrive (além do campo \"pedir nova execução\"). Cada geração consome Semrush, Apify, PDF.co e IAs.",
+    "usado_por": "ATOM_01"
+  },
+  {
+    "chave": "GDRIVE_PASTA_DIAGNOSTICOS_ID",
+    "valor": "1hQsF-wQlD2nQ7uvg5SSqAXz50C34PEFR",
+    "status": "CONFIGURADO",
+    "descricao": "Pasta do Drive \"ATOM — Diagnósticos de prospecção\" onde os PDFs são salvos.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_ASSETS_BASE_URL",
+    "valor": "https://raw.githubusercontent.com/thiago-atom/automa-o-atom/04917f4115dab8875d5c4aba4cea37ec75746c95/n8n/assets/diagnostico/",
+    "status": "CONFIGURADO",
+    "descricao": "Imagens fixas dos modelos (repositório público, fixado num commit).",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_PROSP_MODELO_CLAUDE",
+    "valor": "claude-opus-5-5",
+    "status": "CONFIGURADO",
+    "descricao": "Modelo Claude usado para sugerir buscas e agrupar temas das avaliações (contagens conferidas em código).",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_IA_MODELO_OPENAI",
+    "valor": "",
+    "status": "PENDENTE",
+    "descricao": "ID do modelo OpenAI para a pergunta \"ChatGPT\" (busca na web). Sem ele, a coluna ChatGPT sai como \"não consultado\".",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_IA_MODELO_GEMINI",
+    "valor": "models/gemini-3-flash-preview",
+    "status": "CONFIGURADO",
+    "descricao": "Modelo Gemini (padrão do nó do n8n) para a pergunta com Google Search.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_PROSP_MIN_PALAVRAS",
+    "valor": "20",
+    "status": "CONFIGURADO",
+    "descricao": "Mínimo de palavras orgânicas fora da marca para usar o modelo SEO/GEO; abaixo disso, Geral.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_TAXA_CONTATO",
+    "valor": "0.03",
+    "status": "CONFIGURADO",
+    "descricao": "Premissa da página \"Quanto isso vale\" (modelo Geral): % de quem procura que entra em contato.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_TAXA_FECHAMENTO",
+    "valor": "0.25",
+    "status": "CONFIGURADO",
+    "descricao": "Premissa da página \"Quanto isso vale\": % de contatos que fecham. A página só sai com ticket médio informado.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_META_SEGUNDOS",
+    "valor": "3",
+    "status": "CONFIGURADO",
+    "descricao": "Meta ATOM de tempo para abrir no celular (LCP do PageSpeed).",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_LIMITE_RASTREIO",
+    "valor": "40",
+    "status": "CONFIGURADO",
+    "descricao": "Máximo de páginas rastreadas (Firecrawl) no modelo SEO/GEO.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_MIN_PALAVRAS_PAGINA",
+    "valor": "250",
+    "status": "CONFIGURADO",
+    "descricao": "Abaixo disso, a página conta como \"pouquíssimo texto\".",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_ABREVIACOES_CIDADE",
+    "valor": "{\"bh\":\"belo horizonte\",\"sp\":\"sao paulo\",\"rj\":\"rio de janeiro\",\"bsb\":\"brasilia\",\"poa\":\"porto alegre\",\"gyn\":\"goiania\",\"df\":\"distrito federal\"}",
+    "status": "CONFIGURADO",
+    "descricao": "Abreviações de cidade agrupadas como a mesma busca (ex.: \"dentista bh\" = \"dentista belo horizonte\").",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_DOMINIOS_AGREGADORES",
+    "valor": "doctoralia.com.br,boaconsulta.com,guiamais.com.br,ohub.com.br,jusbrasil.com.br,reclameaqui.com.br,indeed.com,tripadvisor.com.br,ifood.com.br,apontador.com.br",
+    "status": "CONFIGURADO",
+    "descricao": "Domínios tratados como agregadores (não são concorrentes locais) na SERP.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_CONTATO_NOME",
+    "valor": "Thiago Mota",
+    "status": "CONFIGURADO",
+    "descricao": "Nome no rodapé/contato dos diagnósticos.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_CONTATO_EMAIL",
+    "valor": "thiago@atomdigital.com.br",
+    "status": "CONFIGURADO",
+    "descricao": "E-mail de contato nos diagnósticos.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_CONTATO_WHATSAPP",
+    "valor": "(62) 3242-5359",
+    "status": "PROPOSTO",
+    "descricao": "WhatsApp de contato (aparece no modelo SEO/GEO original). Confirme para passar a usar.",
+    "usado_por": "ATOM_14"
+  },
+  {
+    "chave": "DIAG_ESTATISTICAS_APROVADAS",
+    "valor": "{\"avaliacoes\": \"96% dos brasileiros leem avaliações no Google antes de escolher, e 9 em cada 10 descartam empresas com nota abaixo de 4. (Fonte: Reclame Aqui/Harmo, Decisão Local 2025)\", \"ia\": \"46% dos brasileiros que usam IA já pesquisam produtos e serviços nela antes de comprar. (Fonte: pesquisa Fbiz/On The Go, set/2026)\", \"whatsapp\": \"63% dos brasileiros esperam resposta de uma empresa no WhatsApp em até 5 minutos. (Fonte: Mobile Time/Opinion Box)\"}",
+    "status": "PROPOSTO",
+    "descricao": "Frases \"Por que importa\" do modelo Geral, com fonte. Só entram no PDF depois de confirmadas (status CONFIGURADO).",
+    "usado_por": "ATOM_14"
   }
 ]
