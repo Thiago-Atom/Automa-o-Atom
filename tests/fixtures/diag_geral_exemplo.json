@@ -1,0 +1,35 @@
+{
+  "_origem": "Valores de exemplo copiados do modelo 'Diagnóstico Geral' (colchetes do modelo). Não são dados de cliente.",
+  "empresa": { "nome": "Clínica Exemplo", "site": "exemplo.com.br", "cidade": "Goiânia", "uf": "GO" },
+  "mesAno": "Outubro de 2026", "dataColeta": "01/10/2026",
+  "boletim": [
+    { "canal": "Google Maps", "nota": 4, "status": "PERDENDO" }, { "canal": "Avaliações", "nota": 8, "status": "FUNCIONA" },
+    { "canal": "Site", "nota": 5, "status": "MELHORAR" }, { "canal": "Instagram", "nota": 6, "status": "MELHORAR" },
+    { "canal": "Busca com IA", "nota": 2, "status": "PERDENDO" }, { "canal": "WhatsApp", "nota": null, "status": "NAO_MEDIDO" }
+  ],
+  "urgencias": ["Quem procura “dentista setor bueno” não encontra você no mapa.", "As IAs indicam 3 concorrentes, e não você.", "Seu site leva 9 segundos para abrir no celular."],
+  "procura": { "total": 1900, "porDia": 63, "servico": "dentista e tratamentos odontológicos", "cidade": "Goiânia",
+    "buscas": [{ "termo": "implante dentário goiânia", "volume": 880 }, { "termo": "dentista setor bueno", "volume": 390 }, { "termo": "clareamento dental goiânia", "volume": 320 }, { "termo": "lente de contato dental goiânia", "volume": 210 }, { "termo": "dentista goiânia", "volume": 100 }],
+    "fonte": "Fonte: Semrush, base Brasil, buscas que citam Goiânia ou bairro — média mensal estimada · coletado em 01/10/2026" },
+  "mapa": { "busca": "dentista setor bueno", "concorrentes": [{ "nome": "Clínica Concorrente A", "nota": 4.9, "avaliacoes": 312 }, { "nome": "Clínica Concorrente B", "nota": 4.8, "avaliacoes": 187 }, { "nome": "Clínica Concorrente C", "nota": 4.7, "avaliacoes": 96 }],
+    "cliente": { "posicao": null, "situacao": "Não aparece no mapa", "nota": 4.6, "avaliacoes": 48 }, "fonte": "Fonte: Google Maps, busca a partir do centro de Goiânia, 01/10/2026" },
+  "ladoALado": { "colunas": ["Você", "Concorrente A", "Concorrente B", "Concorrente C"], "linhas": [
+    { "rotulo": "Nota no Google", "valores": ["4,6", "4,9", "4,8", "4,7"], "clienteAtras": true },
+    { "rotulo": "Número de avaliações", "valores": ["48", "312", "187", "96"], "clienteAtras": true },
+    { "rotulo": "Avaliações no último mês", "valores": ["0", "14", "6", "3"], "clienteAtras": true },
+    { "rotulo": "Responde as avaliações", "valores": ["Não", "Sim", "Sim", "Não"], "clienteAtras": true },
+    { "rotulo": "Fotos no perfil do Google", "valores": ["22", "140", "65", "30"], "clienteAtras": true },
+    { "rotulo": "Site bom no celular", "valores": ["Não", "Sim", "Sim", "Sim"], "clienteAtras": true },
+    { "rotulo": "Seguidores no Instagram", "valores": ["3,1 mil", "12 mil", "5,4 mil", "2,2 mil"], "clienteAtras": false },
+    { "rotulo": "Citado pelas IAs", "valores": ["Não", "Sim", "Sim", "Não"], "clienteAtras": true }],
+    "leitura": "Sua nota é boa, mas o volume é baixo e parou de crescer. Quem compara vê 312 opiniões de um lado e 48 do seu.", "fonte": "Fontes: Google Maps, Instagram e IAs, consultados em 01/10/2026" },
+  "avaliacoes": { "titulo": "Elogiam o atendimento, e ninguém responde", "elogios": [{ "tema": "Atendimento da recepção", "mencoes": 21 }, { "tema": "Dentista atencioso, explica tudo", "mencoes": 14 }, { "tema": "Consultório limpo e moderno", "mencoes": 9 }],
+    "reclamacoes": [{ "tema": "Demora para remarcar", "mencoes": 5 }, { "tema": "Não atendem o telefone", "mencoes": 4 }, { "tema": "Estacionamento difícil", "mencoes": 2 }], "respondidas": 0, "total": 48, "desdeUltima": "3 meses", "fonte": "Fontes: últimas 30 avaliações do Google, lidas em 01/10/2026" },
+  "site": { "segundos": 9, "meta": 3, "metricaTexto": "para mostrar o conteúdo principal no celular.", "testes": [{ "texto": "Abre em até 3 segundos", "ok": false }, { "texto": "Diz o que faz e onde, logo na primeira tela", "ok": true }, { "texto": "Botão de WhatsApp sempre visível", "ok": false }, { "texto": "Telefone clicável", "ok": false }], "fonte": "Fontes: PageSpeed Insights (celular) e leitura do site em 01/10/2026" },
+  "instagram": { "diasUltimoPost": 47, "concorrenteNome": "Concorrente A", "linhas": [{ "rotulo": "Seguidores", "cliente": "3,1 mil", "concorrente": "12 mil", "clienteAtras": true }, { "rotulo": "Posts no último mês", "cliente": "0", "concorrente": "12", "clienteAtras": true }, { "rotulo": "Último post", "cliente": "há 47 dias", "concorrente": "ontem", "clienteAtras": true }, { "rotulo": "Link na bio", "cliente": "Sim", "concorrente": "Sim" }, { "rotulo": "WhatsApp na bio", "cliente": "Não", "concorrente": "Sim", "clienteAtras": true }, { "rotulo": "Vídeos (Reels) no mês", "cliente": "0", "concorrente": "6", "clienteAtras": true }], "fonte": "Fonte: perfis públicos do Instagram, consultados em 01/10/2026" },
+  "ia": { "pergunta": "Qual a melhor clínica de implante dentário em Goiânia? Indique 3.", "ferramentas": [{ "nome": "ChatGPT", "indicados": ["Clínica Concorrente A", "Clínica Concorrente B", "Clínica D"], "citado": false }, { "nome": "Gemini", "indicados": ["Clínica Concorrente A", "Clínica Concorrente C", "Clínica E"], "citado": false }, { "nome": "Google · Modo IA", "indicados": ["Clínica Concorrente B", "Clínica Concorrente A", "Clínica F"], "citado": false }], "fonte": "Fontes: APIs OpenAI e Gemini com busca na web e Google (Apify), consultados em 01/10/2026" },
+  "valor": { "procura": 1900, "taxaContato": 0.03, "contatos": 57, "taxaFechamento": 0.25, "clientes": 14, "ticket": 3000, "total": 42000, "ticketOrigem": "informado por você" },
+  "plano": { "hoje": ["Corrigir telefone e horário no Google", "Responder as 48 avaliações", "Pôr o WhatsApp na bio do Instagram"], "d90": ["Disputar o mapa para “dentista setor bueno”", "Uma página para cada tratamento", "Rotina para pedir avaliação a cada cliente"], "m6": ["Aparecer nas respostas das IAs", "Responder no WhatsApp em minutos, com IA", "Relatório mensal com estes mesmos números"] },
+  "estatisticas": { "avaliacoes": "96% dos brasileiros leem avaliações no Google antes de escolher, e 9 em cada 10 descartam empresas com nota abaixo de 4.", "ia": "46% dos brasileiros que usam IA já pesquisam produtos e serviços nela antes de comprar." },
+  "contato": { "nome": "Thiago Mota", "email": "thiago@atomdigital.com.br" }
+}
