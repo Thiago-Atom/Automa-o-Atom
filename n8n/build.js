@@ -22,6 +22,7 @@ const NOMES = {
   util: 'ATOM_UTIL', config: 'ATOM_CONFIG', cnpj: 'ATOM_CNPJ', site: 'ATOM_SITE', evidencias: 'ATOM_EVIDENCIAS',
   validate: 'ATOM_VALIDATE', prompts: 'ATOM_PROMPTS', diagnostico: 'ATOM_DIAG', pipedrive: 'ATOM_PD',
   formalizacao: 'ATOM_FORM', regras: 'ATOM_REGRAS', agenda: 'ATOM_AGENDA', zayra: 'ATOM_ZAYRA', versoes: 'ATOM_VERSOES', autentique: 'ATOM_AUT', controlle: 'ATOM_CTL',
+  prospeccao: 'ATOM_PROSP', diag_montar: 'ATOM_DIAG_MONTAR', relatorio: 'ATOM_RELATORIO',
 };
 
 // Empacota a região com esbuild: só as funções de lib/ efetivamente usadas entram no nó (tree-shaking).
