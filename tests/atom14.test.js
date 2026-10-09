@@ -62,11 +62,14 @@ test('ATOM_14 ponta a ponta (dados simulados): termos → modelo → HTML', () =
     'ChatGPT (busca na web)': [{ output_text: '1. Clínica A — a.com.br\n2. Clínica B — b.com.br\n3. Clínica C — c.com.br' }],
     'Claude — temas e páginas': [{ content: [{ type: 'text', text: JSON.stringify({ elogios: [{ tema: 'Atendimento', avaliacoes: [0, 1, 99] }], reclamacoes: [], primeiraTelaDizOQueEOnde: false, paginasServico: [] }) }] }],
     'Pedido de temas': [{ reviews: [{ i: 0 }, { i: 1 }], urls: [], servicos: [] }] };
-  const [mg] = executarNo('Montar diagnóstico', { nos: Object.assign({}, nosBase, comum, { 'Decidir modelo': [dg] }) });
+  const [mg0] = executarNo('Montar diagnóstico', { nos: Object.assign({}, nosBase, comum, { 'Decidir modelo': [dg] }) });
+  const mg = Object.assign({}, mg0, executarNo('Gerar HTML', { nos: { 'Montar diagnóstico': [mg0] } })[0]);
   assert.equal(mg.modelo, 'GERAL');
   assert.doesNotMatch(mg.html, /undefined|NaN|\[object/);
   assert.ok(mg.fontesIndisponiveis.some((f) => /Apify/.test(f)));
-  const [ms] = executarNo('Montar diagnóstico', { nos: Object.assign({}, nosBase, comum, { 'Decidir modelo': [d], 'Rastreio — status': [{ status: 'completed', data: [{ markdown: '# A\ntexto curto', metadata: { sourceURL: 'https://clinicax.com.br/', description: '' } }] }] }) });
+  const [ms0] = executarNo('Montar diagnóstico', { nos: Object.assign({}, nosBase, comum, { 'Decidir modelo': [d], 'Rastreio — status': [{ markdown: '# A\ntexto curto', metadata: { sourceURL: 'https://clinicax.com.br/', description: '' } }, { markdown: 'sem h1', metadata: { sourceURL: 'https://clinicax.com.br/b' } }] }) });
+  const ms = Object.assign({}, ms0, executarNo('Gerar HTML', { nos: { 'Montar diagnóstico': [ms0] } })[0]);
+  assert.equal(ms0.dados.tamanho.paginas, 2, 'rastreio com um item por página');
   assert.equal(ms.modelo, 'SEOGEO');
   assert.doesNotMatch(ms.html, /undefined|NaN|\[object/);
   assert.match(ms.html, /raw\.example\/fixa_01_capa_atom\.jpeg/);

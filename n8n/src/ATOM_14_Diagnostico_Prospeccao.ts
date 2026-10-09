@@ -88,9 +88,10 @@ const pageSpeed = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
     name: 'PageSpeed (celular)', executeOnce: true, onError: 'continueRegularOutput', alwaysOutputData: true,
-    parameters: { method: 'GET', url: 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed', sendQuery: true, specifyQuery: 'keypair',
+    parameters: { method: 'GET', url: 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed', authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth', sendQuery: true, specifyQuery: 'keypair',
       queryParameters: { parameters: [{ name: 'url', value: expr("{{ $('Preparar').first().json.empresa.site }}") }, { name: 'strategy', value: 'mobile' }, { name: 'category', value: 'performance' }, { name: 'locale', value: 'pt_BR' }] },
-      options: { timeout: 90000 } }
+      options: { timeout: 90000 } },
+    credentials: { httpTemplatedCustomAuth: newCredential('ATOM Google PageSpeed (chave)') }
   },
   output: [{ lighthouseResult: { finalUrl: 'https://empresaficticia.com.br/', categories: { performance: { score: 0.41 } }, audits: { 'largest-contentful-paint': { numericValue: 9100 } } } }]
 });
@@ -205,7 +206,7 @@ const crawlStatus = node({
   output: [{ status: 'completed', total: 1, data: [{ markdown: '# Início', metadata: { sourceURL: 'https://empresaficticia.com.br/', description: '' } }] }]
 });
 
-const rastreioPronto = @@{IFB('Rastreio terminou?', "$json.status === 'completed' || $json.status === 'failed' || !!$json.error || $runIndex >= 5", true)}@@;
+const rastreioPronto = @@{IFB('Rastreio terminou?', "$json.status === 'completed' || $json.status === 'failed' || !!$json.error || $json.markdown !== undefined || !!$json.metadata || $runIndex >= 5", true)}@@;
 
 const entradaMapa = node({
   type: 'n8n-nodes-base.code', version: 2,
@@ -311,6 +312,12 @@ const montar = node({
   output: [{ html: '<html></html>', nomeArq: 'Diagnostico-Geral-Empresa-Ficticia-2026-10-08.pdf', versao: 'ATOM-2026-10-GERAL-1', modelo: 'GERAL', paginas: 19, fontesIndisponiveis: [], resumo: { boletim: [], urgencias: [], ia: [] } }]
 });
 
+const gerarHtml = node({
+  type: 'n8n-nodes-base.code', version: 2,
+  config: { name: 'Gerar HTML', parameters: { mode: 'runOnceForAllItems', jsCode: @@{CODE('wf14', 'html')}@@ } },
+  output: [{ html: '<html></html>', nomeArq: 'Diagnostico.pdf', paginas: 19 }]
+});
+
 const pdf = node({
   type: 'n8n-nodes-pdfco.PDFco Api', version: 1.1,
   config: {
@@ -412,7 +419,7 @@ export default workflow('atom-14', 'ATOM_14_Diagnostico_Prospeccao', { settings:
     .onFalse(entradaMapa.to(mapaBusca).to(mapaCliente).to(entradaIG).to(temIG
       .onTrue(instagram.to(iaPergunta))
       .onFalse(iaPergunta))))
-  .add(iaPergunta.to(chatgpt).to(gemini).to(pedidoTemas).to(claude2).to(montar).to(pdf).to(pdfUrl).to(temPdf
+  .add(iaPergunta.to(chatgpt).to(gemini).to(pedidoTemas).to(claude2).to(montar).to(gerarHtml).to(pdf).to(pdfUrl).to(temPdf
     .onTrue(baixarPdf.to(salvarDrive).to(campos))
     .onFalse(semPdf.to(campos))))
   .add(campos.to(atualizar
