@@ -190,3 +190,35 @@ node scripts/previa_diagnostico.mjs <geral|seogeo> <dados.json> <saida.pdf> [pas
 ```
 
 Os exemplos ficam em `tests/fixtures/diag_*_exemplo.json`.
+
+## 7. Teste real (2026-10-08, execução 3535)
+
+**Cenário:** negócio de teste 100, com a organização de teste apontando para `atomdigital.com.br`, Goiânia.
+
+**Resultado:**
+- O modelo escolhido foi o **SEO/GEO**, com 96 palavras orgânicas fora da marca.
+- PDF de 26 páginas gerado pelo PDF.co e salvo no Drive (arquivo `1K3TR_dsqJS5iSGd6ca9dMAkRFpb0Mj37`).
+- No negócio 100, ficaram preenchidos os campos de diagnóstico (status CONCLUIDO, link, data, versão `ATOM-2026-10-SEOGEO-1`) e a nota fixada nº 138.
+
+**Problemas encontrados e já corrigidos no código:**
+- O Firecrawl devolve uma página por item, então o rastreio não era lido.
+- A frase "As 0 em vermelho" aparecia mesmo sem página indevida.
+- A busca principal ficava vermelha mesmo na 1ª página.
+
+**Fonte que falhou:** o PageSpeed recusou a consulta sem chave (limite da cota compartilhada). Para resolver, a pessoa responsável precisa criar a credencial **"ATOM Google PageSpeed (chave)"** (tipo *Custom Auth*), com a chave da PageSpeed Insights API gerada no Google Cloud, no formato:
+
+```
+{"qs":{"key":"<chave>"}}
+```
+
+**Bloqueio do n8n:** a partir de 2026-10-08 14:20 UTC, o plano do n8n Cloud atingiu o limite de execuções ("Execution limit reached"), e nenhuma execução de produção roda desde então.
+
+O consumo vem quase todo dos gatilhos agendados:
+
+| Workflow | Frequência | Execuções por dia |
+|---|---|---|
+| ATOM_13 | a cada 10 min | 144 |
+| ATOM_12 | a cada 15 min | 96 |
+| ATOM_09 | a cada 15 min | 96 |
+| ATOM_11 | a cada hora | 24 |
+| **Total** | | **≈ 360 (≈ 10.800/mês)** |
