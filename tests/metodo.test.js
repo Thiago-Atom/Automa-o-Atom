@@ -94,10 +94,11 @@ test('todo tipo de diagnóstico tem oferta mapeada', () => {
   for (const t of TIPOS) assert.ok(MOTOR.OFERTAS_DO_TIPO[t.id], t.id);
 });
 
-test('n8n/code/metodo_motor.js está em dia com metodo/dados.js e metodo/motor.js', () => {
+test('n8n/code/metodo_motor.js está em dia com metodo/dados.js e metodo/motor.js', async () => {
+  const { gerarMotor } = await import('../scripts/gerar_motor_n8n.mjs');
   const ger = readFileSync(new URL('../n8n/code/metodo_motor.js', import.meta.url), 'utf8');
-  const fonte = readFileSync(new URL('../metodo/dados.js', import.meta.url), 'utf8') + '\n' + readFileSync(new URL('../metodo/motor.js', import.meta.url), 'utf8');
-  assert.ok(ger.includes(fonte), 'rode npm run metodo:motor');
+  assert.equal(ger, gerarMotor(), 'rode npm run metodo:motor');
+  assert.equal(readFileSync(new URL('../n8n/code/metodo_pipedrive.js', import.meta.url), 'utf8'), (await import('../scripts/gerar_motor_n8n.mjs')).gerarPipedrive());
 });
 
 // ---------- Coletas e as 3 informações da abordagem ----------

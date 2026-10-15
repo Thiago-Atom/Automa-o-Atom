@@ -1312,11 +1312,9 @@ function coletaHTML(r, areas) {
 const PIPE = "Pipedrive";
 const CF = PIPEDRIVE.campos;
 const rotulo = v => v && typeof v === "object" ? (v.label ?? "") : (v ?? "");
-function regraDoNegocio(deal) { // qual diagnóstico este negócio recebe, e por quê
-  const cf = deal.custom_fields || {}, oferta = rotulo(cf[CF.oferta]), pag = rotulo(cf[CF.pagamento]);
-  if (PIPEDRIVE.pago.test(pag)) return { tipos: ["completo"], porque: `1ª parcela do Diagnóstico Total paga ("${pag}")` };
-  if (PIPEDRIVE.oferta[oferta]) return { tipos: PIPEDRIVE.oferta[oferta], porque: `Oferta de interesse = ${oferta}` };
-  return { tipos: PIPEDRIVE.semOferta, porque: "sem oferta de interesse: raio-x Geral" };
+function regraDoNegocio(deal) { // regra única em motor.js (a mesma do ATOM_30 no n8n)
+  const cf = deal.custom_fields || {};
+  return MOTOR.regraDoNegocio(rotulo(cf[CF.oferta]), rotulo(cf[CF.pagamento]));
 }
 const cidadeDe = end => { const m = String(end || "").match(/,\s*([^,]+?)\s*-\s*([A-Z]{2})\b/); return m ? `${m[1]}/${m[2]}` : ""; };
 const etapaNome = (pipe, st) => { const g = PIPEDRIVE.gatilhos.find(x => x[1] === st); return [PIPEDRIVE.funis[pipe] || (pipe ? "funil " + pipe : ""), g ? g[2] : ""].filter(Boolean).join(" · "); };

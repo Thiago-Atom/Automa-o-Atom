@@ -1,0 +1,839 @@
+{
+  "name": "ATOM_30_Diagnostico_Metodo",
+  "nodes": [
+    {
+      "id": "d8f2d32b-afea-4471-a298-60a3dbb94229",
+      "name": "A cada 30 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        100,
+        300
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "805839f8-ec92-4b3a-8cf5-a702bcf7ed75",
+      "name": "Ler configuração",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        300
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rlZWp7gPKiB6xzw3",
+          "cachedResultName": "atom_config"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "924a936f-f0e9-4938-9856-322095b13708",
+      "name": "Negócios em Respondeu",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.pipedrive.com/api/v2/deals?pipeline_id=5&stage_id=32&status=open&limit=100",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "7593f346-8392-4553-8225-3ca2763597d5",
+      "name": "Negócios em Diagnóstico N2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.pipedrive.com/api/v2/deals?pipeline_id=5&stage_id=34&status=open&limit=100",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "144c2d0f-20c0-4822-94e0-e97413280251",
+      "name": "Planejar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf30.js#planejar + lib/{pipedrive_metodo}. Edite a fonte no repositório, não este nó.\n// GERADO por scripts/gerar_motor_n8n.mjs a partir de metodo/dados.js. Não edite à mão.\nconst PIPEDRIVE = Object.assign({\"funis\":{\"2\":\"Funil de vendas\",\"5\":\"Prospecção Ativa\",\"6\":\"Atendimento Receptivo\"},\"gatilhos\":[[2,8,\"Diagnóstico\"],[5,34,\"Diagnóstico N2\"],[6,40,\"Qualificado\"]],\"campos\":{\"dominio\":\"4ead439861c0448a64b9c8bc700ac72b95ef4aee\",\"nicho\":\"f2e7fb5625b9ea04e6923cd309f18b203e14365b\",\"oferta\":\"8ce409a84529872560e0f1a87bc2b2f1ca0d4a14\",\"origem\":\"3946f1f5a8e92aa8f92e17af24301f17d58716a5\",\"pagamento\":\"f95e59d62603186a50e72fe625df0b769e9874d8\",\"refazer\":\"9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751\",\"status\":\"0d0aeb53fb080fe43e7030b60685894cdb263d69\",\"data\":\"7ba3113147bf9ac87e72cdf6c6a044ef62463d94\",\"versao\":\"75287c565520bdc7f0d50ed7798f1a30e9f5938c\",\"pendencias\":\"00d36a85250066580dbb4302abd87732c99067ac\"},\"oferta\":{\"Site\":[\"site\"],\"Marketing com IA\":[\"seo\"],\"Agente de IA\":[\"atendimento\"],\"Clínica completa\":[\"geral\",\"site\"]},\"semOferta\":[\"geral\"],\"pipeProspeccao\":5,\"etapaRespondeu\":32,\"etapaDiagnostico\":34,\"intencao\":\"44cf2cb8a553981c38bf61bdae742ce8a5c20a5f\",\"intencaoAceite\":[70,72],\"ofertaOpcoes\":{\"50\":\"Clínica completa\",\"51\":\"Marketing com IA\",\"52\":\"Agente de IA\",\"53\":\"Site\"}}, { pago: /pago|paga|confirmad|recebid/i });\n\nreturn (function () {\n// Entradas: atom_config, negócios em Respondeu e em Diagnóstico N2 (funil Prospecção Ativa), pedido manual ou do webhook.\nconst cfg = {};\nfor (const i of $('Ler configuração').all()) { const r = i.json || {}; if (r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\nconst val = (k, d) => (cfg[k] && cfg[k].valor && !['PENDENTE', 'OBSOLETO'].includes(cfg[k].status) ? cfg[k].valor : d);\nconst modo = val('MODO_EXECUCAO', 'SIMULACAO').toUpperCase();\nconst sandbox = val('SANDBOX_DEAL_IDS', '').split(',').map((s) => s.trim()).filter(Boolean);\nconst podeEscrever = (id) => modo === 'PRODUCAO' || (modo === 'SANDBOX' && sandbox.includes(String(id)));\nconst lista = (no) => { try { return ($(no).first().json.data || []); } catch (e) { return []; } };\nconst P = PIPEDRIVE, F = P.campos;\nconst pedido = (() => { try { return $('Pedido').first().json || {}; } catch (e) { return {}; } })();\n\n// 1) Aceites: o lead respondeu \"Pode enviar\" ou \"Tenho interesse\" → o card vai para Diagnóstico N2.\nconst aceites = lista('Negócios em Respondeu')\n  .filter((d) => P.intencaoAceite.includes(Number((d.custom_fields || {})[P.intencao])))\n  .map((d) => ({ deal_id: d.id, titulo: d.title, escrever: podeEscrever(d.id), corpo: { stage_id: P.etapaDiagnostico } }));\n\n// 2) Diagnóstico: um negócio por execução (pedido explícito primeiro; senão o mais antigo em Diagnóstico N2 sem diagnóstico ou com \"Refazer\").\nconst pendentes = lista('Negócios em Diagnóstico N2').filter((d) => {\n  const cf = d.custom_fields || {};\n  return !String(cf[F.status] || '').trim() || String(cf[F.refazer] || '').trim();\n}).sort((a, b) => String(a.update_time || '').localeCompare(String(b.update_time || '')));\nconst alvo = pedido.deal_id ? { id: Number(pedido.deal_id) } : pendentes[0] || null;\nconst ativo = val('DIAG30_MODO', 'INATIVO').toUpperCase() === 'ATIVO' || !!pedido.forcar;\nreturn [{ json: { modo, ativo, aceites, alvo_id: alvo ? alvo.id : null, escrever: alvo ? podeEscrever(alvo.id) : false, pendentes: pendentes.length, agora: new Date().toISOString() } }];\n})();"
+      }
+    },
+    {
+      "id": "49a22166-35b9-466f-b2f1-c2be074e9003",
+      "name": "Aceites",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf30.js#aceites. Edite a fonte no repositório, não este nó.\n// Um item por aceite com escrita liberada; o nó seguinte move o card para Diagnóstico N2.\nconst p = $('Planejar').first().json;\nreturn p.aceites.filter((a) => a.escrever).map((a) => ({ json: { deal_id: a.deal_id, corpo: a.corpo } }));"
+      }
+    },
+    {
+      "id": "a1ac413b-df14-48f4-a202-fd8ac2e1f562",
+      "name": "Mover para Diagnóstico N2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1300,
+        300
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.corpo) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "ae969c5c-c394-431e-a69d-ae879d5c4b42",
+      "name": "Diagnosticar agora?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1100,
+        450
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Planejar').first().json.ativo && !!$('Planejar').first().json.alvo_id }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "8bb3bae4-be4d-439d-bd93-b14f5b8ef35e",
+      "name": "Negócio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1300,
+        450
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.pipedrive.com/api/v2/deals/{{ $('Planejar').first().json.alvo_id }}?include_option_labels=true",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "executeOnce": true
+    },
+    {
+      "id": "b1d8e67b-919c-45cc-b266-3853817c43e2",
+      "name": "Organização",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1500,
+        450
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.pipedrive.com/api/v2/organizations/{{ $('Negócio').first().json.data.org_id || 0 }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "credentials": {},
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "ae1f75d3-aa5e-4e29-b46a-370c724675a0",
+      "name": "Preparar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf30.js#preparar + lib/{motor}. Edite a fonte no repositório, não este nó.\n// GERADO por scripts/gerar_motor_n8n.mjs a partir de metodo/dados.js e metodo/motor.js. Não edite à mão.\nconst AREAS = {\"rep\":{\"nome\":\"Reputação da marca\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"1º na busca pelo nome\",\"Site é o 1º resultado, não um agregador\",\"Perfil do Google aparece na busca pelo nome\",\"Nota no Google 4,5 ou mais\",\"!Nenhuma reclamação grave sem resposta\"]},\"bus\":{\"nome\":\"Busca no Google\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"1ª página na busca principal\",\"Alguma busca de serviço no top 20\",\"Página própria para cada serviço\",\"Visitas crescendo em 12 meses\",\"Maioria das visitas de quem não buscou pelo nome\"]},\"map\":{\"nome\":\"Google Maps\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO local\",\"c\":[\"Top 3 na busca principal\",\"!Perfil verificado\",\"!Telefone e horário certos\",\"50 fotos ou mais\",\"!Categoria principal certa\"]},\"ava\":{\"nome\":\"Avaliações\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Agentes de IA (pedido de avaliação)\",\"c\":[\"Nota 4,5 ou mais\",\"Volume de pelo menos metade do líder\",\"Avaliação nova no último mês\",\"!Responde 80% ou mais\",\"Nenhuma 1 estrela nos últimos 3 meses\"]},\"sit\":{\"nome\":\"Site\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Sites e landing pages\",\"c\":[\"Abre em até 3 s no celular\",\"Diz o que faz e onde na primeira tela\",\"!WhatsApp sempre visível\",\"!Telefone certo e clicável\",\"Saúde técnica 80/100 ou mais\"]},\"ins\":{\"nome\":\"Instagram\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Estratégia e conteúdo\",\"c\":[\"Post nos últimos 7 dias\",\"8 posts ou mais no mês\",\"Reels no mês\",\"!WhatsApp na bio\",\"!Link na bio\"]},\"ia\":{\"nome\":\"Busca com IA\",\"g\":\"mkt\",\"h\":\"6m\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"Citado no ChatGPT\",\"Citado no Gemini\",\"Citado no Google Modo IA\",\"Site identifica empresa e unidades\",\"!Mesmo nome, endereço e telefone em todo lugar\"]},\"est\":{\"nome\":\"Estrutura para SEO\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"Uma página por serviço e por cidade\",\"Sem duas páginas disputando a mesma busca\",\"Título e descrição em todas as páginas\",\"Dados estruturados de empresa e serviços\",\"Sitemap enviado e páginas indexadas\"]},\"conv\":{\"nome\":\"Conversão do site\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Sites e landing pages\",\"c\":[\"Uma ação principal repetida na página\",\"Formulário curto\",\"Prova social perto do botão\",\"Conversões medidas (WhatsApp e formulário)\",\"Página de obrigado com próximo passo\"]},\"loja\":{\"nome\":\"Loja virtual\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Loja virtual Nuvemshop\",\"c\":[\"Frete calculado na página do produto\",\"Checkout com Pix e parcelamento\",\"Avaliações nos produtos\",\"Recuperação de carrinho abandonado\",\"Catálogo no Google Shopping e Instagram\"]},\"mid\":{\"nome\":\"Mídia paga\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Tráfego pago\",\"c\":[\"Anúncio ativo no Google\",\"Anúncio ativo na Meta\",\"Página de destino própria\",\"Tag de conversão instalada\",\"Anúncio fala do serviço e da cidade\"]},\"med\":{\"nome\":\"Medição da mídia\",\"g\":\"ges\",\"h\":\"90\",\"sol\":\"Tráfego pago + BI\",\"c\":[\"Conversões chegam até a venda (CRM)\",\"Custo por venda conhecido\",\"Remarketing ativo\",\"Relatório semanal com decisão\",\"Verba concentrada no que converte\"]},\"wha\":{\"nome\":\"WhatsApp\",\"g\":\"ven\",\"h\":\"6m\",\"sol\":\"Agentes de IA\",\"c\":[\"Respondeu em até 5 min\",\"Respondeu à pergunta feita\",\"Respondeu fora do horário\",\"!Pediu o nome ou ofereceu agendar\",\"!Mandou endereço ou link útil\"]},\"crm\":{\"nome\":\"Processo e CRM\",\"g\":\"ven\",\"h\":\"90\",\"sol\":\"Vendas e CRM\",\"c\":[\"Todo contato registrado em CRM\",\"Etapas do funil definidas\",\"Follow-up em até 24 h\",\"!Um responsável por lead\",\"Revisão semanal do funil\"]},\"fec\":{\"nome\":\"Proposta e fechamento\",\"g\":\"ven\",\"h\":\"90\",\"sol\":\"Vendas e CRM\",\"c\":[\"Sabe a taxa de fechamento\",\"Proposta enviada em até 48 h\",\"!Registra o motivo de perda\",\"Acompanha o tempo até fechar\",\"Tem apresentação padrão\"]},\"pos\":{\"nome\":\"Pós-venda\",\"g\":\"ven\",\"h\":\"90\",\"sol\":\"Agentes de IA\",\"c\":[\"!Pede avaliação depois do atendimento\",\"!Pede indicação\",\"Reativa clientes antigos\",\"Mede recompra\",\"Tem canal de contato pós-venda\"]},\"num\":{\"nome\":\"Números do negócio\",\"g\":\"ges\",\"h\":\"6m\",\"sol\":\"BI em tempo real\",\"c\":[\"!Sabe de onde vem cada cliente\",\"Conhece o ticket médio\",\"Conhece o custo por cliente\",\"!Tem meta mensal de vendas\",\"Acompanha os números em painel\"]}};\nconst TIPOS = [{\"id\":\"site\",\"nome\":\"Site\",\"oferta\":\"Novo site de alto padrão, orientado à conversão\",\"areas\":[\"sit\",\"conv\",\"est\",\"loja\"],\"valor\":false,\"finalidade\":\"prospeccao\"},{\"id\":\"seo\",\"nome\":\"SEO\",\"oferta\":\"Plano integrado de SEO, presença nas IAs e Google Ads\",\"areas\":[\"bus\",\"est\",\"rep\",\"map\",\"ia\",\"mid\",\"med\"],\"valor\":true,\"finalidade\":\"prospeccao\"},{\"id\":\"geral\",\"nome\":\"Geral\",\"oferta\":\"Setup de marketing e vendas com site incluído\",\"areas\":[\"rep\",\"bus\",\"map\",\"ava\",\"sit\",\"ins\",\"ia\"],\"valor\":true,\"finalidade\":\"prospeccao\"},{\"id\":\"atendimento\",\"nome\":\"Atendimento\",\"oferta\":\"Agente de IA no WhatsApp integrado ao CRM\",\"areas\":[\"wha\",\"crm\",\"fec\",\"pos\"],\"valor\":false,\"finalidade\":\"prospeccao\"},{\"id\":\"completo\",\"nome\":\"Total\",\"oferta\":\"Diagnóstico Total, vendido por 2× R$ 198\",\"areas\":[\"rep\",\"bus\",\"map\",\"ava\",\"sit\",\"conv\",\"est\",\"ins\",\"ia\",\"mid\",\"med\",\"wha\",\"crm\",\"fec\",\"pos\",\"num\"],\"valor\":true,\"finalidade\":\"produto\"}];\nconst PIPEDRIVE = Object.assign({\"funis\":{\"2\":\"Funil de vendas\",\"5\":\"Prospecção Ativa\",\"6\":\"Atendimento Receptivo\"},\"gatilhos\":[[2,8,\"Diagnóstico\"],[5,34,\"Diagnóstico N2\"],[6,40,\"Qualificado\"]],\"campos\":{\"dominio\":\"4ead439861c0448a64b9c8bc700ac72b95ef4aee\",\"nicho\":\"f2e7fb5625b9ea04e6923cd309f18b203e14365b\",\"oferta\":\"8ce409a84529872560e0f1a87bc2b2f1ca0d4a14\",\"origem\":\"3946f1f5a8e92aa8f92e17af24301f17d58716a5\",\"pagamento\":\"f95e59d62603186a50e72fe625df0b769e9874d8\",\"refazer\":\"9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751\",\"status\":\"0d0aeb53fb080fe43e7030b60685894cdb263d69\",\"data\":\"7ba3113147bf9ac87e72cdf6c6a044ef62463d94\",\"versao\":\"75287c565520bdc7f0d50ed7798f1a30e9f5938c\",\"pendencias\":\"00d36a85250066580dbb4302abd87732c99067ac\"},\"oferta\":{\"Site\":[\"site\"],\"Marketing com IA\":[\"seo\"],\"Agente de IA\":[\"atendimento\"],\"Clínica completa\":[\"geral\",\"site\"]},\"semOferta\":[\"geral\"],\"pipeProspeccao\":5,\"etapaRespondeu\":32,\"etapaDiagnostico\":34,\"intencao\":\"44cf2cb8a553981c38bf61bdae742ce8a5c20a5f\",\"intencaoAceite\":[70,72],\"ofertaOpcoes\":{\"50\":\"Clínica completa\",\"51\":\"Marketing com IA\",\"52\":\"Agente de IA\",\"53\":\"Site\"}}, { pago: /pago|paga|confirmad|recebid/i });\nconst PLANEJAMENTO_PADRAO = {\"meses\":6,\"diasUteis\":22,\"semanasMes\":4.33,\"taxaReuniao\":7,\"taxaFechamento\":20,\"reunioesDia\":12,\"cenario\":\"capacidade\",\"reusoMercado\":20,\"parteMercadoSemrush\":70,\"semrushProspeccao\":\"todos\",\"metas\":{\"site\":262,\"seo\":24,\"geral\":31,\"atendimento\":0,\"completo\":0},\"precoProduto\":396,\"parcelas\":2,\"diasSegundaParcela\":15,\"tetoProduto\":50,\"taxasVenda\":3.98,\"imposto\":16,\"validadePropostaDias\":10,\"vendas\":{\"site\":{\"preco\":2300,\"parcelas\":1},\"seo\":{\"preco\":12000,\"parcelas\":6},\"geral\":{\"preco\":0,\"parcelas\":1},\"atendimento\":{\"preco\":0,\"parcelas\":1}},\"entrega\":{\"site\":0,\"seo\":0,\"geral\":0,\"atendimento\":0},\"cambio\":5,\"reserva\":20};\n/* Motor do Método de Diagnóstico Atom: nota, urgências, plano, quanto vale e proposta.\n   Fonte única para os dois modos de uso:\n   - modo 2 (manual): a página metodo-diagnostico.html carrega este arquivo depois de dados.js;\n   - modo 1 (automático, Pipedrive → n8n): o n8n usa a mesma lógica (n8n/code/metodo_motor.js, gerado por npm run metodo:motor).\n   Depende só dos dados de dados.js (AREAS, TIPOS, PLANEJAMENTO_PADRAO). Sem acesso a rede, sem data implícita. */\nconst MOTOR = (function () {\n  const ORDEM = { ven: 0, ges: 1, mkt: 2 };\n  const rapido = c => c.startsWith(\"!\");\n  const txt = c => c.replace(/^!/, \"\");\n  const tipoDe = id => TIPOS.find(t => t.id === id);\n\n  // Régua: 5 critérios × 2 pontos por área.\n  const nota = (r, a) => (r.marc[a] || []).filter(Boolean).length * 2;\n  const faixa = n => n <= 4 ? \"Perdendo cliente\" : n <= 7 ? \"Pode melhorar\" : \"Funciona\";\n\n  function areasDe(tipos) {\n    const set = new Set(); tipos.forEach(id => (tipoDe(id)?.areas || []).forEach(a => set.add(a)));\n    return Object.keys(AREAS).filter(a => set.has(a));\n  }\n\n  // r = { tipos, marc: {area: [bool×5]}, dentro: {area: bool}, valor: {procura, contato, fecha, ticket} }\n  function diagnostico(r) {\n    const areas = areasDe(r.tipos), med = areas.filter(a => r.dentro[a] !== false);\n    const media = l => l.length ? Math.round(l.reduce((s, a) => s + nota(r, a), 0) / l.length * 10) / 10 : 0;\n    const porTipo = r.tipos.map(id => ({ id, n: media((tipoDe(id)?.areas || []).filter(a => r.dentro[a] !== false)) }));\n    const urg = med.slice().sort((x, y) => nota(r, x) - nota(r, y) || ORDEM[AREAS[x].g] - ORDEM[AREAS[y].g]).slice(0, 3);\n    const plano = { hoje: [], d90: [], m6: [] };\n    med.forEach(a => AREAS[a].c.forEach((c, i) => {\n      if ((r.marc[a] || [])[i]) return;\n      const it = { area: a, texto: `${AREAS[a].nome}: ${txt(c).charAt(0).toLowerCase() + txt(c).slice(1)}` };\n      if (rapido(c)) plano.hoje.push(it); else if (urg.includes(a) || AREAS[a].h === \"90\") plano.d90.push(it); else plano.m6.push(it);\n    }));\n    const v = r.valor || {}, contatos = Math.round((v.procura || 0) * (v.contato || 0) / 100), clientes = Math.round(contatos * (v.fecha || 0) / 100);\n    const geral = media(med);\n    return { areas, med, notas: Object.fromEntries(med.map(a => [a, nota(r, a)])), geral, faixa: faixa(geral), porTipo, urg, plano,\n      valor: { contatos, clientes, total: clientes * (v.ticket || 0) }, temValor: r.tipos.some(id => tipoDe(id)?.valor) };\n  }\n\n  // Ofertas que a proposta leva, por diagnóstico. O Diagnóstico Total (produto pago) leva Geral + Site.\n  const OFERTAS_DO_TIPO = { site: [\"site\"], seo: [\"seo\"], geral: [\"geral\"], atendimento: [\"atendimento\"], completo: [\"geral\", \"site\"] };\n\n  // plan: PLANEJAMENTO_PADRAO (ou o salvo pela equipe). hojeISO: data da proposta (AAAA-MM-DD), obrigatória.\n  function proposta(r, d, plan, hojeISO) {\n    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(hojeISO || \"\")) throw new Error(\"proposta: informe a data (AAAA-MM-DD)\");\n    const ids = [...new Set(r.tipos.flatMap(id => OFERTAS_DO_TIPO[id] || []))];\n    const V = plan.vendas || {}, pend = [];\n    const ofertas = ids.map(id => {\n      const t = tipoDe(id), preco = Number(V[id]?.preco) || 0, parcelas = Math.max(1, Number(V[id]?.parcelas) || 1);\n      if (!preco) pend.push(`Preço de venda de \"${t.nome}\" não definido (Metas e custos → Receita e lucro).`);\n      const doTipo = new Set(t.areas);\n      const resolve = d.urg.filter(a => doTipo.has(a)).map(a => ({ area: a, nome: AREAS[a].nome, nota: d.notas[a], solucao: AREAS[a].sol }));\n      const itens = [...d.plano.hoje, ...d.plano.d90].filter(x => doTipo.has(x.area)).map(x => x.texto);\n      return { id, nome: t.oferta, diagnostico: t.nome, preco, parcelas, mensal: Math.round(preco / parcelas * 100) / 100,\n        condicao: parcelas > 1 ? `${parcelas} parcelas mensais de ${brl(preco / parcelas)}` : \"à vista\", resolve, entregas: itens.slice(0, 8) };\n    });\n    const total = ofertas.reduce((s, o) => s + o.preco, 0);\n    const validade = somaDias(hojeISO, plan.validadePropostaDias || 10);\n    return {\n      data: hojeISO, validade, ofertas, total, pendencias: pend, pronta: pend.length === 0 && ofertas.length > 0,\n      porque: d.urg.map(a => ({ area: a, nome: AREAS[a].nome, nota: d.notas[a], faixa: faixa(d.notas[a]) })),\n      valorEmJogo: d.temValor ? d.valor.total : null,\n      proximos: [\"Aceite pela página da proposta\", \"Contrato para assinatura (Autentique)\", \"Cobrança (Asaas)\", \"Início do projeto\"]\n    };\n  }\n\n  // ---------- Regra do Pipedrive: qual diagnóstico o negócio recebe ----------\n  // oferta: rótulo de \"ATOM · Oferta de interesse\" (ou o ID da opção); pagamento: texto de \"ATOM · Status do pagamento inicial\".\n  function regraDoNegocio(oferta, pagamento) {\n    const P = PIPEDRIVE, rot = typeof oferta === \"number\" || /^\\d+$/.test(String(oferta || \"\")) ? (P.ofertaOpcoes[Number(oferta)] || \"\") : String(oferta || \"\");\n    if (pagamento && P.pago.test(String(pagamento))) return { tipos: [\"completo\"], porque: `1ª parcela do Diagnóstico Total paga (\"${pagamento}\")` };\n    if (P.oferta[rot]) return { tipos: P.oferta[rot].slice(), porque: `Oferta de interesse = ${rot}` };\n    return { tipos: P.semOferta.slice(), porque: \"sem oferta de interesse: raio-x Geral\" };\n  }\n  // Rascunho automático: só as áreas que a coleta mede entram na nota; as outras ficam \"não medidas\" até a revisão humana.\n  function rascunhoAutomatico(tipos) {\n    const marc = {}, dentro = {}, evid = {};\n    Object.keys(AREAS).forEach(a => { marc[a] = AREAS[a].c.map(() => false); dentro[a] = false; });\n    return { tipos, marc, dentro, evid, valor: {} };\n  }\n\n  // ---------- Leitura das coletas (Apify) e marcação automática dos critérios ----------\n  // Funções puras: recebem o que a Apify devolveu e as datas explícitas. Usadas pela página (botão \"Coletar no Apify\") e pelo n8n.\n  const normal = s => String(s || \"\").toLowerCase().normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").replace(/[^a-z0-9 ]/g, \" \").replace(/\\s+/g, \" \").trim();\n  const dominio = u => String(u || \"\").toLowerCase().replace(/^https?:\\/\\//, \"\").replace(/^www\\./, \"\").split(/[/?#]/)[0];\n  const dataBR = iso => { const d = String(iso || \"\").slice(0, 10).split(\"-\"); return d.length === 3 ? `${d[2]}/${d[1]}/${d[0]}` : \"\"; };\n  const n0 = v => Math.round(Number(v) || 0).toLocaleString(\"pt-BR\");\n  const n1 = v => Number(v).toLocaleString(\"pt-BR\", { minimumFractionDigits: 1, maximumFractionDigits: 1 });\n  const diasEntre = (iso, agoraISO) => iso ? Math.floor((new Date(agoraISO).getTime() - new Date(iso).getTime()) / 864e5) : null;\n\n  function acharEmpresa(empresa, itens) {\n    const d = dominio(empresa.site), nome = normal(empresa.nome).replace(/\\b(ltda|me|eireli|sa)\\b/g, \"\").trim();\n    let i = d ? itens.findIndex(x => dominio(x.website) && dominio(x.website) === d) : -1;\n    if (i < 0 && nome.length > 2) i = itens.findIndex(x => normal(x.title).includes(nome) || nome.includes(normal(x.title)));\n    return i;\n  }\n  // itens: Google Maps Scraper (rank, title, totalScore, reviewsCount, categoryName, imagesCount, claimThisBusiness, phone, website, url)\n  function lerMapa(itensBrutos, empresa, busca, cidade, dataISO) {\n    const itens = (itensBrutos || []).filter(x => x && x.title).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));\n    return { fonte: \"Apify · Google Maps Scraper\", busca, cidade, data: dataISO, itens, alvo: acharEmpresa(empresa, itens), custoUSD: itens.length * 0.003 };\n  }\n  // pags: Website Content Crawler (url, metadata.title, metadata.description, metadata.jsonLd); homeHtml: HTML da página inicial\n  function lerSite(pags, homeHtml, ctx, url, dataISO) {\n    pags = pags || [];\n    const html = String(homeHtml || \"\"), low = html.toLowerCase();\n    const tipos = [...new Set(pags.flatMap(p => (JSON.stringify(p[\"metadata.jsonLd\"] || (p.metadata || {}).jsonLd || \"\").match(/\"@type\":\"([A-Za-z]+)\"/g) || []).map(m => m.slice(9, -1))))];\n    const texto = normal(html.replace(/<script[\\s\\S]*?<\\/script>|<style[\\s\\S]*?<\\/style>/gi, \" \").replace(/<[^>]+>/g, \" \")).slice(0, 4000);\n    const h1 = ((html.match(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/i) || [])[1] || \"\").replace(/<[^>]+>/g, \" \").replace(/\\s+/g, \" \").trim();\n    const insta = ((html.match(/instagram\\.com\\/([A-Za-z0-9_.]{2,30})/i) || [])[1] || \"\").replace(/^(p|reel|explore|accounts)$/i, \"\");\n    const cidade = normal(String(ctx.cidade || \"\").split(\"/\")[0]), seg = normal(ctx.segmento || \"\").split(\" \")[0] || \"\";\n    const tit = p => p[\"metadata.title\"] ?? (p.metadata || {}).title, desc = p => p[\"metadata.description\"] ?? (p.metadata || {}).description;\n    const metaDesc = ((html.match(/<meta[^>]+name=[\"']description[\"'][^>]*content=[\"']([^\"']{10,300})/i) || [])[1] || \"\").trim();\n    return {\n      fonte: \"Apify · Website Content Crawler\", url, data: dataISO,\n      paginas: pags.length, semDescricao: pags.filter(p => !desc(p)).length, semTitulo: pags.filter(p => !tit(p)).length,\n      titulo: (pags[0] && tit(pags[0])) || \"\", h1, descricao: metaDesc || (pags[0] && desc(pags[0])) || \"\", tipos,\n      whatsapp: /wa\\.me\\/|api\\.whatsapp\\.com|whatsapp:\\/\\//.test(low), tel: /href=[\"']tel:/.test(low),\n      ga4: /gtag\\/js\\?id=g-|googletagmanager\\.com\\/gtag/.test(low), gtm: /googletagmanager\\.com\\/gtm\\.js|gtm-[a-z0-9]{4,}/.test(low), pixel: /connect\\.facebook\\.net|fbq\\(/.test(low),\n      cms: /wp-content|wp-includes/.test(low) ? \"WordPress\" : /wix\\.com|wixstatic/.test(low) ? \"Wix\" : /cdn\\.shopify/.test(low) ? \"Shopify\" : /nuvemshop|lojanuvem/.test(low) ? \"Nuvemshop\" : \"\",\n      citaCidade: cidade ? texto.includes(cidade) : null, citaSegmento: seg ? texto.includes(seg) : null, instagram: insta\n    };\n  }\n  // p: Instagram Profile Scraper (username, biography, externalUrl, followersCount, postsCount, isBusinessAccount, latestPosts…)\n  function lerInsta(p, dataISO) {\n    if (!p || p.error || !p.username) return null;\n    const posts = (p.latestPosts || []).filter(x => !x.isPinned).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));\n    const em30 = posts.filter(x => diasEntre(x.timestamp, dataISO) <= 30);\n    const eng = posts.length && p.followersCount ? posts.slice(0, 12).reduce((s, x) => s + (x.likesCount || 0) + (x.commentsCount || 0), 0) / Math.min(12, posts.length) / p.followersCount * 100 : null;\n    const bio = `${p.biography || \"\"} ${p.externalUrl || \"\"}`.toLowerCase();\n    return { fonte: \"Apify · Instagram Profile Scraper\", usuario: p.username, data: dataISO, custoUSD: 0.0023,\n      seguidores: p.followersCount, posts: p.postsCount, comercial: p.isBusinessAccount, categoria: p.businessCategoryName, privado: p.private,\n      ultimoDias: posts[0] ? diasEntre(posts[0].timestamp, dataISO) : null, mes: em30.length, reelsMes: em30.filter(x => x.productType === \"clips\" || x.type === \"Video\").length,\n      engajamento: eng, link: !!p.externalUrl, whatsappBio: /wa\\.me|whatsapp|api\\.whatsapp/.test(bio), bio: p.biography || \"\" };\n  }\n  // Marca os critérios que a coleta prova e escreve a evidência com fonte e data. C = { mapa, site, insta }.\n  function aplicarColetas(r, C) {\n    const areas = areasDe(r.tipos), tem = a => areas.includes(a);\n    r.evid = r.evid || {};\n    const m = C.mapa;\n    if (m && m.alvo >= 0) {\n      const it = m.itens[m.alvo], pos = m.alvo + 1, top3 = m.itens.slice(0, 3);\n      const maxAv = Math.max(0, ...top3.map(x => x.reviewsCount || 0)), lider = top3.find(x => (x.reviewsCount || 0) === maxAv) || top3[0];\n      const f = `Apify · Google Maps, busca \"${m.busca}\" em ${m.cidade}, ${dataBR(m.data)}`;\n      if (tem(\"map\")) { r.marc.map[0] = pos <= 3; r.marc.map[1] = it.claimThisBusiness === false; r.marc.map[3] = (it.imagesCount || 0) >= 50; r.dentro.map = true;\n        r.evid.map = `${f}: ${pos}º de ${m.itens.length}; perfil ${it.claimThisBusiness ? \"não reivindicado\" : \"reivindicado\"}; ${it.imagesCount ?? 0} fotos; categoria \"${it.categoryName || \"—\"}\"; telefone ${it.phone || \"não informado\"}. Conferir horário e categoria.`; }\n      if (tem(\"ava\")) { r.marc.ava[0] = (it.totalScore || 0) >= 4.5; r.marc.ava[1] = maxAv ? (it.reviewsCount || 0) >= maxAv / 2 : false; r.dentro.ava = true;\n        r.evid.ava = `${f}: nota ${it.totalScore ?? \"—\"} com ${it.reviewsCount ?? 0} avaliações. Maior volume do top 3: ${lider ? `${lider.title}, ${lider.totalScore ?? \"—\"} com ${lider.reviewsCount ?? 0}` : \"—\"}.`; }\n    }\n    const s = C.site;\n    if (s) {\n      const f = `Apify · leitura de ${s.paginas} páginas de ${dominio(s.url)}, ${dataBR(s.data)}`;\n      if (tem(\"sit\")) { r.marc.sit[1] = !!(s.citaCidade && s.citaSegmento); r.marc.sit[2] = s.whatsapp; r.marc.sit[3] = s.tel; r.dentro.sit = true;\n        r.evid.sit = `${f}: título \"${s.titulo || \"—\"}\"; H1 \"${s.h1 || \"sem H1\"}\"; ${s.citaSegmento ? \"cita\" : \"não cita\"} o segmento e ${s.citaCidade ? \"cita\" : \"não cita\"} a cidade; WhatsApp ${s.whatsapp ? \"com link\" : \"sem link\"}; telefone ${s.tel ? \"clicável\" : \"não clicável\"}. Velocidade: medir no PageSpeed.`; }\n      if (tem(\"est\")) { r.marc.est[2] = s.paginas > 0 && s.semDescricao === 0 && s.semTitulo === 0; r.marc.est[3] = s.tipos.some(x => /LocalBusiness|Organization|Dentist|MedicalBusiness|Store|ProfessionalService|Service/.test(x)); r.dentro.est = true;\n        r.evid.est = `${f}: ${s.semDescricao} de ${s.paginas} páginas sem descrição; dados estruturados: ${s.tipos.length ? s.tipos.join(\", \") : \"nenhum\"}.`; }\n      if (tem(\"conv\")) { r.marc.conv[3] = s.ga4 || s.gtm; r.dentro.conv = true;\n        r.evid.conv = `${f}: ${[s.ga4 && \"GA4\", s.gtm && \"Tag Manager\", s.pixel && \"Meta Pixel\"].filter(Boolean).join(\", \") || \"nenhuma tag de medição\"} instalado(s). Conferir se as conversões estão configuradas.`; }\n    }\n    const g = C.insta;\n    if (g && tem(\"ins\")) {\n      r.marc.ins[0] = g.ultimoDias != null && g.ultimoDias <= 7; r.marc.ins[1] = g.mes >= 8; r.marc.ins[2] = g.reelsMes > 0; r.marc.ins[3] = g.whatsappBio; r.marc.ins[4] = g.link; r.dentro.ins = true;\n      r.evid.ins = `Apify · Instagram @${g.usuario}, ${dataBR(g.data)}: ${n0(g.seguidores || 0)} seguidores; último post há ${g.ultimoDias ?? \"—\"} dias; ${g.mes} posts e ${g.reelsMes} Reels em 30 dias; engajamento médio ${g.engajamento != null ? n1(g.engajamento) + \"%\" : \"—\"}; ${g.link ? \"tem link na bio\" : \"sem link na bio\"}${g.whatsappBio ? \" e WhatsApp\" : \"\"}.`;\n    }\n    return r;\n  }\n\n  // ---------- As 3 informações da abordagem (etapa 02 da Máquina Comercial) ----------\n  // Uma sobre o negócio, uma sobre a reputação, uma oportunidade com número. Só entra o que a coleta provou; nada é inventado.\n  function tresFatos(C, empresa) {\n    const fatos = [], m = C.mapa, s = C.site, g = C.insta;\n    const it = m && m.alvo >= 0 ? m.itens[m.alvo] : null;\n    // 1. O negócio: o que a própria empresa diz que faz (H1 ou descrição do site), ou a categoria no Google.\n    const frase = s && (s.h1 && s.h1.length >= 12 && s.h1.length <= 120 ? s.h1 : (s.descricao && s.descricao.length <= 160 ? s.descricao : \"\"));\n    if (frase) fatos.push({ tipo: \"negocio\", texto: `No site, a ${empresa.nome} se apresenta assim: \"${frase}\".`, fonte: `${dominio(s.url)}, ${dataBR(s.data)}` });\n    else if (it && it.categoryName) fatos.push({ tipo: \"negocio\", texto: `No Google, a ${empresa.nome} aparece como ${it.categoryName.toLowerCase()}${empresa.cidade ? \" em \" + empresa.cidade : \"\"}.`, fonte: `Google Maps, ${dataBR(m.data)}` });\n    // 2. A reputação: nota e avaliações, comparadas ao maior volume do top 3.\n    if (it && it.totalScore != null && it.reviewsCount != null) {\n      const top3 = m.itens.slice(0, 3).filter(x => x !== it), lider = top3.sort((a, b) => (b.reviewsCount || 0) - (a.reviewsCount || 0))[0];\n      const comp = !lider ? \"\" : (lider.reviewsCount || 0) > it.reviewsCount ? `; a com mais avaliações entre as primeiras da busca tem ${n0(lider.reviewsCount)}` : it.reviewsCount > (lider.reviewsCount || 0) ? `, mais do que qualquer uma das primeiras da busca` : \"\";\n      fatos.push({ tipo: \"reputacao\", texto: `Nota ${n1(it.totalScore)} no Google com ${n0(it.reviewsCount)} avaliações${comp}.`, fonte: `Google Maps, busca \"${m.busca}\", ${dataBR(m.data)}` });\n    }\n    // 3. A oportunidade: posição no mapa para a busca principal; sem mapa, um ponto do site ou do Instagram.\n    if (m && m.itens.length) {\n      const pos = m.alvo >= 0 ? m.alvo + 1 : null;\n      fatos.push({ tipo: \"oportunidade\", texto: pos ? (pos <= 3 ? `Para \"${m.busca}\" em ${m.cidade}, a ${empresa.nome} já está entre as 3 primeiras do mapa.` : `Para \"${m.busca}\" em ${m.cidade}, a ${empresa.nome} aparece em ${pos}º no mapa do Google.`)\n        : `Para \"${m.busca}\" em ${m.cidade}, a ${empresa.nome} não aparece entre os ${m.itens.length} primeiros do mapa.`, fonte: `Google Maps, ${dataBR(m.data)}` });\n    } else if (s && !s.whatsapp) fatos.push({ tipo: \"oportunidade\", texto: `O site não tem um botão de WhatsApp: quem chega pelo celular precisa procurar como falar com vocês.`, fonte: `${dominio(s.url)}, ${dataBR(s.data)}` });\n    else if (g && g.ultimoDias != null && g.ultimoDias > 30) fatos.push({ tipo: \"oportunidade\", texto: `O último post no Instagram (@${g.usuario}) foi há ${g.ultimoDias} dias.`, fonte: `Instagram, ${dataBR(g.data)}` });\n    return fatos.slice(0, 3);\n  }\n  // Primeira mensagem (D1): as informações e a oferta do diagnóstico gratuito. Nunca leva preço.\n  function mensagemAbordagem(fatos, empresa, consultor) {\n    const corpo = fatos.map(f => f.texto).join(\" \");\n    const txt = `Olá! Sou ${consultor || \"o Thiago\"}, da Atom. Olhei a presença digital da ${empresa.nome}. ${corpo} Preparei um diagnóstico gratuito mostrando o que muda o jogo para vocês. Posso te enviar?`;\n    if (/R\\$|\\breais\\b|\\bpre[çc]o\\b|\\bvalor(es)?\\b/i.test(txt)) throw new Error(\"mensagemAbordagem: texto com preço\");\n    return txt;\n  }\n\n  const brl = v => Number(v).toLocaleString(\"pt-BR\", { style: \"currency\", currency: \"BRL\", minimumFractionDigits: 0, maximumFractionDigits: 2 });\n  function somaDias(iso, n) { const d = new Date(iso + \"T12:00:00Z\"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }\n\n  return { ORDEM, rapido, txt, nota, faixa, areasDe, diagnostico, proposta, OFERTAS_DO_TIPO, brl, normal, dominio, dataBR, acharEmpresa, lerMapa, lerSite, lerInsta, aplicarColetas, tresFatos, mensagemAbordagem, regraDoNegocio, rascunhoAutomatico };\n})();\n\n\nreturn (function () {\n// Negócio e organização (API v2 com rótulos das opções) → empresa, diagnósticos pela regra do Pipedrive e entradas da Apify.\nconst plano = $('Planejar').first().json;\nconst deal = ($('Negócio').first().json || {}).data || {};\nconst org = ($('Organização').first().json || {}).data || {};\nconst cf = deal.custom_fields || {}, F = PIPEDRIVE.campos;\nconst rot = (v) => (v && typeof v === 'object' ? (v.label ?? v.id ?? '') : (v ?? ''));\nconst regra = MOTOR.regraDoNegocio(rot(cf[F.oferta]), rot(cf[F.pagamento]));\nconst end = org.address || {};\nconst cidade = String(end.locality || end.admin_area_level_2 || '').trim();\nconst uf = String(end.admin_area_level_1 || '').trim();\nconst site = String(rot(cf[F.dominio]) || org.website || '').trim();\nconst segmento = String(rot(cf[F.nicho]) || '').trim();\nconst empresa = { nome: String(org.name || deal.title || '').trim(), site, cidade, uf, segmento };\nconst areas = MOTOR.areasDe(regra.tipos);\nconst usaMapa = areas.includes('map') || areas.includes('ava'), usaSite = ['sit', 'est', 'conv'].some((a) => areas.includes(a)) && !!site;\nconst faltas = [];\nif (!empresa.nome) faltas.push('nome da organização');\nif (usaMapa && (!segmento || !cidade)) faltas.push('nicho e cidade da organização (para o Google Maps)');\nconst url = site ? (/^https?:\\/\\//i.test(site) ? site : 'https://' + site) : '';\nreturn [{ json: {\n  deal_id: deal.id || plano.alvo_id, versao_atual: String(rot(cf[F.versao]) || ''), regra, empresa, areas, faltas,\n  mapa: usaMapa && segmento && cidade ? { searchStringsArray: [segmento], locationQuery: cidade + (uf ? ', ' + uf : '') + ', Brasil', maxCrawledPlacesPerSearch: 20, language: 'pt-BR' } : null,\n  site: usaSite ? { startUrls: [{ url }], maxCrawlPages: 10, maxCrawlDepth: 1, crawlerType: 'cheerio', saveHtml: true, saveMarkdown: false, removeCookieWarnings: true } : null,\n  url\n} }];\n})();"
+      }
+    },
+    {
+      "id": "4cd67356-dc40-4d81-81a9-d1531977363a",
+      "name": "Tem mapa?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1900,
+        450
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ !!$('Preparar').first().json.mapa }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "bce58b87-2789-46f1-b23d-b4386107c747",
+      "name": "Google Maps (Apify)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2100,
+        450
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "specifyQuery": "keypair",
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "timeout",
+              "value": "240"
+            },
+            {
+              "name": "maxItems",
+              "value": "20"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Preparar').first().json.mapa) }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "credentials": {},
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "52344648-0941-4060-b7b0-0e9c19bdc5b5",
+      "name": "Tem site?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2100,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ !!$('Preparar').first().json.site }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "e6e3ac52-a15b-4556-85b2-5f1f1c9c959e",
+      "name": "Site (Apify)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2300,
+        600
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/apify~website-content-crawler/run-sync-get-dataset-items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "specifyQuery": "keypair",
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "timeout",
+              "value": "240"
+            },
+            {
+              "name": "memory",
+              "value": "1024"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Preparar').first().json.site) }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "credentials": {},
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "6d4f7aea-6d65-4223-bf72-87ce3e4a356b",
+      "name": "Diagnosticar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2300,
+        750
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf30.js#diagnosticar + lib/{motor}. Edite a fonte no repositório, não este nó.\n// GERADO por scripts/gerar_motor_n8n.mjs a partir de metodo/dados.js e metodo/motor.js. Não edite à mão.\nconst AREAS = {\"rep\":{\"nome\":\"Reputação da marca\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"1º na busca pelo nome\",\"Site é o 1º resultado, não um agregador\",\"Perfil do Google aparece na busca pelo nome\",\"Nota no Google 4,5 ou mais\",\"!Nenhuma reclamação grave sem resposta\"]},\"bus\":{\"nome\":\"Busca no Google\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"1ª página na busca principal\",\"Alguma busca de serviço no top 20\",\"Página própria para cada serviço\",\"Visitas crescendo em 12 meses\",\"Maioria das visitas de quem não buscou pelo nome\"]},\"map\":{\"nome\":\"Google Maps\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO local\",\"c\":[\"Top 3 na busca principal\",\"!Perfil verificado\",\"!Telefone e horário certos\",\"50 fotos ou mais\",\"!Categoria principal certa\"]},\"ava\":{\"nome\":\"Avaliações\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Agentes de IA (pedido de avaliação)\",\"c\":[\"Nota 4,5 ou mais\",\"Volume de pelo menos metade do líder\",\"Avaliação nova no último mês\",\"!Responde 80% ou mais\",\"Nenhuma 1 estrela nos últimos 3 meses\"]},\"sit\":{\"nome\":\"Site\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Sites e landing pages\",\"c\":[\"Abre em até 3 s no celular\",\"Diz o que faz e onde na primeira tela\",\"!WhatsApp sempre visível\",\"!Telefone certo e clicável\",\"Saúde técnica 80/100 ou mais\"]},\"ins\":{\"nome\":\"Instagram\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Estratégia e conteúdo\",\"c\":[\"Post nos últimos 7 dias\",\"8 posts ou mais no mês\",\"Reels no mês\",\"!WhatsApp na bio\",\"!Link na bio\"]},\"ia\":{\"nome\":\"Busca com IA\",\"g\":\"mkt\",\"h\":\"6m\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"Citado no ChatGPT\",\"Citado no Gemini\",\"Citado no Google Modo IA\",\"Site identifica empresa e unidades\",\"!Mesmo nome, endereço e telefone em todo lugar\"]},\"est\":{\"nome\":\"Estrutura para SEO\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"SEO, GEO e AEO\",\"c\":[\"Uma página por serviço e por cidade\",\"Sem duas páginas disputando a mesma busca\",\"Título e descrição em todas as páginas\",\"Dados estruturados de empresa e serviços\",\"Sitemap enviado e páginas indexadas\"]},\"conv\":{\"nome\":\"Conversão do site\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Sites e landing pages\",\"c\":[\"Uma ação principal repetida na página\",\"Formulário curto\",\"Prova social perto do botão\",\"Conversões medidas (WhatsApp e formulário)\",\"Página de obrigado com próximo passo\"]},\"loja\":{\"nome\":\"Loja virtual\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Loja virtual Nuvemshop\",\"c\":[\"Frete calculado na página do produto\",\"Checkout com Pix e parcelamento\",\"Avaliações nos produtos\",\"Recuperação de carrinho abandonado\",\"Catálogo no Google Shopping e Instagram\"]},\"mid\":{\"nome\":\"Mídia paga\",\"g\":\"mkt\",\"h\":\"90\",\"sol\":\"Tráfego pago\",\"c\":[\"Anúncio ativo no Google\",\"Anúncio ativo na Meta\",\"Página de destino própria\",\"Tag de conversão instalada\",\"Anúncio fala do serviço e da cidade\"]},\"med\":{\"nome\":\"Medição da mídia\",\"g\":\"ges\",\"h\":\"90\",\"sol\":\"Tráfego pago + BI\",\"c\":[\"Conversões chegam até a venda (CRM)\",\"Custo por venda conhecido\",\"Remarketing ativo\",\"Relatório semanal com decisão\",\"Verba concentrada no que converte\"]},\"wha\":{\"nome\":\"WhatsApp\",\"g\":\"ven\",\"h\":\"6m\",\"sol\":\"Agentes de IA\",\"c\":[\"Respondeu em até 5 min\",\"Respondeu à pergunta feita\",\"Respondeu fora do horário\",\"!Pediu o nome ou ofereceu agendar\",\"!Mandou endereço ou link útil\"]},\"crm\":{\"nome\":\"Processo e CRM\",\"g\":\"ven\",\"h\":\"90\",\"sol\":\"Vendas e CRM\",\"c\":[\"Todo contato registrado em CRM\",\"Etapas do funil definidas\",\"Follow-up em até 24 h\",\"!Um responsável por lead\",\"Revisão semanal do funil\"]},\"fec\":{\"nome\":\"Proposta e fechamento\",\"g\":\"ven\",\"h\":\"90\",\"sol\":\"Vendas e CRM\",\"c\":[\"Sabe a taxa de fechamento\",\"Proposta enviada em até 48 h\",\"!Registra o motivo de perda\",\"Acompanha o tempo até fechar\",\"Tem apresentação padrão\"]},\"pos\":{\"nome\":\"Pós-venda\",\"g\":\"ven\",\"h\":\"90\",\"sol\":\"Agentes de IA\",\"c\":[\"!Pede avaliação depois do atendimento\",\"!Pede indicação\",\"Reativa clientes antigos\",\"Mede recompra\",\"Tem canal de contato pós-venda\"]},\"num\":{\"nome\":\"Números do negócio\",\"g\":\"ges\",\"h\":\"6m\",\"sol\":\"BI em tempo real\",\"c\":[\"!Sabe de onde vem cada cliente\",\"Conhece o ticket médio\",\"Conhece o custo por cliente\",\"!Tem meta mensal de vendas\",\"Acompanha os números em painel\"]}};\nconst TIPOS = [{\"id\":\"site\",\"nome\":\"Site\",\"oferta\":\"Novo site de alto padrão, orientado à conversão\",\"areas\":[\"sit\",\"conv\",\"est\",\"loja\"],\"valor\":false,\"finalidade\":\"prospeccao\"},{\"id\":\"seo\",\"nome\":\"SEO\",\"oferta\":\"Plano integrado de SEO, presença nas IAs e Google Ads\",\"areas\":[\"bus\",\"est\",\"rep\",\"map\",\"ia\",\"mid\",\"med\"],\"valor\":true,\"finalidade\":\"prospeccao\"},{\"id\":\"geral\",\"nome\":\"Geral\",\"oferta\":\"Setup de marketing e vendas com site incluído\",\"areas\":[\"rep\",\"bus\",\"map\",\"ava\",\"sit\",\"ins\",\"ia\"],\"valor\":true,\"finalidade\":\"prospeccao\"},{\"id\":\"atendimento\",\"nome\":\"Atendimento\",\"oferta\":\"Agente de IA no WhatsApp integrado ao CRM\",\"areas\":[\"wha\",\"crm\",\"fec\",\"pos\"],\"valor\":false,\"finalidade\":\"prospeccao\"},{\"id\":\"completo\",\"nome\":\"Total\",\"oferta\":\"Diagnóstico Total, vendido por 2× R$ 198\",\"areas\":[\"rep\",\"bus\",\"map\",\"ava\",\"sit\",\"conv\",\"est\",\"ins\",\"ia\",\"mid\",\"med\",\"wha\",\"crm\",\"fec\",\"pos\",\"num\"],\"valor\":true,\"finalidade\":\"produto\"}];\nconst PIPEDRIVE = Object.assign({\"funis\":{\"2\":\"Funil de vendas\",\"5\":\"Prospecção Ativa\",\"6\":\"Atendimento Receptivo\"},\"gatilhos\":[[2,8,\"Diagnóstico\"],[5,34,\"Diagnóstico N2\"],[6,40,\"Qualificado\"]],\"campos\":{\"dominio\":\"4ead439861c0448a64b9c8bc700ac72b95ef4aee\",\"nicho\":\"f2e7fb5625b9ea04e6923cd309f18b203e14365b\",\"oferta\":\"8ce409a84529872560e0f1a87bc2b2f1ca0d4a14\",\"origem\":\"3946f1f5a8e92aa8f92e17af24301f17d58716a5\",\"pagamento\":\"f95e59d62603186a50e72fe625df0b769e9874d8\",\"refazer\":\"9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751\",\"status\":\"0d0aeb53fb080fe43e7030b60685894cdb263d69\",\"data\":\"7ba3113147bf9ac87e72cdf6c6a044ef62463d94\",\"versao\":\"75287c565520bdc7f0d50ed7798f1a30e9f5938c\",\"pendencias\":\"00d36a85250066580dbb4302abd87732c99067ac\"},\"oferta\":{\"Site\":[\"site\"],\"Marketing com IA\":[\"seo\"],\"Agente de IA\":[\"atendimento\"],\"Clínica completa\":[\"geral\",\"site\"]},\"semOferta\":[\"geral\"],\"pipeProspeccao\":5,\"etapaRespondeu\":32,\"etapaDiagnostico\":34,\"intencao\":\"44cf2cb8a553981c38bf61bdae742ce8a5c20a5f\",\"intencaoAceite\":[70,72],\"ofertaOpcoes\":{\"50\":\"Clínica completa\",\"51\":\"Marketing com IA\",\"52\":\"Agente de IA\",\"53\":\"Site\"}}, { pago: /pago|paga|confirmad|recebid/i });\nconst PLANEJAMENTO_PADRAO = {\"meses\":6,\"diasUteis\":22,\"semanasMes\":4.33,\"taxaReuniao\":7,\"taxaFechamento\":20,\"reunioesDia\":12,\"cenario\":\"capacidade\",\"reusoMercado\":20,\"parteMercadoSemrush\":70,\"semrushProspeccao\":\"todos\",\"metas\":{\"site\":262,\"seo\":24,\"geral\":31,\"atendimento\":0,\"completo\":0},\"precoProduto\":396,\"parcelas\":2,\"diasSegundaParcela\":15,\"tetoProduto\":50,\"taxasVenda\":3.98,\"imposto\":16,\"validadePropostaDias\":10,\"vendas\":{\"site\":{\"preco\":2300,\"parcelas\":1},\"seo\":{\"preco\":12000,\"parcelas\":6},\"geral\":{\"preco\":0,\"parcelas\":1},\"atendimento\":{\"preco\":0,\"parcelas\":1}},\"entrega\":{\"site\":0,\"seo\":0,\"geral\":0,\"atendimento\":0},\"cambio\":5,\"reserva\":20};\n/* Motor do Método de Diagnóstico Atom: nota, urgências, plano, quanto vale e proposta.\n   Fonte única para os dois modos de uso:\n   - modo 2 (manual): a página metodo-diagnostico.html carrega este arquivo depois de dados.js;\n   - modo 1 (automático, Pipedrive → n8n): o n8n usa a mesma lógica (n8n/code/metodo_motor.js, gerado por npm run metodo:motor).\n   Depende só dos dados de dados.js (AREAS, TIPOS, PLANEJAMENTO_PADRAO). Sem acesso a rede, sem data implícita. */\nconst MOTOR = (function () {\n  const ORDEM = { ven: 0, ges: 1, mkt: 2 };\n  const rapido = c => c.startsWith(\"!\");\n  const txt = c => c.replace(/^!/, \"\");\n  const tipoDe = id => TIPOS.find(t => t.id === id);\n\n  // Régua: 5 critérios × 2 pontos por área.\n  const nota = (r, a) => (r.marc[a] || []).filter(Boolean).length * 2;\n  const faixa = n => n <= 4 ? \"Perdendo cliente\" : n <= 7 ? \"Pode melhorar\" : \"Funciona\";\n\n  function areasDe(tipos) {\n    const set = new Set(); tipos.forEach(id => (tipoDe(id)?.areas || []).forEach(a => set.add(a)));\n    return Object.keys(AREAS).filter(a => set.has(a));\n  }\n\n  // r = { tipos, marc: {area: [bool×5]}, dentro: {area: bool}, valor: {procura, contato, fecha, ticket} }\n  function diagnostico(r) {\n    const areas = areasDe(r.tipos), med = areas.filter(a => r.dentro[a] !== false);\n    const media = l => l.length ? Math.round(l.reduce((s, a) => s + nota(r, a), 0) / l.length * 10) / 10 : 0;\n    const porTipo = r.tipos.map(id => ({ id, n: media((tipoDe(id)?.areas || []).filter(a => r.dentro[a] !== false)) }));\n    const urg = med.slice().sort((x, y) => nota(r, x) - nota(r, y) || ORDEM[AREAS[x].g] - ORDEM[AREAS[y].g]).slice(0, 3);\n    const plano = { hoje: [], d90: [], m6: [] };\n    med.forEach(a => AREAS[a].c.forEach((c, i) => {\n      if ((r.marc[a] || [])[i]) return;\n      const it = { area: a, texto: `${AREAS[a].nome}: ${txt(c).charAt(0).toLowerCase() + txt(c).slice(1)}` };\n      if (rapido(c)) plano.hoje.push(it); else if (urg.includes(a) || AREAS[a].h === \"90\") plano.d90.push(it); else plano.m6.push(it);\n    }));\n    const v = r.valor || {}, contatos = Math.round((v.procura || 0) * (v.contato || 0) / 100), clientes = Math.round(contatos * (v.fecha || 0) / 100);\n    const geral = media(med);\n    return { areas, med, notas: Object.fromEntries(med.map(a => [a, nota(r, a)])), geral, faixa: faixa(geral), porTipo, urg, plano,\n      valor: { contatos, clientes, total: clientes * (v.ticket || 0) }, temValor: r.tipos.some(id => tipoDe(id)?.valor) };\n  }\n\n  // Ofertas que a proposta leva, por diagnóstico. O Diagnóstico Total (produto pago) leva Geral + Site.\n  const OFERTAS_DO_TIPO = { site: [\"site\"], seo: [\"seo\"], geral: [\"geral\"], atendimento: [\"atendimento\"], completo: [\"geral\", \"site\"] };\n\n  // plan: PLANEJAMENTO_PADRAO (ou o salvo pela equipe). hojeISO: data da proposta (AAAA-MM-DD), obrigatória.\n  function proposta(r, d, plan, hojeISO) {\n    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(hojeISO || \"\")) throw new Error(\"proposta: informe a data (AAAA-MM-DD)\");\n    const ids = [...new Set(r.tipos.flatMap(id => OFERTAS_DO_TIPO[id] || []))];\n    const V = plan.vendas || {}, pend = [];\n    const ofertas = ids.map(id => {\n      const t = tipoDe(id), preco = Number(V[id]?.preco) || 0, parcelas = Math.max(1, Number(V[id]?.parcelas) || 1);\n      if (!preco) pend.push(`Preço de venda de \"${t.nome}\" não definido (Metas e custos → Receita e lucro).`);\n      const doTipo = new Set(t.areas);\n      const resolve = d.urg.filter(a => doTipo.has(a)).map(a => ({ area: a, nome: AREAS[a].nome, nota: d.notas[a], solucao: AREAS[a].sol }));\n      const itens = [...d.plano.hoje, ...d.plano.d90].filter(x => doTipo.has(x.area)).map(x => x.texto);\n      return { id, nome: t.oferta, diagnostico: t.nome, preco, parcelas, mensal: Math.round(preco / parcelas * 100) / 100,\n        condicao: parcelas > 1 ? `${parcelas} parcelas mensais de ${brl(preco / parcelas)}` : \"à vista\", resolve, entregas: itens.slice(0, 8) };\n    });\n    const total = ofertas.reduce((s, o) => s + o.preco, 0);\n    const validade = somaDias(hojeISO, plan.validadePropostaDias || 10);\n    return {\n      data: hojeISO, validade, ofertas, total, pendencias: pend, pronta: pend.length === 0 && ofertas.length > 0,\n      porque: d.urg.map(a => ({ area: a, nome: AREAS[a].nome, nota: d.notas[a], faixa: faixa(d.notas[a]) })),\n      valorEmJogo: d.temValor ? d.valor.total : null,\n      proximos: [\"Aceite pela página da proposta\", \"Contrato para assinatura (Autentique)\", \"Cobrança (Asaas)\", \"Início do projeto\"]\n    };\n  }\n\n  // ---------- Regra do Pipedrive: qual diagnóstico o negócio recebe ----------\n  // oferta: rótulo de \"ATOM · Oferta de interesse\" (ou o ID da opção); pagamento: texto de \"ATOM · Status do pagamento inicial\".\n  function regraDoNegocio(oferta, pagamento) {\n    const P = PIPEDRIVE, rot = typeof oferta === \"number\" || /^\\d+$/.test(String(oferta || \"\")) ? (P.ofertaOpcoes[Number(oferta)] || \"\") : String(oferta || \"\");\n    if (pagamento && P.pago.test(String(pagamento))) return { tipos: [\"completo\"], porque: `1ª parcela do Diagnóstico Total paga (\"${pagamento}\")` };\n    if (P.oferta[rot]) return { tipos: P.oferta[rot].slice(), porque: `Oferta de interesse = ${rot}` };\n    return { tipos: P.semOferta.slice(), porque: \"sem oferta de interesse: raio-x Geral\" };\n  }\n  // Rascunho automático: só as áreas que a coleta mede entram na nota; as outras ficam \"não medidas\" até a revisão humana.\n  function rascunhoAutomatico(tipos) {\n    const marc = {}, dentro = {}, evid = {};\n    Object.keys(AREAS).forEach(a => { marc[a] = AREAS[a].c.map(() => false); dentro[a] = false; });\n    return { tipos, marc, dentro, evid, valor: {} };\n  }\n\n  // ---------- Leitura das coletas (Apify) e marcação automática dos critérios ----------\n  // Funções puras: recebem o que a Apify devolveu e as datas explícitas. Usadas pela página (botão \"Coletar no Apify\") e pelo n8n.\n  const normal = s => String(s || \"\").toLowerCase().normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").replace(/[^a-z0-9 ]/g, \" \").replace(/\\s+/g, \" \").trim();\n  const dominio = u => String(u || \"\").toLowerCase().replace(/^https?:\\/\\//, \"\").replace(/^www\\./, \"\").split(/[/?#]/)[0];\n  const dataBR = iso => { const d = String(iso || \"\").slice(0, 10).split(\"-\"); return d.length === 3 ? `${d[2]}/${d[1]}/${d[0]}` : \"\"; };\n  const n0 = v => Math.round(Number(v) || 0).toLocaleString(\"pt-BR\");\n  const n1 = v => Number(v).toLocaleString(\"pt-BR\", { minimumFractionDigits: 1, maximumFractionDigits: 1 });\n  const diasEntre = (iso, agoraISO) => iso ? Math.floor((new Date(agoraISO).getTime() - new Date(iso).getTime()) / 864e5) : null;\n\n  function acharEmpresa(empresa, itens) {\n    const d = dominio(empresa.site), nome = normal(empresa.nome).replace(/\\b(ltda|me|eireli|sa)\\b/g, \"\").trim();\n    let i = d ? itens.findIndex(x => dominio(x.website) && dominio(x.website) === d) : -1;\n    if (i < 0 && nome.length > 2) i = itens.findIndex(x => normal(x.title).includes(nome) || nome.includes(normal(x.title)));\n    return i;\n  }\n  // itens: Google Maps Scraper (rank, title, totalScore, reviewsCount, categoryName, imagesCount, claimThisBusiness, phone, website, url)\n  function lerMapa(itensBrutos, empresa, busca, cidade, dataISO) {\n    const itens = (itensBrutos || []).filter(x => x && x.title).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));\n    return { fonte: \"Apify · Google Maps Scraper\", busca, cidade, data: dataISO, itens, alvo: acharEmpresa(empresa, itens), custoUSD: itens.length * 0.003 };\n  }\n  // pags: Website Content Crawler (url, metadata.title, metadata.description, metadata.jsonLd); homeHtml: HTML da página inicial\n  function lerSite(pags, homeHtml, ctx, url, dataISO) {\n    pags = pags || [];\n    const html = String(homeHtml || \"\"), low = html.toLowerCase();\n    const tipos = [...new Set(pags.flatMap(p => (JSON.stringify(p[\"metadata.jsonLd\"] || (p.metadata || {}).jsonLd || \"\").match(/\"@type\":\"([A-Za-z]+)\"/g) || []).map(m => m.slice(9, -1))))];\n    const texto = normal(html.replace(/<script[\\s\\S]*?<\\/script>|<style[\\s\\S]*?<\\/style>/gi, \" \").replace(/<[^>]+>/g, \" \")).slice(0, 4000);\n    const h1 = ((html.match(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/i) || [])[1] || \"\").replace(/<[^>]+>/g, \" \").replace(/\\s+/g, \" \").trim();\n    const insta = ((html.match(/instagram\\.com\\/([A-Za-z0-9_.]{2,30})/i) || [])[1] || \"\").replace(/^(p|reel|explore|accounts)$/i, \"\");\n    const cidade = normal(String(ctx.cidade || \"\").split(\"/\")[0]), seg = normal(ctx.segmento || \"\").split(\" \")[0] || \"\";\n    const tit = p => p[\"metadata.title\"] ?? (p.metadata || {}).title, desc = p => p[\"metadata.description\"] ?? (p.metadata || {}).description;\n    const metaDesc = ((html.match(/<meta[^>]+name=[\"']description[\"'][^>]*content=[\"']([^\"']{10,300})/i) || [])[1] || \"\").trim();\n    return {\n      fonte: \"Apify · Website Content Crawler\", url, data: dataISO,\n      paginas: pags.length, semDescricao: pags.filter(p => !desc(p)).length, semTitulo: pags.filter(p => !tit(p)).length,\n      titulo: (pags[0] && tit(pags[0])) || \"\", h1, descricao: metaDesc || (pags[0] && desc(pags[0])) || \"\", tipos,\n      whatsapp: /wa\\.me\\/|api\\.whatsapp\\.com|whatsapp:\\/\\//.test(low), tel: /href=[\"']tel:/.test(low),\n      ga4: /gtag\\/js\\?id=g-|googletagmanager\\.com\\/gtag/.test(low), gtm: /googletagmanager\\.com\\/gtm\\.js|gtm-[a-z0-9]{4,}/.test(low), pixel: /connect\\.facebook\\.net|fbq\\(/.test(low),\n      cms: /wp-content|wp-includes/.test(low) ? \"WordPress\" : /wix\\.com|wixstatic/.test(low) ? \"Wix\" : /cdn\\.shopify/.test(low) ? \"Shopify\" : /nuvemshop|lojanuvem/.test(low) ? \"Nuvemshop\" : \"\",\n      citaCidade: cidade ? texto.includes(cidade) : null, citaSegmento: seg ? texto.includes(seg) : null, instagram: insta\n    };\n  }\n  // p: Instagram Profile Scraper (username, biography, externalUrl, followersCount, postsCount, isBusinessAccount, latestPosts…)\n  function lerInsta(p, dataISO) {\n    if (!p || p.error || !p.username) return null;\n    const posts = (p.latestPosts || []).filter(x => !x.isPinned).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));\n    const em30 = posts.filter(x => diasEntre(x.timestamp, dataISO) <= 30);\n    const eng = posts.length && p.followersCount ? posts.slice(0, 12).reduce((s, x) => s + (x.likesCount || 0) + (x.commentsCount || 0), 0) / Math.min(12, posts.length) / p.followersCount * 100 : null;\n    const bio = `${p.biography || \"\"} ${p.externalUrl || \"\"}`.toLowerCase();\n    return { fonte: \"Apify · Instagram Profile Scraper\", usuario: p.username, data: dataISO, custoUSD: 0.0023,\n      seguidores: p.followersCount, posts: p.postsCount, comercial: p.isBusinessAccount, categoria: p.businessCategoryName, privado: p.private,\n      ultimoDias: posts[0] ? diasEntre(posts[0].timestamp, dataISO) : null, mes: em30.length, reelsMes: em30.filter(x => x.productType === \"clips\" || x.type === \"Video\").length,\n      engajamento: eng, link: !!p.externalUrl, whatsappBio: /wa\\.me|whatsapp|api\\.whatsapp/.test(bio), bio: p.biography || \"\" };\n  }\n  // Marca os critérios que a coleta prova e escreve a evidência com fonte e data. C = { mapa, site, insta }.\n  function aplicarColetas(r, C) {\n    const areas = areasDe(r.tipos), tem = a => areas.includes(a);\n    r.evid = r.evid || {};\n    const m = C.mapa;\n    if (m && m.alvo >= 0) {\n      const it = m.itens[m.alvo], pos = m.alvo + 1, top3 = m.itens.slice(0, 3);\n      const maxAv = Math.max(0, ...top3.map(x => x.reviewsCount || 0)), lider = top3.find(x => (x.reviewsCount || 0) === maxAv) || top3[0];\n      const f = `Apify · Google Maps, busca \"${m.busca}\" em ${m.cidade}, ${dataBR(m.data)}`;\n      if (tem(\"map\")) { r.marc.map[0] = pos <= 3; r.marc.map[1] = it.claimThisBusiness === false; r.marc.map[3] = (it.imagesCount || 0) >= 50; r.dentro.map = true;\n        r.evid.map = `${f}: ${pos}º de ${m.itens.length}; perfil ${it.claimThisBusiness ? \"não reivindicado\" : \"reivindicado\"}; ${it.imagesCount ?? 0} fotos; categoria \"${it.categoryName || \"—\"}\"; telefone ${it.phone || \"não informado\"}. Conferir horário e categoria.`; }\n      if (tem(\"ava\")) { r.marc.ava[0] = (it.totalScore || 0) >= 4.5; r.marc.ava[1] = maxAv ? (it.reviewsCount || 0) >= maxAv / 2 : false; r.dentro.ava = true;\n        r.evid.ava = `${f}: nota ${it.totalScore ?? \"—\"} com ${it.reviewsCount ?? 0} avaliações. Maior volume do top 3: ${lider ? `${lider.title}, ${lider.totalScore ?? \"—\"} com ${lider.reviewsCount ?? 0}` : \"—\"}.`; }\n    }\n    const s = C.site;\n    if (s) {\n      const f = `Apify · leitura de ${s.paginas} páginas de ${dominio(s.url)}, ${dataBR(s.data)}`;\n      if (tem(\"sit\")) { r.marc.sit[1] = !!(s.citaCidade && s.citaSegmento); r.marc.sit[2] = s.whatsapp; r.marc.sit[3] = s.tel; r.dentro.sit = true;\n        r.evid.sit = `${f}: título \"${s.titulo || \"—\"}\"; H1 \"${s.h1 || \"sem H1\"}\"; ${s.citaSegmento ? \"cita\" : \"não cita\"} o segmento e ${s.citaCidade ? \"cita\" : \"não cita\"} a cidade; WhatsApp ${s.whatsapp ? \"com link\" : \"sem link\"}; telefone ${s.tel ? \"clicável\" : \"não clicável\"}. Velocidade: medir no PageSpeed.`; }\n      if (tem(\"est\")) { r.marc.est[2] = s.paginas > 0 && s.semDescricao === 0 && s.semTitulo === 0; r.marc.est[3] = s.tipos.some(x => /LocalBusiness|Organization|Dentist|MedicalBusiness|Store|ProfessionalService|Service/.test(x)); r.dentro.est = true;\n        r.evid.est = `${f}: ${s.semDescricao} de ${s.paginas} páginas sem descrição; dados estruturados: ${s.tipos.length ? s.tipos.join(\", \") : \"nenhum\"}.`; }\n      if (tem(\"conv\")) { r.marc.conv[3] = s.ga4 || s.gtm; r.dentro.conv = true;\n        r.evid.conv = `${f}: ${[s.ga4 && \"GA4\", s.gtm && \"Tag Manager\", s.pixel && \"Meta Pixel\"].filter(Boolean).join(\", \") || \"nenhuma tag de medição\"} instalado(s). Conferir se as conversões estão configuradas.`; }\n    }\n    const g = C.insta;\n    if (g && tem(\"ins\")) {\n      r.marc.ins[0] = g.ultimoDias != null && g.ultimoDias <= 7; r.marc.ins[1] = g.mes >= 8; r.marc.ins[2] = g.reelsMes > 0; r.marc.ins[3] = g.whatsappBio; r.marc.ins[4] = g.link; r.dentro.ins = true;\n      r.evid.ins = `Apify · Instagram @${g.usuario}, ${dataBR(g.data)}: ${n0(g.seguidores || 0)} seguidores; último post há ${g.ultimoDias ?? \"—\"} dias; ${g.mes} posts e ${g.reelsMes} Reels em 30 dias; engajamento médio ${g.engajamento != null ? n1(g.engajamento) + \"%\" : \"—\"}; ${g.link ? \"tem link na bio\" : \"sem link na bio\"}${g.whatsappBio ? \" e WhatsApp\" : \"\"}.`;\n    }\n    return r;\n  }\n\n  // ---------- As 3 informações da abordagem (etapa 02 da Máquina Comercial) ----------\n  // Uma sobre o negócio, uma sobre a reputação, uma oportunidade com número. Só entra o que a coleta provou; nada é inventado.\n  function tresFatos(C, empresa) {\n    const fatos = [], m = C.mapa, s = C.site, g = C.insta;\n    const it = m && m.alvo >= 0 ? m.itens[m.alvo] : null;\n    // 1. O negócio: o que a própria empresa diz que faz (H1 ou descrição do site), ou a categoria no Google.\n    const frase = s && (s.h1 && s.h1.length >= 12 && s.h1.length <= 120 ? s.h1 : (s.descricao && s.descricao.length <= 160 ? s.descricao : \"\"));\n    if (frase) fatos.push({ tipo: \"negocio\", texto: `No site, a ${empresa.nome} se apresenta assim: \"${frase}\".`, fonte: `${dominio(s.url)}, ${dataBR(s.data)}` });\n    else if (it && it.categoryName) fatos.push({ tipo: \"negocio\", texto: `No Google, a ${empresa.nome} aparece como ${it.categoryName.toLowerCase()}${empresa.cidade ? \" em \" + empresa.cidade : \"\"}.`, fonte: `Google Maps, ${dataBR(m.data)}` });\n    // 2. A reputação: nota e avaliações, comparadas ao maior volume do top 3.\n    if (it && it.totalScore != null && it.reviewsCount != null) {\n      const top3 = m.itens.slice(0, 3).filter(x => x !== it), lider = top3.sort((a, b) => (b.reviewsCount || 0) - (a.reviewsCount || 0))[0];\n      const comp = !lider ? \"\" : (lider.reviewsCount || 0) > it.reviewsCount ? `; a com mais avaliações entre as primeiras da busca tem ${n0(lider.reviewsCount)}` : it.reviewsCount > (lider.reviewsCount || 0) ? `, mais do que qualquer uma das primeiras da busca` : \"\";\n      fatos.push({ tipo: \"reputacao\", texto: `Nota ${n1(it.totalScore)} no Google com ${n0(it.reviewsCount)} avaliações${comp}.`, fonte: `Google Maps, busca \"${m.busca}\", ${dataBR(m.data)}` });\n    }\n    // 3. A oportunidade: posição no mapa para a busca principal; sem mapa, um ponto do site ou do Instagram.\n    if (m && m.itens.length) {\n      const pos = m.alvo >= 0 ? m.alvo + 1 : null;\n      fatos.push({ tipo: \"oportunidade\", texto: pos ? (pos <= 3 ? `Para \"${m.busca}\" em ${m.cidade}, a ${empresa.nome} já está entre as 3 primeiras do mapa.` : `Para \"${m.busca}\" em ${m.cidade}, a ${empresa.nome} aparece em ${pos}º no mapa do Google.`)\n        : `Para \"${m.busca}\" em ${m.cidade}, a ${empresa.nome} não aparece entre os ${m.itens.length} primeiros do mapa.`, fonte: `Google Maps, ${dataBR(m.data)}` });\n    } else if (s && !s.whatsapp) fatos.push({ tipo: \"oportunidade\", texto: `O site não tem um botão de WhatsApp: quem chega pelo celular precisa procurar como falar com vocês.`, fonte: `${dominio(s.url)}, ${dataBR(s.data)}` });\n    else if (g && g.ultimoDias != null && g.ultimoDias > 30) fatos.push({ tipo: \"oportunidade\", texto: `O último post no Instagram (@${g.usuario}) foi há ${g.ultimoDias} dias.`, fonte: `Instagram, ${dataBR(g.data)}` });\n    return fatos.slice(0, 3);\n  }\n  // Primeira mensagem (D1): as informações e a oferta do diagnóstico gratuito. Nunca leva preço.\n  function mensagemAbordagem(fatos, empresa, consultor) {\n    const corpo = fatos.map(f => f.texto).join(\" \");\n    const txt = `Olá! Sou ${consultor || \"o Thiago\"}, da Atom. Olhei a presença digital da ${empresa.nome}. ${corpo} Preparei um diagnóstico gratuito mostrando o que muda o jogo para vocês. Posso te enviar?`;\n    if (/R\\$|\\breais\\b|\\bpre[çc]o\\b|\\bvalor(es)?\\b/i.test(txt)) throw new Error(\"mensagemAbordagem: texto com preço\");\n    return txt;\n  }\n\n  const brl = v => Number(v).toLocaleString(\"pt-BR\", { style: \"currency\", currency: \"BRL\", minimumFractionDigits: 0, maximumFractionDigits: 2 });\n  function somaDias(iso, n) { const d = new Date(iso + \"T12:00:00Z\"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }\n\n  return { ORDEM, rapido, txt, nota, faixa, areasDe, diagnostico, proposta, OFERTAS_DO_TIPO, brl, normal, dominio, dataBR, acharEmpresa, lerMapa, lerSite, lerInsta, aplicarColetas, tresFatos, mensagemAbordagem, regraDoNegocio, rascunhoAutomatico };\n})();\n\n\nreturn (function () {\n// Coletas → critérios com evidência → nota, urgências, plano e rascunho de proposta pelo motor do método.\nconst prep = $('Preparar').first().json, plano = $('Planejar').first().json;\nconst hojeISO = plano.agora.slice(0, 10);\nconst itens = (no) => { try { return $(no).all().map((i) => i.json).filter((j) => j && !j.error && Object.keys(j).length); } catch (e) { return []; } };\nconst C = {};\nif (prep.mapa) { const m = itens('Google Maps (Apify)'); if (m.length) C.mapa = MOTOR.lerMapa(m, prep.empresa, prep.mapa.searchStringsArray[0], prep.empresa.cidade, hojeISO); }\nif (prep.site) {\n  const pags = itens('Site (Apify)');\n  if (pags.length) { const home = pags.find((p) => (p.crawl || {}).depth === 0) || pags[0];\n    C.site = MOTOR.lerSite(pags, home.html, { cidade: prep.empresa.cidade, segmento: prep.empresa.segmento }, prep.url, hojeISO); }\n}\nconst r = MOTOR.rascunhoAutomatico(prep.regra.tipos);\nMOTOR.aplicarColetas(r, C);\nconst D = MOTOR.diagnostico(r);\nconst Pr = MOTOR.proposta(r, D, PLANEJAMENTO_PADRAO, hojeISO);\nconst fatos = MOTOR.tresFatos(C, prep.empresa);\nconst naoMedidas = D.areas.filter((a) => !r.dentro[a]).map((a) => AREAS[a].nome);\nconst nomeTipos = prep.regra.tipos.map((id) => TIPOS.find((t) => t.id === id).nome).join(' + ');\nconst v = (parseInt(String(prep.versao_atual).replace(/\\D/g, ''), 10) || 0) + 1;\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst li = (arr) => arr.map((x) => '<li>' + esc(x) + '</li>').join('');\nconst nota = [\n  `<p><b>Diagnóstico ${esc(nomeTipos)} · automático (ATOM_30) · ${MOTOR.dataBR(hojeISO)} · v${v}</b><br>Regra: ${esc(prep.regra.porque)}. <b>Aguardando aprovação do Thiago: nada foi enviado ao cliente.</b></p>`,\n  D.med.length ? `<p><b>Nota geral: ${String(D.geral).replace('.', ',')}/10 (${esc(D.faixa)})</b> nas áreas medidas automaticamente.</p><ul>${li(D.med.map((a) => `${AREAS[a].nome}: ${D.notas[a]}/10 · ${r.evid[a] || ''}`))}</ul>` : '<p>Nenhuma área pôde ser medida automaticamente (ver pendências).</p>',\n  D.urg.length ? `<p><b>Urgências:</b></p><ol>${li(D.urg.map((a) => `${AREAS[a].nome} (${D.notas[a]}/10) → ${AREAS[a].sol}`))}</ol>` : '',\n  fatos.length ? `<p><b>As ${fatos.length} informações da abordagem:</b></p><ul>${li(fatos.map((f) => f.texto + ' (' + f.fonte + ')'))}</ul>` : '',\n  `<p><b>Rascunho de proposta:</b> ${Pr.ofertas.map((o) => esc(o.nome) + ' — ' + (o.preco ? MOTOR.brl(o.preco) + ' (' + esc(o.condicao) + ')' : 'preço a definir')).join('; ')}${Pr.pendencias.length ? '<br>Pendências: ' + esc(Pr.pendencias.join(' ')) : ''}</p>`,\n  naoMedidas.length ? `<p><b>Não medidas (entrevista, cliente oculto ou revisão):</b> ${esc(naoMedidas.join(', '))}.</p>` : '',\n  prep.faltas.length ? `<p><b>Faltou no Pipedrive:</b> ${esc(prep.faltas.join('; '))}.</p>` : ''\n].filter(Boolean).join('');\nconst F = PIPEDRIVE.campos, campos = {};\ncampos[F.status] = `Aguardando aprovação · ${nomeTipos} · nota ${String(D.geral).replace('.', ',')}/10`;\ncampos[F.data] = hojeISO;\ncampos[F.versao] = 'v' + v;\ncampos[F.pendencias] = naoMedidas.length ? 'Não medidas: ' + naoMedidas.join(', ') : '';\nif (prep.faltas.length) campos[F.pendencias] = (campos[F.pendencias] ? campos[F.pendencias] + ' | ' : '') + 'Faltou: ' + prep.faltas.join('; ');\ncampos[F.refazer] = '';\nreturn [{ json: {\n  deal_id: prep.deal_id, escrever: plano.escrever,\n  corpo: { custom_fields: campos }, nota: { deal_id: Number(prep.deal_id), content: nota },\n  resumo: { tipos: prep.regra.tipos, geral: D.geral, urg: D.urg, medidas: D.med, fatos, proposta: Pr, coletas: Object.keys(C) }\n} }];\n})();"
+      }
+    },
+    {
+      "id": "fef10220-9992-42e2-88b7-e2ab158a58fe",
+      "name": "Escrever no Pipedrive?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2500,
+        750
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Diagnosticar').first().json.escrever }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "1ebe8a5e-01fa-43f3-a50c-4d8beb712cb7",
+      "name": "Atualizar negócio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2700,
+        750
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.pipedrive.com/api/v2/deals/{{ $('Diagnosticar').first().json.deal_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Diagnosticar').first().json.corpo) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "aafdc5b3-ef98-4a9f-a38c-cec04196005b",
+      "name": "Nota no negócio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2900,
+        750
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pipedrive.com/v1/notes",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pipedriveApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Diagnosticar').first().json.nota) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "fe61fe48-ebe8-49c5-82fd-4b5b86322f8c",
+      "name": "Simulado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2700,
+        900
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf30.js#simulado. Edite a fonte no repositório, não este nó.\n// Fora de PRODUCAO (e fora de SANDBOX_DEAL_IDS no SANDBOX) nada é escrito no Pipedrive: a saída fica nesta execução.\nconst d = $('Diagnosticar').first().json;\nreturn [{ json: { simulado: true, deal_id: d.deal_id, resumo: d.resumo, nota: d.nota.content } }];"
+      }
+    },
+    {
+      "id": "517922bf-b74d-4aeb-8d23-0c3842b23929",
+      "name": "Executar (interno)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        450
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atom/diagnostico-metodo",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "f59d2107-cf75-4142-afb6-6efc8609a86e",
+      "credentials": {}
+    },
+    {
+      "id": "2c9ec3e1-cfa6-46e6-b248-df3f87366ce3",
+      "name": "Pedido",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const j = $input.first().json || {};\nconst b = j.body || j;\nreturn [{ json: { deal_id: b.deal_id ? Number(b.deal_id) : null, forcar: !!b.forcar } }];"
+      }
+    },
+    {
+      "id": "181e5b1f-cc3e-4b72-9d98-a25bb9a613bd",
+      "name": "Teste manual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        600
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "9d178053-0033-475c-8899-8c1b067a952e",
+      "name": "Dados do teste",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Negócio de teste [TESTE] Clínica Atom Sandbox (deve estar em SANDBOX_DEAL_IDS enquanto MODO_EXECUCAO=SANDBOX).\nreturn [{ json: { body: { deal_id: 114, forcar: true } } }];"
+      }
+    },
+    {
+      "id": "555052ba-733e-44af-bbbf-833f1db52708",
+      "name": "Sticky Note 555052ba",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        750
+      ],
+      "parameters": {
+        "content": "## ATOM_30 · Diagnóstico automático pelo card\n1. **Aceite:** em Prospecção Ativa → Respondeu, intenção \"Pode enviar\" ou \"Tenho interesse\" → card vai para **Diagnóstico N2**.\n2. **Diagnóstico:** card em Diagnóstico N2 sem \"ATOM · Status do diagnóstico\" (ou com \"Refazer\") → regra do Pipedrive (Oferta de interesse; 1ª parcela paga → Total) → Apify (Google Maps e site) → `metodo/motor.js` → nota com notas, urgências, as 3 informações e o rascunho de proposta + campos ATOM (Status \"Aguardando aprovação\", Data, Versão, Pendências).\n\nUm negócio por execução. **Nada vai ao cliente.**\nPortões: DIAG30_MODO=ATIVO (ou pedido com forcar) e MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).\nCredencial a criar: **ATOM Apify (Bearer)** (Header Auth: Authorization = Bearer <token>).\nFonte: n8n/src/ATOM_30_Diagnostico_Metodo.ts + n8n/code/wf30.js + metodo/motor.js",
+        "color": 4
+      }
+    }
+  ],
+  "connections": {
+    "A cada 30 minutos": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler configuração": {
+      "main": [
+        [
+          {
+            "node": "Negócios em Respondeu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Negócios em Respondeu": {
+      "main": [
+        [
+          {
+            "node": "Negócios em Diagnóstico N2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Negócios em Diagnóstico N2": {
+      "main": [
+        [
+          {
+            "node": "Planejar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planejar": {
+      "main": [
+        [
+          {
+            "node": "Aceites",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Diagnosticar agora?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aceites": {
+      "main": [
+        [
+          {
+            "node": "Mover para Diagnóstico N2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diagnosticar agora?": {
+      "main": [
+        [
+          {
+            "node": "Negócio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Negócio": {
+      "main": [
+        [
+          {
+            "node": "Organização",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organização": {
+      "main": [
+        [
+          {
+            "node": "Preparar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar": {
+      "main": [
+        [
+          {
+            "node": "Tem mapa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tem mapa?": {
+      "main": [
+        [
+          {
+            "node": "Google Maps (Apify)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tem site?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Maps (Apify)": {
+      "main": [
+        [
+          {
+            "node": "Tem site?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tem site?": {
+      "main": [
+        [
+          {
+            "node": "Site (Apify)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Diagnosticar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Site (Apify)": {
+      "main": [
+        [
+          {
+            "node": "Diagnosticar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diagnosticar": {
+      "main": [
+        [
+          {
+            "node": "Escrever no Pipedrive?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escrever no Pipedrive?": {
+      "main": [
+        [
+          {
+            "node": "Atualizar negócio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Simulado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar negócio": {
+      "main": [
+        [
+          {
+            "node": "Nota no negócio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar (interno)": {
+      "main": [
+        [
+          {
+            "node": "Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedido": {
+      "main": [
+        [
+          {
+            "node": "Ler configuração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Teste manual": {
+      "main": [
+        [
+          {
+            "node": "Dados do teste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados do teste": {
+      "main": [
+        [
+          {
+            "node": "Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 900
+  },
+  "pinData": {},
+  "meta": {
+    "atomBuild": "2026-10-15"
+  }
+}

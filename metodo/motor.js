@@ -63,6 +63,21 @@ const MOTOR = (function () {
     };
   }
 
+  // ---------- Regra do Pipedrive: qual diagnóstico o negócio recebe ----------
+  // oferta: rótulo de "ATOM · Oferta de interesse" (ou o ID da opção); pagamento: texto de "ATOM · Status do pagamento inicial".
+  function regraDoNegocio(oferta, pagamento) {
+    const P = PIPEDRIVE, rot = typeof oferta === "number" || /^\d+$/.test(String(oferta || "")) ? (P.ofertaOpcoes[Number(oferta)] || "") : String(oferta || "");
+    if (pagamento && P.pago.test(String(pagamento))) return { tipos: ["completo"], porque: `1ª parcela do Diagnóstico Total paga ("${pagamento}")` };
+    if (P.oferta[rot]) return { tipos: P.oferta[rot].slice(), porque: `Oferta de interesse = ${rot}` };
+    return { tipos: P.semOferta.slice(), porque: "sem oferta de interesse: raio-x Geral" };
+  }
+  // Rascunho automático: só as áreas que a coleta mede entram na nota; as outras ficam "não medidas" até a revisão humana.
+  function rascunhoAutomatico(tipos) {
+    const marc = {}, dentro = {}, evid = {};
+    Object.keys(AREAS).forEach(a => { marc[a] = AREAS[a].c.map(() => false); dentro[a] = false; });
+    return { tipos, marc, dentro, evid, valor: {} };
+  }
+
   // ---------- Leitura das coletas (Apify) e marcação automática dos critérios ----------
   // Funções puras: recebem o que a Apify devolveu e as datas explícitas. Usadas pela página (botão "Coletar no Apify") e pelo n8n.
   const normal = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
@@ -183,5 +198,5 @@ const MOTOR = (function () {
   const brl = v => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 2 });
   function somaDias(iso, n) { const d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
 
-  return { ORDEM, rapido, txt, nota, faixa, areasDe, diagnostico, proposta, OFERTAS_DO_TIPO, brl, normal, dominio, dataBR, acharEmpresa, lerMapa, lerSite, lerInsta, aplicarColetas, tresFatos, mensagemAbordagem };
+  return { ORDEM, rapido, txt, nota, faixa, areasDe, diagnostico, proposta, OFERTAS_DO_TIPO, brl, normal, dominio, dataBR, acharEmpresa, lerMapa, lerSite, lerInsta, aplicarColetas, tresFatos, mensagemAbordagem, regraDoNegocio, rascunhoAutomatico };
 })();

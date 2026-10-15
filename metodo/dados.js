@@ -286,7 +286,11 @@ const PIPEDRIVE = { // lido na conta em 15/10/2026 (funis, etapas e campos "ATOM
   // "ATOM · Oferta de interesse" decide o diagnóstico de prospecção; o Total entra quando a 1ª parcela é paga
   oferta: { "Site": ["site"], "Marketing com IA": ["seo"], "Agente de IA": ["atendimento"], "Clínica completa": ["geral", "site"] },
   semOferta: ["geral"],
-  pago: /pago|paga|confirmad|recebid/i
+  pago: /pago|paga|confirmad|recebid/i,
+  // Máquina Comercial: aceite do diagnóstico pelo lead (W08 grava a intenção) e etapa que dispara o diagnóstico automático (ATOM_30)
+  pipeProspeccao: 5, etapaRespondeu: 32, etapaDiagnostico: 34,
+  intencao: "44cf2cb8a553981c38bf61bdae742ce8a5c20a5f", intencaoAceite: [70, 72], // Pode enviar, Tenho interesse
+  ofertaOpcoes: { 50: "Clínica completa", 51: "Marketing com IA", 52: "Agente de IA", 53: "Site" }
 };
 const CONTA_APIFY = { lido: "15/10/2026", ciclo: "02/10 a 01/11", usado: 2.85, limite: 19 }; // lido na API da Apify (users/me/limits)
 const TAXAS_ASAAS = { lido: "15/10/2026", boleto: 1.99, pix: 1.99, pixGratisMes: 100 }; // lido na conta Asaas (myAccount/fees)

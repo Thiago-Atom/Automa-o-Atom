@@ -57,6 +57,16 @@ function CODE(arq, nome) {
   const r = carregarRegioes(arq)[nome];
   if (!r) throw new Error('região não encontrada: ' + arq + '#' + nome);
   const cab = '// Gerado por n8n/build.js a partir de n8n/code/' + arq + '.js#' + nome + (r.inc.length ? ' + lib/{' + r.inc.join(',') + '}' : '') + '. Edite a fonte no repositório, não este nó.\n';
+  if (r.inc.includes('pipedrive_metodo')) {
+    const pd = fs.readFileSync(path.join(__dirname, 'code', 'metodo_pipedrive.js'), 'utf8');
+    return cab + pd + '\nreturn (function () {\n' + r.corpo.trim() + '\n})();';
+  }
+  if (r.inc.includes('motor')) {
+    // Método de Diagnóstico: metodo/dados.js + metodo/motor.js como script (n8n/code/metodo_motor.js), região isolada numa função.
+    if (r.inc.length > 1) throw new Error('motor não combina com outras libs: ' + arq + '#' + nome);
+    const motor = fs.readFileSync(path.join(__dirname, 'code', 'metodo_motor.js'), 'utf8');
+    return cab + motor + '\nreturn (function () {\n' + r.corpo.trim() + '\n})();';
+  }
   return cab + (r.inc.length ? empacotar(r.inc, r.corpo) : r.corpo.trim());
 }
 function TABLE(nome) {
