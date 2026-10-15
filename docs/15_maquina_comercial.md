@@ -15,13 +15,13 @@ Situações: **pronto** · **simulação** (construído, sem envio real) · **de
 | # | Etapa | Workflow | Situação |
 |---|---|---|---|
 | 01 | Base de empresas | ATOM2_01_Importar_Empresas | desligado |
-| 02 | Pesquisa: 3 informações sobre o negócio | evoluir ATOM2_03_Diagnostico_N1 | **falta** |
+| 02 | Pesquisa: 3 informações sobre o negócio | regras em `metodo/motor.js` (tresFatos, mensagemAbordagem); ligar ao ATOM2_03/W07 | regras prontas, falta ligar |
 | 03 | Aprovação do Thiago | ATOM2_05_QA_Painel | pronto |
 | 04 | Card em Prospecção Ativa → Abordagem autorizada | ATOM2_W06_CRM_Sync | pronto |
 | 05 | D1 com as 3 informações e oferta do diagnóstico; cadência D3–D12 | ATOM2_W07_Cadencia + ATOM_20 | simulação (falta a credencial da Meta) |
 | 06 | Resposta → intenção → Respondeu | ATOM2_W08_Roteador_Respostas | simulação |
-| 07 | "Pode enviar" / "tenho interesse" → **Diagnóstico N2** | ajuste no W08 | **falta** |
-| 08 | Diagnóstico automático pelo card (regra do Pipedrive + coleta + `metodo/motor.js`) | novo ATOM_30 (reaproveita a coleta do ATOM_14) | **falta** |
+| 07 | "Pode enviar" / "tenho interesse" → **Diagnóstico N2** | ATOM_30_Diagnostico_Metodo (`onBlAs6CtDviVJFt`) | construído, desligado |
+| 08 | Diagnóstico automático pelo card (regra do Pipedrive + coleta + `metodo/motor.js`) | ATOM_30_Diagnostico_Metodo | construído, desligado (falta credencial da Apify e teste) |
 | 09 | Aprovação e link privado do diagnóstico | ATOM2_05 + ATOM2_W09 | pronto (falta mostrar o diagnóstico do método) |
 | 10 | Reunião marcada pela IA | ATOM_15 + ATOM_21 | desligado |
 | 11 | Proposta em página privada | ATOM2_W10_Proposta | simulação (preço digitado; falta preencher pelo motor) |
@@ -66,3 +66,10 @@ Tudo nasce desligado e é testado no negócio "[TESTE] Clínica Atom Sandbox".
 - **Limite de gasto da Apify:** US$ 19 contra cerca de US$ 33 por mês.
 - **Preço do Geral e do Atendimento.**
 - **Teste do Asaas e do Controlle no sandbox.**
+
+## ATOM_30 · como ligar (15/10/2026)
+
+1. **Credencial da Apify no n8n.** Crie uma credencial *Custom Auth* chamada **ATOM Apify**, com o template `{"headers":{"Authorization":"Bearer {{api_key}}"}}` e o token da Apify. Associe-a aos nós **Google Maps (Apify)** e **Site (Apify)**.
+2. **Primeiro teste.** Rode **Teste manual** com o negócio 114. Como 114 não está em `SANDBOX_DEAL_IDS` (hoje só 100), nada é escrito: o resultado aparece no nó **Simulado**.
+3. **Teste com escrita no Pipedrive.** Inclua 114 em `SANDBOX_DEAL_IDS`.
+4. **Ligar.** Grave `DIAG30_MODO=ATIVO` em `atom_config` e ative o workflow.

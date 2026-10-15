@@ -2,7 +2,7 @@
   "name": "ATOM_30_Diagnostico_Metodo",
   "nodes": [
     {
-      "id": "d8f2d32b-afea-4471-a298-60a3dbb94229",
+      "id": "73c0a3fd-6df4-4146-b73a-e5adc45f5195",
       "name": "A cada 30 minutos",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "id": "805839f8-ec92-4b3a-8cf5-a702bcf7ed75",
+      "id": "dc05eb26-0ebf-49d9-bfc8-edfa732573b5",
       "name": "Ler configuração",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -45,7 +45,7 @@
       "alwaysOutputData": true
     },
     {
-      "id": "924a936f-f0e9-4938-9856-322095b13708",
+      "id": "e6d64568-0154-4c31-b951-c6e09bab1923",
       "name": "Negócios em Respondeu",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -68,7 +68,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "7593f346-8392-4553-8225-3ca2763597d5",
+      "id": "cf855e8e-62bd-42d0-b971-ac90539db1b8",
       "name": "Negócios em Diagnóstico N2",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -91,7 +91,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "144c2d0f-20c0-4822-94e0-e97413280251",
+      "id": "26b0a92d-6942-4709-8742-1774358cf343",
       "name": "Planejar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -105,7 +105,7 @@
       }
     },
     {
-      "id": "49a22166-35b9-466f-b2f1-c2be074e9003",
+      "id": "db3b8050-9474-4129-9c39-4e0607adbefa",
       "name": "Aceites",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -119,7 +119,7 @@
       }
     },
     {
-      "id": "a1ac413b-df14-48f4-a202-fd8ac2e1f562",
+      "id": "c4ad6167-a5f2-45c3-bd3b-661e70962caa",
       "name": "Mover para Diagnóstico N2",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -144,7 +144,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ae969c5c-c394-431e-a69d-ae879d5c4b42",
+      "id": "542a8bf5-aad4-4536-9fab-8bb2c894ef5d",
       "name": "Diagnosticar agora?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -176,7 +176,7 @@
       }
     },
     {
-      "id": "8bb3bae4-be4d-439d-bd93-b14f5b8ef35e",
+      "id": "b089ad2d-9f26-4355-b141-15c3f98b1566",
       "name": "Negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -197,7 +197,7 @@
       "executeOnce": true
     },
     {
-      "id": "b1d8e67b-919c-45cc-b266-3853817c43e2",
+      "id": "d7074b5e-c80f-4e1e-8ffe-f2db61dae68e",
       "name": "Organização",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -225,7 +225,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "ae1f75d3-aa5e-4e29-b46a-370c724675a0",
+      "id": "4b18dcdb-adca-4b7d-9e54-f88f92b7caa2",
       "name": "Preparar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -239,7 +239,7 @@
       }
     },
     {
-      "id": "4cd67356-dc40-4d81-81a9-d1531977363a",
+      "id": "5577165f-a231-495f-84fa-6ff26fdad773",
       "name": "Tem mapa?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -271,7 +271,7 @@
       }
     },
     {
-      "id": "bce58b87-2789-46f1-b23d-b4386107c747",
+      "id": "10d08ef3-a335-4947-950a-52ea8e733fdd",
       "name": "Google Maps (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -283,7 +283,7 @@
         "method": "POST",
         "url": "https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "genericAuthType": "httpTemplatedCustomAuth",
         "sendQuery": true,
         "specifyQuery": "keypair",
         "queryParameters": {
@@ -306,13 +306,12 @@
           "timeout": 300000
         }
       },
-      "credentials": {},
       "executeOnce": true,
       "alwaysOutputData": true,
       "onError": "continueRegularOutput"
     },
     {
-      "id": "52344648-0941-4060-b7b0-0e9c19bdc5b5",
+      "id": "62442347-48b1-494b-b99f-020fb738d285",
       "name": "Tem site?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -344,7 +343,7 @@
       }
     },
     {
-      "id": "e6e3ac52-a15b-4556-85b2-5f1f1c9c959e",
+      "id": "3c8a4527-e9bb-406e-bbd6-bf3f35074bc9",
       "name": "Site (Apify)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -356,7 +355,7 @@
         "method": "POST",
         "url": "https://api.apify.com/v2/acts/apify~website-content-crawler/run-sync-get-dataset-items",
         "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "genericAuthType": "httpTemplatedCustomAuth",
         "sendQuery": true,
         "specifyQuery": "keypair",
         "queryParameters": {
@@ -379,13 +378,12 @@
           "timeout": 300000
         }
       },
-      "credentials": {},
       "executeOnce": true,
       "alwaysOutputData": true,
       "onError": "continueRegularOutput"
     },
     {
-      "id": "6d4f7aea-6d65-4223-bf72-87ce3e4a356b",
+      "id": "a5041b23-a5f4-428a-b275-c2513c7309e1",
       "name": "Diagnosticar",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -399,7 +397,7 @@
       }
     },
     {
-      "id": "fef10220-9992-42e2-88b7-e2ab158a58fe",
+      "id": "14dc9b4c-a4ed-4873-9d04-10e6e52dd1ab",
       "name": "Escrever no Pipedrive?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
@@ -431,7 +429,7 @@
       }
     },
     {
-      "id": "1ebe8a5e-01fa-43f3-a50c-4d8beb712cb7",
+      "id": "aff19212-1a2a-4d37-9bba-d9fd503cd7aa",
       "name": "Atualizar negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -456,7 +454,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "aafdc5b3-ef98-4a9f-a38c-cec04196005b",
+      "id": "04c43736-5ff3-42f5-be84-860344288eb9",
       "name": "Nota no negócio",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
@@ -481,7 +479,7 @@
       "onError": "continueRegularOutput"
     },
     {
-      "id": "fe61fe48-ebe8-49c5-82fd-4b5b86322f8c",
+      "id": "03919aea-0872-4bac-a2f7-615a838ddacd",
       "name": "Simulado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -495,7 +493,7 @@
       }
     },
     {
-      "id": "517922bf-b74d-4aeb-8d23-0c3842b23929",
+      "id": "be4b5bb8-d734-4b60-bb7f-1bb0f7e71273",
       "name": "Executar (interno)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -510,11 +508,11 @@
         "responseMode": "onReceived",
         "options": {}
       },
-      "webhookId": "f59d2107-cf75-4142-afb6-6efc8609a86e",
+      "webhookId": "68833fce-8e7f-46c0-97fe-f0af906830c2",
       "credentials": {}
     },
     {
-      "id": "2c9ec3e1-cfa6-46e6-b248-df3f87366ce3",
+      "id": "d4d94166-f776-4f81-b085-3a2cddc715df",
       "name": "Pedido",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -528,7 +526,7 @@
       }
     },
     {
-      "id": "181e5b1f-cc3e-4b72-9d98-a25bb9a613bd",
+      "id": "743841bf-4e0a-4a5d-8c95-8ab1708f13f2",
       "name": "Teste manual",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -539,7 +537,7 @@
       "parameters": {}
     },
     {
-      "id": "9d178053-0033-475c-8899-8c1b067a952e",
+      "id": "0f7498e8-5fee-4848-95b0-c5327d1ec0a7",
       "name": "Dados do teste",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -553,8 +551,8 @@
       }
     },
     {
-      "id": "555052ba-733e-44af-bbbf-833f1db52708",
-      "name": "Sticky Note 555052ba",
+      "id": "c683fe28-0c18-4f19-9b4b-2d335ac58f5f",
+      "name": "Sticky Note c683fe28",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
@@ -562,7 +560,7 @@
         750
       ],
       "parameters": {
-        "content": "## ATOM_30 · Diagnóstico automático pelo card\n1. **Aceite:** em Prospecção Ativa → Respondeu, intenção \"Pode enviar\" ou \"Tenho interesse\" → card vai para **Diagnóstico N2**.\n2. **Diagnóstico:** card em Diagnóstico N2 sem \"ATOM · Status do diagnóstico\" (ou com \"Refazer\") → regra do Pipedrive (Oferta de interesse; 1ª parcela paga → Total) → Apify (Google Maps e site) → `metodo/motor.js` → nota com notas, urgências, as 3 informações e o rascunho de proposta + campos ATOM (Status \"Aguardando aprovação\", Data, Versão, Pendências).\n\nUm negócio por execução. **Nada vai ao cliente.**\nPortões: DIAG30_MODO=ATIVO (ou pedido com forcar) e MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).\nCredencial a criar: **ATOM Apify (Bearer)** (Header Auth: Authorization = Bearer <token>).\nFonte: n8n/src/ATOM_30_Diagnostico_Metodo.ts + n8n/code/wf30.js + metodo/motor.js",
+        "content": "## ATOM_30 · Diagnóstico automático pelo card\n1. **Aceite:** em Prospecção Ativa → Respondeu, intenção \"Pode enviar\" ou \"Tenho interesse\" → card vai para **Diagnóstico N2**.\n2. **Diagnóstico:** card em Diagnóstico N2 sem \"ATOM · Status do diagnóstico\" (ou com \"Refazer\") → regra do Pipedrive (Oferta de interesse; 1ª parcela paga → Total) → Apify (Google Maps e site) → `metodo/motor.js` → nota com notas, urgências, as 3 informações e o rascunho de proposta + campos ATOM (Status \"Aguardando aprovação\", Data, Versão, Pendências).\n\nUm negócio por execução. **Nada vai ao cliente.**\nPortões: DIAG30_MODO=ATIVO (ou pedido com forcar) e MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).\nCredencial a criar: **ATOM Apify** (Custom Auth com template {\"headers\":{\"Authorization\":\"Bearer {{api_key}}\"}}) nos nós Google Maps (Apify) e Site (Apify).\nFonte: n8n/src/ATOM_30_Diagnostico_Metodo.ts + n8n/code/wf30.js + metodo/motor.js",
         "color": 4
       }
     }

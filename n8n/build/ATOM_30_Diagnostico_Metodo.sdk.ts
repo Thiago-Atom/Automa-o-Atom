@@ -119,8 +119,7 @@ const mapa = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
     name: 'Google Maps (Apify)', executeOnce: true, onError: 'continueRegularOutput', alwaysOutputData: true,
-    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpHeaderAuth', sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'timeout', value: '240' }, { name: 'maxItems', value: '20' }] }, sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Preparar').first().json.mapa) }}"), options: { timeout: 300000 } },
-    credentials: { httpHeaderAuth: newCredential('ATOM Apify (Bearer)') }
+    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth', sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'timeout', value: '240' }, { name: 'maxItems', value: '20' }] }, sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Preparar').first().json.mapa) }}"), options: { timeout: 300000 } },
   },
   output: [{ rank: 1, title: 'Empresa Fictícia', totalScore: 4.8, reviewsCount: 120 }]
 });
@@ -131,8 +130,7 @@ const site = node({
   type: 'n8n-nodes-base.httpRequest', version: 4.5,
   config: {
     name: 'Site (Apify)', executeOnce: true, onError: 'continueRegularOutput', alwaysOutputData: true,
-    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/apify~website-content-crawler/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpHeaderAuth', sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'timeout', value: '240' }, { name: 'memory', value: '1024' }] }, sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Preparar').first().json.site) }}"), options: { timeout: 300000 } },
-    credentials: { httpHeaderAuth: newCredential('ATOM Apify (Bearer)') }
+    parameters: { method: 'POST', url: 'https://api.apify.com/v2/acts/apify~website-content-crawler/run-sync-get-dataset-items', authentication: 'genericCredentialType', genericAuthType: 'httpTemplatedCustomAuth', sendQuery: true, specifyQuery: 'keypair', queryParameters: { parameters: [{ name: 'timeout', value: '240' }, { name: 'memory', value: '1024' }] }, sendBody: true, contentType: 'json', specifyBody: 'json', jsonBody: expr("{{ JSON.stringify($('Preparar').first().json.site) }}"), options: { timeout: 300000 } },
   },
   output: [{ url: 'https://empresaficticia.com.br/', metadata: { title: 'Empresa Fictícia' }, html: '<h1>Empresa Fictícia</h1>', crawl: { depth: 0 } }]
 });
@@ -171,7 +169,7 @@ const simulado = node({
   output: [{ simulado: true }]
 });
 
-const notaFixa = sticky('## ATOM_30 · Diagnóstico automático pelo card\n1. **Aceite:** em Prospecção Ativa → Respondeu, intenção "Pode enviar" ou "Tenho interesse" → card vai para **Diagnóstico N2**.\n2. **Diagnóstico:** card em Diagnóstico N2 sem "ATOM · Status do diagnóstico" (ou com "Refazer") → regra do Pipedrive (Oferta de interesse; 1ª parcela paga → Total) → Apify (Google Maps e site) → `metodo/motor.js` → nota com notas, urgências, as 3 informações e o rascunho de proposta + campos ATOM (Status "Aguardando aprovação", Data, Versão, Pendências).\n\nUm negócio por execução. **Nada vai ao cliente.**\nPortões: DIAG30_MODO=ATIVO (ou pedido com forcar) e MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).\nCredencial a criar: **ATOM Apify (Bearer)** (Header Auth: Authorization = Bearer <token>).\nFonte: n8n/src/ATOM_30_Diagnostico_Metodo.ts + n8n/code/wf30.js + metodo/motor.js', [], { color: 4 });
+const notaFixa = sticky('## ATOM_30 · Diagnóstico automático pelo card\n1. **Aceite:** em Prospecção Ativa → Respondeu, intenção "Pode enviar" ou "Tenho interesse" → card vai para **Diagnóstico N2**.\n2. **Diagnóstico:** card em Diagnóstico N2 sem "ATOM · Status do diagnóstico" (ou com "Refazer") → regra do Pipedrive (Oferta de interesse; 1ª parcela paga → Total) → Apify (Google Maps e site) → `metodo/motor.js` → nota com notas, urgências, as 3 informações e o rascunho de proposta + campos ATOM (Status "Aguardando aprovação", Data, Versão, Pendências).\n\nUm negócio por execução. **Nada vai ao cliente.**\nPortões: DIAG30_MODO=ATIVO (ou pedido com forcar) e MODO_EXECUCAO (SANDBOX só SANDBOX_DEAL_IDS).\nCredencial a criar: **ATOM Apify** (Custom Auth com template {"headers":{"Authorization":"Bearer {{api_key}}"}}) nos nós Google Maps (Apify) e Site (Apify).\nFonte: n8n/src/ATOM_30_Diagnostico_Metodo.ts + n8n/code/wf30.js + metodo/motor.js', [], { color: 4 });
 
 export default workflow('atom-30', 'ATOM_30_Diagnostico_Metodo', { settings: { timezone: 'America/Sao_Paulo', executionOrder: 'v1', callerPolicy: 'workflowsFromSameOwner', executionTimeout: 900 } })
   .add(agenda)

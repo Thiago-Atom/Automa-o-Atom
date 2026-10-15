@@ -3,7 +3,7 @@
 Instância: `https://thiagoatom.app.n8n.cloud`. Exportado pela API do n8n (somente leitura) em 15/10/2026.
 Cada arquivo é a resposta literal da API (sem digitação manual), conferida: o número de nós de cada arquivo bate com o informado pelo n8n. Cada arquivo é o retrato fiel do workflow naquele momento, para referência, comparação e recuperação. Credenciais aparecem só por nome e ID, nunca o valor.
 
-**41 workflows** · 18 ativos · 14 com fonte em `n8n/src/`.
+**42 workflows** · 18 ativos · 15 com fonte em `n8n/src/`.
 
 ## Prospecção v2 (ATOM2)
 
@@ -49,6 +49,7 @@ Cada arquivo é a resposta literal da API (sem digitação manual), conferida: o
 | ATOM_19_WhatsApp_Entrada (`SuN90LonjxDsgarn`) | não | 14 | respondToWebhook, webhook | 2026-10-05 | não | `SuN90LonjxDsgarn__ATOM_19_WhatsApp_Entrada.json` |
 | ATOM_20_Enviar_WhatsApp (`aAlH6Ulkq3VDaocH`) | não | 9 | executeWorkflowTrigger | 2026-10-05 | não | `aAlH6Ulkq3VDaocH__ATOM_20_Enviar_WhatsApp.json` |
 | ATOM_21_Aplicar_Acao (`P8T2SrzL2ff3Nzuy`) | não | 6 | executeWorkflowTrigger | 2026-10-05 | não | `P8T2SrzL2ff3Nzuy__ATOM_21_Aplicar_Acao.json` |
+| ATOM_30_Diagnostico_Metodo (`onBlAs6CtDviVJFt`) | não | 25 | manualTrigger, scheduleTrigger, webhook | 2026-10-15 | sim | `onBlAs6CtDviVJFt__ATOM_30_Diagnostico_Metodo.json` |
 
 ## Auditoria SEO
 

@@ -87,16 +87,16 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--fio); 
 
 <div class="pagina">
   <header class="cab">
-    <span class="over">Comercial Atom · 2026 · mapa de 15/10/2026</span>
+    <span class="over">Comercial Atom · 2026 · atualizado em 15/10/2026</span>
     <h1>Do primeiro card <b>ao cliente pagando.</b></h1>
     <p class="lead">O processo comercial da Atom inteiro, como ele vai rodar: um agente de IA aborda com três informações reais sobre a empresa, oferece o diagnóstico e, quando o lead aceita, o card anda no Pipedrive e o diagnóstico certo é feito sozinho. Depois vêm proposta, contrato, cobrança, financeiro e projeto. Cada etapa mostra o workflow do n8n que faz o trabalho e em que pé ele está hoje.</p>
   </header>
 
   <div class="resumo" style="margin-top:28px" aria-label="Situação geral">
-    <div><span class="over">Workflows no n8n</span><b>41</b><span class="cap">18 ligados hoje</span></div>
-    <div><span class="over">Etapas prontas</span><b>9</b><span class="cap">6 prontas e 3 em simulação, sem envio real</span></div>
-    <div><span class="over">Construídas, desligadas</span><b>3</b><span class="cap">base, reunião e cobrança</span></div>
-    <div><span class="over">Falta construir ou ligar</span><b>4</b><span class="cap">a maior: o diagnóstico automático pelo card</span></div>
+    <div><span class="over">Workflows no n8n</span><b>42</b><span class="cap">18 ligados hoje</span></div>
+    <div><span class="over">Etapas prontas</span><b>10</b><span class="cap">6 prontas e 4 em simulação ou com regras prontas</span></div>
+    <div><span class="over">Construídas, desligadas</span><b>5</b><span class="cap">inclui o novo diagnóstico automático</span></div>
+    <div><span class="over">Falta ligar</span><b>1</b><span class="cap">o aceite da proposta ao contrato</span></div>
   </div>
 
   <div class="chips" style="margin-top:18px" aria-label="Legenda">
@@ -113,9 +113,10 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--fio); 
         <li class="etapa e-off"><div class="etapa-topo"><h3><span class="n">01</span>Base de empresas</h3><span class="st off">Desligado</span></div>
           <p>Lote de empresas do nicho (hoje, clínicas odontológicas) validado, normalizado e sem duplicatas.</p>
           <div class="meta"><span><code>ATOM2_01_Importar_Empresas</code></span><span>Planilha Base_Prospeccao_ATOM_Odonto</span></div></li>
-        <li class="etapa e-falta chave"><div class="etapa-topo"><h3><span class="n">02</span>Pesquisa: 3 informações sobre o negócio</h3><span class="st falta">Falta construir</span></div>
+        <li class="etapa e-sim chave"><div class="etapa-topo"><h3><span class="n">02</span>Pesquisa: 3 informações sobre o negócio</h3><span class="st sim">Regras prontas</span></div>
           <p>Para a abordagem não ser fria: três fatos verificados sobre a empresa, cada um com fonte e data. O N1 de hoje só olha defeitos do site; a pesquisa nova olha o negócio.</p>
-          <div class="meta"><span>Base: <code>ATOM2_03_Diagnostico_N1</code></span><span>Fontes: Google Maps (Apify), site, Semrush</span><span>Custo: centavos por empresa</span></div></li>
+          <div class="meta"><span>Regras: <code>metodo/motor.js</code> (tresFatos e mensagemAbordagem)</span><span>Fontes: Google Maps e site (Apify)</span><span>Custo: centavos por empresa</span></div>
+          <p class="falta-txt">Falta: ligar ao fluxo de prospecção (ATOM2_03 → painel de aprovação → D1 do W07). Na página do método, a tela Coleta já mostra as 3 informações e a mensagem.</p></li>
         <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">03</span>Sua aprovação</h3><span class="st ok">Pronto</span></div>
           <p>Você vê as três informações e a mensagem e aprova ou reprova. Nada é enviado sem isso.</p>
           <div class="meta"><span><code>ATOM2_05_QA_Painel</code></span></div></li>
@@ -135,18 +136,19 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--fio); 
         <li class="etapa e-sim"><div class="etapa-topo"><h3><span class="n">06</span>Resposta do lead</h3><span class="st sim">Em simulação</span></div>
           <p>Cada resposta vira uma intenção: pode enviar, tenho interesse, quanto custa, já tenho agência, agora não, sem interesse, opt-out. Encerra a cadência e move o card para <b>Respondeu</b>. Pergunta de preço recebe resposta sem preço.</p>
           <div class="meta"><span><code>ATOM2_W08_Roteador_Respostas</code></span><span>Conversa livre: <code>ATOM_15_IA_Prospeccao_Ativa</code> (desligado)</span></div></li>
-        <li class="etapa e-falta chave"><div class="etapa-topo"><h3><span class="n">07</span>Aceitou o diagnóstico: o card anda</h3><span class="st falta">Falta ligar</span></div>
+        <li class="etapa e-off chave"><div class="etapa-topo"><h3><span class="n">07</span>Aceitou o diagnóstico: o card anda</h3><span class="st off">Construído, desligado</span></div>
           <p>"Pode enviar" ou "tenho interesse" move o card para <b>Diagnóstico N2</b>. Esse movimento é o gatilho do diagnóstico automático.</p>
-          <div class="meta"><span>Mudança pequena no <code>ATOM2_W08</code></span><span>Também vale mover à mão</span></div></li>
+          <div class="meta"><span><code>ATOM_30_Diagnostico_Metodo</code> (a cada 30 minutos lê a intenção gravada pelo W08)</span><span>Também vale mover à mão</span></div></li>
       </ol>
     </div>
 
     <div class="fase">
       <div class="fase-nome"><span class="over">Diagnóstico</span><b>Método de Diagnóstico Atom</b><span class="cap">O mesmo motor da página</span></div>
       <ol class="etapas">
-        <li class="etapa e-falta chave"><div class="etapa-topo"><h3><span class="n">08</span>Diagnóstico certo, feito sozinho</h3><span class="st falta">Falta construir</span></div>
+        <li class="etapa e-off chave"><div class="etapa-topo"><h3><span class="n">08</span>Diagnóstico certo, feito sozinho</h3><span class="st off">Construído, desligado</span></div>
           <p>Card em Diagnóstico N2 → o Pipedrive decide qual diagnóstico (Oferta de interesse: Site, Marketing com IA → SEO, Agente de IA → Atendimento, Clínica completa → Geral + Site) → coleta → nota, urgências e plano pelo <code>metodo/motor.js</code>.</p>
-          <div class="meta"><span>Novo: <code>ATOM_30_Diagnostico_Metodo</code></span><span>Reaproveita a coleta do <code>ATOM_14_Diagnostico_Prospeccao</code></span></div></li>
+          <div class="meta"><span><code>ATOM_30_Diagnostico_Metodo</code> (criado em 15/10, desligado)</span><span>Saída: nota no negócio e campos ATOM "Aguardando aprovação"</span></div>
+          <p class="falta-txt">Falta: a credencial da Apify no n8n e o primeiro teste no negócio de teste.</p></li>
         <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">09</span>Sua aprovação e a entrega</h3><span class="st ok">Pronto</span></div>
           <p>Você aprova no painel; o lead recebe um link privado (60 dias, sem preço). Na primeira abertura, o Pipedrive cria tarefa para você responder enquanto ele está olhando.</p>
           <div class="meta"><span><code>ATOM2_05_QA_Painel</code></span><span><code>ATOM2_W09_Pagina_Diagnostico</code></span></div>
