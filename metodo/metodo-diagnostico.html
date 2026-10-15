@@ -191,9 +191,107 @@ details.regua .faixas { display: grid; gap: 6px; margin-top: 10px; font-size: .8
 
 footer { padding-block: 36px 48px; font-family: var(--mono); font-size: .8rem; color: var(--suave); }
 
+/* Barra de navegação */
+.barra { border-bottom: 1px solid var(--linha); background: var(--fundo); }
+.barra .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px; flex-wrap: wrap; }
+.marca { font-family: var(--mono); font-weight: 500; letter-spacing: .22em; font-size: .85rem; color: var(--destaque); text-decoration: none; }
+.migalha { font-family: var(--mono); font-size: .8rem; color: var(--suave); display: flex; gap: 8px; flex-wrap: wrap; }
+.migalha a { color: var(--destaque); text-decoration: none; }
+.migalha a:hover { text-decoration: underline; }
+
+/* Tela inicial */
+.grupo { padding-block: 44px; border-bottom: 1px solid var(--linha); }
+.grupo-cab { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 20px; }
+.grupo-cab h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+.grupo-cab span { color: var(--suave); font-size: .95rem; }
+.quadros { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 16px; }
+.quadro { position: relative; display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; padding: 22px; border: 1px solid var(--linha); color: var(--texto); text-decoration: none; background: var(--fundo); overflow: hidden; transition: border-color .15s, transform .15s; min-width: 0; }
+.quadro::after { content: ""; position: absolute; top: 0; right: 0; width: 64px; height: 26px; background: var(--roxo); clip-path: polygon(38% 0, 100% 0, 100% 100%, 0 100%); opacity: 0; transition: opacity .15s; }
+.quadro:hover, .quadro:focus-visible { border-color: var(--roxo); transform: translateY(-2px); }
+.quadro:hover::after, .quadro:focus-visible::after { opacity: 1; }
+.quadro.principal { background: var(--superficie); border-color: var(--roxo); }
+.quadro .tipo { font-family: var(--mono); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--destaque); }
+.quadro h3 { font-size: 1.35rem; font-weight: 300; }
+.quadro p { font-size: .92rem; color: var(--suave); }
+.quadro .rodape { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--linha); font-family: var(--mono); font-size: .75rem; color: var(--suave); }
+.quadro .abrir { color: var(--destaque); font-weight: 500; }
+.sequencia { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-family: var(--mono); font-size: .78rem; color: var(--suave); }
+.sequencia b { color: var(--texto); font-weight: 500; }
+
+/* Página de modelo */
+.ficha { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 40px; }
+@media (max-width: 860px) { .ficha { grid-template-columns: 1fr; } }
+.fatos { display: grid; gap: 0; margin: 0; }
+.fatos div { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--linha); font-size: .92rem; }
+.fatos dt { font-family: var(--mono); font-size: .75rem; color: var(--suave); text-transform: uppercase; letter-spacing: .08em; padding-top: 2px; }
+.fatos dd { margin: 0; min-width: 0; }
+.lista-pag { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+.lista-pag li { display: grid; grid-template-columns: 64px 1fr auto; gap: 10px; padding: 9px 0; border-top: 1px solid var(--linha); font-size: .92rem; align-items: baseline; }
+.lista-pag .pn { font-family: var(--mono); font-size: .75rem; color: var(--destaque); }
+.lista-pag .au { font-family: var(--mono); font-size: .7rem; color: var(--suave); text-transform: uppercase; letter-spacing: .06em; }
+.pend { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.pend li { padding: 12px 14px; background: var(--superficie); font-size: .9rem; display: grid; gap: 2px; }
+.pend li b { font-weight: 700; }
+.pend li span { color: var(--suave); }
+h4 { font-family: var(--mono); font-weight: 500; font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; color: var(--suave); margin: 0 0 10px; }
+.bloco + .bloco { margin-top: 32px; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
+<nav class="barra" aria-label="Navegação">
+  <div class="wrap">
+    <a class="marca" href="#inicio">ATOM</a>
+    <div class="migalha" id="migalha"></div>
+  </div>
+</nav>
+
+<div id="v-inicio">
+  <header class="topo">
+    <div class="wrap">
+      <div class="etiqueta">Central comercial</div>
+      <h1>Diagnósticos e propostas</h1>
+      <p>Todos os modelos que a ATOM usa para diagnosticar uma empresa e propor o trabalho, em um só lugar. Abra um quadro para ver o modelo, o que já está pronto e o que falta decidir.</p>
+      <div class="sequencia" aria-label="Sequência comercial"><b>oportunidade</b>→<b>diagnóstico</b>→<b>impacto</b>→<b>proposta</b>→<b>contrato</b></div>
+    </div>
+  </header>
+  <section class="grupo">
+    <div class="wrap">
+      <div class="grupo-cab"><h2>Modelos de diagnóstico</h2><span>como olhamos a empresa</span></div>
+      <div class="quadros" id="q-diag"></div>
+    </div>
+  </section>
+  <section class="grupo">
+    <div class="wrap">
+      <div class="grupo-cab"><h2>Modelos de proposta</h2><span>como apresentamos o trabalho</span></div>
+      <div class="quadros" id="q-prop"></div>
+    </div>
+  </section>
+</div>
+
+<div id="v-modelo" hidden>
+  <header class="topo">
+    <div class="wrap">
+      <div class="etiqueta" id="m-tipo"></div>
+      <h1 id="m-nome"></h1>
+      <p id="m-resumo"></p>
+      <div class="legenda" id="m-status"></div>
+    </div>
+  </header>
+  <section>
+    <div class="wrap ficha">
+      <div>
+        <div class="bloco"><h4>Estrutura</h4><ol class="lista-pag" id="m-paginas"></ol></div>
+      </div>
+      <div>
+        <div class="bloco"><h4>Ficha</h4><dl class="fatos" id="m-fatos"></dl></div>
+        <div class="bloco"><h4>O que falta decidir</h4><ul class="pend" id="m-pend"></ul></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="v-metodo" hidden>
 <header class="topo">
   <div class="wrap">
     <div class="etiqueta">Método em construção</div>
@@ -368,12 +466,14 @@ footer { padding-block: 36px 48px; font-family: var(--mono); font-size: .8rem; c
           <h2>Alterações no método</h2>
         </div>
         <ol class="hist">
+          <li><span class="v"><b>v0.2</b>15/10/2026</span><div>Tela inicial com os quadros dos modelos.<ul><li>Três modelos de diagnóstico: este método, Diagnóstico Geral e Diagnóstico SEO/GEO.</li><li>Quatro modelos de proposta: proposta padrão Atom 2026 e ofertas A, B e C.</li><li>Cada quadro abre uma ficha com estrutura, situação e pendências.</li></ul></div></li>
           <li><span class="v"><b>v0.1</b>15/10/2026</span><div>Primeira versão do quadro do método.<ul><li>Cinco etapas, da coleta ao plano.</li><li>Onze dimensões em três pilares, com indicadores, fontes e régua.</li><li>Régua 0–10 trazida do docs/13 e estendida para vendas e gestão.</li><li>Simulador de notas e cálculo de impacto.</li><li>Lista de decisões em aberto.</li></ul></div></li>
         </ol>
       </div>
     </div>
   </section>
 </main>
+</div>
 
 <footer><div class="wrap">ATOM Agência Digital · atomdigital.com.br · documento de trabalho interno</div></footer>
 
@@ -542,4 +642,91 @@ function impacto() {
 }
 ["procura", "contato", "fecha", "ticket"].forEach(id => document.getElementById(id).addEventListener("input", impacto));
 impacto();
+
+// Central: quadros e fichas dos modelos
+const STATUS = {
+  construcao: ["st-disc", "Em construção"],
+  recebido: ["st-def", "Modelo recebido"],
+  definido: ["st-def", "Definido"],
+  construir: ["st-adef", "A construir"]
+};
+const MODELOS = [
+  { id: "metodo", grupo: "diag", principal: true, tipo: "Método", nome: "Diagnóstico de marketing e vendas",
+    resumo: "O método-base: 5 etapas, 11 dimensões, régua de 0 a 10, simulador e cálculo de impacto.",
+    status: "construcao", meta: "v0.2 · 11 dimensões" },
+  { id: "diag-geral", grupo: "diag", tipo: "Diagnóstico · prospecção", nome: "Diagnóstico Geral",
+    resumo: "Para negócio local: mapa, avaliações, site, Instagram, busca com IA e WhatsApp, com boletim de notas e plano.",
+    status: "recebido", meta: "15 páginas · ATOM_14",
+    fatos: [["Público", "Negócio local com atendimento na cidade"], ["Formato", "PDF 960×540, gerado de HTML"], ["Automação", "ATOM_14, disparado pelo Pipedrive; PDF no Drive com link no negócio"], ["Fonte", "docs/13_modelos_diagnostico.md"]],
+    paginas: [["1", "Capa ATOM", "Fixo"], ["2", "Capa do cliente", "Auto"], ["3", "Boletim: 6 notas e 3 urgências", "Auto"], ["4", "A procura na cidade", "Parcial"], ["5", "Quem aparece no mapa", "Parcial"], ["6", "Você × 3 concorrentes", "Parcial"], ["7", "O que dizem de você", "Auto"], ["8", "Site no celular", "Auto"], ["9", "Instagram", "Parcial"], ["10", "Busca com IA", "Parcial"], ["11", "Cliente oculto no WhatsApp", "Manual"], ["12", "Quanto isso vale", "Auto"], ["13", "O plano: hoje, 90 dias, 6 meses", "Auto"], ["14", "Quem somos", "Fixo"], ["15", "Próximo passo", "Fixo"]],
+    pend: [["Régua das notas", "A régua do método (página Método) substitui as \"notas da ATOM\" sem critério."], ["Cliente oculto", "Quem faz o teste de WhatsApp e onde registra o tempo."], ["Estatísticas de mercado", "Confirmar as fontes de 96%, 46% e 63% usadas como texto fixo."], ["Conta da pág. 12", "Calcular com o número inteiro de clientes (R$ 42.000, não R$ 42.750)."]] },
+  { id: "diag-seo", grupo: "diag", tipo: "Diagnóstico · prospecção", nome: "Diagnóstico SEO/GEO",
+    resumo: "Para empresa com site: busca orgânica, buscas que trazem visitas, saúde técnica e preparo para busca com IA.",
+    status: "recebido", meta: "27 páginas · ATOM_14",
+    fatos: [["Público", "Empresa com site que depende de busca"], ["Formato", "PDF 1440×810, Roboto + IBM Plex Mono"], ["Automação", "ATOM_14, escolhido automaticamente quando o site tem tráfego orgânico"], ["Fonte", "docs/13_modelos_diagnostico.md"]],
+    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "Capa do cliente", "Auto"], ["8", "Glossário", "Fixo"], ["9", "O diagnóstico em uma frase", "Auto"], ["10", "Boletim: x de 6 em ordem", "Auto"], ["11", "Como o Google mostra você", "Auto"], ["12", "As 8 buscas que mais trazem visitas", "Auto"], ["14", "Visitas nos últimos 12 meses", "Auto"], ["15", "O que o cliente digita", "Auto"], ["16–17", "Três problemas e canibalização", "Auto"], ["18", "Saúde técnica e tamanho do site", "Parcial"], ["19", "Google e IA entendem você?", "Auto"], ["20", "Tamanho da oportunidade", "Auto"], ["21–23", "Duas frentes, execução e indicadores", "Auto"], ["24–27", "Investimento, próximos passos e encerramento", "Fixo"]],
+    pend: [["Páginas fixas com erro", "\"fazermos\" → \"fazemos\" e selo \"TABELA 2025/1\" desatualizado."], ["Nota técnica", "Trocar a nota do Site Audit pela nota do PageSpeed no celular."], ["Cases por segmento", "Lista de cases aprovados para citar na pág. 21."], ["Telefone", "Confirmar o WhatsApp de contato e usar o mesmo nos dois modelos."]] },
+  { id: "proposta-padrao", grupo: "prop", principal: true, tipo: "Proposta · modelo-base", nome: "Proposta comercial Atom 2026",
+    resumo: "O modelo oficial: as seis páginas fixas da ATOM e, a partir da página 7, a parte específica do cliente.",
+    status: "recebido", meta: "21 páginas · 1920×1080",
+    fatos: [["Formato", "Slides 1920×1080 (Atom 2026.pdf)"], ["Identidade", "Roxo #604485, Roboto e IBM Plex Mono, recorte diagonal"], ["Regra", "Páginas 1 a 6 entram sempre, sem alteração"], ["Fonte", "Design System ATOM Digital"]],
+    paginas: [["1", "Capa", "Fixo"], ["2", "Um pouco sobre a Atom", "Fixo"], ["3", "Citação de Da Vinci", "Fixo"], ["4", "Números: + 3K, + 120, + 15", "Fixo"], ["5", "Algumas marcas que atendemos", "Fixo"], ["6", "Como atendemos o seu negócio", "Fixo"], ["7+", "Divisores de seção e serviços propostos", "Por cliente"], ["fim", "Investimento, próximos passos e contracapa", "Por cliente"]],
+    pend: [["Ligação com o diagnóstico", "Quais achados do diagnóstico entram na proposta e em que página."], ["Selo da tabela", "Atualizar o selo \"TABELA 2025/1\" da página 6."], ["Formato de entrega", "PDF, página privada sem CMS, ou os dois."]] },
+  { id: "oferta-a", grupo: "prop", tipo: "Oferta A", nome: "Site de referência",
+    resumo: "Site pensado para converter, com SEO de base. Porta de entrada do cliente.",
+    status: "definido", meta: "R$ 3.000",
+    fatos: [["Preço", "R$ 3.000"], ["Recorrências", "SEO/GEO e manutenção são vendidos à parte"], ["Fonte", "Plano Mestre 2.0, resumo na auditoria Fase A"]],
+    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "O que o diagnóstico mostrou no site", "Por cliente"], ["8", "Escopo do site", "A definir"], ["9", "Prazo e investimento", "A definir"]],
+    pend: [["Escopo", "Quantas páginas, o que entra e o que fica fora."], ["Prazo médio de entrega", "Número de dias para a linha de prazo."]] },
+  { id: "oferta-b", grupo: "prop", tipo: "Oferta B", nome: "Agente de atendimento com IA",
+    resumo: "Atendimento no WhatsApp com IA para responder em minutos e não perder contato.",
+    status: "construir", meta: "escopo e preço em aberto",
+    fatos: [["Preço", "Em aberto"], ["Liga com", "Dimensão V1 · Velocidade de atendimento"], ["Fonte", "Plano Mestre 2.0, resumo na auditoria Fase A"]],
+    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "Tempo de resposta medido no diagnóstico", "Por cliente"], ["8", "Como o agente atende", "A definir"], ["9", "Investimento", "A definir"]],
+    pend: [["Escopo", "Canais, horários, integração com o CRM e passagem para humano."], ["Preço", "Implantação e mensalidade."]] },
+  { id: "oferta-c", grupo: "prop", tipo: "Oferta C", nome: "Pacote combinado",
+    resumo: "Site de referência e agente de atendimento juntos: atrair e converter no mesmo projeto.",
+    status: "construir", meta: "A + B",
+    fatos: [["Preço", "Em aberto"], ["Composição", "Oferta A + Oferta B"], ["Fonte", "Plano Mestre 2.0, resumo na auditoria Fase A"]],
+    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "As urgências do diagnóstico", "Por cliente"], ["8", "Frente 1: site", "A definir"], ["9", "Frente 2: atendimento", "A definir"], ["10", "Investimento combinado", "A definir"]],
+    pend: [["Desconto do pacote", "Se o combinado tem condição diferente da soma de A e B."]] }
+];
+
+const stChip = s => `<span class="st ${STATUS[s][0]}">${STATUS[s][1]}</span>`;
+const quadro = m => `
+  <a class="quadro${m.principal ? " principal" : ""}" href="#${m.id}">
+    <span class="tipo">${esc(m.tipo)}</span>
+    <h3>${esc(m.nome)}</h3>
+    <p>${esc(m.resumo)}</p>
+    <div class="rodape"><span>${esc(m.meta)}</span>${stChip(m.status)}</div>
+    <span class="abrir mono" style="font-size:.78rem">Abrir →</span>
+  </a>`;
+document.getElementById("q-diag").innerHTML = MODELOS.filter(m => m.grupo === "diag").map(quadro).join("");
+document.getElementById("q-prop").innerHTML = MODELOS.filter(m => m.grupo === "prop").map(quadro).join("");
+
+function abrirModelo(m) {
+  document.getElementById("m-tipo").textContent = m.tipo;
+  document.getElementById("m-nome").textContent = m.nome;
+  document.getElementById("m-resumo").textContent = m.resumo;
+  document.getElementById("m-status").innerHTML = stChip(m.status);
+  document.getElementById("m-paginas").innerHTML = m.paginas.map(([n, t, a]) => `<li><span class="pn">pág. ${esc(n)}</span><span>${esc(t)}</span><span class="au">${esc(a)}</span></li>`).join("");
+  document.getElementById("m-fatos").innerHTML = m.fatos.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+  document.getElementById("m-pend").innerHTML = m.pend.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("");
+}
+
+function rota() {
+  const id = (location.hash || "").slice(1);
+  const m = MODELOS.find(x => x.id === id);
+  const vista = !m ? "inicio" : m.id === "metodo" ? "metodo" : "modelo";
+  document.getElementById("v-inicio").hidden = vista !== "inicio";
+  document.getElementById("v-metodo").hidden = vista !== "metodo";
+  document.getElementById("v-modelo").hidden = vista !== "modelo";
+  if (vista === "modelo") abrirModelo(m);
+  document.getElementById("migalha").innerHTML = vista === "inicio"
+    ? `<span>Diagnósticos e propostas</span>`
+    : `<a href="#inicio">← Início</a><span>/</span><span>${esc(m.nome)}</span>`;
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", rota);
+rota();
 </script>
