@@ -138,7 +138,7 @@ const H = { // etapas de processo reaproveitadas; "alimenta" = áreas que a etap
 };
 
 const TIPOS = [
-  { id: "site", ordem: 1, nome: "Site", sub: "Diagnóstico do site e proposta de um novo site", st: "ok",
+  { id: "site", finalidade: "prospeccao", ordem: 1, nome: "Site", sub: "Diagnóstico do site e proposta de um novo site", st: "ok",
     oferta: "Novo site de alto padrão, orientado à conversão", meta: 1000, unidade: "sites vendidos", prioridade: "Prioridade máxima",
     desc: "Entende o que impede o site de representar bem a empresa e gerar oportunidades, e mostra o problema, a solução e o escopo do novo site.",
     publico: "Empresa sem site, com site fraco ou que não converte", entrega: "Diagnóstico do site + proposta de site", prazo: "1 dia", valor: false,
@@ -154,7 +154,7 @@ const TIPOS = [
     limites: ["Perda de conversão só vira número com dados de analytics.", "Design não é apresentado como causa isolada de vendas.", "A meta de 1.000 sites é da Atom, não promessa ao cliente."],
     pontos: "site" },
 
-  { id: "seo", ordem: 2, nome: "SEO", sub: "SEO, GEO e Google Ads", st: "ok",
+  { id: "seo", finalidade: "prospeccao", ordem: 2, nome: "SEO", sub: "SEO, GEO e Google Ads", st: "ok",
     oferta: "Plano integrado de SEO, presença nas IAs e Google Ads", meta: 90, unidade: "clientes", prioridade: "Segunda prioridade",
     desc: "Mostra onde está a procura que dá dinheiro, quem ocupa esse espaço no Google, no mapa e nas IAs, e como SEO, GEO e Google Ads entram juntos para capturá-la.",
     publico: "Empresa com oferta e região definidas que precisa de mais procura qualificada", entrega: "Diagnóstico de aquisição + proposta de SEO, GEO e Ads", prazo: "2 dias", valor: true,
@@ -162,7 +162,7 @@ const TIPOS = [
     areas: ["bus", "est", "rep", "map", "ia", "mid", "med"], opcionais: ["med"],
     processo: [H.pedido("com as 5 buscas principais do segmento"),
       { nome: "Busca e posições", modo: "auto", quem: "n8n", ferr: "Semrush", tempo: "5 min", saida: "Posições, visitas e buscas com volume", alimenta: ["bus", "rep"], usa: ["semrush", "n8n"], faz: "Posição na busca principal e pela marca, 12 meses de visitas, até 200 termos agrupados por intenção e 5 concorrentes." },
-      { nome: "Mapa e avaliações", modo: "auto", quem: "n8n", ferr: "Apify", tempo: "5 min", saida: "Posição no mapa e reputação", alimenta: ["map", "rep"], usa: ["apify", "n8n"], faz: "Posição no mapa a partir do centro da cidade para as buscas principais e comparação de avaliações com os 3 primeiros." },
+      { nome: "Mapa e avaliações", modo: "auto", quem: "Apify (botão em Gerar)", ferr: "Apify · Google Maps Scraper", conectado: "botão \"Coletar no Apify\" na tela Gerar preenche Google Maps e Avaliações", tempo: "5 min", saida: "Posição no mapa e reputação", alimenta: ["map", "rep"], usa: ["apify", "n8n"], faz: "Posição no mapa a partir do centro da cidade para as buscas principais e comparação de avaliações com os 3 primeiros." },
       { nome: "Rastreio do site", modo: "auto", quem: "n8n", ferr: "Firecrawl · PageSpeed", tempo: "10 min", saida: "Páginas, canibalização e dados estruturados", alimenta: ["est"], usa: ["firecrawl", "pagespeed", "n8n"], faz: "Até 60 URLs: canibalização, páginas sem título, descrição ou H1, dados estruturados e llms.txt." },
       { nome: "Teste nas IAs", modo: "parcial", quem: "n8n", ferr: "OpenAI e Gemini com busca", tempo: "10 min", saida: "Placar de citações", alimenta: ["ia"], usa: ["openai", "gemini", "n8n"], faz: "10 perguntas × 2 IAs × 2 rodadas, com a resposta completa guardada como evidência." },
       { nome: "Leitura do Google Ads", modo: "parcial", quem: "Gestor de mídia", ferr: "Biblioteca de Anúncios · Semrush · conta (se autorizada)", tempo: "30 min", saida: "Anúncios, termos e páginas de destino", alimenta: ["mid", "med"], usa: ["semrush"], faz: "Anúncios ativos e para onde levam. Com acesso à conta: conversões, termos e distribuição da verba." },
@@ -172,25 +172,23 @@ const TIPOS = [
     limites: ["Sem acesso à conta de Ads, a leitura é externa: CPC, CPA e retorno reais não são afirmados.", "Uma amostra de IA não garante citações futuras.", "Não prometemos posição nem prazo de posição."],
     pontos: "seoAds" },
 
-  { id: "geral", ordem: 3, nome: "Geral", sub: "O cliente no geral · setup completo com site", st: "disc",
+  { id: "geral", ordem: 3, finalidade: "prospeccao", nome: "Geral", sub: "Raio-x rápido do cliente no geral", st: "disc",
     oferta: "Setup de marketing e vendas com site incluído", meta: 120, unidade: "projetos de setup", prioridade: "Terceira prioridade",
-    desc: "Olha o cliente inteiro: mercado, presença digital, mídia, atendimento, processo comercial e números. Cada canal recebe diagnóstico próprio, ligados pela mesma estratégia.",
-    publico: "Empresa que quer estruturar marketing e vendas como um conjunto", entrega: "Diagnóstico por canal + plano integrado + proposta de setup", prazo: "3 a 5 dias", valor: true,
+    desc: "Uma leitura rasa e barata do cliente inteiro, só com dados públicos que importam: busca, mapa, avaliações, site, Instagram e IAs. Serve para abrir a conversa; o aprofundamento é o Diagnóstico Total, vendido.",
+    publico: "Prospecção de empresas para o setup completo", entrega: "Raio-x de uma página + convite para o Diagnóstico Total", prazo: "minutos (automático) + 10 min de revisão", valor: true,
     proposta: ["Deck institucional Atom 2026", "https://claude.ai/artifact/XXJxzV21z3gymxyD7Z19pe"],
-    modelo: ["Modelo Unificado (prospecção)", "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t"],
-    areas: ["rep", "bus", "map", "ava", "sit", "conv", "ins", "ia", "mid", "med", "wha", "crm", "fec", "pos", "num"], opcionais: ["mid", "med"],
-    processo: [H.pedido("e agendar a entrevista"),
-      { nome: "Pré-diagnóstico (Modelo Unificado)", modo: "auto", quem: "n8n (ATOM_14)", ferr: "Semrush · Apify · PageSpeed · OpenAI/Gemini", tempo: "10 min", saida: "8 notas públicas com fonte e data", alimenta: ["rep", "bus", "map", "ava", "sit", "ins", "ia"], usa: ["semrush", "apify", "pagespeed", "openai", "gemini", "claude", "n8n"], faz: "A mesma coleta do Modelo Unificado: busca, mapa, avaliações, site, Instagram e IAs." },
-      H.oculto,
-      { nome: "Mídia e conversão", modo: "parcial", quem: "Gestor de mídia", ferr: "Biblioteca de Anúncios · contas", tempo: "40 min", saida: "Anúncios, páginas e medição", alimenta: ["mid", "med", "conv"], usa: ["firecrawl"], faz: "Anúncios ativos, páginas de destino, conversões e, com acesso, custo por venda." },
-      { nome: "Entrevista", modo: "manual", quem: "Consultor", ferr: "Roteiro de entrevista", tempo: "45 min", saida: "Critérios internos marcados", alimenta: ["crm", "fec", "pos", "num", "med"], usa: [], faz: "Com o dono ou o gestor: mercado e clientes prioritários, registro de leads, proposta, pós-venda e números acompanhados." },
-      H.pontua, H.valor, H.plano, H.montagem, H.revisao],
-    escopo: ["Inventário de todos os canais antes de fechar o escopo.", "Análise de cada canal aplicável; os não aplicáveis são justificados.", "Pesquisa de mercado e concorrência por serviço e região.", "Entrevista de 45 minutos e dados internos autorizados."],
-    mostrar: ["Leitura do mercado e da posição competitiva.", "Diagnóstico de cada canal: evidências, gargalos e oportunidades.", "Problemas entre canais e no caminho até a venda.", "O papel do novo site na estrutura.", "Plano por canal, com entregas, prioridades e como validar."],
-    limites: ["Dado público não comprova falha no atendimento, no CRM ou na rentabilidade: isso vem da entrevista e de dados internos.", "Hipótese não é apresentada como diagnóstico confirmado.", "Acessos e informações pendentes ficam registrados."],
+    modelo: ["Modelo Unificado (referência)", "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t"],
+    areas: ["rep", "bus", "map", "ava", "sit", "ins", "ia"], opcionais: ["ins"],
+    processo: [H.pedido(),
+      { nome: "Coleta pública rasa", modo: "auto", quem: "n8n + Apify", ferr: "Semrush · Apify · PageSpeed", tempo: "3 min", saida: "Dados de busca, mapa, avaliações e site", alimenta: ["rep", "bus", "map", "ava", "sit", "ins"], usa: ["semrush", "apify", "pagespeed", "firecrawl", "n8n"], conectado: "a parte do Google Maps já roda pelo botão \"Coletar no Apify\" na tela Gerar", faz: "Busca principal e busca pela marca, top 10 do mapa, nota e volume de avaliações, velocidade da home e bio do Instagram. Sem rastreio completo do site." },
+      { nome: "Teste rápido nas IAs", modo: "auto", quem: "n8n", ferr: "OpenAI e Gemini com busca", tempo: "1 min", saida: "Citada ou não, com a resposta guardada", alimenta: ["ia"], usa: ["openai", "gemini"], faz: "Uma pergunta de compra, uma vez em cada IA (3 buscas no total). Só diz se a empresa aparece." },
+      { nome: "Pontuação e raio-x", modo: "auto", quem: "Claude Haiku", ferr: "Aba \"Gerar\"", tempo: "1 min", saida: "Notas, 3 urgências e o valor da procura", alimenta: "todas", usa: ["claude"], faz: "Notas pela régua, três urgências e o quanto vale, num texto curto. Modelo barato (Haiku) e contexto enxuto." },
+      { nome: "Revisão rápida", modo: "manual", quem: "Comercial", ferr: "Pipedrive", tempo: "10 min", saida: "Raio-x aprovado para a abordagem", alimenta: [], usa: [], faz: "Conferir as três urgências e o número principal antes de usar na abordagem." }],
+    escopo: ["Só dados públicos, sem entrevista e sem cliente oculto.", "Top 10 do mapa, 1 busca principal, 1 pergunta por IA.", "Home do site apenas (velocidade e primeira tela).", "Teto de custo por raio-x: ver Escopo, limites e custo."],
+    mostrar: ["As três urgências com o número que dói.", "Quanto vale a procura que está indo para o concorrente.", "O convite para o Diagnóstico Total (2× R$ 198)."],
+    limites: ["É uma leitura rasa: não substitui o Diagnóstico Total.", "Uma pergunta por IA é sinal, não placar.", "Sem entrevista, nada é afirmado sobre atendimento, CRM ou margem."],
     pontos: "completo" },
-
-  { id: "atendimento", ordem: 4, nome: "Atendimento", sub: "WhatsApp, processo comercial e pós-venda", st: "disc",
+  { id: "atendimento", finalidade: "prospeccao", ordem: 4, nome: "Atendimento", sub: "WhatsApp, processo comercial e pós-venda", st: "disc",
     oferta: "Agente de IA no WhatsApp integrado ao CRM", meta: null, unidade: "clientes", prioridade: "Meta a definir",
     desc: "Mostra o que acontece depois que o cliente chama: velocidade, qualificação, follow-up, proposta, fechamento e pós-venda.",
     publico: "Empresa que recebe contatos e perde venda na resposta ou no acompanhamento", entrega: "Diagnóstico de atendimento + proposta de agente de IA e CRM", prazo: "2 dias", valor: false,
@@ -203,7 +201,27 @@ const TIPOS = [
     escopo: ["Cliente oculto em 3 horários: comercial, noite e fim de semana.", "Amostra de 30 conversas recentes, com autorização.", "Entrevista de 45 minutos com quem atende e quem gere.", "Últimos 20 leads perdidos no CRM ou no WhatsApp."],
     mostrar: ["Tempo real de resposta e o que ele custa em vendas.", "Onde o lead esfria: qualificação, follow-up ou proposta.", "Conversas reais que mostram o problema.", "Como o agente de IA e o CRM resolvem cada gargalo."],
     limites: ["Sem conversas reais e sem CRM, o diagnóstico fica no cliente oculto e na entrevista.", "Conversas de clientes são dados pessoais: só com autorização e sem expor nomes."],
-    pontos: "comercial" }
+    pontos: "comercial" },
+  { id: "completo", ordem: 5, finalidade: "produto", nome: "Total", sub: "Diagnóstico Total · o produto vendido", st: "disc",
+    oferta: "Diagnóstico Total, vendido por 2× R$ 198", meta: null, unidade: "diagnósticos vendidos", prioridade: "Produto pago · 2× R$ 198",
+    desc: "O único diagnóstico vendido: 2× R$ 198 (entrada e boleto em 15 dias), com teto de custo de R$ 50. Mercado, todos os canais, atendimento, processo comercial e números, com entrevista, cliente oculto e a entrega no padrão Coalumaq: como o cliente procura hoje, onde aparece e onde some, concorrência, procura, plano em três frentes e o placar hoje × meta.",
+    publico: "Empresa que paga para entender e estruturar marketing e vendas", entrega: "Apresentação no padrão Coalumaq + reunião de leitura", prazo: "3 a 5 dias", valor: true,
+    proposta: ["Diagnóstico Coalumaq (referência de entrega)", "https://claude.ai/artifact/1MfJSLV1C7u35KJMXyHZZA"],
+    modelo: ["Modelo Unificado", "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t"],
+    areas: ["rep", "bus", "map", "ava", "sit", "conv", "est", "ins", "ia", "mid", "med", "wha", "crm", "fec", "pos", "num"], opcionais: ["mid", "med"],
+    processo: [H.pedido("e agendar a entrevista"),
+      { nome: "Coleta pública completa", modo: "auto", quem: "n8n + Apify", ferr: "Semrush · Apify · PageSpeed · Firecrawl", tempo: "15 min", saida: "Evidências com fonte e data", alimenta: ["rep", "bus", "map", "ava", "sit", "est", "ins"], usa: ["semrush", "apify", "pagespeed", "firecrawl", "n8n"], conectado: "a parte do Google Maps já roda pelo botão \"Coletar no Apify\" na tela Gerar", faz: "Até 200 termos e 5 concorrentes, top 30 do mapa com 300 avaliações, rastreio de 60 páginas, Instagram." },
+      { nome: "Placar nas IAs", modo: "auto", quem: "n8n", ferr: "OpenAI e Gemini com busca", tempo: "15 min", saida: "Placar de citações por pergunta", alimenta: ["ia"], usa: ["openai", "gemini", "n8n"], faz: "10 perguntas × 2 IAs × 2 rodadas, como na Coalumaq: onde a empresa é lembrada, aparece pouco ou some." },
+      H.oculto,
+      { nome: "Mídia e conversão", modo: "parcial", quem: "Gestor de mídia", ferr: "Biblioteca de Anúncios · contas", tempo: "40 min", saida: "Anúncios, páginas e medição", alimenta: ["mid", "med", "conv"], usa: ["firecrawl"], faz: "Anúncios ativos, páginas de destino, conversões e, com acesso, custo por venda." },
+      { nome: "Entrevista", modo: "manual", quem: "Consultor", ferr: "Roteiro de entrevista", tempo: "45 min", saida: "Critérios internos marcados", alimenta: ["crm", "fec", "pos", "num", "med"], usa: [], faz: "Com o dono ou o gestor: clientes prioritários, registro de leads, proposta, pós-venda e números acompanhados." },
+      { nome: "Análise e texto", modo: "parcial", quem: "Claude Sonnet + consultor", ferr: "Aba \"Gerar\"", tempo: "1 h", saida: "Notas, urgências, quanto vale, plano em 3 frentes e placar hoje × meta", alimenta: "todas", usa: ["claude"], faz: "Pontuar com evidência, montar a narrativa no padrão Coalumaq e o placar que será repetido todo mês." },
+      { nome: "Montagem da apresentação", modo: "auto", quem: "n8n", ferr: "Modelo Coalumaq · PDF.co · Drive", tempo: "10 min", saida: "Apresentação em PDF no Drive", alimenta: [], usa: ["pdfco", "n8n"], faz: "Gerar a apresentação e anexar ao negócio no Pipedrive." },
+      H.revisao],
+    escopo: ["Inventário de todos os canais; os não aplicáveis são justificados.", "Até 200 termos, 5 concorrentes e 60 páginas.", "IA: 10 perguntas × 2 ambientes × 2 rodadas.", "Entrevista de 45 minutos e dados internos autorizados."],
+    mostrar: ["Como o cliente procura hoje, com uma resposta real de IA.", "Os números-chave e onde a empresa aparece e onde some.", "Três motivos, a concorrência e o tamanho da procura.", "O plano em três frentes e o placar hoje × meta."],
+    limites: ["Dado público não comprova falha de atendimento, CRM ou margem: isso vem da entrevista.", "Hipótese não é apresentada como diagnóstico.", "Não prometemos posição nem prazo de posição."],
+    pontos: "completo" }
 ];
 
 const CASOS = [
@@ -223,12 +241,12 @@ const CASOS = [
    preço = tarifa por unidade (USD, salvo indicação); mensal = assinatura fixa (USD/mês).
    uso[...] = consumo estimado por diagnóstico (hipótese de planejamento, validar no piloto).
    "pre" = pré-diagnóstico automático feito para cada empresa abordada. */
-const CONSUMO = { // por diagnóstico; hipóteses de planejamento
-  pre:         { claude: { in: 40, out: 6 },   openai: { tok: 20, busca: 5 },  gemini: { tok: 20, busca: 5 },  apify: { lugares: 20, avaliacoes: 100, perfis: 4 }, semrush: { unidades: 300 },  firecrawl: { paginas: 10 }, pdfco: { creditos: 20 }, n8n: { execucoes: 3 },  pagespeed: { testes: 3 } },
-  site:        { claude: { in: 80, out: 15 },  openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 10, avaliacoes: 0, perfis: 0 },   semrush: { unidades: 500 },  firecrawl: { paginas: 40 }, pdfco: { creditos: 20 }, n8n: { execucoes: 4 },  pagespeed: { testes: 6 } },
-  seo:         { claude: { in: 200, out: 30 }, openai: { tok: 80, busca: 20 }, gemini: { tok: 80, busca: 20 }, apify: { lugares: 30, avaliacoes: 200, perfis: 0 }, semrush: { unidades: 3000 }, firecrawl: { paginas: 60 }, pdfco: { creditos: 20 }, n8n: { execucoes: 8 },  pagespeed: { testes: 10 } },
-  geral:       { claude: { in: 400, out: 60 }, openai: { tok: 80, busca: 20 }, gemini: { tok: 80, busca: 20 }, apify: { lugares: 30, avaliacoes: 300, perfis: 10 }, semrush: { unidades: 3000 }, firecrawl: { paginas: 60 }, pdfco: { creditos: 20 }, n8n: { execucoes: 12 }, pagespeed: { testes: 10 } },
-  atendimento: { claude: { in: 150, out: 25 }, openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 0, avaliacoes: 0, perfis: 0 },    semrush: { unidades: 0 },    firecrawl: { paginas: 5 },  pdfco: { creditos: 20 }, n8n: { execucoes: 4 },  pagespeed: { testes: 0 } }
+const CONSUMO = { // por diagnóstico; hipóteses de planejamento a medir no piloto. Prospecção usa Haiku e amostras pequenas.
+  site:        { claude: { inH: 60, outH: 10 },  openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 0, avaliacoes: 0, perfis: 0 },    semrush: { unidades: 200 },  firecrawl: { paginas: 10 }, pdfco: { creditos: 20 }, n8n: { execucoes: 3 },  pagespeed: { testes: 3 } },
+  seo:         { claude: { inH: 120, outH: 20 }, openai: { tok: 20, busca: 6 },  gemini: { tok: 20, busca: 6 },  apify: { lugares: 20, avaliacoes: 0, perfis: 0 },   semrush: { unidades: 1000 }, firecrawl: { paginas: 20 }, pdfco: { creditos: 20 }, n8n: { execucoes: 5 },  pagespeed: { testes: 3 } },
+  geral:       { claude: { inH: 60, outH: 10 },  openai: { tok: 10, busca: 3 },  gemini: { tok: 10, busca: 3 },  apify: { lugares: 10, avaliacoes: 0, perfis: 1 },   semrush: { unidades: 300 },  firecrawl: { paginas: 5 },  pdfco: { creditos: 20 }, n8n: { execucoes: 3 },  pagespeed: { testes: 2 } },
+  atendimento: { claude: { inH: 40, outH: 8 },   openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 0, avaliacoes: 0, perfis: 0 },    semrush: { unidades: 0 },    firecrawl: { paginas: 0 },  pdfco: { creditos: 20 }, n8n: { execucoes: 2 },  pagespeed: { testes: 0 } },
+  completo:    { claude: { in: 400, out: 60 },   openai: { tok: 80, busca: 40 }, gemini: { tok: 80, busca: 40 }, apify: { lugares: 30, avaliacoes: 300, perfis: 10 }, semrush: { unidades: 3000 }, firecrawl: { paginas: 60 }, pdfco: { creditos: 40 }, n8n: { execucoes: 12 }, pagespeed: { testes: 10 } }
 };
 // PRECOS e PLANOS são preenchidos a partir da pesquisa de tarifas (fonte e data em cada linha).
 const LIDO = "15/10/2026";
@@ -236,8 +254,8 @@ const LIDO = "15/10/2026";
 // item: preço por 1 unidade de consumo; franquia = unidades incluídas por mês; preco null = não confirmado.
 // modo "credito": a mensalidade vira crédito de uso (paga-se o maior entre mensalidade e consumo).
 const FERRAMENTAS = [
-  { id: "claude", nome: "Claude", plano: "API · Sonnet 5.5", moeda: "USD", mensal: 0, modo: "uso", papel: "Análise das evidências, classificação de avaliações e textos do diagnóstico",
-    itens: [{ id: "in", rot: "mil tokens de entrada", preco: 0.002, nota: "US$ 2 por milhão" }, { id: "out", rot: "mil tokens de saída", preco: 0.010, nota: "US$ 10 por milhão" }],
+  { id: "claude", nome: "Claude", plano: "API · Haiku 5.5 (prospecção) e Sonnet 5.5 (produto)", moeda: "USD", mensal: 0, modo: "uso", papel: "Análise das evidências, classificação de avaliações e textos do diagnóstico",
+    itens: [{ id: "in", rot: "mil tokens de entrada · Sonnet", preco: 0.002, nota: "US$ 2 por milhão" }, { id: "out", rot: "mil tokens de saída · Sonnet", preco: 0.010, nota: "US$ 10 por milhão" }, { id: "inH", rot: "mil tokens de entrada · Haiku", preco: 0.0001, nota: "US$ 0,10 por milhão (até 100 mil tokens por chamada)" }, { id: "outH", rot: "mil tokens de saída · Haiku", preco: 0.0005, nota: "US$ 0,50 por milhão" }],
     fonte: "platform.claude.com/docs/en/about-claude/pricing", conf: "alta", obs: "Haiku 5.5 custa US$ 0,10 / 0,50 por milhão e serve para tarefas simples. Processamento em lote custa metade." },
   { id: "openai", nome: "ChatGPT", plano: "API · GPT-5.4 mini + busca na web", moeda: "USD", mensal: 0, modo: "uso", papel: "Teste de citações: o que o ChatGPT responde sobre a categoria",
     itens: [{ id: "tok", rot: "mil tokens (média entrada/saída)", preco: 0.0015, nota: "US$ 0,75 / 4,50 por milhão; média 80/20" }, { id: "busca", rot: "buscas na web", preco: 0.010, nota: "US$ 10 por 1.000 buscas" }],
@@ -268,7 +286,8 @@ const FERRAMENTAS = [
 
 const PLANEJAMENTO_PADRAO = {
   meses: 6, diasUteis: 22, semanasMes: 4.33,
-  taxaReuniao: 7, taxaFechamento: 20,
-  metas: { site: 1000, seo: 90, geral: 120, atendimento: 0 },
+  taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 18, cenario: "capacidade",
+  metas: { site: 1000, seo: 90, geral: 120, atendimento: 0, completo: 0 },
+  precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 0,
   cambio: 5.00, reserva: 20
 };
