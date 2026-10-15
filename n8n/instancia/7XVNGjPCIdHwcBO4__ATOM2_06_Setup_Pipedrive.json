@@ -1,0 +1,576 @@
+{
+  "workflow": {
+    "id": "7XVNGjPCIdHwcBO4",
+    "name": "ATOM2_06_Setup_Pipedrive",
+    "active": false,
+    "isArchived": false,
+    "versionId": "fb5f20fe-73e8-4691-93ab-a7b345d99df1",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 16,
+    "createdAt": "2026-10-09T20:09:41.828Z",
+    "updatedAt": "2026-10-09T20:11:00.540Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · Cria os funis Prospecção Ativa e Atendimento Receptivo, etapas e campos ATOM · (03_FUNIS_PIPEDRIVE.md). Idempotente. Execução manual.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Executar setup": {
+        "main": [
+          [
+            {
+              "node": "Ler funis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler funis": {
+        "main": [
+          [
+            {
+              "node": "Ler etapas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler etapas": {
+        "main": [
+          [
+            {
+              "node": "Ler campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler campos": {
+        "main": [
+          [
+            {
+              "node": "Plano funis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano funis": {
+        "main": [
+          [
+            {
+              "node": "Aplicar funis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar funis": {
+        "main": [
+          [
+            {
+              "node": "Reler funis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reler funis": {
+        "main": [
+          [
+            {
+              "node": "Plano etapas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano etapas": {
+        "main": [
+          [
+            {
+              "node": "Aplicar etapas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar etapas": {
+        "main": [
+          [
+            {
+              "node": "Reler etapas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reler etapas": {
+        "main": [
+          [
+            {
+              "node": "Plano campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano campos": {
+        "main": [
+          [
+            {
+              "node": "Aplicar campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar campos": {
+        "main": [
+          [
+            {
+              "node": "Reler campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reler campos": {
+        "main": [
+          [
+            {
+              "node": "Linhas de config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linhas de config": {
+        "main": [
+          [
+            {
+              "node": "Gravar atom2_config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "caf0779b-8fa9-49be-a559-815405c21349",
+        "name": "Executar setup",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "c04a9ecd-60b5-42b8-b99b-97f1f9850d59",
+        "name": "Ler funis",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/pipelines",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "c36c2ad3-d298-4ac8-a2d0-cd5daa97c42b",
+        "name": "Ler etapas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/stages?limit=500",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "11c44c2d-9a4a-4c67-a351-ebecd4787814",
+        "name": "Ler campos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          660,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/dealFields?limit=500",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "365df18b-6277-4773-9e36-ca51108aa3ed",
+        "name": "Plano funis",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_06 · Setup Pipedrive · planejadores (3 Code nodes leem daqui; ver n8n/sdk/build_setup_pd.js).\n// Fonte: 03_FUNIS_PIPEDRIVE.md §3, §4 e §6. Idempotente: compara por nome; o que já existe vira GET inofensivo.\n// Cada planejador devolve itens { method, url, body, ref } para um único nó HTTP Request (método e URL por expressão).\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\n\n// Fases do \"Fluxo do Funil Comercial v1.0\" (09/10/2026): ganho = aceite (F11); formalização (F12) e produção (F13) acompanham por campos depois do ganho.\nconst FUNIS = [\n  { chave: 'OUT', nome: 'Prospecção Ativa', etapas: [\n    ['PRONTO', 'Abordagem autorizada', 5, null], ['CADENCIA', 'Contatado (cadência)', 10, 18], ['RESPONDEU', 'Respondeu', 20, 3],\n    ['QUALIFICADO', 'Qualificado', 30, 5], ['N2', 'Diagnóstico N2', 40, 5], ['REUNIAO', 'Reunião agendada', 50, null],\n    ['PROPOSTA', 'Proposta', 65, 7], ['NEGOCIACAO', 'Negociação', 80, 7]\n  ] },\n  { chave: 'IN', nome: 'Atendimento Receptivo', etapas: [\n    ['NOVO', 'Novo lead', 10, 1], ['ATENDIMENTO', 'Em atendimento', 20, 3], ['QUALIFICADO', 'Qualificado', 35, 3],\n    ['REUNIAO', 'Reunião agendada', 50, null], ['PROPOSTA', 'Proposta', 65, 5], ['NEGOCIACAO', 'Negociação', 80, 5]\n  ] }\n];\n// Campos da seção 7 do Fluxo do Funil que ainda não existem (dominio, nicho, Serviço, IDs Autentique/Asaas, Status do contrato/pagamento e \"Não contatar\" já existem: VERIFICADO 09/10/2026).\nconst CAMPOS = [\n  ['ORIGEM', 'ATOM · Origem', 'enum', ['Prospecção ativa', 'Receptivo']],\n  ['CANAL', 'ATOM · Canal', 'enum', ['WhatsApp nº 1', 'WhatsApp nº 2', 'Formulário do site', 'Google Ads', 'Meta Ads', 'Indicação', 'Ligação', 'E-mail', 'Outro']],\n  ['UTM', 'ATOM · Campanha / UTM', 'varchar'],\n  ['OFERTA', 'ATOM · Oferta de interesse', 'enum', ['Clínica completa', 'Marketing com IA', 'Agente de IA', 'Site']],\n  ['COMPANY_ID', 'ATOM · company_id', 'varchar'],\n  ['AUDIT_ID', 'ATOM · audit_n1_id', 'varchar'],\n  ['FINDING_ID', 'ATOM · finding_id', 'varchar'],\n  ['EVIDENCE_URL', 'ATOM · URL da evidência', 'varchar'],\n  ['EVIDENCE_DATE', 'ATOM · Data da evidência', 'date'],\n  ['SCORE', 'ATOM · Score N1', 'double'],\n  ['FAIXA', 'ATOM · Faixa N1', 'enum', ['A', 'B', 'C']],\n  ['QA_STATUS', 'ATOM · QA', 'enum', ['Pendente', 'Aprovado', 'Reprovado']],\n  ['PERMISSAO', 'ATOM · Permissão de contato', 'enum', ['Não avaliada', 'Autorizada', 'Negada', 'Opt-out']],\n  ['TEMPLATE', 'ATOM · Template', 'varchar'],\n  ['TOQUE', 'ATOM · Passo da cadência', 'enum', ['D1', 'D3', 'D6', 'D9', 'D12', 'Encerrada']],\n  ['ULTIMO_CONTATO', 'ATOM · Último contato', 'date'],\n  ['INTENCAO', 'ATOM · Intenção da resposta', 'enum', ['Pode enviar', 'Quanto custa', 'Tenho interesse', 'Já tenho agência', 'Mande proposta', 'Agora não', 'Sem interesse', 'Opt-out', 'Ambígua']],\n  ['QUALIFICACAO', 'ATOM · Qualificação', 'enum', ['Pendente', 'Qualificado', 'Sem perfil']],\n  ['REUNIAO', 'ATOM · Status da reunião', 'enum', ['Agendada', 'Realizada', 'Não compareceu', 'Reagendada', 'Cancelada']],\n  ['N2_URL', 'ATOM · Link do diagnóstico N2', 'varchar'],\n  ['PROPOSTA_ID', 'ATOM · proposal_id', 'varchar'],\n  ['PROXIMA_ACAO', 'ATOM · Próxima ação', 'varchar']\n];\n\nconst dados = (r) => (r && Array.isArray(r.data) ? r.data : []);\nconst igual = (a, b) => String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();\n\nfunction planejarFunis(pipelines) {\n  return FUNIS.map((f) => {\n    const existe = dados(pipelines).find((p) => igual(p.name, f.nome));\n    return existe ? { ...NOOP, ref: 'funil:' + f.chave, existente: existe.id } : { method: 'POST', url: API + '/pipelines', body: { name: f.nome, deal_probability: 1 }, ref: 'funil:' + f.chave };\n  });\n}\nfunction planejarEtapas(pipelines, stages) {\n  const out = [];\n  for (const f of FUNIS) {\n    const p = dados(pipelines).find((x) => igual(x.name, f.nome));\n    if (!p) throw new Error('Funil não encontrado após criação: ' + f.nome);\n    for (const [chave, nome, prob, rot] of f.etapas) {\n      const existe = dados(stages).find((s) => s.pipeline_id === p.id && igual(s.name, nome));\n      out.push(existe ? { ...NOOP, ref: 'etapa:' + f.chave + ':' + chave, existente: existe.id }\n        : { method: 'POST', url: API + '/stages', body: { name: nome, pipeline_id: p.id, deal_probability: prob, rotten_flag: rot !== null, rotten_days: rot }, ref: 'etapa:' + f.chave + ':' + chave });\n    }\n  }\n  return out;\n}\nfunction planejarCampos(fields) {\n  return CAMPOS.map(([chave, nome, tipo, opcoes]) => {\n    const existe = dados(fields).find((c) => igual(c.name, nome));\n    if (existe) return { ...NOOP, ref: 'campo:' + chave, existente: existe.key };\n    const body = { name: nome, field_type: tipo };\n    if (opcoes) body.options = opcoes.map((label) => ({ label }));\n    return { method: 'POST', url: API + '/dealFields', body, ref: 'campo:' + chave };\n  });\n}\n// Linhas para atom2_config com todos os IDs (lidos de novo depois das criações).\nfunction resumir(pipelines, stages, fields) {\n  const linhas = [];\n  const linha = (chave, valor, descricao) => linhas.push({ chave, valor: String(valor), status: 'CONFIGURADO', descricao });\n  for (const f of FUNIS) {\n    const p = dados(pipelines).find((x) => igual(x.name, f.nome));\n    linha('PD2_PIPE_' + f.chave + '_ID', p.id, 'Funil \"' + f.nome + '\" no Pipedrive (03_FUNIS_PIPEDRIVE.md)');\n    for (const [chave, nome] of f.etapas) {\n      const s = dados(stages).find((x) => x.pipeline_id === p.id && igual(x.name, nome));\n      linha('PD2_STAGE_' + f.chave + '_' + chave + '_ID', s.id, 'Etapa \"' + nome + '\" do funil ' + f.nome);\n    }\n  }\n  for (const [chave, nome, tipo] of CAMPOS) {\n    const c = dados(fields).find((x) => igual(x.name, nome));\n    linha('PD2_FIELD_' + chave, c.key, 'Chave do campo de negócio \"' + nome + '\"');\n    if (tipo === 'enum') for (const o of c.options || []) linha('PD2_OPT_' + chave + '_' + String(o.label).normalize('NFD').replace(/\\p{M}/gu, '').toUpperCase().replace(/[^A-Z0-9]+/g, '_').replace(/^_|_$/g, ''), o.id, 'Opção \"' + o.label + '\" de ' + nome);\n  }\n  return linhas;\n}\n\nreturn planejarFunis($('Ler funis').first().json).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "db42517a-e6cf-474c-90b2-bcf82894835e",
+        "name": "Aplicar funis",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1100,
+          200
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 400
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "5e75dbd0-3355-498c-af9e-095eb1a73f45",
+        "name": "Reler funis",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1320,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/pipelines",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "338fef84-42d8-4990-8758-6474c63b7647",
+        "name": "Plano etapas",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1540,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_06 · Setup Pipedrive · planejadores (3 Code nodes leem daqui; ver n8n/sdk/build_setup_pd.js).\n// Fonte: 03_FUNIS_PIPEDRIVE.md §3, §4 e §6. Idempotente: compara por nome; o que já existe vira GET inofensivo.\n// Cada planejador devolve itens { method, url, body, ref } para um único nó HTTP Request (método e URL por expressão).\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\n\n// Fases do \"Fluxo do Funil Comercial v1.0\" (09/10/2026): ganho = aceite (F11); formalização (F12) e produção (F13) acompanham por campos depois do ganho.\nconst FUNIS = [\n  { chave: 'OUT', nome: 'Prospecção Ativa', etapas: [\n    ['PRONTO', 'Abordagem autorizada', 5, null], ['CADENCIA', 'Contatado (cadência)', 10, 18], ['RESPONDEU', 'Respondeu', 20, 3],\n    ['QUALIFICADO', 'Qualificado', 30, 5], ['N2', 'Diagnóstico N2', 40, 5], ['REUNIAO', 'Reunião agendada', 50, null],\n    ['PROPOSTA', 'Proposta', 65, 7], ['NEGOCIACAO', 'Negociação', 80, 7]\n  ] },\n  { chave: 'IN', nome: 'Atendimento Receptivo', etapas: [\n    ['NOVO', 'Novo lead', 10, 1], ['ATENDIMENTO', 'Em atendimento', 20, 3], ['QUALIFICADO', 'Qualificado', 35, 3],\n    ['REUNIAO', 'Reunião agendada', 50, null], ['PROPOSTA', 'Proposta', 65, 5], ['NEGOCIACAO', 'Negociação', 80, 5]\n  ] }\n];\nconst dados = (r) => (r && Array.isArray(r.data) ? r.data : []);\nconst igual = (a, b) => String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();\nfunction planejarEtapas(pipelines, stages) {\n  const out = [];\n  for (const f of FUNIS) {\n    const p = dados(pipelines).find((x) => igual(x.name, f.nome));\n    if (!p) throw new Error('Funil não encontrado após criação: ' + f.nome);\n    for (const [chave, nome, prob, rot] of f.etapas) {\n      const existe = dados(stages).find((s) => s.pipeline_id === p.id && igual(s.name, nome));\n      out.push(existe ? { ...NOOP, ref: 'etapa:' + f.chave + ':' + chave, existente: existe.id }\n        : { method: 'POST', url: API + '/stages', body: { name: nome, pipeline_id: p.id, deal_probability: prob, rotten_flag: rot !== null, rotten_days: rot }, ref: 'etapa:' + f.chave + ':' + chave });\n    }\n  }\n  return out;\n}\n\nreturn planejarEtapas($('Reler funis').first().json, $('Ler etapas').first().json).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "2c150981-ae00-4823-b7f8-4d6372b2fbde",
+        "name": "Aplicar etapas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1760,
+          200
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 400
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "686dbf93-4ba5-46f5-9427-80ba8d7114e0",
+        "name": "Reler etapas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1980,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/stages?limit=500",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "61d4f634-5042-482a-b51c-1425a61d6b76",
+        "name": "Plano campos",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2200,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_06 · Plano campos (trecho de n8n/code/w06_setup_pipedrive.js).\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\nconst CAMPOS = [\n  ['ORIGEM', 'ATOM · Origem', 'enum', ['Prospecção ativa', 'Receptivo']],\n  ['CANAL', 'ATOM · Canal', 'enum', ['WhatsApp nº 1', 'WhatsApp nº 2', 'Formulário do site', 'Google Ads', 'Meta Ads', 'Indicação', 'Ligação', 'E-mail', 'Outro']],\n  ['UTM', 'ATOM · Campanha / UTM', 'varchar'],\n  ['OFERTA', 'ATOM · Oferta de interesse', 'enum', ['Clínica completa', 'Marketing com IA', 'Agente de IA', 'Site']],\n  ['COMPANY_ID', 'ATOM · company_id', 'varchar'],\n  ['AUDIT_ID', 'ATOM · audit_n1_id', 'varchar'],\n  ['FINDING_ID', 'ATOM · finding_id', 'varchar'],\n  ['EVIDENCE_URL', 'ATOM · URL da evidência', 'varchar'],\n  ['EVIDENCE_DATE', 'ATOM · Data da evidência', 'date'],\n  ['SCORE', 'ATOM · Score N1', 'double'],\n  ['FAIXA', 'ATOM · Faixa N1', 'enum', ['A', 'B', 'C']],\n  ['QA_STATUS', 'ATOM · QA', 'enum', ['Pendente', 'Aprovado', 'Reprovado']],\n  ['PERMISSAO', 'ATOM · Permissão de contato', 'enum', ['Não avaliada', 'Autorizada', 'Negada', 'Opt-out']],\n  ['TEMPLATE', 'ATOM · Template', 'varchar'],\n  ['TOQUE', 'ATOM · Passo da cadência', 'enum', ['D1', 'D3', 'D6', 'D9', 'D12', 'Encerrada']],\n  ['ULTIMO_CONTATO', 'ATOM · Último contato', 'date'],\n  ['INTENCAO', 'ATOM · Intenção da resposta', 'enum', ['Pode enviar', 'Quanto custa', 'Tenho interesse', 'Já tenho agência', 'Mande proposta', 'Agora não', 'Sem interesse', 'Opt-out', 'Ambígua']],\n  ['QUALIFICACAO', 'ATOM · Qualificação', 'enum', ['Pendente', 'Qualificado', 'Sem perfil']],\n  ['REUNIAO', 'ATOM · Status da reunião', 'enum', ['Agendada', 'Realizada', 'Não compareceu', 'Reagendada', 'Cancelada']],\n  ['N2_URL', 'ATOM · Link do diagnóstico N2', 'varchar'],\n  ['PROPOSTA_ID', 'ATOM · proposal_id', 'varchar'],\n  ['PROXIMA_ACAO', 'ATOM · Próxima ação', 'varchar']\n];\nconst dados = (r) => (r && Array.isArray(r.data) ? r.data : []);\nconst igual = (a, b) => String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();\nfunction planejarCampos(fields) {\n  return CAMPOS.map(([chave, nome, tipo, opcoes]) => {\n    const existe = dados(fields).find((c) => igual(c.name, nome));\n    if (existe) return { ...NOOP, ref: 'campo:' + chave, existente: existe.key };\n    const body = { name: nome, field_type: tipo };\n    if (opcoes) body.options = opcoes.map((label) => ({ label }));\n    return { method: 'POST', url: API + '/dealFields', body, ref: 'campo:' + chave };\n  });\n}\nreturn planejarCampos($('Ler campos').first().json).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "8260e009-ce7e-415b-b952-d68aa7b49087",
+        "name": "Aplicar campos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2420,
+          200
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 400
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "cc743798-7628-4352-83e9-58e8af8f45f6",
+        "name": "Reler campos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2640,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/dealFields?limit=500",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "bc53177e-c5cb-4a5f-a9a3-11724c714252",
+        "name": "Linhas de config",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2860,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_06 · Linhas de config (trecho de n8n/code/w06_setup_pipedrive.js): grava os IDs reais em atom2_config.\nconst FUNIS = [\n  { chave: 'OUT', nome: 'Prospecção Ativa', etapas: [['PRONTO', 'Abordagem autorizada'], ['CADENCIA', 'Contatado (cadência)'], ['RESPONDEU', 'Respondeu'], ['QUALIFICADO', 'Qualificado'], ['N2', 'Diagnóstico N2'], ['REUNIAO', 'Reunião agendada'], ['PROPOSTA', 'Proposta'], ['NEGOCIACAO', 'Negociação']] },\n  { chave: 'IN', nome: 'Atendimento Receptivo', etapas: [['NOVO', 'Novo lead'], ['ATENDIMENTO', 'Em atendimento'], ['QUALIFICADO', 'Qualificado'], ['REUNIAO', 'Reunião agendada'], ['PROPOSTA', 'Proposta'], ['NEGOCIACAO', 'Negociação']] }\n];\nconst CAMPOS = [['ORIGEM', 'ATOM · Origem', 'enum'], ['CANAL', 'ATOM · Canal', 'enum'], ['UTM', 'ATOM · Campanha / UTM'], ['OFERTA', 'ATOM · Oferta de interesse', 'enum'], ['COMPANY_ID', 'ATOM · company_id'], ['AUDIT_ID', 'ATOM · audit_n1_id'], ['FINDING_ID', 'ATOM · finding_id'], ['EVIDENCE_URL', 'ATOM · URL da evidência'], ['EVIDENCE_DATE', 'ATOM · Data da evidência'], ['SCORE', 'ATOM · Score N1'], ['FAIXA', 'ATOM · Faixa N1', 'enum'], ['QA_STATUS', 'ATOM · QA', 'enum'], ['PERMISSAO', 'ATOM · Permissão de contato', 'enum'], ['TEMPLATE', 'ATOM · Template'], ['TOQUE', 'ATOM · Passo da cadência', 'enum'], ['ULTIMO_CONTATO', 'ATOM · Último contato'], ['INTENCAO', 'ATOM · Intenção da resposta', 'enum'], ['QUALIFICACAO', 'ATOM · Qualificação', 'enum'], ['REUNIAO', 'ATOM · Status da reunião', 'enum'], ['N2_URL', 'ATOM · Link do diagnóstico N2'], ['PROPOSTA_ID', 'ATOM · proposal_id'], ['PROXIMA_ACAO', 'ATOM · Próxima ação']];\nconst dados = (r) => (r && Array.isArray(r.data) ? r.data : []);\nconst igual = (a, b) => String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();\nfunction resumir(pipelines, stages, fields) {\n  const linhas = [];\n  const linha = (chave, valor, descricao) => linhas.push({ chave, valor: String(valor), status: 'CONFIGURADO', descricao });\n  for (const f of FUNIS) {\n    const p = dados(pipelines).find((x) => igual(x.name, f.nome));\n    linha('PD2_PIPE_' + f.chave + '_ID', p.id, 'Funil \"' + f.nome + '\" no Pipedrive (03_FUNIS_PIPEDRIVE.md)');\n    for (const [chave, nome] of f.etapas) {\n      const s = dados(stages).find((x) => x.pipeline_id === p.id && igual(x.name, nome));\n      linha('PD2_STAGE_' + f.chave + '_' + chave + '_ID', s.id, 'Etapa \"' + nome + '\" do funil ' + f.nome);\n    }\n  }\n  for (const [chave, nome, tipo] of CAMPOS) {\n    const c = dados(fields).find((x) => igual(x.name, nome));\n    linha('PD2_FIELD_' + chave, c.key, 'Chave do campo de negócio \"' + nome + '\"');\n    if (tipo === 'enum') for (const o of c.options || []) linha('PD2_OPT_' + chave + '_' + String(o.label).normalize('NFD').replace(/\\p{M}/gu, '').toUpperCase().replace(/[^A-Z0-9]+/g, '_').replace(/^_|_$/g, ''), o.id, 'Opção \"' + o.label + '\" de ' + nome);\n  }\n  return linhas;\n}\nreturn resumir($('Reler funis').first().json, $('Reler etapas').first().json, $('Reler campos').first().json).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "5629fa38-5028-4679-9c9d-10f0e78b311e",
+        "name": "Gravar atom2_config",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3080,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "chave",
+                "condition": "eq",
+                "keyValue": "={{ $json.chave }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "78d5f123-92e1-4207-a034-2de91b3878bf",
+        "name": "Sticky Note 8b3da9c8",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -120
+        ],
+        "parameters": {
+          "content": "## ATOM2_06 · Setup Pipedrive (execução manual, idempotente)\nCria os funis **Prospecção Ativa** e **Atendimento Receptivo**, as etapas e os campos ATOM · do 03_FUNIS_PIPEDRIVE.md; grava IDs em atom2_config (PD2_*).\nReexecutar não duplica (compara por nome; o que existe vira GET).\nNão mexe no funil antigo nem em negócios. Motivos de perda: cadastrar à mão.\nFonte: n8n/code/w06_setup_pipedrive.js · testes: n8n/tests/run_setup_pd.js",
+          "color": 4,
+          "width": 620,
+          "height": 220
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

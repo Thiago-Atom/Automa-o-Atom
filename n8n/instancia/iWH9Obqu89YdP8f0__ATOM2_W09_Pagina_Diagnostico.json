@@ -1,0 +1,699 @@
+{
+  "workflow": {
+    "id": "iWH9Obqu89YdP8f0",
+    "name": "ATOM2_W09_Pagina_Diagnostico",
+    "active": true,
+    "isArchived": false,
+    "versionId": "71c677d8-c4a2-4f2a-be4a-fc776ffba98c",
+    "activeVersionId": "71c677d8-c4a2-4f2a-be4a-fc776ffba98c",
+    "triggerCount": 2,
+    "nodeCount": 19,
+    "createdAt": "2026-10-09T21:45:27.330Z",
+    "updatedAt": "2026-10-09T22:46:47.561Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · W09: link privado do diagnóstico N1 (token, 60 dias, noindex, sem preço) + contagem de visitas.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Gerar links agora": {
+        "main": [
+          [
+            {
+              "node": "Ler auditorias aprovadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditorias aprovadas": {
+        "main": [
+          [
+            {
+              "node": "Gerar tokens",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "De hora em hora": {
+        "main": [
+          [
+            {
+              "node": "Ler auditorias aprovadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gerar tokens": {
+        "main": [
+          [
+            {
+              "node": "Salvar link na auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Página (GET)": {
+        "main": [
+          [
+            {
+              "node": "Ler auditoria pelo token",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditoria pelo token": {
+        "main": [
+          [
+            {
+              "node": "Ler empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresa": {
+        "main": [
+          [
+            {
+              "node": "Ler achados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Renderizar": {
+        "main": [
+          [
+            {
+              "node": "Responder página",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Responder página": {
+        "main": [
+          [
+            {
+              "node": "Contar visita",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Contar visita": {
+        "main": [
+          [
+            {
+              "node": "Atualizar auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar auditoria": {
+        "main": [
+          [
+            {
+              "node": "Evento primeira visita",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Evento primeira visita": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler achados": {
+        "main": [
+          [
+            {
+              "node": "Ler config (página)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler config (página)": {
+        "main": [
+          [
+            {
+              "node": "Renderizar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gravar evento": {
+        "main": [
+          [
+            {
+              "node": "Tarefa primeira visita",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tarefa primeira visita": {
+        "main": [
+          [
+            {
+              "node": "Criar tarefa no Pipedrive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "b3079117-0ef7-48e2-abbf-5a31c2bf7560",
+        "name": "Gerar links agora",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "bac8cb37-5513-4308-9237-b4f9d5fd9b5d",
+        "name": "Ler auditorias aprovadas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          80
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "qa_status",
+                "condition": "eq",
+                "keyValue": "aprovado"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "512c05b6-38f2-4645-89bd-34822dd42aa5",
+        "name": "De hora em hora",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          160
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 1
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "1aaee6eb-d42e-4c31-91e5-6e6a70858435",
+        "name": "Gerar tokens",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          440,
+          80
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W09 · Gerar links do diagnóstico (trecho de n8n/code/w09_pagina.js). Token de 32 hex, validade de 60 dias.\nconst VALIDADE_DIAS = 60;\nfunction novoToken() {\n  try { if (typeof crypto !== 'undefined' && crypto.getRandomValues) { const a = new Uint8Array(16); crypto.getRandomValues(a); return Array.from(a, (b) => b.toString(16).padStart(2, '0')).join(''); } } catch (e) { /* segue */ }\n  let s = '';\n  while (s.length < 32) s += Math.floor(Math.random() * 16).toString(16);\n  return s;\n}\n// Gera link para auditorias aprovadas sem token (ou com token vencido).\nfunction gerarTokens(auditorias, agoraISO, gerador) {\n  const agora = agoraISO || new Date().toISOString();\n  const g = gerador || novoToken;\n  const exp = new Date(new Date(agora).getTime() + VALIDADE_DIAS * 86400000).toISOString();\n  return (auditorias || []).filter((a) => a && a.audit_id && a.qa_status === 'aprovado' && (!a.diag_token || String(a.diag_expira_em || '') < agora))\n    .map((a) => ({ audit_id: a.audit_id, diag_token: g(), diag_expira_em: exp, diag_vistas: 0 }));\n}\nreturn gerarTokens($('Ler auditorias aprovadas').all().map((i) => i.json)).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "1289742a-095f-424f-8783-f9fa11f904a0",
+        "name": "Salvar link na auditoria",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          80
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.audit_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "535e8809-dc56-4154-a5cd-f437b1d64fe6",
+        "name": "Página (GET)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          420
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom2-diagnostico",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "403ecad5-65b5-4a62-a05b-dbc4caafc198"
+      },
+      {
+        "id": "6256a779-15ea-4fab-b2d7-74d83fde9fec",
+        "name": "Ler auditoria pelo token",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          420
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "diag_token",
+                "condition": "eq",
+                "keyValue": "={{ String($json.query.t || \"-\").slice(0, 64) }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "bb9df165-418e-47a1-8d01-14d86feb485f",
+        "name": "Ler empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          420
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Ler auditoria pelo token').first().json.company_id || '-' }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "95a61e99-04a9-4e99-b127-b518463b31b2",
+        "name": "Ler achados",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          420
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Ler auditoria pelo token').first().json.audit_id || '-' }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e81bfefc-1ac6-413b-97c3-4b3a4113b1cb",
+        "name": "Renderizar",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          420
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W09 · Página privada do diagnóstico (link [link] do script \"Pode enviar\" e da entrega do N1).\n// Token aleatório por auditoria aprovada, expira em 60 dias, página noindex. Só achados VERIFICADOS no site público,\n// com URL, data e método. Sem preço (regra absoluta), sem promessa de posição/citação em IA, sem dado de paciente.\nconst VALIDADE_DIAS = 60;\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst dataBR = (iso) => { const d = String(iso || '').slice(0, 10).split('-'); return d.length === 3 ? d[2] + '/' + d[1] + '/' + d[0] : ''; };\n\n// Token: 32 caracteres hex (crypto do Node quando existir; senão Math.random, ainda inadivinhável na prática para este uso).\nfunction novoToken() {\n  try { if (typeof crypto !== 'undefined' && crypto.getRandomValues) { const a = new Uint8Array(16); crypto.getRandomValues(a); return Array.from(a, (b) => b.toString(16).padStart(2, '0')).join(''); } } catch (e) { /* segue */ }\n  let s = '';\n  while (s.length < 32) s += Math.floor(Math.random() * 16).toString(16);\n  return s;\n}\n\n// 1) Gera link para auditorias aprovadas sem token (ou com token vencido).\nfunction gerarTokens(auditorias, agoraISO, gerador) {\n  const agora = agoraISO || new Date().toISOString();\n  const g = gerador || novoToken;\n  const exp = new Date(new Date(agora).getTime() + VALIDADE_DIAS * 86400000).toISOString();\n  return (auditorias || []).filter((a) => a && a.audit_id && a.qa_status === 'aprovado' && (!a.diag_token || String(a.diag_expira_em || '') < agora))\n    .map((a) => ({ audit_id: a.audit_id, diag_token: g(), diag_expira_em: exp, diag_vistas: 0 }));\n}\n\n// 2) Página. Devolve { status, html, auditoria?, evento? }.\nconst ROTULO = { conversao: 'Conversão e contato', seo: 'SEO', geo: 'Preparo para buscas com IA (GEO)', conteudo: 'Conteúdo', dados_estruturados: 'Informações para o Google', local: 'Presença local', mobile: 'Celular', tecnico: 'Técnico' };\nfunction pagina(titulo, corpo) {\n  return `<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow,noarchive\"><meta name=\"referrer\" content=\"no-referrer\"><title>${esc(titulo)}</title>\n<style>\n:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--mut:#5d6677;--bd:#e3e6ec;--pri:#2f5bd3;--alta:#b42318;--media:#b25e09;--baixa:#53627a}\n@media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--tx:#e8ebf1;--mut:#9aa3b2;--bd:#2c3340;--pri:#7c9cff}}\n*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}\nmain{max-width:760px;margin:0 auto;padding:32px 16px 64px}h1{font-size:26px;line-height:1.25;margin:0 0 8px}.sub{color:var(--mut);margin:0 0 24px}\n.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;margin:0 0 14px}.card.principal{border-left:4px solid var(--pri)}\nh2{font-size:18px;margin:0 0 6px}.tag{display:inline-block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin:0 8px 6px 0;color:var(--mut)}\n.sev-alta{color:var(--alta)}.sev-media{color:var(--media)}.sev-baixa{color:var(--baixa)}\n.ev{font-size:14px;color:var(--mut);word-break:break-word}.rec{margin:8px 0 0}a{color:var(--pri)}\nfooter{margin-top:28px;font-size:13px;color:var(--mut)}\ndetails summary{cursor:pointer;color:var(--mut);font-size:14px}.botao{display:inline-block;background:#1f7a4d;color:#fff;border-radius:8px;padding:10px 18px;margin:6px 8px 0 0;text-decoration:none;font-weight:600}.botao.sec{background:var(--pri)}.cta{border-color:var(--pri)}\n</style></head><body><main>${corpo}</main></body></html>`;\n}\n// Chamada para ação: WhatsApp da ATOM (ATOM_WHATSAPP_NUMERO) com texto pronto, que o W08 classifica como interesse; agenda opcional (AGENDA_URL).\nfunction botoes(cfg, nome) {\n  const n = String((cfg || {}).ATOM_WHATSAPP_NUMERO || '').replace(/\\D/g, '');\n  const agenda = String((cfg || {}).AGENDA_URL || '');\n  const wa = n.length >= 12 ? `<a class=\"botao\" href=\"https://wa.me/${n}?text=${encodeURIComponent('Tenho interesse em entender melhor o diagnóstico da ' + nome)}\" target=\"_blank\" rel=\"noopener\">Conversar no WhatsApp</a>` : '';\n  const ag = /^https:\\/\\//.test(agenda) ? `<a class=\"botao sec\" href=\"${esc(agenda)}\" target=\"_blank\" rel=\"noopener\">Agendar 15 minutos</a>` : '';\n  return wa || ag ? `<section class=\"card cta\"><h2>Quer ver como resolver estes pontos?</h2><p>Em 15 minutos mostramos as melhorias, sem compromisso.</p>${wa}${ag}</section>` : '';\n}\nfunction renderizar(token, auditorias, empresas, achados, agoraISO, cfg) {\n  const agora = agoraISO || new Date().toISOString();\n  const naoEncontrado = { status: 404, html: pagina('Link indisponível', '<h1>Link indisponível</h1><p class=\"sub\">Este link expirou ou não existe. Se você recebeu o diagnóstico da ATOM Digital, responda a mensagem que enviamos um link novo.</p>') };\n  const t = String(token || '').trim();\n  if (!/^[a-f0-9]{24,64}$/.test(t)) return naoEncontrado;\n  const a = (auditorias || []).find((x) => x && x.diag_token === t);\n  if (!a || a.qa_status !== 'aprovado' || String(a.diag_expira_em || '') < agora) return naoEncontrado;\n  const e = (empresas || []).find((x) => x && x.company_id === a.company_id) || {};\n  const lista = (achados || []).filter((f) => f && f.audit_id === a.audit_id && (f.usado_em === 'principal' || f.usado_em === 'resumo') && f.reviewer_status !== 'reprovado')\n    .sort((x, y) => (x.usado_em === 'principal' ? -1 : y.usado_em === 'principal' ? 1 : 0) || ['alta', 'media', 'baixa'].indexOf(x.severity) - ['alta', 'media', 'baixa'].indexOf(y.severity));\n  const SEV = { alta: 'Prioridade alta', media: 'Prioridade média', baixa: 'Melhoria complementar' };\n  const cartoes = lista.map((f) => `<section class=\"card${f.usado_em === 'principal' ? ' principal' : ''}\">\n<span class=\"tag sev-${esc(f.severity)}\">${SEV[f.severity] || ''}</span><span class=\"tag\">${esc(ROTULO[f.category] || f.category || '')}</span>\n<h2>${esc(f.claim)}</h2>\n${f.recommendation ? `<p class=\"rec\"><b>Sugestão:</b> ${esc(f.recommendation)}</p>` : ''}\n<details><summary>Ver a evidência</summary><p class=\"ev\">${esc(f.evidence)}<br>Onde: <a href=\"${esc(f.source_url)}\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">${esc(f.source_url)}</a> · observado em ${dataBR(f.observed_at)} · ${esc(f.method || 'leitura da página pública')}</p></details>\n</section>`).join('');\n  const nome = e.nome || 'sua empresa';\n  const corpo = `<h1>Diagnóstico rápido do site · ${esc(nome)}</h1>\n<p class=\"sub\">${lista.length} ponto(s) verificados em páginas públicas de ${esc(e.dominio || '')}, em ${dataBR(a.observado_em)}. Cada item traz a página e a evidência para você conferir.</p>\n${cartoes || '<p>Nenhum ponto listado.</p>'}\n${botoes(cfg, nome)}\n<section class=\"card\"><h2>Quem preparou</h2><p>A ATOM Digital cria sites, marketing e atendimento com IA para clínicas. Este diagnóstico foi feito a partir do seu site público e revisado por uma pessoa da equipe.</p></section>\n<footer>Diagnóstico baseado apenas em páginas públicas acessadas na data indicada; o site pode ter mudado depois. Não mede posição no Google nem citações em ferramentas de IA. Preparado pela ATOM Digital e revisado por uma pessoa. Também pode responder a mensagem do WhatsApp que enviamos.</footer>`;\n  const vistas = Number(a.diag_vistas || 0) + 1;\n  return {\n    status: 200, html: pagina('Diagnóstico · ' + nome, corpo),\n    auditoria: { audit_id: a.audit_id, diag_vistas: vistas, diag_visto_em: agora },\n    // Primeira visita: tarefa no Pipedrive para responder enquanto o lead está olhando o diagnóstico.\n    tarefa: vistas === 1 && e.pipedrive_deal_id ? { deal_id: Number(e.pipedrive_deal_id), subject: 'Lead abriu o diagnóstico agora: responder enquanto está quente', type: 'task', due_date: agora.slice(0, 10) } : null,\n    evento: vistas === 1 ? { event_id: 'e_w09_' + a.audit_id + '_primeira_visita', correlation_id: a.audit_id, company_id: a.company_id, workflow: 'ATOM2_W09', tipo: 'DIAGNOSTICO_ABERTO', motivo: 'primeira visita ao link', dados: '{}', ocorrido_em: agora } : null\n  };\n}\n\n\nconst cfg = Object.fromEntries($('Ler config (página)').all().map((i) => i.json).filter((r) => r && r.chave).map((r) => [r.chave, String(r.valor ?? '')]));\nconst t = ($('Página (GET)').first().json.query || {}).t;\nreturn [{ json: renderizar(t, $('Ler auditoria pelo token').all().map((i) => i.json), $('Ler empresa').all().map((i) => i.json), $('Ler achados').all().map((i) => i.json), new Date().toISOString(), cfg) }];"
+        }
+      },
+      {
+        "id": "8930a13e-03ff-4e7a-8662-c694b3d456f4",
+        "name": "Responder página",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          420
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseCode": "={{ $json.status }}",
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow, noarchive"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                },
+                {
+                  "name": "Referrer-Policy",
+                  "value": "no-referrer"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "4eb592f3-efe0-4abc-8530-5584ae2d5557",
+        "name": "Contar visita",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1320,
+          420
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const r = $('Renderizar').first().json;\nreturn r.auditoria ? [{ json: r.auditoria }] : [];"
+        }
+      },
+      {
+        "id": "e2ac5812-286a-4c6f-a83f-2d698e2c3ec5",
+        "name": "Atualizar auditoria",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1540,
+          420
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.audit_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "b581ac83-ae7e-4804-aaed-938075b41efb",
+        "name": "Evento primeira visita",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1760,
+          420
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const r = $('Renderizar').first().json;\nreturn r.evento ? [{ json: r.evento }] : [];"
+        }
+      },
+      {
+        "id": "6c0b71f6-557a-4cda-9225-bda06e140940",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1980,
+          420
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "03d09de0-ee49-490c-8a6d-be2381e13ec4",
+        "name": "Sticky Note 5066281b",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -260
+        ],
+        "parameters": {
+          "content": "## ATOM2_W09 · Página privada do diagnóstico\nRamo 1: gera token (32 hex) e validade (60 dias) para auditorias aprovadas → atom2_auditorias.diag_token. O W08 monta o link DIAG_BASE_URL?t=TOKEN no script \"Pode enviar\".\nRamo 2: GET /webhook/atom2-diagnostico?t=TOKEN → página noindex só com achados principal/resumo (evidência, URL, data, método). Sem preço, sem promessa de posição/IA. Token inválido/expirado = 404.\nConta visitas e registra DIAGNOSTICO_ABERTO na 1ª. Fonte: n8n/code/w09_pagina.js · testes: n8n/tests/run_w09.js",
+          "color": 4,
+          "width": 620,
+          "height": 200
+        }
+      },
+      {
+        "id": "2d67d1b2-a492-4ae5-83b4-ac5aa69edfde",
+        "name": "Ler config (página)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          770,
+          560
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "e6a17cd0-6b9b-491f-9f61-4b54b21c214d",
+        "name": "Tarefa primeira visita",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2200,
+          420
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// Primeira visita ao diagnóstico: tarefa no Pipedrive para o Thiago responder enquanto o lead está quente.\nconst r = $('Renderizar').first().json;\nreturn r.tarefa ? [{ json: r.tarefa }] : [];"
+        }
+      },
+      {
+        "id": "67b7f1a2-89a6-49d0-af12-b40fa4965c1a",
+        "name": "Criar tarefa no Pipedrive",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2420,
+          420
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/v1/activities",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Página (GET)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-diagnostico\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-diagnostico\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }.\n\nSchedule trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: De hora em hora\n\t\t\t\t</trigger 1>\n\nScheduled workflows do not take inputs. To execute a specific schedule trigger, pass triggerNodeName only: { triggerNodeName: \"<node name>\" }."
+}

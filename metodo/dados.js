@@ -1,4 +1,4 @@
-/* Dados do método: áreas, 12 pontos, diagnósticos, casos, ferramentas e custos. */
+/* Dados do método: áreas, 12 pontos, diagnósticos, ferramentas e custos. */
 const AREAS = {
   rep: { nome: "Reputação da marca", g: "mkt", st: "ok", coleta: "auto", fonte: "Semrush · Google", h: "90", sol: "SEO, GEO e AEO",
     c: ["1º na busca pelo nome", "Site é o 1º resultado, não um agregador", "Perfil do Google aparece na busca pelo nome", "Nota no Google 4,5 ou mais", "!Nenhuma reclamação grave sem resposta"] },
@@ -224,19 +224,6 @@ const TIPOS = [
     mostrar: ["Como o cliente procura hoje, com uma resposta real de IA.", "Os números-chave e onde a empresa aparece e onde some.", "Três motivos, a concorrência e o tamanho da procura.", "O plano em três frentes e o placar hoje × meta."],
     limites: ["Dado público não comprova falha de atendimento, CRM ou margem: isso vem da entrevista.", "Hipótese não é apresentada como diagnóstico.", "Não prometemos posição nem prazo de posição."],
     pontos: "completo" }
-];
-
-const CASOS = [
-  { nome: "SIMEGO", tema: "Site e filiação", problema: "Autoridade e exposição na imprensa sem um caminho claro para a filiação.", tipo: "site", url: "https://claude.ai/artifact/LXJVD4Ho5iaxqy5BZBG9ub",
-    blocos: [["Contexto", ["Entidade representativa", "Público de médicos", "Filiação como conversão"]], ["Evidências", ["Auditoria técnica do Semrush", "PageSpeed no celular e no computador", "FAQ com conteúdo alheio à entidade"]], ["Gargalos", ["Links e imagens quebrados", "Sem descrições e dados estruturados", "Benefícios da filiação sem página própria"]], ["Direção", ["Página \"Por que se filiar\"", "Páginas por perfil do médico", "Notícias e caminho de filiação organizados"]]] },
-  { nome: "Coalumaq", tema: "Google, mapa e respostas de IA", problema: "A marca é reconhecida, mas parte do portfólio não aparece nas buscas e nas respostas testadas.", tipo: "seo", url: "https://claude.ai/artifact/1MfJSLV1C7u35KJMXyHZZA",
-    blocos: [["Contexto", ["Produtos, locação e assistência", "Goiás, Distrito Federal e Tocantins", "Pedido de orçamento como conversão"]], ["Evidências", ["14 perguntas × 3 rodadas × 2 IAs", "Presença e ordem de menção por pergunta", "Procura por linha do portfólio"]], ["Comparação", ["Concorrentes citados e fontes usadas", "Avaliações no Google", "Páginas de serviço e cidade"]], ["Direção", ["Cobrir as linhas ausentes", "Reputação e perfis locais", "Repetir o teste e placar mensal"]]] },
-  { nome: "Manto", tema: "Procura local e arquitetura do site", problema: "Experiência de mercado e obras pouco representadas na presença digital.", tipo: "seo", url: "https://claude.ai/artifact/8oEoLhvvqTNCaQPVzu2agm",
-    blocos: [["Contexto", ["Serviços e sistemas de impermeabilização", "Regiões e segmentos atendidos", "Experiência, obras e garantias"]], ["Evidências", ["Posições e tráfego estimados no Semrush", "Busca e volume por tema", "Perfil local e visibilidade em IA"]], ["Gargalos", ["Vários serviços na mesma página", "Título sem serviço e cidade", "Obras e provas pouco visíveis"]], ["Direção", ["Páginas por serviço, sistema e região", "Obras, dúvidas e informações comerciais", "Contato rastreado e expansão por fases"]]] },
-  { nome: "Togalt", tema: "Conteúdo, confiança e operação comercial", problema: "Especialistas e serviços com pouca cobertura no site e contatos sem medição.", tipo: "geral", url: "https://claude.ai/artifact/9t86kTZS2Ve83SUqdrJyuT",
-    blocos: [["Contexto", ["Holding, inventário e sucessão", "Públicos e patrimônio atendidos", "Reunião com especialista como conversão"]], ["Evidências", ["Inspeção do site e do sitemap", "Amostra de cinco buscas do setor", "Credenciais, autoria e páginas existentes"]], ["Gargalos", ["Serviços sem página própria", "Provas de confiança incompletas", "Contato sem rastreamento"]], ["Direção", ["Arquitetura por serviço, instrumento e público", "Conteúdo assinado e comparações", "Qualificação, agenda e CRM"]]] },
-  { nome: "Imobiliária Magalhães", tema: "Atendimento e integração comercial", problema: "Contatos exigem trabalho manual do corretor e podem se perder na espera.", tipo: "atendimento", url: "https://claude.ai/artifact/TGC7rja9iPvaFMaPVfoKjd",
-    blocos: [["Contexto", ["Estoque imobiliário e financiamento", "Contatos pelo WhatsApp", "Visita e venda como conversões"]], ["Cenário", ["Corretor responde e busca opções", "Qualificação manual", "Risco de perda por demora"]], ["A levantar", ["Tempo real de resposta e volume", "Conversão entre etapas", "Regras, estoque e integrações"]], ["Direção", ["IA consulta imóveis e qualifica", "Passagem ao corretor com resumo", "CRM, origem e acompanhamento no BI"]]] }
 ];
 
 /* ---------- Custos ----------

@@ -1,0 +1,999 @@
+{
+  "workflow": {
+    "id": "YgWA2JZUOHONNkd5",
+    "name": "ATOM2_W07_Cadencia",
+    "active": true,
+    "isArchived": false,
+    "versionId": "6d3b21f6-5763-4c17-9e0a-8a5a6683c283",
+    "activeVersionId": "6d3b21f6-5763-4c17-9e0a-8a5a6683c283",
+    "triggerCount": 1,
+    "nodeCount": 25,
+    "createdAt": "2026-10-09T21:33:11.067Z",
+    "updatedAt": "2026-10-09T22:43:26.629Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · W07: cadência D1/D3/D6/D9/D12 em dias úteis, trava de preço, confere o negócio no Pipedrive. SIMULACAO por padrão; registros c_teste_* percorrem o fluxo completo sem envio.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Executar": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Ler cadências ativas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "A cada 15 min (seg–sex 8h–18h)": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Devidas agora": {
+        "main": [
+          [
+            {
+              "node": "Ler negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler negócio": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas": {
+        "main": [
+          [
+            {
+              "node": "Ler auditorias aprovadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditorias aprovadas": {
+        "main": [
+          [
+            {
+              "node": "Ler achados principais",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Planejar": {
+        "main": [
+          [
+            {
+              "node": "Aplicar no Pipedrive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar no Pipedrive": {
+        "main": [
+          [
+            {
+              "node": "Registros",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registros": {
+        "main": [
+          [
+            {
+              "node": "Roteador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Roteador": {
+        "main": [
+          [
+            {
+              "node": "Linha mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha cadência",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha empresa",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha evento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha tarefa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha mensagem": {
+        "main": [
+          [
+            {
+              "node": "Gravar mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha cadência": {
+        "main": [
+          [
+            {
+              "node": "Atualizar cadência",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha empresa": {
+        "main": [
+          [
+            {
+              "node": "Atualizar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha evento": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler cadências ativas": {
+        "main": [
+          [
+            {
+              "node": "Ler mensagens enviadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler mensagens enviadas": {
+        "main": [
+          [
+            {
+              "node": "Devidas agora",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler achados principais": {
+        "main": [
+          [
+            {
+              "node": "Planejar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha tarefa": {
+        "main": [
+          [
+            {
+              "node": "Criar tarefa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "ed063d06-8498-44b6-a54d-9e4d6be3ce53",
+        "name": "Executar",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          100
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "a2a8a494-6271-49d1-9d8b-ccd8e3df1910",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f5b16c76-f311-47a3-b8be-bb14ab90cce8",
+        "name": "A cada 15 min (seg–sex 8h–18h)",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          300
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "*/15 8-17 * * 1-5"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "0631a690-fdc6-4c75-b8ad-11c4e2af4c3c",
+        "name": "Ler cadências ativas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yg5jYnoqI2f4aYOd",
+            "cachedResultName": "atom2_cadencia"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "ativa"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "3812f58a-14cc-4d31-8c33-ff9dfd7130f6",
+        "name": "Devidas agora",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          660,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W07 · Devidas agora (trecho de n8n/code/w07_cadencia.js).\nconst FERIADOS = ['2026-01-01', '2026-02-16', '2026-02-17', '2026-04-03', '2026-04-21', '2026-05-01', '2026-06-04', '2026-09-07', '2026-10-12', '2026-11-02', '2026-11-15', '2026-11-20', '2026-12-25',\n  '2027-01-01', '2027-02-08', '2027-02-09', '2027-03-26', '2027-04-21', '2027-05-01', '2027-05-27', '2027-09-07', '2027-10-12', '2027-11-02', '2027-11-15', '2027-11-20', '2027-12-25'];\nconst SEQ = { OUT: { D1: ['D3', 2], D3: ['D6', 3], D6: ['D9', 3], D9: ['D12', 3], D12: [null, 0] }, POS: { D9: ['D12', 3], D12: [null, 0] }, PROP: { P2: ['P5', 3], P5: [null, 0] } };\n// Até 10 mensagens por rodada de 15 min (espaça os envios e protege a reputação do número).\nconst LIMITE_POR_EXECUCAO = 10;\n// --- tempo em São Paulo (UTC−3 fixo; o Brasil não tem horário de verão desde 2019) ---\nconst SP = (d) => new Date(new Date(d).getTime() - 3 * 3600 * 1000);\nconst diaSP = (d) => SP(d).toISOString().slice(0, 10);\nconst util = (dia) => { const w = new Date(dia + 'T12:00:00Z').getUTCDay(); return w !== 0 && w !== 6 && !FERIADOS.includes(dia); };\nfunction horarioComercial(agora) { const s = SP(agora); const h = s.getUTCHours(); return util(s.toISOString().slice(0, 10)) && h >= 8 && h < 18; }\n// Cadências devidas agora, sem as que já têm a mensagem do passo registrada (em SIMULACAO a cadência não avança:\n// sem esse filtro as mesmas 10 ocupariam todas as rodadas e as demais nunca seriam processadas).\n// manual = execução manual: fora do horário comercial processa só registros de teste (c_teste_*).\nfunction devidas(cadencias, agoraISO, manual, mensagens) {\n  const agora = agoraISO || new Date().toISOString();\n  const fora = !horarioComercial(agora);\n  if (fora && !manual) return [];\n  const ja = new Set((mensagens || []).filter((m) => m && m.msg_id).map((m) => m.msg_id));\n  return (cadencias || []).filter((x) => x && (!fora || String(x.company_id).startsWith('c_teste_')) && x.status === 'ativa' && x.proximo_passo && String(x.proximo_em) <= agora && !ja.has(msgIdDe(x)))\n    .sort((a, b) => String(a.proximo_em).localeCompare(String(b.proximo_em))).slice(0, LIMITE_POR_EXECUCAO);\n}\nconst trilha = (c) => (SEQ[c.funil] ? c.funil : 'OUT');\nconst msgIdDe = (c) => 'm_' + c.deal_id + '_' + (trilha(c) === 'OUT' ? '' : trilha(c) + '_') + c.proximo_passo;\nreturn devidas($('Ler cadências ativas').all().map((i) => i.json), new Date().toISOString(), $('Executar').isExecuted, $('Ler mensagens enviadas').all().map((i) => i.json)).map((c) => ({ json: c }));"
+        }
+      },
+      {
+        "id": "21ad99fa-fed2-402f-a7cd-2bca1ebae354",
+        "name": "Ler negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          880,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/v1/deals/{{ $json.deal_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 300
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "2f570a88-f903-4d1f-8b22-7ecd6b082f58",
+        "name": "Ler empresas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "8dc933d3-a011-49e6-9d6c-9c0174cb82c0",
+        "name": "Ler auditorias aprovadas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "qa_status",
+                "condition": "eq",
+                "keyValue": "aprovado"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "317c43e4-c79a-4039-98ca-c20bc4a87639",
+        "name": "Ler achados principais",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1540,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "usado_em",
+                "condition": "neq",
+                "keyValue": "apoio"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "42abaeab-aa0f-4504-aee8-72ff9640c13a",
+        "name": "Ler mensagens enviadas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          550,
+          380
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "XU5IdQgGNqhpBRxM",
+            "cachedResultName": "atom2_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "direcao",
+                "condition": "eq",
+                "keyValue": "saida"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "211f0935-e973-4702-ab35-fb62ea0d4a98",
+        "name": "Planejar",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1980,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W07 · Cadência condicional (Fluxo do Funil v1.0 §3; scripts de 09/10/2026).\n// Três trilhas, em dias úteis (seg–sex, sem feriados nacionais), só em horário comercial (8h–18h, São Paulo):\n//   OUT  (prospecção): D1 → D3 → D6 → D9 → D12; sem nome do decisor (D1 foi à recepção), D6 → D12 (o convite D9 não vai à recepção).\n//   POS  (pós-diagnóstico, criada pelo W08 no \"Pode enviar\"): D9 (+2) → D12 (+3), sem marcar perdido.\n//   PROP (pós-proposta, criada pelo W10): P2 \"Acompanhamento da proposta\" → P5 \"Encerramento da proposta\" (+3), sem marcar perdido.\n// Cada passo é condicional: resposta, recusa, reunião ou opt-out encerram (o W08 muda o status da cadência).\n// REGRA ABSOLUTA: nenhuma mensagem com preço antes da proposta (trava abaixo). Não alterna canal.\n// SIMULACAO (padrão): grava a mensagem como \"simulada\", não avança a cadência nem mexe no Pipedrive —\n// exceto registros de teste (company_id começa com \"c_teste_\"), que percorrem o fluxo inteiro sem enviar nada.\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\nconst FERIADOS = ['2026-01-01', '2026-02-16', '2026-02-17', '2026-04-03', '2026-04-21', '2026-05-01', '2026-06-04', '2026-09-07', '2026-10-12', '2026-11-02', '2026-11-15', '2026-11-20', '2026-12-25',\n  '2027-01-01', '2027-02-08', '2027-02-09', '2027-03-26', '2027-04-21', '2027-05-01', '2027-05-27', '2027-09-07', '2027-10-12', '2027-11-02', '2027-11-15', '2027-11-20', '2027-12-25'];\nconst SEQ = { OUT: { D1: ['D3', 2], D3: ['D6', 3], D6: ['D9', 3], D9: ['D12', 3], D12: [null, 0] }, POS: { D9: ['D12', 3], D12: [null, 0] }, PROP: { P2: ['P5', 3], P5: [null, 0] } };\n// Até 10 mensagens por rodada de 15 min (espaça os envios e protege a reputação do número).\nconst LIMITE_POR_EXECUCAO = 10;\n// Achados técnicos (faixa 3 do W04): não servem de gancho em mensagem ao dono da clínica.\nconst TECNICOS = ['H1_AUSENTE', 'SCHEMA_AUSENTE', 'SCHEMA_INVALIDO', 'CANONICAL_OUTRO_DOMINIO', 'SITEMAP_AUSENTE', 'SCHEMA_SEM_NEGOCIO', 'H1_MULTIPLOS', 'TITLE_LONGO', 'CANONICAL_AUSENTE', 'CONTEUDO_RASO', 'GEO_PRONTIDAO_BAIXA'];\n\n// --- trava de preço e termos proibidos (bloco canônico de lib_guarda_preco.js) ---\n// <guarda> — bloco canônico: copiado idêntico para W05, W05b, W07 e W08 por n8n/tools/sync_guarda.js (teste confere).\n// Fronteiras Unicode: \\b do JavaScript não trata \"é\", \"à\" etc. como letra.\nconst I = '(?<![\\\\p{L}\\\\p{N}])', F = '(?![\\\\p{L}\\\\p{N}])';\nconst rx = (corpo) => new RegExp(I + corpo + F, 'iu');\nconst EXTENSO = '(um|uma|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|treze|quatorze|catorze|quinze|dezesseis|dezessete|dezoito|dezenove|vinte|trinta|quarenta|cinquenta|sessenta|setenta|oitenta|noventa|cem|cento|duzentos|duzentas|trezentos|trezentas|quatrocentos|quinhentos|seiscentos|setecentos|oitocentos|novecentos)';\nconst PRECO_RX = [\n  /(R|US|U)?\\s*[$＄]\\s*\\d/i,                                                                   // R$ 3.000, R $3000, US$ 500, $500\n  rx('\\\\d{1,3}([.\\\\s]\\\\d{3})+([.,]\\\\d{2})?'),                                                 // 3.000 / 14.000,00 / 1 500,00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(mil|reais|k)'),                                                     // 3 mil, 900 reais, 3k\n  rx(EXTENSO + '(\\\\s+e\\\\s+' + EXTENSO + ')*\\\\s+(mil|reais)'),                                 // três mil, dois mil e quinhentos\n  rx('\\\\d+,\\\\d{2}'), rx('\\\\d+\\\\.\\\\d{2}'),                                                     // 500,00 / 500.00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(/\\\\s*m[eê]s|por m[eê]s|mensais|ao m[eê]s|/\\\\s*ano|por ano)'),       // 1500/mês, 990 mensais\n  rx('\\\\d+\\\\s*x\\\\s*(de\\\\s*)?(R\\\\$\\\\s*)?\\\\d+'),                                                 // 12x 300, 2x de 750\n  rx('(valor|custo|taxa|or[cç]amento|ticket|plano|investimento)\\\\s*(:|mensal|anual|de|é|e|fica|sai|total|inicial)?\\\\s*(R\\\\$\\\\s*)?\\\\d+'), // Valor: 1500, orçamento de 1500\n  rx('(?<!(oportunidades|resultados|dados|casos|problemas|ganhos|melhorias|clientes|pacientes|n[uú]meros|exemplos|situa[cç][oõ]es|pessoas|avalia[cç][oõ]es|depoimentos|evid[eê]ncias|mudan[cç]as|benef[ií]cios)\\\\s)reais'),\n  rx('pre[cç]os?'),\n  rx('valor(es)?\\\\s+(de|do|da|para|é|e|fica|sai|total|mensal)'),\n  rx('investimento\\\\s+(de|é|e|fica|sai|total|inicial|mensal)'),\n  rx('(mensalidade|parcelas?|parcelado|entrada de|setup de|desconto|à vista|a vista|boleto|pix)'),\n  rx('(custa|custo de|cobramos|sai por|fica por|a partir de)')\n];\n// Promessas e alegações proibidas (handoff §8; scripts de 09/10). \"Ninguém pode garantir isso\" (script ChatGPT) passa.\nconst PROIBIDOS = [/primeira posi[cç][aã]o/i, /topo do google/i, /garant(imos|ido|idos|ida|idas|o\\b|ia de)/i, /posi[cç][aã]o\\s*\\d/i, /\\b\\d+\\s*(visitas|clientes|pacientes) (por|ao) m[eê]s/i, /preju[ií]zo/i, /queda de vendas/i, /perdendo (clientes|pacientes|vendas)/i, /cliente oculto/i, /chatgpt (indicou|citou|recomendou)/i];\nconst bloqueios = (t) => [...PRECO_RX.filter((r) => r.test(String(t || ''))).map(() => 'preço antes da proposta'), ...PROIBIDOS.filter((r) => r.test(String(t || ''))).map((r) => 'termo proibido ' + r.source)];\n// </guarda>\n\n// --- tempo em São Paulo (UTC−3 fixo; o Brasil não tem horário de verão desde 2019) ---\nconst SP = (d) => new Date(new Date(d).getTime() - 3 * 3600 * 1000);\nconst diaSP = (d) => SP(d).toISOString().slice(0, 10);\nconst util = (dia) => { const w = new Date(dia + 'T12:00:00Z').getUTCDay(); return w !== 0 && w !== 6 && !FERIADOS.includes(dia); };\nfunction horarioComercial(agora) { const s = SP(agora); const h = s.getUTCHours(); return util(s.toISOString().slice(0, 10)) && h >= 8 && h < 18; }\n// Próximo envio: n dias úteis depois, às 9h de São Paulo (12h UTC).\nfunction somarDiasUteis(agora, n) {\n  let dia = diaSP(agora), c = 0;\n  while (c < n) { const d = new Date(dia + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); dia = d.toISOString().slice(0, 10); if (util(dia)) c++; }\n  return dia + 'T12:00:00.000Z';\n}\n\n// --- scripts da biblioteca de 09/10/2026; sem nome do contato, o vocativo \"[Nome], \" sai ---\nconst SCRIPTS = {\n  D3: '[Nome], posso te enviar o diagnóstico rápido que mencionei? É sobre [achado].',\n  D6_CASE: '[Nome], já aplicamos melhorias semelhantes em [case autorizado].\\nPosso mostrar o exemplo e o diagnóstico da [Empresa]?',\n  D6: '[Nome], tenho uma sugestão prática para [achado]. Quer que eu envie?',\n  D9: '[Nome], posso te mostrar a oportunidade em 15 minutos.\\nFaz sentido conversarmos?',\n  D12: '[Nome], vou encerrar por aqui para não incomodar.\\nSe quiser avaliar as melhorias depois, fico à disposição.',\n  P2: '[Nome], conseguiu avaliar a proposta?\\nPosso esclarecer algum ponto?',\n  P5: '[Nome], prefere manter em avaliação ou encerrar por enquanto?'\n};\nfunction preencher(modelo, nome, empresa, achado, caso) {\n  let t = modelo.replace('[Empresa]', empresa).replace('[achado]', achado || 'as duas sugestões que preparei para o site').replace('[case autorizado]', caso || '');\n  if (nome) return t.replace('[Nome]', nome);\n  t = t.replace('[Nome], ', '');\n  return t.charAt(0).toUpperCase() + t.slice(1);\n}\n// Case autorizado da mesma vertical (linhas \"vertical: texto\" em CASES_AUTORIZADOS; linha sem vertical vale para todas).\nfunction caseDa(cfg, vertical) {\n  for (const l of String(cfg.CASES_AUTORIZADOS || '').split('\\n').map((x) => x.trim()).filter(Boolean)) {\n    const m = l.match(/^(dental|medical|tires)\\s*:\\s*(.+)$/i);\n    if (!m) return l;\n    if (m[1].toLowerCase() === vertical) return m[2].trim();\n  }\n  return '';\n}\n// D3 usa o achado principal; D6 \"sem case\" usa o 2º achado comercial (outra conversa, não repete o D3). Achado técnico não vira gancho.\nfunction mensagem(passo, ctx) {\n  const { empresa: e, auditoria: a, principal: p, segundo: s2, cfg } = ctx;\n  if (passo === 'D1') return a.mensagem_aprovada;\n  const util = (f) => (f && f.trecho && !TECNICOS.includes(f.codigo) ? f.trecho : null);\n  if (passo === 'D6') {\n    const caso = caseDa(cfg || {}, e.vertical);\n    return caso ? preencher(SCRIPTS.D6_CASE, e.contato_nome, e.nome, null, caso) : preencher(SCRIPTS.D6, e.contato_nome, e.nome, util(s2) || util(p), '');\n  }\n  return preencher(SCRIPTS[passo], e.contato_nome, e.nome, util(p), '');\n}\n\nconst cfgMapa = (rows) => {\n  const m = {};\n  for (const r of rows || []) if (r && r.chave) m[r.chave] = String(r.valor ?? '');\n  // MODO_EXECUCAO conservador: PRODUCAO só se todas as linhas disserem PRODUCAO.\n  const modos = (rows || []).filter((r) => r && r.chave === 'MODO_EXECUCAO').map((r) => String(r.valor).trim().toUpperCase());\n  m.MODO_EXECUCAO = modos.length && modos.every((x) => x === 'PRODUCAO') ? 'PRODUCAO' : 'SIMULACAO';\n  return m;\n};\n\n// Cadências devidas agora, sem as que já têm a mensagem do passo registrada (em SIMULACAO a cadência não avança:\n// sem esse filtro as mesmas 10 ocupariam todas as rodadas e as demais nunca seriam processadas).\n// manual = execução manual: fora do horário comercial processa só registros de teste (c_teste_*).\nfunction devidas(cadencias, agoraISO, manual, mensagens) {\n  const agora = agoraISO || new Date().toISOString();\n  const fora = !horarioComercial(agora);\n  if (fora && !manual) return [];\n  const ja = new Set((mensagens || []).filter((m) => m && m.msg_id).map((m) => m.msg_id));\n  return (cadencias || []).filter((x) => x && (!fora || String(x.company_id).startsWith('c_teste_')) && x.status === 'ativa' && x.proximo_passo && String(x.proximo_em) <= agora && !ja.has(msgIdDe(x)))\n    .sort((a, b) => String(a.proximo_em).localeCompare(String(b.proximo_em))).slice(0, LIMITE_POR_EXECUCAO);\n}\nconst trilha = (c) => (SEQ[c.funil] ? c.funil : 'OUT');\nconst msgIdDe = (c) => 'm_' + c.deal_id + '_' + (trilha(c) === 'OUT' ? '' : trilha(c) + '_') + c.proximo_passo;\n// Etapas do Pipedrive em que cada trilha pode seguir.\nfunction etapasPermitidas(cfg, t) {\n  const k = { OUT: ['OUT_PRONTO', 'OUT_CADENCIA'], POS: ['OUT_RESPONDEU', 'OUT_QUALIFICADO', 'IN_ATENDIMENTO', 'IN_QUALIFICADO'], PROP: ['OUT_PROPOSTA', 'OUT_NEGOCIACAO', 'IN_PROPOSTA', 'IN_NEGOCIACAO'] }[t];\n  return k.map((x) => cfg['PD2_STAGE_' + x + '_ID']).filter(Boolean).map(String);\n}\n\n// Planeja os envios devidos: 1 item por cadência { msg?, cadencia, pd, evento, empresa? }.\n// deals: { [deal_id]: { status, stage_id } | null } lido do Pipedrive na hora. null = negócio não existe (404) → encerra;\n// ausente = falha passageira (429/5xx) → pula e tenta na próxima rodada.\nfunction planejar(cadencias, empresas, auditorias, achados, cfgRows, agoraISO, deals, mensagens, manual) {\n  const cfg = cfgMapa(cfgRows);\n  const agora = agoraISO || new Date().toISOString();\n  const E = Object.fromEntries((empresas || []).filter((e) => e && e.company_id).map((e) => [e.company_id, e]));\n  const out = [];\n  for (const c of devidas(cadencias, agora, manual, mensagens)) {\n    const e = E[c.company_id];\n    const t = trilha(c);\n    const passo = c.proximo_passo;\n    const teste = String(c.company_id).startsWith('c_teste_');\n    const real = cfg.MODO_EXECUCAO === 'PRODUCAO' || teste;\n    const ev = (tipo, motivo, dados) => ({ event_id: 'e_w07_' + c.deal_id + '_' + (t === 'OUT' ? '' : t + '_') + (passo || 'x') + '_' + tipo.toLowerCase(), correlation_id: 'deal_' + c.deal_id, company_id: c.company_id, workflow: 'ATOM2_W07', tipo, motivo, dados: JSON.stringify(dados || {}), ocorrido_em: agora });\n    const encerrar = (motivo, tipo) => out.push({ cadencia: { deal_id: c.deal_id, status: 'encerrada', motivo_fim: motivo, atualizado_em: agora }, pd: { ...NOOP }, evento: ev(tipo, motivo) });\n    if (!e) { encerrar('empresa não encontrada', 'CADENCIA_ERRO'); continue; }\n    if (deals) {\n      if (!(String(c.deal_id) in deals)) continue; // Pipedrive indisponível agora: tenta na próxima rodada\n      const d = deals[String(c.deal_id)];\n      if (!d || d.status !== 'open' || !etapasPermitidas(cfg, t).includes(String(d.stage_id))) { encerrar('negócio fora da cadência no Pipedrive (' + (d ? d.status + '/etapa ' + d.stage_id : 'não encontrado') + ')', 'CADENCIA_PIPEDRIVE'); continue; }\n    }\n    if (e.opt_out === true || String(e.opt_out) === 'true') { encerrar('opt-out', 'CADENCIA_OPTOUT'); continue; }\n    if (!e.telefone) { encerrar('sem telefone', 'CADENCIA_SEM_CANAL'); continue; }\n    // Auditoria aprovada mais recente (após um N1 refeito, vale o achado novo).\n    const aud = (auditorias || []).filter((a) => a && a.company_id === e.company_id && a.qa_status === 'aprovado').sort((x, y) => String(y.qa_em || '').localeCompare(String(x.qa_em || '')))[0];\n    if (!aud && t !== 'PROP') { encerrar('sem QA aprovado', 'CADENCIA_SEM_QA'); continue; }\n    const doAud = (achados || []).filter((f) => f && aud && f.audit_id === aud.audit_id);\n    const principal = aud ? (achados || []).find((f) => f && f.finding_id === aud.principal_finding_id) || null : null;\n    const segundo = doAud.find((f) => f.usado_em === 'resumo' && f.finding_id !== (principal && principal.finding_id) && !TECNICOS.includes(f.codigo)) || null;\n    const texto = mensagem(passo, { empresa: e, auditoria: aud || {}, principal, segundo, cfg });\n    const msgId = msgIdDe(c);\n    const base = { msg_id: msgId, company_id: e.company_id, deal_id: String(c.deal_id), direcao: 'saida', canal: 'whatsapp_n2', telefone: e.telefone, passo: (t === 'OUT' ? '' : t + '_') + passo, texto, modo: cfg.MODO_EXECUCAO + (teste ? '_TESTE' : ''), criado_em: agora };\n    const b = t === 'PROP' ? bloqueios(texto || '').filter((x) => !x.startsWith('preço')) : bloqueios(texto || '');\n    if (!texto) b.push('mensagem vazia (sem texto aprovado)');\n    if (b.length) {\n      out.push({ msg: { ...base, status: 'bloqueada', motivo: b.join('; ') }, cadencia: { deal_id: c.deal_id, status: 'pausada', motivo_fim: 'mensagem bloqueada: revisão humana', atualizado_em: agora }, pd: { ...NOOP }, evento: ev('MSG_BLOQUEADA', b.join('; ')) });\n      continue;\n    }\n    // Envio real exige canal configurado; sem ele, PRODUCAO fica bloqueada (nada é enviado por fora).\n    const canalOk = !!cfg.WA_N2_PHONE_NUMBER_ID;\n    const status = !real ? 'simulada' : teste ? 'simulada_teste' : canalOk ? 'pronta_envio' : 'bloqueada';\n    if (status === 'bloqueada') {\n      out.push({ msg: { ...base, status, motivo: 'WhatsApp nº 2 não configurado (WA_N2_PHONE_NUMBER_ID)' }, cadencia: { deal_id: c.deal_id, atualizado_em: agora }, pd: { ...NOOP }, evento: ev('MSG_SEM_CANAL', 'WhatsApp não configurado') });\n      continue;\n    }\n    if (!real) { out.push({ msg: { ...base, status, motivo: 'SIMULACAO: cadência não avança' }, cadencia: { deal_id: c.deal_id, atualizado_em: agora }, pd: { ...NOOP }, evento: ev('MSG_SIMULADA', base.passo) }); continue; }\n    let [prox, dias] = (SEQ[t] || {})[passo] || [null, 0];\n    if (t === 'OUT' && passo === 'D6' && !e.contato_nome) prox = 'D12'; // sem decisor identificado, o convite de 15 min não vai à recepção\n    const f = (k) => cfg['PD2_FIELD_' + k];\n    const body = {};\n    if (t === 'OUT' && passo === 'D1' && cfg.PD2_STAGE_OUT_CADENCIA_ID) body.stage_id = Number(cfg.PD2_STAGE_OUT_CADENCIA_ID);\n    if (t !== 'PROP' && f('TOQUE') && cfg['PD2_OPT_TOQUE_' + passo]) body[f('TOQUE')] = Number(cfg['PD2_OPT_TOQUE_' + passo]);\n    if (f('ULTIMO_CONTATO')) body[f('ULTIMO_CONTATO')] = diaSP(agora);\n    if (f('TEMPLATE')) body[f('TEMPLATE')] = (t === 'OUT' ? 'out_' : t.toLowerCase() + '_') + passo.toLowerCase() + '_v1';\n    const fim = { OUT: 'Cadência encerrada sem resposta', POS: 'Pós-diagnóstico sem resposta: decidir (ligar ou encerrar)', PROP: 'Proposta sem resposta: decidir (ligar, manter ou encerrar)' }[t];\n    if (f('PROXIMA_ACAO')) body[f('PROXIMA_ACAO')] = prox ? 'Cadência: ' + prox + ' em ' + somarDiasUteis(agora, dias).slice(0, 10) : fim;\n    if (!prox && t === 'OUT') { body.status = 'lost'; body.lost_reason = 'Sem resposta'; if (f('TOQUE') && cfg.PD2_OPT_TOQUE_ENCERRADA) body[f('TOQUE')] = Number(cfg.PD2_OPT_TOQUE_ENCERRADA); }\n    out.push({\n      msg: { ...base, status, motivo: teste ? 'registro de teste: fluxo completo sem envio' : '' },\n      cadencia: prox ? { deal_id: c.deal_id, passo_atual: passo, proximo_passo: prox, proximo_em: somarDiasUteis(agora, dias), ultimo_envio_em: agora, envios: Number(c.envios || 0) + 1, atualizado_em: agora }\n        : { deal_id: c.deal_id, passo_atual: passo, proximo_passo: '', status: 'encerrada', motivo_fim: 'sem_resposta', ultimo_envio_em: agora, envios: Number(c.envios || 0) + 1, atualizado_em: agora },\n      pd: { method: 'PUT', url: API + '/deals/' + c.deal_id, body },\n      empresa: t === 'OUT' && passo === 'D1' ? { company_id: e.company_id, funil_etapa: 'F5', status_motivo: 'Contatado (cadência)', atualizado_em: agora } : !prox && t === 'OUT' ? { company_id: e.company_id, funil_etapa: 'F11', status_motivo: 'Perdido: sem resposta (D12)', atualizado_em: agora } : null,\n      tarefa: !prox && t !== 'OUT' ? { deal_id: Number(c.deal_id), subject: fim, type: 'task', due_date: diaSP(agora) } : null,\n      evento: ev(prox ? 'MSG_' + status.toUpperCase() : 'CADENCIA_FIM', base.passo)\n    });\n  }\n  return out;\n}\n\n// Deals lidos do Pipedrive: sucesso → { status, stage_id }; 404 → null; outra falha → ausente (pula a cadência nesta rodada).\nfunction mapaDeals(devidasLista, respostas) {\n  const m = {};\n  (devidasLista || []).forEach((c, i) => {\n    const r = (respostas || [])[i] || {};\n    if (r.success && r.data) m[String(c.deal_id)] = { status: r.data.status, stage_id: r.data.stage_id };\n    else if (r.errorCode === 404 || /not found/i.test(String(r.error || ''))) m[String(c.deal_id)] = null;\n  });\n  return m;\n}\n\nconst devs = $('Devidas agora').all().map((i) => i.json);\nconst deals = mapaDeals(devs, $('Ler negócio').all().map((i) => i.json));\nreturn planejar(devs, $('Ler empresas').all().map((i) => i.json), $('Ler auditorias aprovadas').all().map((i) => i.json), $('Ler achados principais').all().map((i) => i.json), $('Ler configuração').all().map((i) => i.json), new Date().toISOString(), deals, $('Ler mensagens enviadas').all().map((i) => i.json), $('Executar').isExecuted).map((p) => ({ json: p }));"
+        }
+      },
+      {
+        "id": "b6c96da8-0769-4258-8b92-6cb9b202456f",
+        "name": "Aplicar no Pipedrive",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2200,
+          200
+        ],
+        "parameters": {
+          "method": "={{ $json.pd.method }}",
+          "url": "={{ $json.pd.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.pd.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 300
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "62d1e938-6a61-428e-b5cf-a458f87da3ba",
+        "name": "Registros",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2420,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W07 · Registros (trecho de n8n/code/w07_cadencia.js).\n// Depois do nó HTTP: só avança a cadência se o Pipedrive aceitou o PUT; senão registra a falha e tenta de novo na próxima rodada.\nfunction registros(planos, resps) {\n  const out = [];\n  planos.forEach((p, i) => {\n    const r = resps[i] || {};\n    const ok = !p.pd || p.pd.method !== 'PUT' || r.success === true;\n    if (ok) {\n      if (p.msg) out.push({ destino: 'mensagem', linha: p.msg });\n      out.push({ destino: 'cadencia', linha: p.cadencia });\n      if (p.empresa) out.push({ destino: 'empresa', linha: p.empresa });\n      if (p.tarefa) out.push({ destino: 'tarefa', linha: p.tarefa });\n      out.push({ destino: 'evento', linha: p.evento });\n    } else {\n      out.push({ destino: 'evento', linha: { ...p.evento, event_id: p.evento.event_id + '_crm_falha', tipo: 'CRM_FALHA', motivo: 'Pipedrive recusou a atualização do negócio; mensagem não registrada, tenta na próxima rodada', dados: JSON.stringify({ erro: r.error || r.error_info || null }) } });\n    }\n  });\n  return out;\n}\n\nreturn registros($('Planejar').all().map((i) => i.json), $('Aplicar no Pipedrive').all().map((i) => i.json)).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "c22c2c93-69e9-41fd-af67-1da7cfe2db44",
+        "name": "Roteador",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          2640,
+          200
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "mensagem",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "mensagem"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "cadencia",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "cadencia"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "empresa",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "empresa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "evento",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "evento"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "tarefa",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "tarefa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "affc7ed5-e128-49e0-974c-6f27f985553e",
+        "name": "Linha mensagem",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2860,
+          0
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "34230525-ea61-47c5-8cfe-64faeb418f4a",
+        "name": "Gravar mensagem",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3080,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "XU5IdQgGNqhpBRxM",
+            "cachedResultName": "atom2_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "msg_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.msg_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "749af080-ba1b-4108-ab66-163b74af48e5",
+        "name": "Linha cadência",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2860,
+          150
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "14d14e34-c1e6-4f49-8742-bf476f71f44d",
+        "name": "Atualizar cadência",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3080,
+          150
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yg5jYnoqI2f4aYOd",
+            "cachedResultName": "atom2_cadencia"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "84b4db03-39e7-4345-9e54-163f7f03b997",
+        "name": "Linha empresa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2860,
+          300
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "bf2a2804-10c6-498b-a76c-bb888871727e",
+        "name": "Atualizar empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3080,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "02962396-5824-4533-a8e3-be9fc32ed8f6",
+        "name": "Linha evento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2860,
+          450
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "e5d8f8ef-f210-4f65-97fd-731a77b814c6",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3080,
+          450
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "b85949cf-9bb2-4c2e-bf18-f062f6f4b88f",
+        "name": "Sticky Note 7ca2dfdf",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -280
+        ],
+        "parameters": {
+          "content": "## ATOM2_W07 · Cadência D1 → D3 → D6 → D9 → D12\nDias úteis (feriados nacionais 2026–27), 8h–18h de São Paulo, até 30 por rodada. Confere o negócio no Pipedrive antes (se saiu de Abordagem autorizada/Contatado, encerra).\n**Regra absoluta:** texto com preço ou termo proibido é bloqueado e a cadência pausa.\nSIMULACAO (padrão): grava a mensagem como simulada e não avança; registros c_teste_* percorrem o fluxo inteiro (Pipedrive incluso) sem enviar nada.\nPRODUCAO sem WA_N2_PHONE_NUMBER_ID: bloqueia. Envio pelo WhatsApp ainda não existe aqui (fica pronta_envio).\nFonte: n8n/code/w07_cadencia.js · testes: n8n/tests/run_w07.js",
+          "color": 4,
+          "width": 620,
+          "height": 230
+        }
+      },
+      {
+        "id": "8627f8b1-2722-4b14-b326-810f38eb333f",
+        "name": "Linha tarefa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2860,
+          600
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "d31e96c3-7391-48a2-a23f-bb0ce6ea8d48",
+        "name": "Criar tarefa",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3080,
+          600
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/v1/activities",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nSchedule trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: A cada 15 min (seg–sex 8h–18h)\n\t\t\t\t</trigger 1>\n\nScheduled workflows do not take inputs. To execute a specific schedule trigger, pass triggerNodeName only: { triggerNodeName: \"<node name>\" }."
+}

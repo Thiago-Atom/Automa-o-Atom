@@ -1,0 +1,952 @@
+{
+  "workflow": {
+    "id": "ekIzG0Ku5YVkJDNS",
+    "name": "ATOM · Auditoria SEO — 2. Análise",
+    "active": false,
+    "isArchived": false,
+    "versionId": "ea7bb8b1-03d1-4b73-afe5-77dc3797756a",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 18,
+    "createdAt": "2026-10-01T00:32:31.709Z",
+    "updatedAt": "2026-10-01T00:56:24.928Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "timezone": "America/Sao_Paulo",
+      "executionTimeout": 300,
+      "callerPolicy": "workflowsFromSameOwner"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Dias 1, 11 e 21 às 6h40: para cada coleta da fila, junta Google Trends e AI Overviews (Apify), Claude escreve a auditoria, cria o Google Doc, grava o histórico e cria cards críticos no Trello.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Chamado pelo orquestrador (análise)": {
+        "main": [
+          [
+            {
+              "node": "ID da coleta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ID da coleta": {
+        "main": [
+          [
+            {
+              "node": "Ler coleta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Testar com a última coleta": {
+        "main": [
+          [
+            {
+              "node": "Última coleta pendente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Última coleta pendente": {
+        "main": [
+          [
+            {
+              "node": "ID da coleta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler coleta": {
+        "main": [
+          [
+            {
+              "node": "Apify · resultado Trends",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Apify · resultado Trends": {
+        "main": [
+          [
+            {
+              "node": "Apify · resultado AI Overviews",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Apify · resultado AI Overviews": {
+        "main": [
+          [
+            {
+              "node": "Completar dossiê",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Completar dossiê": {
+        "main": [
+          [
+            {
+              "node": "Claude analisa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Claude analisa": {
+        "main": [
+          [
+            {
+              "node": "Preparar relatório",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar relatório": {
+        "main": [
+          [
+            {
+              "node": "Criar Google Doc",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar Google Doc": {
+        "main": [
+          [
+            {
+              "node": "Salvar histórico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Salvar histórico": {
+        "main": [
+          [
+            {
+              "node": "Marcar coleta como analisada",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar coleta como analisada": {
+        "main": [
+          [
+            {
+              "node": "Cards já criados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cards já criados": {
+        "main": [
+          [
+            {
+              "node": "Cards novos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cards novos": {
+        "main": [
+          [
+            {
+              "node": "Criar card no Backlog",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar card no Backlog": {
+        "main": [
+          [
+            {
+              "node": "Registrar card",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "38ab39bc-9338-40a8-9959-cc823afb1920",
+        "name": "Chamado pelo orquestrador (análise)",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "workflowInputs",
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "filaId",
+                "type": "number"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "f5665718-3bae-49d2-9f23-6c08ffd0619b",
+        "name": "ID da coleta",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          448,
+          112
+        ],
+        "parameters": {
+          "mode": "manual",
+          "includeOtherFields": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "fila-id",
+                "name": "filaId",
+                "value": "={{ $json.filaId ?? $json.id }}",
+                "type": "number"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "691eeae4-7892-4466-bb34-1360e31a4d75",
+        "name": "Testar com a última coleta",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          240
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "7efd16e2-7f48-46a5-82b2-2b357d38efa1",
+        "name": "Última coleta pendente",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          240
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "S38n80Hch6oZuzT0",
+            "cachedResultName": "atom_auditoria_fila"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "COLETADO"
+              }
+            ]
+          },
+          "returnAll": false,
+          "limit": 1,
+          "orderBy": true,
+          "orderByColumn": "createdAt",
+          "orderByDirection": "DESC"
+        }
+      },
+      {
+        "id": "183f59ba-b68d-48f7-b1a7-4f55984040d2",
+        "name": "Ler coleta",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          112
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "S38n80Hch6oZuzT0",
+            "cachedResultName": "atom_auditoria_fila"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.filaId }}"
+              }
+            ]
+          },
+          "returnAll": false,
+          "limit": 1
+        }
+      },
+      {
+        "id": "17413c6e-a25f-4b78-babb-f308c0b7c303",
+        "name": "Apify · resultado Trends",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          896,
+          112
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.apify.com/v2/actor-runs/{{ $(\"Ler coleta\").first().json.trends_run || \"sem-execucao\" }}/dataset/items?clean=true",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpTemplatedCustomAuth",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "59464b93-9ce0-4ecc-b208-5251b4482a58",
+        "name": "Apify · resultado AI Overviews",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          1120,
+          112
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.apify.com/v2/actor-runs/{{ $(\"Ler coleta\").first().json.aio_run || \"sem-execucao\" }}/dataset/items?clean=true",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpTemplatedCustomAuth",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "d445b540-5333-4ac7-ac7d-9083602daa86",
+        "name": "Completar dossiê",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1568,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const row = $('Ler coleta').first().json || {};\nconst P = JSON.parse(row.pacote_json || '{}');\nconst C = { dominio: P.dominio };\nconst ut = { temas: P.temas || [] };\nconst fontesIndisponiveis = (P.fontesIndisponiveis || []).slice();\n// Google Trends\nconst trItems = $('Apify · resultado Trends').all().map((i) => i.json || {});\nconst media = (a) => a.length ? Math.round(a.reduce((s, v) => s + v, 0) / a.length) : null;\nconst trends = trItems.filter((t) => t.searchTerm || t.inputUrlOrTerm).map((t) => {\n  const vals = (t.interestOverTime_timelineData || []).map((p) => Array.isArray(p.value) ? p.value[0] : p.value).filter((v) => typeof v === 'number');\n  const sub = (t.interestBySubregion || []).find((x) => /goi/i.test(x.geoName || ''));\n  return {\n    termo: t.searchTerm || t.inputUrlOrTerm,\n    interesse_medio_3m: media(vals), ultimas_4_semanas: media(vals.slice(-4)), primeiras_4_semanas: media(vals.slice(0, 4)),\n    interesse_goias: sub ? (Array.isArray(sub.value) ? sub.value[0] : sub.value) : null,\n    buscas_em_alta: (t.relatedQueries_rising || []).slice(0, 5).map((x) => x.query + (x.formattedValue ? ' (' + x.formattedValue + ')' : '')),\n    buscas_relacionadas: (t.relatedQueries_top || []).slice(0, 5).map((x) => x.query)\n  };\n});\nconst trErr = row.trends_run ? trItems.find((t) => t.error) : null;\nif (!row.trends_run) {}\nelse if (trErr) fontesIndisponiveis.push('Google Trends (Apify): ' + String(trErr.error.message || trErr.error).slice(0, 150));\nelse if (!trends.length) fontesIndisponiveis.push('Google Trends (Apify): sem resultado para os temas ' + JSON.stringify(ut.temas || []));\n\n// AI Overviews\nconst aiItems = $('Apify · resultado AI Overviews').all().map((i) => i.json || {});\nconst aio = aiItems.filter((a) => a.query).map((a) => {\n  const fontes = (a.sources || []).map((s) => s.url || '');\n  return { consulta: a.query, tem_ai_overview: !!(a.text && String(a.text).trim()), resumo: String(a.text || '').slice(0, 700), dominio_citado: fontes.some((u) => u.indexOf(C.dominio) >= 0), fontes_citadas: fontes.slice(0, 8) };\n});\nconst aiErr = row.aio_run ? aiItems.find((a) => a.error) : null;\nif (row.aio_run && !aiErr && !aio.length) fontesIndisponiveis.push('AI Overviews (Apify): nenhum AI Overview retornado para os temas ' + JSON.stringify(ut.temas));\nif (aiErr) fontesIndisponiveis.push('AI Overviews (Apify): ' + String(aiErr.error.message || aiErr.error).slice(0, 150));\n\nconst dataBR = P.dataBR;\nconst dossie = {\n  cliente: { nome: P.nome, dominio: P.dominio, data_auditoria: dataBR, periodo_gsc: P.periodos },\n  fontes_indisponiveis: fontesIndisponiveis,\n  comparativo_com_auditoria_anterior: P.temAnterior ? P.comparativo : 'primeira auditoria deste cliente',\n  auditoria_anterior: P.anterior,\n  auditoria_tecnica: P.auditoria,\n  search_console: P.gsc,\n  position_tracking: { resumo: P.resumoPosicoes, palavras: P.palavras },\n  backlinks: { resumo: P.backlinksInfo, dominios_de_referencia_mais_recentes: P.novosDominios },\n  google_trends: { temas: ut.temas, resultados: trends },\n  ai_overviews: aio,\n  status_paginas_com_trafego: P.statusPaginas,\n  alertas_automaticos: P.alertasAuto\n};\nconst system = 'Você é o estrategista sênior de SEO e GEO da ATOM Digital, agência de Goiânia com 15 anos de SEO. Você escreve a auditoria de SEO que cada cliente recebe a cada 10 dias. Regras: use SOMENTE os números do dossiê; nunca invente dados, volumes ou causas; quando algo for hipótese, diga que é hipótese. Compare com a auditoria anterior sempre que houver. Se uma fonte estiver indisponível, diga isso em uma linha e siga com as demais. Escreva em português do Brasil, direto e concreto. Evite as expressões \"no mundo atual\", \"cada vez mais\", \"é fundamental\" e \"vale ressaltar\". Classifique alertas em 🔴 CRÍTICO, 🟠 ALTO e 🟡 MÉDIO.';\nconst prompt = 'Monte a auditoria de SEO de ' + P.nome + ' (' + P.dominio + ') de ' + dataBR + '. Responda em DUAS partes.\\n\\n' +\n  'PARTE 1 — o relatório em HTML simples (somente h2, h3, p, ul, li, table, tr, th, td, strong; sem html, head, body, CSS ou markdown), nesta ordem: ' +\n  '1) Resumo executivo: 3 a 5 pontos e uma nota geral de 0 a 10 com justificativa; ' +\n  '2) Saúde técnica (Site Audit); ' +\n  '3) Search Console: tráfego real, consultas e páginas que caíram ou subiram, oportunidades de CTR e de chegar à primeira página; ' +\n  '4) Posições monitoradas; ' +\n  '5) Backlinks e autoridade; ' +\n  '6) Tendências de busca (Google Trends) e o que fazer com elas; ' +\n  '7) AI Overviews e GEO: quais consultas têm AI Overview, se o site é citado e o que fazer para ser citado; ' +\n  '8) Páginas com problema de status; ' +\n  '9) Plano de ação dos próximos 10 dias em tabela (prioridade, ação, por quê, esforço baixo/médio/alto).\\n\\n' +\n  'PARTE 2 — logo depois do HTML, os alertas em JSON puro entre as tags <alertas_json> e </alertas_json>: uma lista de objetos com nivel (CRITICO, ALTO ou MEDIO), area, titulo (até 80 caracteres, específico), evidencia (com o número do dossiê) e acao (concreta). Inclua os alertas automáticos que forem procedentes. Use CRITICO só para o que exige ação nesta rodada: queda forte de tráfego, página importante fora do ar ou erro técnico que bloqueia indexação.\\n\\n' +\n  'DOSSIÊ (JSON):\\n' + JSON.stringify(dossie).slice(0, 90000);\n\nreturn [{ json: { filaId: row.id, nome: P.nome, dominio: P.dominio, inicioExecucao: P.inicioExecucao, dataBR: dataBR, periodos: P.periodos, campanha: P.campanha, metricas: P.metricas, comparativo: P.comparativo, temAnterior: P.temAnterior, alertasAuto: P.alertasAuto || [], fontesIndisponiveis: fontesIndisponiveis, system: system, prompt: prompt } }];"
+        }
+      },
+      {
+        "id": "60649346-5e57-4a91-b950-dee21b785641",
+        "name": "Claude analisa",
+        "type": "@n8n/n8n-nodes-langchain.anthropic",
+        "typeVersion": 1,
+        "position": [
+          1792,
+          112
+        ],
+        "parameters": {
+          "resource": "text",
+          "operation": "message",
+          "modelId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "claude-sonnet-5"
+          },
+          "messages": {
+            "values": [
+              {
+                "content": "={{ $json.prompt }}",
+                "role": "user"
+              }
+            ]
+          },
+          "simplify": true,
+          "options": {
+            "system": "={{ $json.system }}",
+            "maxTokens": 9000,
+            "temperature": 0.3
+          }
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "anthropicApi": {
+            "id": "IJjMZNhuyrB21L8T",
+            "name": "ATOM Anthropic (Claude)"
+          }
+        }
+      },
+      {
+        "id": "9575ae1c-d992-4d9d-b7e6-344f71da804d",
+        "name": "Preparar relatório",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const D = $('Completar dossiê').first().json;\nconst j = $input.first().json || {};\nlet txt = '';\nif (Array.isArray(j.content)) txt = j.content.map((c) => c.text || '').join('');\nelse txt = j.merged_response || j.text || j.output || '';\nif (typeof txt !== 'string') txt = JSON.stringify(txt);\nconst iaErro = j.error ? String(j.error.message || j.error).slice(0, 200) : (!txt ? 'sem resposta da IA' : '');\nconst esc = (s) => String(s === null || s === undefined ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst semAcento = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '');\nconst crase = String.fromCharCode(96);\n\nlet alertasIA = [];\nconst m = txt.match(/<alertas_json>([\\s\\S]*?)<\\/alertas_json>/);\nif (m) { try { alertasIA = JSON.parse(m[1].split(crase).join('').replace(/^\\s*json/i, '').trim()); } catch (e) { alertasIA = []; } }\nlet analise = (m ? txt.slice(0, m.index) : txt).split(crase + crase + crase + 'html').join('').split(crase + crase + crase).join('').trim();\nconst h2 = analise.indexOf('<h2');\nif (h2 > 0) analise = analise.slice(h2);\nif (!analise) analise = '<p><strong>Análise da IA indisponível nesta rodada</strong> (' + esc(iaErro) + '). Os indicadores e alertas automáticos acima foram coletados normalmente.</p>';\n\nlet alertas = (Array.isArray(alertasIA) ? alertasIA : []).filter((a) => a && a.titulo);\nif (!alertas.length) alertas = D.alertasAuto.slice();\nalertas.forEach((a) => { a.nivel = semAcento(String(a.nivel || 'MEDIO')).toUpperCase(); if (['CRITICO', 'ALTO', 'MEDIO'].indexOf(a.nivel) < 0) a.nivel = 'MEDIO'; });\nconst ordem = { CRITICO: 0, ALTO: 1, MEDIO: 2 };\nalertas.sort((a, b) => ordem[a.nivel] - ordem[b.nivel]);\nconst emoji = { CRITICO: '🔴', ALTO: '🟠', MEDIO: '🟡' };\n\nconst rotulos = [\n  ['paginas_com_problemas_pct', 'Páginas com problemas (% das rastreadas)', -1], ['erros', 'Erros técnicos', -1], ['avisos', 'Avisos técnicos', -1],\n  ['gsc_cliques', 'Cliques no Google (28 dias)', 1], ['gsc_impressoes', 'Impressões no Google (28 dias)', 1], ['gsc_posicao_media', 'Posição média (GSC)', -1],\n  ['kw_top3', 'Palavras no top 3', 1], ['kw_top10', 'Palavras no top 10', 1], ['visibilidade', 'Visibilidade (Position Tracking)', 1],\n  ['authority_score', 'Authority Score', 1], ['dominios_referencia', 'Domínios de referência', 1], ['backlinks', 'Backlinks', 1]\n];\nconst fmtN = (v) => (v === null || v === undefined) ? '—' : Number(v).toLocaleString('pt-BR');\nconst linhas = rotulos.map((r) => {\n  const c = D.comparativo[r[0]] || {};\n  let delta = '—';\n  if (c.variacao !== null && c.variacao !== undefined) {\n    const v = c.variacao;\n    const bom = v === 0 ? null : (v * r[2] > 0);\n    delta = (v > 0 ? '+' : '') + Number(v).toLocaleString('pt-BR') + (bom === null ? '' : (bom ? ' ▲' : ' ▼'));\n  }\n  return '<tr><td>' + r[1] + '</td><td>' + fmtN(c.atual) + '</td><td>' + fmtN(c.auditoria_anterior) + '</td><td>' + delta + '</td></tr>';\n}).join('');\n\nconst listaAlertas = alertas.length ? '<ul>' + alertas.map((a) => '<li>' + emoji[a.nivel] + ' <strong>' + esc(a.titulo) + '</strong>' + (a.area ? ' (' + esc(a.area) + ')' : '') + (a.evidencia ? ' — ' + esc(a.evidencia) : '') + (a.acao ? '<br>➡️ ' + esc(a.acao) : '') + '</li>').join('') + '</ul>' : '<p>Nenhum alerta nesta rodada.</p>';\nconst fontes = D.fontesIndisponiveis.length ? '<ul>' + D.fontesIndisponiveis.map((f) => '<li>' + esc(f) + '</li>').join('') + '</ul>' : '<p>Todas as fontes responderam nesta rodada.</p>';\n\nconst docHtml = '<html><head><meta charset=\"utf-8\"></head><body>' +\n  '<h1>Auditoria SEO — ' + esc(D.nome) + '</h1>' +\n  '<p><strong>Site:</strong> ' + esc(D.dominio) + ' · <strong>Data:</strong> ' + esc(D.dataBR) + ' · <strong>Search Console:</strong> ' + D.periodos.atual[0] + ' a ' + D.periodos.atual[1] + ' vs. ' + D.periodos.anterior[0] + ' a ' + D.periodos.anterior[1] + ' · <strong>Posições:</strong> ' + esc(D.campanha) + ', últimos 10 dias</p>' +\n  '<h2>Indicadores</h2><table border=\"1\" cellpadding=\"6\"><tr><th>Indicador</th><th>Agora</th><th>Auditoria anterior</th><th>Variação</th></tr>' + linhas + '</table>' +\n  (D.temAnterior ? '' : '<p><em>Primeira auditoria deste cliente: as variações aparecem a partir da próxima rodada.</em></p>') +\n  '<h2>Alertas</h2>' + listaAlertas +\n  analise +\n  '<h2>Fontes e limitações desta rodada</h2>' + fontes +\n  '<p><em>Gerado automaticamente pelo n8n (ATOM · Auditoria SEO 10 dias) com dados de Semrush, Google Search Console, Google Trends e AI Overviews.</em></p>' +\n  '</body></html>';\n\nconst b = 'atomauditoria' + Date.now();\nconst meta = { name: 'Auditoria SEO — ' + D.nome + ' — ' + D.dataBR, mimeType: 'application/vnd.google-apps.document', parents: ['1TIpJ8IRbTf0vp1MDo3RRlRumFuokxsYO'] };\nconst multipart = '--' + b + '\\r\\nContent-Type: application/json; charset=UTF-8\\r\\n\\r\\n' + JSON.stringify(meta) + '\\r\\n--' + b + '\\r\\nContent-Type: text/html; charset=UTF-8\\r\\n\\r\\n' + docHtml + '\\r\\n--' + b + '--';\n\nreturn [{ json: { nome: D.nome, dominio: D.dominio, inicioExecucao: D.inicioExecucao, metricas: D.metricas, alertas: alertas, iaErro: iaErro, boundary: b, multipart: multipart } }];"
+        }
+      },
+      {
+        "id": "1ac8f5cb-b238-4156-a4b4-e0478b4bab92",
+        "name": "Criar Google Doc",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          2240,
+          112
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true&fields=id,name,webViewLink",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleDriveOAuth2Api",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "=multipart/related; boundary={{ $json.boundary }}",
+          "body": "={{ $json.multipart }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "JslN0GAFUISauTt6",
+            "name": "ATOM Google Drive"
+          }
+        }
+      },
+      {
+        "id": "5bceef79-acf0-4245-8646-28121ed31ce3",
+        "name": "Salvar histórico",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2464,
+          112
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "lSUzsZSMIWc8D57p",
+            "cachedResultName": "atom_auditoria_historico"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "matchingColumns": [],
+            "schema": [
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "dominio",
+                "id": "dominio",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "data_auditoria",
+                "id": "data_auditoria",
+                "required": false,
+                "type": "dateTime"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "paginas_com_problemas_pct",
+                "id": "paginas_com_problemas_pct",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "erros",
+                "id": "erros",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "avisos",
+                "id": "avisos",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "authority_score",
+                "id": "authority_score",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "dominios_referencia",
+                "id": "dominios_referencia",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "backlinks",
+                "id": "backlinks",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "gsc_cliques",
+                "id": "gsc_cliques",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "gsc_impressoes",
+                "id": "gsc_impressoes",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "gsc_posicao_media",
+                "id": "gsc_posicao_media",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "kw_top3",
+                "id": "kw_top3",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "kw_top10",
+                "id": "kw_top10",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "visibilidade",
+                "id": "visibilidade",
+                "required": false,
+                "type": "number"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "alertas_json",
+                "id": "alertas_json",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "doc_url",
+                "id": "doc_url",
+                "required": false,
+                "type": "string"
+              }
+            ],
+            "value": {
+              "alertas_json": "={{ JSON.stringify({ nome: $(\"Preparar relatório\").first().json.nome, alertas: $(\"Preparar relatório\").first().json.alertas }) }}",
+              "authority_score": "={{ $(\"Preparar relatório\").first().json.metricas.authority_score }}",
+              "avisos": "={{ $(\"Preparar relatório\").first().json.metricas.avisos }}",
+              "backlinks": "={{ $(\"Preparar relatório\").first().json.metricas.backlinks }}",
+              "data_auditoria": "={{ $(\"Preparar relatório\").first().json.inicioExecucao }}",
+              "doc_url": "={{ $json.webViewLink || \"\" }}",
+              "dominio": "={{ $(\"Preparar relatório\").first().json.dominio }}",
+              "dominios_referencia": "={{ $(\"Preparar relatório\").first().json.metricas.dominios_referencia }}",
+              "erros": "={{ $(\"Preparar relatório\").first().json.metricas.erros }}",
+              "gsc_cliques": "={{ $(\"Preparar relatório\").first().json.metricas.gsc_cliques }}",
+              "gsc_impressoes": "={{ $(\"Preparar relatório\").first().json.metricas.gsc_impressoes }}",
+              "gsc_posicao_media": "={{ $(\"Preparar relatório\").first().json.metricas.gsc_posicao_media }}",
+              "kw_top10": "={{ $(\"Preparar relatório\").first().json.metricas.kw_top10 }}",
+              "kw_top3": "={{ $(\"Preparar relatório\").first().json.metricas.kw_top3 }}",
+              "paginas_com_problemas_pct": "={{ $(\"Preparar relatório\").first().json.metricas.paginas_com_problemas_pct }}",
+              "visibilidade": "={{ $(\"Preparar relatório\").first().json.metricas.visibilidade }}"
+            }
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "68426a24-9004-4ce4-bee8-b2fddac402f7",
+        "name": "Marcar coleta como analisada",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2688,
+          112
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "S38n80Hch6oZuzT0",
+            "cachedResultName": "atom_auditoria_fila"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $(\"Completar dossiê\").first().json.filaId }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "ANALISADO",
+              "erro": "={{ $(\"Preparar relatório\").first().json.iaErro || \"\" }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "erro",
+                "displayName": "erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "executeOnce": true,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "083d6b07-992b-40e1-9094-a7780bab6da4",
+        "name": "Cards já criados",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2912,
+          112
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "qjrjLTyO5WjmI52J",
+            "cachedResultName": "atom_auditoria_cards"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "dominio",
+                "condition": "eq",
+                "keyValue": "={{ $(\"Preparar relatório\").first().json.dominio }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "537fbade-2413-41de-bd39-33699a8d59f4",
+        "name": "Cards novos",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3136,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Só alertas 🔴 CRÍTICO viram card; no máximo 5 por cliente; não repete o mesmo alerta por 30 dias\nconst R = $('Preparar relatório').first().json;\nconst docJ = $('Criar Google Doc').first().json || {};\nconst doc = docJ.webViewLink || '';\nconst norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').replace(/[0-9]+/g, '#').replace(/[^a-z#]+/g, ' ').trim();\nconst existe = {};\n$input.all().forEach((i) => { const r = i.json || {}; if (r.chave && r.criado_em && (Date.now() - Date.parse(r.criado_em)) < 30 * 864e5) existe[r.chave] = 1; });\nconst out = [];\n(R.alertas || []).filter((a) => a.nivel === 'CRITICO').slice(0, 5).forEach((a) => {\n  const chave = R.dominio + '|' + norm(a.area) + '|' + norm(a.titulo).slice(0, 80);\n  if (existe[chave]) return;\n  existe[chave] = 1;\n  out.push({ json: {\n    chave: chave, dominio: R.dominio, titulo: String(a.titulo).slice(0, 200),\n    nome_card: '🔴 SEO · ' + R.nome + ' — ' + String(a.titulo).slice(0, 90),\n    descricao: '**Cliente:** ' + R.nome + ' (' + R.dominio + ')\\n**Área:** ' + (a.area || '-') + '\\n\\n**Evidência:** ' + (a.evidencia || '-') + '\\n\\n**O que fazer:** ' + (a.acao || '-') + (doc ? '\\n\\n📄 Auditoria completa: ' + doc : '') + '\\n\\n_Criado automaticamente pela auditoria de SEO de 10 dias._'\n  } });\n});\nreturn out;"
+        }
+      },
+      {
+        "id": "53d45d1a-4b8b-49e0-8a74-73352b3165ba",
+        "name": "Criar card no Backlog",
+        "type": "n8n-nodes-base.trello",
+        "typeVersion": 1,
+        "position": [
+          3360,
+          112
+        ],
+        "parameters": {
+          "resource": "card",
+          "operation": "create",
+          "listId": "6abc08e4f530a89c375f9773",
+          "name": "={{ $json.nome_card }}",
+          "description": "={{ $json.descricao }}",
+          "additionalFields": {
+            "pos": "top"
+          }
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "trelloApi": {
+            "id": "sm5JkfUmfVVLuaWv",
+            "name": "Trello account"
+          }
+        }
+      },
+      {
+        "id": "d6b680c7-a551-4e55-85f8-1909108a434c",
+        "name": "Registrar card",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3584,
+          112
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "qjrjLTyO5WjmI52J",
+            "cachedResultName": "atom_auditoria_cards"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "chave": "={{ $(\"Cards novos\").item.json.chave }}",
+              "dominio": "={{ $(\"Cards novos\").item.json.dominio }}",
+              "titulo": "={{ $(\"Cards novos\").item.json.titulo }}",
+              "card_url": "={{ $json.shortUrl || $json.url || \"\" }}",
+              "criado_em": "={{ $now.toISO() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "chave",
+                "displayName": "chave",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "dominio",
+                "displayName": "dominio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "titulo",
+                "displayName": "titulo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "card_url",
+                "displayName": "card_url",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "criado_em",
+                "displayName": "criado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "af3e908e-1cb4-457b-a8a4-284d13abafa3",
+        "name": "Sticky Note 159ae0e7",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          0,
+          480
+        ],
+        "parameters": {
+          "content": "## ATOM · Auditoria SEO — 2. Análise\nRoda nos dias 1, 11 e 21 às 6h40 (chamado pelo orquestrador) para cada coleta pendente da fila. Para testar, use **Testar com a última coleta**.\n\nJunta os resultados da Apify (Google Trends e AI Overviews), o Claude escreve a auditoria, cria o Google Doc na pasta *ATOM · Auditorias SEO (10 dias)*, grava o histórico (base da comparação da próxima rodada) e cria cards 🔴 no Backlog do Trello (máx. 5 por cliente, sem repetir por 30 dias).",
+          "color": 5,
+          "width": 620,
+          "height": 260
+        }
+      }
+    ],
+    "nodeGroups": [
+      {
+        "id": "9f8c5dbb-df91-43b8-a6b9-2ec4427db62c",
+        "name": "Coleta e Apify",
+        "nodeNames": [
+          "ID da coleta",
+          "Ler coleta",
+          "Apify · resultado Trends",
+          "Apify · resultado AI Overviews"
+        ],
+        "description": "Lê a coleta da fila e busca os resultados de Google Trends e AI Overviews na Apify"
+      },
+      {
+        "id": "c8f6cc9d-037f-49bd-ac24-84a6a40a8b34",
+        "name": "Análise e relatório",
+        "nodeNames": [
+          "Completar dossiê",
+          "Claude analisa",
+          "Preparar relatório",
+          "Criar Google Doc",
+          "Salvar histórico",
+          "Marcar coleta como analisada"
+        ],
+        "description": "Claude escreve a auditoria, cria o Google Doc, grava o histórico e fecha a coleta na fila"
+      },
+      {
+        "id": "9581cc7b-d2d5-4473-88d1-aee80ef76acc",
+        "name": "Cards no Trello",
+        "nodeNames": [
+          "Cards já criados",
+          "Cards novos",
+          "Criar card no Backlog",
+          "Registrar card"
+        ],
+        "description": "Alertas críticos viram cards no Backlog, sem repetir o mesmo alerta por 30 dias"
+      }
+    ],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

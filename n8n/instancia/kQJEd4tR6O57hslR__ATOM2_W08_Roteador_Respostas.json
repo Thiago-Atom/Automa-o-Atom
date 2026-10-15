@@ -1,0 +1,1132 @@
+{
+  "workflow": {
+    "id": "kQJEd4tR6O57hslR",
+    "name": "ATOM2_W08_Roteador_Respostas",
+    "active": true,
+    "isArchived": false,
+    "versionId": "bf896c50-3fa8-4c3b-bea5-563238e3dda6",
+    "activeVersionId": "bf896c50-3fa8-4c3b-bea5-563238e3dda6",
+    "triggerCount": 2,
+    "nodeCount": 30,
+    "createdAt": "2026-10-09T21:40:58.390Z",
+    "updatedAt": "2026-10-09T22:45:44.058Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · W08: respostas do WhatsApp → intenção por regras, resposta de script (sem preço antes da proposta), encerra cadência, atualiza Pipedrive; número novo → funil Receptivo. SIMULACAO por padrão.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "WhatsApp (entrada)": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Executar teste": {
+        "main": [
+          [
+            {
+              "node": "Mensagem de teste",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mensagem de teste": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas": {
+        "main": [
+          [
+            {
+              "node": "Ler cadências ativas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler cadências ativas": {
+        "main": [
+          [
+            {
+              "node": "Ler auditorias aprovadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditorias aprovadas": {
+        "main": [
+          [
+            {
+              "node": "Ler achados principais",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler achados principais": {
+        "main": [
+          [
+            {
+              "node": "Ler mensagens recebidas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler mensagens recebidas": {
+        "main": [
+          [
+            {
+              "node": "Decidir",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Decidir": {
+        "main": [
+          [
+            {
+              "node": "Pipedrive fase 1 (negócio)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pipedrive fase 1 (negócio)": {
+        "main": [
+          [
+            {
+              "node": "Plano fase 2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano fase 2": {
+        "main": [
+          [
+            {
+              "node": "Pipedrive fase 2 (nota e atividade)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pipedrive fase 2 (nota e atividade)": {
+        "main": [
+          [
+            {
+              "node": "Registros",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registros": {
+        "main": [
+          [
+            {
+              "node": "Roteador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Roteador": {
+        "main": [
+          [
+            {
+              "node": "Linha mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha cadência",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha empresa",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha lead receptivo",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha mensagem": {
+        "main": [
+          [
+            {
+              "node": "Gravar mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha cadência": {
+        "main": [
+          [
+            {
+              "node": "Atualizar cadência",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha empresa": {
+        "main": [
+          [
+            {
+              "node": "Atualizar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha lead receptivo": {
+        "main": [
+          [
+            {
+              "node": "Gravar lead receptivo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha evento": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Verificação Meta (GET)": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração (verificação)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração (verificação)": {
+        "main": [
+          [
+            {
+              "node": "Desafio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Desafio": {
+        "main": [
+          [
+            {
+              "node": "Responder verificação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "ccdba83b-464c-45a9-8890-d1b7697e56e5",
+        "name": "WhatsApp (entrada)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atom2-wa-entrada",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "70ac261f-13c2-4370-b6e6-2fae96dcaf40"
+      },
+      {
+        "id": "55555fe5-761c-4f5c-a51a-3d6bdae36ba0",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "894dc9f3-bb93-42a9-94de-3ffabb261620",
+        "name": "Executar teste",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          400
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "8857f36b-0202-424e-9313-afb26c65153a",
+        "name": "Mensagem de teste",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// Mensagem simulada do registro de teste c_teste_sandbox (troque o texto para testar outras intenções).\nreturn [{ json: { query: {}, body: { telefone: '5562900000000', texto: 'Quanto custa?', wa_message_id: 'teste_' + Date.now() } } }];"
+        }
+      },
+      {
+        "id": "22e03926-4985-494e-a6b4-bbd81e727603",
+        "name": "Ler empresas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "309edc3e-1c89-4928-a66d-ffbbcd69bb25",
+        "name": "Ler cadências ativas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yg5jYnoqI2f4aYOd",
+            "cachedResultName": "atom2_cadencia"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "ativa"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "0bff550e-b5f8-4bb0-8864-c9c600830164",
+        "name": "Ler auditorias aprovadas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "qa_status",
+                "condition": "eq",
+                "keyValue": "aprovado"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "60685585-6dad-4831-a8b5-9170b805ac8a",
+        "name": "Ler achados principais",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "usado_em",
+                "condition": "eq",
+                "keyValue": "principal"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "1770106f-e659-4f49-87a3-c381d98b368b",
+        "name": "Ler mensagens recebidas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1540,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "XU5IdQgGNqhpBRxM",
+            "cachedResultName": "atom2_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "direcao",
+                "condition": "eq",
+                "keyValue": "entrada"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "62c6aab7-63c0-4c62-9186-4194cd5e5096",
+        "name": "Decidir",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1760,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W08 · Roteador de respostas do WhatsApp (Fluxo do Funil v1.0 §4; scripts de 09/10/2026).\n// Classificação determinística por regras (auditável, sem IA): o que não for claro vai para o Thiago (Ambígua).\n// Qualquer resposta encerra a cadência. Opt-out/sem interesse/agora não → negócio perdido com o motivo nativo.\n// REGRA ABSOLUTA: nenhum preço antes da proposta. Pergunta de preço recebe RESPOSTA_SEM_PRECO (aprovada 09/10/2026);\n// os scripts \"Quanto custa?\" e \"Oferta de site\" (que citam R$ 3.000) NÃO são usados por este roteador.\n// Número desconhecido → lead receptivo: negócio no funil Atendimento Receptivo + registro r_<telefone> (sem resposta automática).\n// SIMULACAO (padrão): resposta gravada como simulada; Pipedrive só é alterado para registros c_teste_*.\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\n\n// --- trava de preço e termos proibidos (bloco canônico de lib_guarda_preco.js) ---\n// <guarda> — bloco canônico: copiado idêntico para W05, W05b, W07 e W08 por n8n/tools/sync_guarda.js (teste confere).\n// Fronteiras Unicode: \\b do JavaScript não trata \"é\", \"à\" etc. como letra.\nconst I = '(?<![\\\\p{L}\\\\p{N}])', F = '(?![\\\\p{L}\\\\p{N}])';\nconst rx = (corpo) => new RegExp(I + corpo + F, 'iu');\nconst EXTENSO = '(um|uma|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|treze|quatorze|catorze|quinze|dezesseis|dezessete|dezoito|dezenove|vinte|trinta|quarenta|cinquenta|sessenta|setenta|oitenta|noventa|cem|cento|duzentos|duzentas|trezentos|trezentas|quatrocentos|quinhentos|seiscentos|setecentos|oitocentos|novecentos)';\nconst PRECO_RX = [\n  /(R|US|U)?\\s*[$＄]\\s*\\d/i,                                                                   // R$ 3.000, R $3000, US$ 500, $500\n  rx('\\\\d{1,3}([.\\\\s]\\\\d{3})+([.,]\\\\d{2})?'),                                                 // 3.000 / 14.000,00 / 1 500,00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(mil|reais|k)'),                                                     // 3 mil, 900 reais, 3k\n  rx(EXTENSO + '(\\\\s+e\\\\s+' + EXTENSO + ')*\\\\s+(mil|reais)'),                                 // três mil, dois mil e quinhentos\n  rx('\\\\d+,\\\\d{2}'), rx('\\\\d+\\\\.\\\\d{2}'),                                                     // 500,00 / 500.00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(/\\\\s*m[eê]s|por m[eê]s|mensais|ao m[eê]s|/\\\\s*ano|por ano)'),       // 1500/mês, 990 mensais\n  rx('\\\\d+\\\\s*x\\\\s*(de\\\\s*)?(R\\\\$\\\\s*)?\\\\d+'),                                                 // 12x 300, 2x de 750\n  rx('(valor|custo|taxa|or[cç]amento|ticket|plano|investimento)\\\\s*(:|mensal|anual|de|é|e|fica|sai|total|inicial)?\\\\s*(R\\\\$\\\\s*)?\\\\d+'), // Valor: 1500, orçamento de 1500\n  rx('(?<!(oportunidades|resultados|dados|casos|problemas|ganhos|melhorias|clientes|pacientes|n[uú]meros|exemplos|situa[cç][oõ]es|pessoas|avalia[cç][oõ]es|depoimentos|evid[eê]ncias|mudan[cç]as|benef[ií]cios)\\\\s)reais'),\n  rx('pre[cç]os?'),\n  rx('valor(es)?\\\\s+(de|do|da|para|é|e|fica|sai|total|mensal)'),\n  rx('investimento\\\\s+(de|é|e|fica|sai|total|inicial|mensal)'),\n  rx('(mensalidade|parcelas?|parcelado|entrada de|setup de|desconto|à vista|a vista|boleto|pix)'),\n  rx('(custa|custo de|cobramos|sai por|fica por|a partir de)')\n];\n// Promessas e alegações proibidas (handoff §8; scripts de 09/10). \"Ninguém pode garantir isso\" (script ChatGPT) passa.\nconst PROIBIDOS = [/primeira posi[cç][aã]o/i, /topo do google/i, /garant(imos|ido|idos|ida|idas|o\\b|ia de)/i, /posi[cç][aã]o\\s*\\d/i, /\\b\\d+\\s*(visitas|clientes|pacientes) (por|ao) m[eê]s/i, /preju[ií]zo/i, /queda de vendas/i, /perdendo (clientes|pacientes|vendas)/i, /cliente oculto/i, /chatgpt (indicou|citou|recomendou)/i];\nconst bloqueios = (t) => [...PRECO_RX.filter((r) => r.test(String(t || ''))).map(() => 'preço antes da proposta'), ...PROIBIDOS.filter((r) => r.test(String(t || ''))).map((r) => 'termo proibido ' + r.source)];\n// </guarda>\nconst RESPOSTA_SEM_PRECO = 'O investimento depende do que faz sentido para a [Empresa], e ele vem na proposta, depois de entendermos o cenário. Para eu já preparar algo certeiro: o que você mais quer melhorar hoje?';\n\n// --- classificação (ordem importa: a primeira regra que casar vence) ---\nconst sem = (s) => String(s || '').normalize('NFD').replace(/\\p{M}/gu, '').toLowerCase().replace(/\\s+/g, ' ').trim();\nconst NEG = /(^|[^a-z])(nao|nem|nunca)([^a-z]|$)/;\nconst REGRAS = [\n  // Opt-out só com pedido claro (\"só vou sair agora\" e \"agenda bloqueada\" não são opt-out).\n  ['OPT_OUT', 0.95, /(^(pare|parar|sair|stop|chega)[.! ]*$|(pare|para|parem|parar) de (me |nos )?(mandar|enviar|chamar|mensagem)|(quero|me) (sair|descadastrar)|sair da (sua )?lista|descadastr\\w*|remov\\w+ (meu|o|esse) (numero|contato)|tira(r)? (meu|o|esse) (numero|contato)|nao (me )?(mande|envie|chame|contate|procure|mandem|enviem) mais|nao quero (mais )?receber|(vou|vamos) (te |lhe )?(bloquear|denunciar)|me bloque\\w*|denunci\\w+|(^|[^a-z])spam([^a-z]|$)|lgpd)/],\n  ['SEM_INTERESSE', 0.9, /(nao (tenho|temos) interesse|sem interesse|nao (me )?interessa|nao quero|nao preciso|nao precisamos|nao, obrigad|dispenso|nao estamos interessad)/],\n  ['AGORA_NAO', 0.85, /(agora nao|no momento nao|nao (e|eh) o momento|mais (pra|para) frente|outro momento|proximo ano|ano que vem|depois (a gente|eu) (ve|vejo|falo)|sem tempo agora|nao agora)/],\n  ['PRECO', 0.95, /(quanto (custa|fica|sai|e|eh|cobra|voces cobram)|qual (o |e o )?(valor|preco|investimento|custo)|preco|valores|orcamento|tabela de|esta caro|ta caro|muito caro|como conseguem esse preco|forma de pagamento|parcela)/],\n  ['PROPOSTA', 0.9, /((mand|envi)\\w* (uma |a )?proposta|quero (uma |a )?proposta|faz (uma |a )?proposta)/],\n  ['CHATGPT', 0.85, /(chat ?gpt|garant\\w* (aparecer|que aparece|estar))/],\n  ['AGENCIA', 0.85, /(ja (tenho|temos) (uma )?agencia|ja (tenho|temos) (quem|alguem|empresa|um profissional) (que )?(cuid|fa[cz])|nossa agencia|trabalh\\w+ com (uma )?agencia)/],\n  ['SITE_BOM', 0.8, /((meu|nosso|o) site (ja )?(e|eh|esta|ta) (bom|otimo|ok|novo)|site (e|eh) novo)/],\n  ['ATENDIMENTO', 0.8, /(melhorar (o |meu |nosso )?atendimento|atendimento (esta|ta|e) (ruim|lento|fraco)|nao (conseguimos|consigo) responder)/],\n  ['EMAIL', 0.85, /((por|pelo|no) e-?mail|manda (no|pro|para o) e-?mail|[\\w.+-]+@[\\w-]+\\.[\\w.]+)/],\n  ['INTERESSE', 0.9, /(tenho interesse|temos interesse|me interess|interessad|vamos conversar|podemos conversar|quero (saber|entender|conhecer) mais|pode (me )?ligar|qual horario|agend\\w+ (uma )?(reuniao|conversa|call)|bora)/],\n  ['PODE_ENVIAR', 0.9, /^(sim|pode|claro|ok|okay|beleza|blz|manda|mande|envia|envie|pode (sim|enviar|mandar)|quero ver|quero|por favor|pode ser|manda ai|envia ai|manda sim|pode mandar sim)\\b|(pode (enviar|mandar)|manda (ai|sim|o diagnostico)|envia (ai|o diagnostico)|quero ver|gostaria de ver|pode compartilhar)/],\n  ['ENCAMINHAMENTO', 0.8, /(fal\\w+ com|(o|a) responsavel|quem cuida (e|eh)|vou (te )?(passar|encaminhar)|encaminh\\w+ para|e com (o|a) (dr|dra|doutor|doutora)|o contato (dele|dela) e|\\(?\\d{2}\\)?\\s?9?\\d{4}-?\\d{4})/],\n  ['IDENTIDADE', 0.8, /(quem (e|eh|fala|esta falando)|de onde (e|eh|voces sao)|como (conseguiu|pegou|achou) (meu|esse) (numero|contato)|que empresa)/]\n];\n// Pessoa indicada pela recepção: \"Dra. Ana\", \"fala com a Bruna\", \"o responsável é o Pedro\". Telefone, se houver.\nfunction extrairPessoa(texto) {\n  const t = String(texto || '');\n  let m = t.match(/\\b([Dd]r|[Dd]ra|[Dd]outor|[Dd]outora)\\.?\\s+([A-ZÀ-Ý][a-zà-ÿ]+)/);\n  if (m) return (/^(dra|doutora)$/i.test(m[1]) ? 'Dra. ' : 'Dr. ') + m[2];\n  m = t.match(/(?:fal\\w*|fale|com|para|pra)\\s+(?:o|a)\\s+([A-ZÀ-Ý][a-zà-ÿ]{2,})/) || t.match(/(?:respons[aá]vel|quem cuida)\\s+(?:é|e)\\s+(?:o\\s+|a\\s+)?([A-ZÀ-Ý][a-zà-ÿ]{2,})/);\n  return m ? m[1].charAt(0).toUpperCase() + m[1].slice(1) : '';\n}\nconst telefoneDe = (texto) => { const m = String(texto || '').match(/\\(?\\d{2}\\)?\\s?9?\\d{4}[-\\s]?\\d{4}/); return m ? m[0] : ''; };\nfunction classificar(texto) {\n  const t = sem(texto);\n  if (!t) return { intencao: 'AMBIGUA', confianca: 0, regra: 'vazio' };\n  // Recepção indicando o responsável vem antes de \"pode enviar\" (\"pode mandar que eu passo pra Dra. Ana\").\n  if (!REGRAS[0][2].test(t) && !REGRAS[1][2].test(t) && (extrairPessoa(texto) || (telefoneDe(texto) && /(fal|liga|contato|whats|numero|passo|encaminh)/.test(t))) && /(fal|respons|cuida|passo|passar|encaminh|com (o|a) |pra (o|a) |para (o|a) |contato|liga|dr|dra|doutor)/.test(t)) return { intencao: 'ENCAMINHAMENTO', confianca: 0.85, regra: 'pessoa indicada' };\n  if (/^(nao|n|nao obrigad\\w*|no)[.!]*$/.test(t)) return { intencao: 'SEM_INTERESSE', confianca: 0.7, regra: 'nao isolado' };\n  for (const [intencao, confianca, r] of REGRAS) {\n    if (!r.test(t)) continue;\n    // \"não pode enviar\", \"não tenho interesse em conversar\": aceitação negada não conta como aceitação.\n    if (['PODE_ENVIAR', 'INTERESSE'].includes(intencao) && NEG.test(t)) continue;\n    return { intencao, confianca, regra: r.source.slice(0, 60) };\n  }\n  return { intencao: 'AMBIGUA', confianca: 0.3, regra: 'nenhuma regra' };\n}\n\n// --- respostas (Biblioteca de scripts; [Nome] sai quando não há nome) ---\nconst RESPOSTAS = {\n  OPT_OUT: 'Entendido, [Nome]. Obrigado pelo retorno. Não vou insistir.',\n  SEM_INTERESSE: 'Entendido, [Nome]. Obrigado pelo retorno. Não vou insistir.',\n  AGORA_NAO: 'Sem problema! Vou encerrar o acompanhamento.\\nQuando fizer sentido, estou à disposição.',\n  PRECO: RESPOSTA_SEM_PRECO,\n  PROPOSTA: 'Claro! Me confirme o objetivo, o escopo e o prazo.\\nAssim envio uma proposta precisa.',\n  CHATGPT: 'Ninguém pode garantir isso. Trabalhamos SEO/GEO com fundamentos técnicos e conteúdo preparado para mecanismos de busca e IA.',\n  AGENCIA: 'Ótimo! A análise pode complementar o trabalho atual.\\nQuer ver os pontos que encontramos?',\n  SITE_BOM: 'Ótimo! Nossa sugestão é pontual: [achado].\\nQuer ver como melhorar esse ponto?',\n  ATENDIMENTO: 'Hoje sua equipe consegue responder todos os contatos com rapidez?\\nPodemos avaliar os dados do atendimento e mostrar oportunidades reais.',\n  EMAIL: 'Combinado. Qual e-mail corporativo devo usar para enviar a análise?',\n  INTERESSE: 'Excelente! Posso te mostrar as oportunidades e possíveis soluções em 15 minutos.\\nQual horário é melhor para você?',\n  ESTA_CARO: 'Entendo. O que pesa mais: investimento, prazo ou dúvida sobre o resultado esperado?',\n  PRECISO_PENSAR: 'Claro! O que falta esclarecer para você decidir com segurança?',\n  ACEITE: 'Excelente! Vou confirmar o escopo e encaminhar o contrato pela Autentique, conforme combinado.',\n  PODE_ENVIAR: 'Perfeito! Aqui está o diagnóstico: [link].\\nO que é prioridade hoje: mais contatos, agendamentos ou melhorar o atendimento?'\n};\n// Intenção → opção do campo \"ATOM · Intenção da resposta\" e motivo de perda nativo.\nconst OPCAO = { PODE_ENVIAR: 'PODE_ENVIAR', PRECO: 'QUANTO_CUSTA', INTERESSE: 'TENHO_INTERESSE', AGENCIA: 'JA_TENHO_AGENCIA', PROPOSTA: 'MANDE_PROPOSTA', AGORA_NAO: 'AGORA_NAO', SEM_INTERESSE: 'SEM_INTERESSE', OPT_OUT: 'OPT_OUT' };\n// Depois da proposta (F9/F10/IN_PROPOSTA/IN_NEGOCIACAO): scripts \"Está caro\", \"Preciso pensar\" e \"Cliente aceitou\".\nconst POS_PROPOSTA = [['ESTA_CARO', /(caro|salgado|puxado|acima do (meu |nosso )?orcamento|nao cabe)/], ['PRECISO_PENSAR', /(preciso pensar|vou pensar|vou avaliar|deixa eu ver|vou analisar|preciso ver com|falar com (meu|minha) (socio|socia|esposa|marido))/], ['ACEITE', /(fechado|fechamos|aceito|aceitamos|pode fazer|vamos fechar|bora fechar|vamos seguir|pode seguir|topo|manda o contrato)/]];\nfunction classificarPosProposta(texto) {\n  const t = sem(texto);\n  if (NEG.test(t)) return null;\n  const r = POS_PROPOSTA.find(([, x]) => x.test(t));\n  return r ? r[0] : null;\n}\nconst PERDA = { OPT_OUT: 'Opt-out', SEM_INTERESSE: 'Sem interesse', AGORA_NAO: 'Agora não (sem recontato)' };\nconst TAREFA = {\n  PODE_ENVIAR: 'Enviar o diagnóstico e qualificar (P1–P3)', PRECO: 'Lead perguntou preço: qualificar (preço só na proposta)', PROPOSTA: 'Lead pediu proposta: confirmar objetivo, escopo e prazo',\n  INTERESSE: 'Agendar reunião de 15 min', AGENCIA: 'Lead já tem agência: mostrar os pontos', SITE_BOM: 'Lead acha o site bom: mostrar o achado', CHATGPT: 'Lead perguntou de ChatGPT/garantia',\n  ATENDIMENTO: 'Lead quer melhorar o atendimento: avaliar dados', EMAIL: 'Lead pediu por e-mail: pegar o e-mail e enviar', ENCAMINHAMENTO: 'Recepção indicou o responsável: registrar nome e abordar o decisor',\n  IDENTIDADE: 'Lead perguntou quem somos: responder pessoalmente', AMBIGUA: 'Resposta ambígua: ler e responder',\n  ESTA_CARO: 'Proposta: lead achou caro (entender o que pesa)', PRECISO_PENSAR: 'Proposta: lead vai pensar (esclarecer dúvidas)', ACEITE: 'Lead aceitou pelo WhatsApp: marcar ganho e formalizar'\n};\nfunction preencher(modelo, nome, empresa, achado, link) {\n  let t = modelo.replace('[Empresa]', empresa || 'sua empresa');\n  if (achado) t = t.replace('[achado]', achado);\n  if (link) t = t.replace('[link]', link);\n  if (nome) return t.replace('[Nome]', nome);\n  t = t.replace(', [Nome]', '').replace('[Nome], ', '');\n  return t.charAt(0).toUpperCase() + t.slice(1);\n}\n\n// --- entrada: WhatsApp Cloud API ou formato simples { telefone, texto, wa_message_id, recebido_em } ---\nfunction normalizarEntrada(body) {\n  const b = body || {};\n  const out = [];\n  for (const en of b.entry || []) for (const ch of en.changes || []) for (const m of (ch.value && ch.value.messages) || []) {\n    out.push({ telefone: String(m.from || ''), texto: (m.text && m.text.body) || (m.button && m.button.text) || (m.interactive && JSON.stringify(m.interactive)) || '', wa_message_id: m.id, recebido_em: m.timestamp ? new Date(Number(m.timestamp) * 1000).toISOString() : null, tipo: m.type || 'text' });\n  }\n  if (!out.length && (b.telefone || b.from)) out.push({ telefone: String(b.telefone || b.from), texto: String(b.texto || b.text || ''), wa_message_id: b.wa_message_id || b.id || null, recebido_em: b.recebido_em || null, tipo: 'text' });\n  return out.filter((m) => m.telefone);\n}\n// Chave de telefone: só dígitos, sem 55, sem o 9 extra do celular → DDD + 8 dígitos.\nfunction chaveTel(t) {\n  let d = String(t || '').replace(/\\D/g, '');\n  if (d.length >= 12 && d.startsWith('55')) d = d.slice(2);\n  if (d.length === 11 && d[2] === '9') d = d.slice(0, 2) + d.slice(3);\n  return d.length === 10 ? d : null;\n}\n\nfunction hash(x) { let h = 0x811c9dc5; for (let i = 0; i < x.length; i++) { h ^= x.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); }\n// Dias úteis (mesma regra do W07): usado para agendar a trilha pós-diagnóstico.\nconst FERIADOS = ['2026-01-01', '2026-02-16', '2026-02-17', '2026-04-03', '2026-04-21', '2026-05-01', '2026-06-04', '2026-09-07', '2026-10-12', '2026-11-02', '2026-11-15', '2026-11-20', '2026-12-25',\n  '2027-01-01', '2027-02-08', '2027-02-09', '2027-03-26', '2027-04-21', '2027-05-01', '2027-05-27', '2027-09-07', '2027-10-12', '2027-11-02', '2027-11-15', '2027-11-20', '2027-12-25'];\nconst diaSP = (d) => new Date(new Date(d).getTime() - 3 * 3600 * 1000).toISOString().slice(0, 10);\nconst util = (dia) => { const w = new Date(dia + 'T12:00:00Z').getUTCDay(); return w !== 0 && w !== 6 && !FERIADOS.includes(dia); };\nfunction somarDiasUteis(agora, n) {\n  let dia = diaSP(agora), c = 0;\n  while (c < n) { const d = new Date(dia + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); dia = d.toISOString().slice(0, 10); if (util(dia)) c++; }\n  return dia + 'T12:00:00.000Z';\n}\n\nconst cfgMapa = (rows) => {\n  const m = {};\n  for (const r of rows || []) if (r && r.chave) m[r.chave] = String(r.valor ?? '');\n  const modos = (rows || []).filter((r) => r && r.chave === 'MODO_EXECUCAO').map((r) => String(r.valor).trim().toUpperCase());\n  m.MODO_EXECUCAO = modos.length && modos.every((x) => x === 'PRODUCAO') ? 'PRODUCAO' : 'SIMULACAO';\n  return m;\n};\n\n// Decide o que fazer com UMA mensagem recebida. Devolve { entrada, resposta?, cadencia?, empresa?, pd: [planos], evento, tarefa? }.\n// pd: planos HTTP da fase 1 (deal); a fase 2 (nota + atividade) precisa do id do negócio → planoFase2().\nfunction decidir(m, ctx) {\n  const { empresas, cadencias, auditorias, achados, cfgRows, mensagens, agora } = ctx;\n  const cfg = cfgMapa(cfgRows);\n  const quando = agora || new Date().toISOString();\n  // Sem wa_message_id (formato simples), a identidade vem do conteúdo: webhook repetido não duplica entrada nem resposta.\n  const inId = 'in_' + (m.wa_message_id || chaveTel(m.telefone) + '_' + hash(String(m.texto || '') + '|' + String(m.recebido_em || '')));\n  if ((mensagens || []).some((x) => x && x.msg_id === inId)) return null; // já processada (webhook repetido)\n  const k = chaveTel(m.telefone);\n  const cands = (empresas || []).filter((e) => e && k && chaveTel(e.telefone) === k);\n  const e = cands.find((x) => x.pipedrive_deal_id) || cands[0] || null;\n  const cl = classificar(m.texto);\n  const teste = !!e && String(e.company_id).startsWith('c_teste_');\n  const real = cfg.MODO_EXECUCAO === 'PRODUCAO' || teste;\n  const f = (c) => cfg['PD2_FIELD_' + c];\n  const opt = (c, s) => cfg['PD2_OPT_' + c + '_' + s];\n  const entrada = { msg_id: inId, company_id: e ? e.company_id : 'r_' + (k || 'sem_numero'), deal_id: e && e.pipedrive_deal_id ? String(e.pipedrive_deal_id) : '', direcao: 'entrada', canal: 'whatsapp_n2', telefone: m.telefone, passo: '', texto: String(m.texto || '').slice(0, 4000), intencao: cl.intencao, status: 'recebida', motivo: 'regra: ' + cl.regra + ' (confiança ' + cl.confianca + ')', modo: cfg.MODO_EXECUCAO + (teste ? '_TESTE' : ''), wa_message_id: m.wa_message_id || '', criado_em: m.recebido_em || quando };\n  const ev = (tipo, motivo, dados) => ({ event_id: 'e_w08_' + inId + '_' + tipo.toLowerCase(), correlation_id: entrada.deal_id ? 'deal_' + entrada.deal_id : entrada.company_id, company_id: entrada.company_id, workflow: 'ATOM2_W08', tipo, motivo, dados: JSON.stringify(dados || {}), ocorrido_em: quando });\n\n  // 1) Número desconhecido → lead receptivo (funil Atendimento Receptivo, etapa Novo lead). Sem resposta automática.\n  if (!e) {\n    if (!k) return { entrada: { ...entrada, status: 'descartada', motivo: 'telefone inválido' }, pd: [{ ...NOOP }], evento: ev('ENTRADA_INVALIDA', 'telefone inválido') };\n    const empresaNova = { company_id: entrada.company_id, nome: 'Contato WhatsApp +' + String(m.telefone).replace(/\\D/g, ''), telefone: String(m.telefone).replace(/\\D/g, ''), fluxo: 'receptivo', status: 'novo', funil_etapa: 'IN_NOVO', status_motivo: 'Lead receptivo pelo WhatsApp', owner: 'Thiago', opt_out: cl.intencao === 'OPT_OUT', lote_id: 'RECEPTIVO', criado_em: quando, atualizado_em: quando };\n    const body = { title: empresaNova.nome + ' — Receptivo', pipeline_id: Number(cfg.PD2_PIPE_IN_ID), stage_id: Number(cfg.PD2_STAGE_IN_NOVO_ID), status: 'open', visible_to: 3 };\n    if (f('ORIGEM') && opt('ORIGEM', 'RECEPTIVO')) body[f('ORIGEM')] = Number(opt('ORIGEM', 'RECEPTIVO'));\n    if (f('CANAL') && opt('CANAL', 'WHATSAPP_N_2')) body[f('CANAL')] = Number(opt('CANAL', 'WHATSAPP_N_2'));\n    if (f('PROXIMA_ACAO')) body[f('PROXIMA_ACAO')] = 'Responder o primeiro contato (receptivo)';\n    // Receptivo real só cria negócio em PRODUCAO (em SIMULACAO não há leads reais chegando por aqui).\n    const pode = cfg.MODO_EXECUCAO === 'PRODUCAO' && cfg.PD2_PIPE_IN_ID && cfg.PD2_STAGE_IN_NOVO_ID;\n    return { entrada, empresa: empresaNova, empresaNova: true, pd: [pode ? { method: 'POST', url: API + '/deals', body } : { ...NOOP }], tarefa: pode ? { subject: 'Novo lead receptivo no WhatsApp: responder', nota: 'Primeira mensagem: ' + entrada.texto } : null, evento: ev('LEAD_RECEPTIVO', cl.intencao, { simulado: !pode }) };\n  }\n\n  // 2) Lead conhecido. Já tinha opt-out: só registra.\n  const cad = (cadencias || []).find((c) => c && String(c.deal_id) === String(e.pipedrive_deal_id) && c.status === 'ativa') || null;\n  const aud = (auditorias || []).filter((a) => a && a.company_id === e.company_id && a.qa_status === 'aprovado').sort((x, y) => String(y.qa_em || '').localeCompare(String(x.qa_em || '')))[0] || null;\n  const principal = aud ? (achados || []).find((x) => x && x.finding_id === aud.principal_finding_id) : null;\n  const propostaEnviada = ['F9', 'F10', 'IN_PROPOSTA', 'IN_NEGOCIACAO'].includes(e.funil_etapa); // W10 marca F9/IN_PROPOSTA ao enviar\n  let intencao = cl.intencao;\n  if (propostaEnviada && !['OPT_OUT', 'SEM_INTERESSE'].includes(intencao)) intencao = classificarPosProposta(m.texto) || intencao;\n  if (cl.confianca < 0.8 && !['OPT_OUT', 'SEM_INTERESSE'].includes(intencao) && intencao === cl.intencao) intencao = 'AMBIGUA';\n  const perdido = !!PERDA[intencao];\n\n  // Resposta automática (só com script aprovado, placeholders resolvidos e trava de preço ok).\n  let resposta = null;\n  const link = aud && aud.diag_token && cfg.DIAG_BASE_URL ? cfg.DIAG_BASE_URL + '?t=' + aud.diag_token : '';\n  if (RESPOSTAS[intencao] && !(intencao === 'PRECO' && propostaEnviada) && !(e.opt_out === true || String(e.opt_out) === 'true')) {\n    const texto = preencher(RESPOSTAS[intencao], e.contato_nome, e.nome, principal && principal.trecho, link);\n    // Depois da proposta o preço está liberado, mas promessas proibidas continuam bloqueadas.\n    const b = propostaEnviada ? bloqueios(texto).filter((x) => !x.startsWith('preço')) : bloqueios(texto);\n    const pendente = /\\[(link|achado|Nome|Empresa)\\]/.test(texto);\n    const canalOk = !!cfg.WA_N2_PHONE_NUMBER_ID;\n    const status = b.length || pendente ? 'bloqueada' : !real ? 'simulada' : teste ? 'simulada_teste' : canalOk ? 'pronta_envio' : 'bloqueada';\n    const motivo = b.length ? b.join('; ') : pendente ? 'falta ' + texto.match(/\\[(link|achado|Nome|Empresa)\\]/)[1] + ': revisão humana' : status === 'bloqueada' ? 'WhatsApp nº 2 não configurado (WA_N2_PHONE_NUMBER_ID)' : status === 'simulada' ? 'SIMULACAO: nada enviado' : teste ? 'registro de teste: sem envio' : '';\n    resposta = { msg_id: 'out_' + inId, company_id: e.company_id, deal_id: entrada.deal_id, direcao: 'saida', canal: 'whatsapp_n2', telefone: e.telefone, passo: 'R_' + intencao, texto, intencao, status, motivo, modo: entrada.modo, criado_em: quando };\n  }\n\n  // Recepção indicou o responsável: grava o nome e deixa a mensagem ao decisor pronta (o Thiago confere e envia).\n  const pessoa = intencao === 'ENCAMINHAMENTO' ? extrairPessoa(m.texto) : '';\n  const fone = intencao === 'ENCAMINHAMENTO' ? telefoneDe(m.texto) : '';\n  if (pessoa && aud && aud.mensagem_decisor && !(e.opt_out === true || String(e.opt_out) === 'true')) {\n    const texto = String(aud.mensagem_decisor).replace('[Nome]', pessoa);\n    const b = bloqueios(texto);\n    resposta = { msg_id: 'out_' + inId, company_id: e.company_id, deal_id: entrada.deal_id, direcao: 'saida', canal: 'whatsapp_n2', telefone: e.telefone, passo: 'R_DECISOR', texto, intencao, status: b.length ? 'bloqueada' : 'rascunho_humano', motivo: b.length ? b.join('; ') : 'mensagem ao decisor (' + pessoa + (fone ? ', ' + fone : '') + '): o Thiago confere e envia', modo: entrada.modo, criado_em: quando };\n  }\n\n  // Cadência: qualquer resposta encerra (perdido = encerrada; demais = respondeu). \"Pode enviar\" com o link do diagnóstico\n  // abre a trilha pós-diagnóstico (W07: D9 convite em 2 dias úteis, D12 encerramento), que para se o lead responder.\n  const abrePos = intencao === 'PODE_ENVIAR' && resposta && !['bloqueada'].includes(resposta.status) && e.pipedrive_deal_id;\n  const cadencia = abrePos ? { deal_id: String(e.pipedrive_deal_id), funil: 'POS', status: 'ativa', passo_atual: '', proximo_passo: 'D9', proximo_em: somarDiasUteis(quando, 2), motivo_fim: '', atualizado_em: quando }\n    : cad ? { deal_id: cad.deal_id, status: perdido ? 'encerrada' : 'respondeu', motivo_fim: intencao.toLowerCase(), atualizado_em: quando } : null;\n  const empresa = { company_id: e.company_id, atualizado_em: quando, status_motivo: 'Respondeu: ' + intencao };\n  if (pessoa) empresa.contato_nome = pessoa;\n  if (intencao === 'OPT_OUT') { empresa.opt_out = true; empresa.funil_etapa = 'F11'; empresa.status_motivo = 'Opt-out pelo WhatsApp'; }\n  else if (perdido) { empresa.funil_etapa = 'F11'; empresa.status_motivo = 'Perdido: ' + PERDA[intencao]; }\n  else if (['F4', 'F5'].includes(e.funil_etapa)) empresa.funil_etapa = 'F6';\n\n  // Pipedrive (fase 1): etapa/campos/perda. Em SIMULACAO, só registros de teste.\n  const body = {};\n  if (f('INTENCAO') && opt('INTENCAO', OPCAO[intencao] || 'AMBIGUA')) body[f('INTENCAO')] = Number(opt('INTENCAO', OPCAO[intencao] || 'AMBIGUA'));\n  if (f('ULTIMO_CONTATO')) body[f('ULTIMO_CONTATO')] = quando.slice(0, 10);\n  if (cad && f('TOQUE') && cfg.PD2_OPT_TOQUE_ENCERRADA) body[f('TOQUE')] = Number(cfg.PD2_OPT_TOQUE_ENCERRADA);\n  if (intencao === 'OPT_OUT' && f('PERMISSAO') && opt('PERMISSAO', 'OPT_OUT')) body[f('PERMISSAO')] = Number(opt('PERMISSAO', 'OPT_OUT'));\n  if (perdido) { body.status = 'lost'; body.lost_reason = PERDA[intencao]; }\n  else if (['F4', 'F5'].includes(e.funil_etapa) && cfg.PD2_STAGE_OUT_RESPONDEU_ID && String(e.fluxo) !== 'receptivo') body.stage_id = Number(cfg.PD2_STAGE_OUT_RESPONDEU_ID);\n  else if (e.funil_etapa === 'IN_NOVO' && cfg.PD2_STAGE_IN_ATENDIMENTO_ID) { body.stage_id = Number(cfg.PD2_STAGE_IN_ATENDIMENTO_ID); empresa.funil_etapa = 'IN_ATENDIMENTO'; }\n  if (f('PROXIMA_ACAO')) body[f('PROXIMA_ACAO')] = perdido ? 'Encerrado: ' + PERDA[intencao] : TAREFA[intencao] || 'Responder lead';\n  const pd = [real && e.pipedrive_deal_id ? { method: 'PUT', url: API + '/deals/' + e.pipedrive_deal_id, body } : { ...NOOP }];\n  const tarefa = real && e.pipedrive_deal_id && !perdido ? { subject: (pessoa ? 'Enviar a mensagem ao decisor: ' + pessoa : TAREFA[intencao]) || 'Responder lead', nota: 'Mensagem do lead (' + intencao + '): ' + entrada.texto + (fone ? '\\nTelefone indicado: ' + fone : '') + (resposta ? '\\n\\nResposta ' + resposta.status + ': ' + resposta.texto : '') } : null;\n  return { entrada, resposta, cadencia, empresa, pd, tarefa, evento: ev('RESPOSTA_' + intencao, cl.regra, { confianca: cl.confianca, resposta: resposta ? resposta.status : null }) };\n}\n\n\n// Entrada: webhook (token ?k= igual a WA_WEBHOOK_TOKEN) ou mensagem de teste (execução manual).\nconst cfgRows = $('Ler configuração').all().map((i) => i.json);\nconst doWebhook = $('WhatsApp (entrada)').isExecuted;\nconst req = doWebhook ? $('WhatsApp (entrada)').first().json : $('Mensagem de teste').first().json;\nif (doWebhook) {\n  const tok = (cfgRows.find((r) => r && r.chave === 'WA_WEBHOOK_TOKEN') || {}).valor;\n  if (!tok || String((req.query || {}).k || '') !== String(tok)) return [];\n}\nconst ctx = { empresas: $('Ler empresas').all().map((i) => i.json), cadencias: $('Ler cadências ativas').all().map((i) => i.json), auditorias: $('Ler auditorias aprovadas').all().map((i) => i.json), achados: $('Ler achados principais').all().map((i) => i.json), cfgRows, mensagens: $('Ler mensagens recebidas').all().map((i) => i.json), agora: new Date().toISOString() };\nconst out = [];\nfor (const m of normalizarEntrada(req.body)) {\n  const d = decidir(m, ctx);\n  if (!d) continue;\n  ctx.mensagens.push({ msg_id: d.entrada.msg_id });\n  out.push(d);\n}\n// Fase 1 usa method/url/body; a decisão inteira segue em \"decisao\" para as etapas seguintes.\nreturn out.map((d) => ({ json: { ...d.pd[0], decisao: d } }));"
+        }
+      },
+      {
+        "id": "84323de6-d851-44c3-b68d-8f110d06985d",
+        "name": "Pipedrive fase 1 (negócio)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1980,
+          300
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 300
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "a1504e71-44f4-4bac-bf78-9296511b634c",
+        "name": "Plano fase 2",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2200,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W08 · Plano fase 2 (trecho de n8n/code/w08_roteador.js).\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\n// Fase 2: nota com a conversa + atividade para o Thiago, no negócio (existente ou recém-criado).\nfunction planoFase2(d, respFase1) {\n  if (!d || !d.tarefa) return [{ ...NOOP }];\n  const criado = d.pd[0].method === 'POST' && respFase1 && respFase1.success && respFase1.data ? respFase1.data.id : null;\n  const deal = criado || (d.entrada.deal_id ? Number(d.entrada.deal_id) : null);\n  if (!deal) return [{ ...NOOP }];\n  const hoje = d.evento.ocorrido_em.slice(0, 10);\n  return [\n    { method: 'POST', url: API + '/notes', body: { deal_id: deal, content: d.tarefa.nota.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\\n/g, '<br>') } },\n    { method: 'POST', url: API + '/activities', body: { deal_id: deal, subject: d.tarefa.subject, type: 'task', due_date: hoje } }\n  ];\n}\nconst decisoes = $('Decidir').all().map((i) => i.json).map((x) => x.decisao);\nconst resp = $('Pipedrive fase 1 (negócio)').all().map((i) => i.json);\nconst out = [];\ndecisoes.forEach((d, i) => planoFase2(d, resp[i]).forEach((p) => out.push({ json: p })));\nreturn out;"
+        }
+      },
+      {
+        "id": "416cf317-2c54-4f79-9f96-e8c22210ab3f",
+        "name": "Pipedrive fase 2 (nota e atividade)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2420,
+          300
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 300
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "7ea44d47-190b-4c41-a928-3015de072ff8",
+        "name": "Registros",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2640,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W08 · Registros internos depois das duas fases (trecho de n8n/code/w08_roteador.js).\nfunction registros(d, respFase1) {\n  const out = [];\n  const ok1 = d.pd[0].method === 'GET' || (respFase1 && respFase1.success === true);\n  const criado = d.pd[0].method === 'POST' && ok1 && respFase1.data ? String(respFase1.data.id) : '';\n  out.push({ destino: 'mensagem', linha: criado ? { ...d.entrada, deal_id: criado } : d.entrada });\n  if (d.resposta) out.push({ destino: 'mensagem', linha: d.resposta });\n  if (d.cadencia) out.push({ destino: 'cadencia', linha: d.cadencia });\n  if (d.empresa) out.push({ destino: d.empresaNova ? 'empresa_nova' : 'empresa', linha: criado ? { ...d.empresa, pipedrive_deal_id: criado } : d.empresa });\n  out.push({ destino: 'evento', linha: d.evento });\n  if (!ok1) out.push({ destino: 'evento', linha: { ...d.evento, event_id: d.evento.event_id + '_crm_falha', tipo: 'CRM_FALHA', motivo: 'Pipedrive recusou a atualização', dados: JSON.stringify({ erro: (respFase1 && (respFase1.error || respFase1.error_info)) || null }) } });\n  return out;\n}\nconst decisoes = $('Decidir').all().map((i) => i.json).map((x) => x.decisao);\nconst resp = $('Pipedrive fase 1 (negócio)').all().map((i) => i.json);\nconst out = [];\ndecisoes.forEach((d, i) => registros(d, resp[i]).forEach((r) => out.push({ json: r })));\nreturn out;"
+        }
+      },
+      {
+        "id": "2b729881-e0c3-4734-bf6e-60282e3d48eb",
+        "name": "Roteador",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          2860,
+          300
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "mensagem",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "mensagem"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "cadencia",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "cadencia"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "empresa",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "empresa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "empresa_nova",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "empresa_nova"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "evento",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "evento"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "a7d107b5-1dc2-4013-95c1-d7e8ecd73c35",
+        "name": "Linha mensagem",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3080,
+          0
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "acd55f8b-590e-489a-9d03-6407f31a07ac",
+        "name": "Gravar mensagem",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3300,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "XU5IdQgGNqhpBRxM",
+            "cachedResultName": "atom2_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "msg_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.msg_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "ebd67236-de34-48f3-bf3a-0e684e2936d6",
+        "name": "Linha cadência",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3080,
+          150
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "4cd82fff-774a-45ce-bd41-7c7f2759b8cf",
+        "name": "Atualizar cadência",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3300,
+          150
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yg5jYnoqI2f4aYOd",
+            "cachedResultName": "atom2_cadencia"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "bcb71563-f92f-469d-9939-a0523875d44b",
+        "name": "Linha empresa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3080,
+          300
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "a2c1dc97-ee53-48ae-9fdd-80489604239f",
+        "name": "Atualizar empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3300,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "d3d3dcb1-0d59-4daa-aad8-e60d57683bf7",
+        "name": "Linha lead receptivo",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3080,
+          450
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "50e26811-87ef-4c95-9648-7befa038d3ea",
+        "name": "Gravar lead receptivo",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3300,
+          450
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "a0b96fb5-697b-4d15-a78c-9a366c09e6fa",
+        "name": "Linha evento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3080,
+          600
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "5aba4200-3447-4507-bd5a-a051e945a053",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3300,
+          600
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "182d56c7-bb83-4bb9-9ba6-3e00bca78d66",
+        "name": "Verificação Meta (GET)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          800
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom2-wa-entrada",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "ed332896-1ea3-4d5f-a27d-7993bd3a704a"
+      },
+      {
+        "id": "b9f3b4c7-3f55-498f-a581-00718b60f8a8",
+        "name": "Ler configuração (verificação)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          800
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "5dc363a8-3a6e-4f4f-82c1-9392195dd0b4",
+        "name": "Desafio",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          440,
+          800
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// Meta envia hub.mode=subscribe, hub.verify_token e hub.challenge; devolve o challenge só com o token certo.\nconst q = $('Verificação Meta (GET)').first().json.query || {};\nconst tok = ($('Ler configuração (verificação)').all().map((i) => i.json).find((r) => r && r.chave === 'WA_VERIFY_TOKEN') || {}).valor;\nconst ok = !!tok && q['hub.mode'] === 'subscribe' && String(q['hub.verify_token']) === String(tok);\nreturn [{ json: { ok, corpo: ok ? String(q['hub.challenge'] || '') : 'forbidden' } }];"
+        }
+      },
+      {
+        "id": "2e73a60f-5ef0-4b10-baa5-b808734fdbcd",
+        "name": "Responder verificação",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          800
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.corpo }}",
+          "options": {
+            "responseCode": "={{ $json.ok ? 200 : 403 }}"
+          }
+        }
+      },
+      {
+        "id": "d9295e08-6da7-4869-9937-e6aea8bfa0d8",
+        "name": "Sticky Note 02371ecf",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -300
+        ],
+        "parameters": {
+          "content": "## ATOM2_W08 · Roteador de respostas (WhatsApp nº 2)\nPOST /webhook/atom2-wa-entrada?k=WA_WEBHOOK_TOKEN (formato WhatsApp Cloud API ou { telefone, texto, wa_message_id }). GET = verificação da Meta (WA_VERIFY_TOKEN).\nRegras determinísticas → intenção; qualquer resposta encerra a cadência; opt-out/sem interesse/agora não → perdido com motivo nativo.\n**Regra absoluta:** pergunta de preço recebe a resposta SEM preço aprovada; os scripts com R$ não são usados.\nNúmero desconhecido → lead no funil Atendimento Receptivo (só em PRODUCAO).\nSIMULACAO: grava tudo, Pipedrive só para c_teste_*. Fonte: n8n/code/w08_roteador.js · testes: n8n/tests/run_w08.js",
+          "color": 4,
+          "width": 640,
+          "height": 240
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: WhatsApp (entrada)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-wa-entrada\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-wa-entrada\n\t\t\t\t\t - HTTP Method: POST\n\t\t\t\t\t - Response Mode: Webhook is configured to respond immediately with the message \"Workflow got started.\"\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\n\n\t\t\t\t<trigger 2>\n\t\t\t\t\t - Node name: Verificação Meta (GET)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-wa-entrada\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-wa-entrada\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 2>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }."
+}

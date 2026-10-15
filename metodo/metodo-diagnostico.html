@@ -414,10 +414,6 @@ table.t input { width: 100px; padding: 6px 8px; border: 1px solid var(--fio-fort
 .painel-c .dl div { padding: 6px 0; }
 .conectado { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--verde-texto); }
 
-/* Casos */
-.casos-nav { display: flex; gap: 6px 26px; flex-wrap: wrap; border-bottom: 1px solid var(--fio); margin-bottom: 34px; }
-.casos-nav button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 10px 0; margin-bottom: -1px; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--suave); }
-.casos-nav button[aria-selected="true"] { color: var(--roxo); border-bottom-color: var(--verde); }
 
 .vazio { padding: 40px 0; border-top: 1px solid var(--fio); border-bottom: 1px solid var(--fio); display: grid; gap: 10px; justify-items: start; color: var(--suave); }
 .matriz td a { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--roxo); }
@@ -441,7 +437,6 @@ footer .url { font-family: var(--mono); font-size: 12px; letter-spacing: .3em; p
       <a href="#site-metodo" data-nav="tipo">Diagnósticos</a>
       <a href="#gerar" data-nav="gerar">Gerar</a>
       <a href="#custos" data-nav="custos">Metas e custos</a>
-      <a href="#casos" data-nav="casos">Casos</a>
       <a href="#gerados" data-nav="gerados">Gerados</a>
     </nav>
   </div>
@@ -474,7 +469,7 @@ const tiposComArea = a => TIPOS.filter(t => t.areas.includes(a));
 let plan = JSON.parse(JSON.stringify(PLANEJAMENTO_PADRAO));
 plan.cambioEUR = plan.cambioEUR ?? 5.80; plan.precos = plan.precos || {}; plan.mensal = plan.mensal || {};
 let db = null, meuId = null, dbPronto = false, gerados = [], planDoc = null;
-let sel = { ponto: {}, area: {}, passo: {}, gPasso: "cliente", gArea: null }, destaque = null, casoSel = 0;
+let sel = { ponto: {}, area: {}, passo: {}, gPasso: "cliente", gArea: null }, destaque = null;
 let rascunho = null;
 
 /* ======================= CUSTOS ======================= */
@@ -992,15 +987,6 @@ function telaCustos() {
     <tr class="total"><td>Sai do bolso por diagnóstico (fora das franquias)</td>${TIPOS.map(t => `<td class="r num">${brl(custoConsumo(consumoEfetivo(t.id)).total, 2)}</td>`).join("")}</tr></tbody></table></div></section>`;
 }
 
-/* ---------- Casos ---------- */
-function telaCasos() {
-  const c = CASOS[casoSel];
-  return `<section class="secao"><div class="cab"><span class="over">Casos de referência</span><h1>O que cada cliente <b>ensinou ao método</b></h1><p class="lead">Diagnósticos já feitos pela Atom, organizados em contexto, evidências, gargalos e direção. Conteúdo dos materiais enviados, sem nova verificação das fontes externas.</p></div>
-    <div class="casos-nav" role="tablist">${CASOS.map((x, i) => `<button type="button" role="tab" aria-selected="${i === casoSel}" data-caso="${i}">${esc(x.nome)}</button>`).join("")}</div>
-    <div class="cab-linha"><div class="cab"><span class="over">${esc(c.tema)} · diagnóstico ${esc(tipo(c.tipo).nome)}</span><h2>${esc(c.nome)}</h2><p class="lead">${esc(c.problema)}</p></div><div class="acoes"><a class="btn sec" href="${c.url}" target="_blank" rel="noopener">Abrir o material ↗</a><a class="btn sec" href="#${c.tipo}-metodo">Ver o diagnóstico ${esc(tipo(c.tipo).nome)} →</a></div></div>
-    <div class="colunas cartoes">${c.blocos.map(([t, itens], i) => `<div class="col ${i === 3 ? "destaque" : ""}"><span class="cap num">${pad(i)}</span><h4>${esc(t)}</h4><ul class="setas">${itens.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></div>`).join("")}</div></section>`;
-}
-
 /* ---------- Gerar ---------- */
 function novoRascunho(tipos, exemplo) {
   const marc = {}, dentro = {}, evid = {};
@@ -1438,7 +1424,6 @@ function rota() {
   let nav = "inicio", t = null, aba = null;
   if (h === "gerar") { nav = "gerar"; tela.innerHTML = telaGerar(); ligarGerar(); resultado(); }
   else if (h === "custos") { nav = "custos"; tela.innerHTML = telaCustos(); ligarCustos(); }
-  else if (h === "casos") { nav = "casos"; tela.innerHTML = telaCasos(); ligarCasos(); }
   else if (h === "gerados") { nav = "gerados"; tela.innerHTML = telaGerados(); ligarGerados(); }
   else {
     [t, aba] = [tipo(h.split("-")[0]), h.split("-")[1]];
@@ -1482,7 +1467,6 @@ function ligarProcesso(t) {
   document.addEventListener("keydown", ppTecla);
   detPasso(t);
 }
-function ligarCasos() { document.querySelectorAll("[data-caso]").forEach(b => b.onclick = () => { casoSel = +b.dataset.caso; rota(); }); }
 function ligarCustos() {
   const redesenha = foco => { const y = scrollY; document.getElementById("tela").innerHTML = telaCustos(); ligarCustos(); scrollTo(0, y); const el = foco && document.querySelector(foco); if (el) { el.focus(); const v = el.value; el.value = ""; el.value = v; } };
   document.querySelectorAll("[data-plan]").forEach(i => i.onchange = () => { plan[i.dataset.plan] = Math.max(0, parseFloat(i.value) || 0); redesenha(`[data-plan="${i.dataset.plan}"]`); });

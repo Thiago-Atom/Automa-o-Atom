@@ -1,0 +1,1044 @@
+{
+  "workflow": {
+    "id": "89HW72ImjhfEMEZS",
+    "name": "ATOM_13_Mensagens_IA",
+    "active": false,
+    "isArchived": false,
+    "versionId": "5ac2815d-378e-4029-90d7-7545406440e7",
+    "activeVersionId": null,
+    "triggerCount": 1,
+    "nodeCount": 24,
+    "createdAt": "2026-09-29T00:40:35.836Z",
+    "updatedAt": "2026-10-01T22:54:26.625Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Escreve com IA (Claude) uma mensagem personalizada para cada cliente do funil, com contexto do Pipedrive; envia pela Zayra ou gera tarefa com a mensagem pronta.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "A cada 10 minutos": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mensagens agendadas": {
+        "main": [
+          [
+            {
+              "node": "Selecionar vencidas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Selecionar vencidas": {
+        "main": [
+          [
+            {
+              "node": "Uma por vez",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar negócio": {
+        "main": [
+          [
+            {
+              "node": "Buscar pessoa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar pessoa": {
+        "main": [
+          [
+            {
+              "node": "Buscar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar empresa": {
+        "main": [
+          [
+            {
+              "node": "Buscar notas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar notas": {
+        "main": [
+          [
+            {
+              "node": "Buscar atividades feitas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar atividades feitas": {
+        "main": [
+          [
+            {
+              "node": "Mensagens anteriores",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mensagens anteriores": {
+        "main": [
+          [
+            {
+              "node": "Montar contexto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar contexto": {
+        "main": [
+          [
+            {
+              "node": "Cancelar envio?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cancelar envio?": {
+        "main": [
+          [
+            {
+              "node": "Marcar cancelada",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "IA escreve a mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar cancelada": {
+        "main": [
+          [
+            {
+              "node": "Uma por vez",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Uma por vez": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Buscar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IA escreve a mensagem": {
+        "main": [
+          [
+            {
+              "node": "Preparar saída",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Claude": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "IA escreve a mensagem",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar saída": {
+        "main": [
+          [
+            {
+              "node": "Enviar pela Zayra?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar pela Zayra?": {
+        "main": [
+          [
+            {
+              "node": "Zayra envia no WhatsApp",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Tarefa com mensagem pronta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Zayra envia no WhatsApp": {
+        "main": [
+          [
+            {
+              "node": "Resultado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resultado": {
+        "main": [
+          [
+            {
+              "node": "Atualizar mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar mensagem": {
+        "main": [
+          [
+            {
+              "node": "Uma por vez",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tarefa com mensagem pronta": {
+        "main": [
+          [
+            {
+              "node": "Resultado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Campos do negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos do negócio": {
+        "main": [
+          [
+            {
+              "node": "Mensagens agendadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "2545c117-bc47-4e25-8cc7-feec11e572ed",
+        "name": "A cada 10 minutos",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          272
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 10
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "86d538ae-0ec5-4ea8-9145-816c3cb7988a",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          272
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "698695d7-ce14-4dd7-8586-f8dadf1f3b72",
+        "name": "Mensagens agendadas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          272
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "zzbPCzCqyhV9ZklK",
+            "cachedResultName": "atom_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "AGENDADA"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "d3f267e7-8c91-493c-8d4c-8d4401c46893",
+        "name": "Selecionar vencidas",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          272
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// ===== Selecionar vencidas =====\nfunction selecionar(configItems, msgItems, agora) {\n  const cfg = {};\n  for (const i of configItems) { const r = i.json || i; if (r && r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\n  const hc = (cfg.HORARIO_COMERCIAL && cfg.HORARIO_COMERCIAL.valor) || '09:00-18:00;1,2,3,4,5';\n  const p = hc.split(';'); const hs = p[0].split('-');\n  const min = (x) => { const q = x.split(':'); return Number(q[0]) * 60 + Number(q[1] || 0); };\n  const dias = (p[1] || '1,2,3,4,5').split(',').map(Number);\n  const loc = new Date(agora - 3 * 3600000);\n  const dow = loc.getUTCDay() === 0 ? 7 : loc.getUTCDay();\n  const m = loc.getUTCHours() * 60 + loc.getUTCMinutes();\n  // Humanizado: só escreve para clientes em horário comercial\n  if (!dias.includes(dow) || m < min(hs[0]) || m >= min(hs[1])) return [];\n  return msgItems.map((i) => i.json || i)\n    .filter((r) => r && r.id && r.status === 'AGENDADA' && Date.parse(r.agendado_para) <= agora)\n    .sort((a, b) => Date.parse(a.agendado_para) - Date.parse(b.agendado_para))\n    .slice(0, 8);\n}\n\n\nreturn selecionar($('Ler configuração').all(), $input.all(), Date.now()).map((r) => ({ json: r }));\n"
+        }
+      },
+      {
+        "id": "ff3ccb3a-d442-49db-9d9f-9a59b7e68990",
+        "name": "Buscar negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "1b5ce0fa-e24d-4e98-afdc-be8823e011d8",
+        "name": "Buscar pessoa",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/persons/{{ $json.data && $json.data.person_id ? $json.data.person_id : 0 }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "fa8b007e-fb64-4224-9431-9216d25d3f1c",
+        "name": "Buscar empresa",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/organizations/{{ $('Buscar negócio').first().json.data && $('Buscar negócio').first().json.data.org_id ? $('Buscar negócio').first().json.data.org_id : 0 }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "cb919cee-fbc4-46bb-8456-bc9a815adb95",
+        "name": "Buscar notas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1792,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/v1/notes",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "deal_id",
+                "value": "={{ $('Uma por vez').first().json.deal_id }}"
+              },
+              {
+                "name": "limit",
+                "value": "15"
+              },
+              {
+                "name": "sort",
+                "value": "add_time DESC"
+              }
+            ]
+          },
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "d06ac2f8-a82d-4078-8add-07cfec2d9b18",
+        "name": "Buscar atividades feitas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2016,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/activities",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "deal_id",
+                "value": "={{ $('Uma por vez').first().json.deal_id }}"
+              },
+              {
+                "name": "limit",
+                "value": "50"
+              }
+            ]
+          },
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "3c6ae953-38c9-439e-b276-4b1e3149f87a",
+        "name": "Mensagens anteriores",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2240,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "zzbPCzCqyhV9ZklK",
+            "cachedResultName": "atom_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Uma por vez').first().json.deal_id }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e55b105a-e04c-4608-a6af-91f7c51db6c1",
+        "name": "Montar contexto",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2464,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// ===== Montar contexto =====\nfunction montarContexto(e) {\n  const cfg = {};\n  for (const i of e.config) { const r = i.json || i; if (r && r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\n  const val = (k, d) => (cfg[k] && cfg[k].valor && !/^PENDENTE/i.test(cfg[k].valor) ? cfg[k].valor : d);\n  const ok = (k) => cfg[k] && cfg[k].status === 'CONFIGURADO' && cfg[k].valor && !/^PENDENTE/i.test(cfg[k].valor);\n  const row = e.msg;\n  const deal = e.deal && e.deal.success ? e.deal.data : null;\n  const pessoa = e.pessoa && e.pessoa.success ? e.pessoa.data : null;\n  const org = e.org && e.org.success ? e.org.data : null;\n  const limpar = (s) => String(s || '').replace(/<br\\s*\\/?>/gi, '\\n').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/[ \\t]+/g, ' ').replace(/\\n{3,}/g, '\\n\\n').trim();\n  const cf = (ent, chave) => {\n    const id = val(chave, ''); if (!ent || !id) return '';\n    let x = (ent.custom_fields || {})[id]; if (x && typeof x === 'object') x = x.value !== undefined ? x.value : (x.label || JSON.stringify(x));\n    return x === null || x === undefined ? '' : String(x).trim();\n  };\n  const base = { row_id: row.id, deal_id: row.deal_id, tipo_msg: row.tipo_msg, objetivo: row.objetivo };\n\n  const tipo = String(row.tipo_msg || '');\n  const ehPos = /^POS_/.test(tipo);\n  const ehLembreteReuniao = tipo === 'LEMBRETE_VESPERA' || tipo === 'LEMBRETE_1H';\n  const todas = ((e.atividades && e.atividades.data) || []);\n  const pendentes = todas.filter((a) => !a.done);\n  const agoraMs = e.agora || Date.now();\n  const fmtQuando = (data, hora) => { const ms = Date.parse(data + 'T' + String(hora).slice(0, 5) + ':00Z') - 3 * 3600000; const d = new Date(ms); const dias = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']; return dias[d.getUTCDay()] + ', ' + d.toISOString().slice(8, 10) + '/' + d.toISOString().slice(5, 7) + ' às ' + d.toISOString().slice(11, 16); };\n  const reuniaoFutura = pendentes.filter((a) => a.type === 'meeting' && a.due_date && a.due_time && Date.parse(a.due_date + 'T' + String(a.due_time).slice(0, 5) + ':00Z') > agoraMs)\n    .sort((a, b) => (a.due_date + a.due_time).localeCompare(b.due_date + b.due_time))[0];\n\n  if (!deal) return Object.assign(base, { cancelar: true, motivo: 'Negócio não encontrado' });\n  if (ehPos ? (deal.status === 'lost' || deal.status === 'deleted') : deal.status !== 'open') return Object.assign(base, { cancelar: true, motivo: 'Negócio ' + deal.status });\n  if (!ehPos && !ehLembreteReuniao && Number(deal.stage_id) !== Number(row.stage_id)) return Object.assign(base, { cancelar: true, motivo: 'Card mudou de etapa antes do envio' });\n  const naoContatar = cf(pessoa, 'PD_PERSON_NAO_CONTATAR');\n  if (/^(sim|true|1|yes)$/i.test(naoContatar)) return Object.assign(base, { cancelar: true, motivo: 'Contato pediu para não ser contatado' });\n  let reuniaoRef = null;\n  if (ehLembreteReuniao) {\n    const p = String(row.ref || '').split('|');\n    const a = pendentes.find((x) => String(x.id) === p[0]);\n    if (!a || a.due_date !== p[1] || String(a.due_time || '').slice(0, 5) !== p[2]) return Object.assign(base, { cancelar: true, motivo: 'Reunião concluída, cancelada ou remarcada' });\n    reuniaoRef = a;\n  }\n  if (/^(FOLLOWUP_|DIAG_FUP_|ABORDAGEM_[23])/.test(tipo) && reuniaoFutura) return Object.assign(base, { cancelar: true, motivo: 'Reunião já agendada — mensagem de cobrança desnecessária' });\n  if (tipo === 'ETAPA_9' && cf(deal, 'PD_DEAL_PROPOSTA_LINK')) return Object.assign(base, { cancelar: true, motivo: 'Proposta já enviada' });\n\n  const telefone = pessoa && Array.isArray(pessoa.phones) && pessoa.phones.length ? String((pessoa.phones.find((p) => p.primary) || pessoa.phones[0]).value || '') : '';\n  const nomeCompleto = pessoa ? String(pessoa.name || '').trim() : '';\n  const primeiroNome = nomeCompleto.split(/\\s+/)[0] || '';\n  const notas = ((e.notas && e.notas.data) || []).slice(0, 12).map((n) => '- ' + String(n.add_time || '').slice(0, 10) + ': ' + limpar(n.content).slice(0, 900)).join('\\n');\n  const feitas = todas.filter((a) => a.done && !String(a.subject || '').startsWith('[Funil]')).slice(0, 15)\n    .map((a) => '- ' + String(a.due_date || '') + ' ' + (a.type || '') + ': ' + limpar(a.subject) + (a.note ? ' — ' + limpar(a.note).slice(0, 300) : '')).join('\\n');\n  const anteriores = (e.anteriores || []).map((i) => i.json || i).filter((r) => r && r.texto && r.id !== row.id && /ENVIADA|PRONTA/.test(r.status || ''))\n    .sort((a, b) => Date.parse(a.criado_em) - Date.parse(b.criado_em)).slice(-5)\n    .map((r) => '- (' + r.tipo_msg + ') ' + r.texto).join('\\n');\n\n  const linhas = [];\n  const add = (rot, v) => { if (v) linhas.push(rot + ': ' + v); };\n  add('Nome do contato', nomeCompleto);\n  add('Empresa', (org && org.name) || deal.title);\n  add('Site da empresa', org && org.website);\n  add('Cidade', cf(org, 'PD_ORG_CIDADE'));\n  add('Serviço em negociação', cf(deal, 'PD_DEAL_SERVICO'));\n  add('Escopo', cf(deal, 'PD_DEAL_ESCOPO'));\n  add('Status do diagnóstico', cf(deal, 'PD_DEAL_DIAG_STATUS'));\n  add('Link do diagnóstico', cf(deal, 'PD_DEAL_DIAG_LINK'));\n  add('Link da proposta', cf(deal, 'PD_DEAL_PROPOSTA_LINK'));\n  // Demais campos preenchidos no card (dores, segmento, temperatura etc.), com o nome do campo\n  const usados = new Set(Object.keys(cfg).filter((k) => /^PD_/.test(k)).map((k) => cfg[k].valor));\n  const defs = {};\n  for (const f of (e.campos || [])) if (f && f.key) defs[f.key] = f;\n  for (const [k, bruto] of Object.entries(deal.custom_fields || {})) {\n    if (usados.has(k) || bruto === null || bruto === undefined || bruto === '') continue;\n    const def = defs[k]; if (!def || !def.name) continue;\n    let x = bruto; if (x && typeof x === 'object') x = x.value !== undefined ? x.value : null;\n    if (x === null || x === undefined || x === '') continue;\n    if (Array.isArray(def.options) && def.options.length) {\n      const ids = String(x).split(',').map((s) => s.trim());\n      const rot = ids.map((id) => (def.options.find((o) => String(o.id) === id) || {}).label).filter(Boolean);\n      if (rot.length) x = rot.join(', ');\n    }\n    add(def.name, limpar(String(x)).slice(0, 400));\n  }\n\n  const voz = val('FUNIL_IA_VOZ', 'Escreva como a equipe comercial da ATOM Digital, de forma humana, próxima e direta.');\n  const principios = val('FUNIL_IA_PRINCIPIOS', '');\n  const roteiro = val('FUNIL_ROTEIRO_' + tipo, row.objetivo || '');\n  const remetente = val('FUNIL_REMETENTE', 'Thiago');\n  const agenda = ok('FUNIL_LINK_AGENDA') ? val('FUNIL_LINK_AGENDA', '') : '';\n  const cases = ok('FUNIL_CASES') ? val('FUNIL_CASES', '') : '';\n  const hojeL = new Date(agoraMs - 3 * 3600000);\n  const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];\n  const hoje = diasSemana[hojeL.getUTCDay()] + ', ' + hojeL.toISOString().slice(8, 10) + '/' + hojeL.toISOString().slice(5, 7) + '/' + hojeL.toISOString().slice(0, 4) + ', ' + hojeL.toISOString().slice(11, 16);\n  const reuniao = reuniaoRef || reuniaoFutura;\n  const prompt = [\n    voz,\n    '',\n    'PRINCÍPIOS DE VENDA (aplique sem citar autores nem nomes de técnicas):',\n    principios,\n    '',\n    'AGORA: ' + hoje + ' (horário de Brasília). Quem assina e fala em primeira pessoa: ' + remetente + ', da ATOM.',\n    'TIPO DESTA MENSAGEM: ' + tipo,\n    '',\n    'ROTEIRO DESTA MENSAGEM — siga a estrutura e a intenção, mas escreva com naturalidade. Troque cada [COLCHETE] por um dado real do contexto abaixo. Se o dado não existir, reescreva a frase sem ele (nunca invente, nunca deixe colchete). Instruções entre parênteses são para você, não vão na mensagem:',\n    roteiro,\n    '',\n    'DADOS DO CLIENTE:',\n    linhas.join('\\n') || '(poucos dados cadastrados)',\n    reuniao ? 'Reunião agendada: ' + fmtQuando(reuniao.due_date, reuniao.due_time) + (reuniao.conference_meeting_url ? ' — link: ' + reuniao.conference_meeting_url : '') : 'Reunião agendada: nenhuma',\n    agenda ? 'Link de agenda para o cliente escolher horário: ' + agenda : 'Link de agenda: não há (proponha duas opções de dia útil a partir de amanhã)',\n    '',\n    'CASES REAIS QUE PODEM SER CITADOS:',\n    cases || '(nenhum cadastrado — não cite cases, clientes nem resultados de terceiros)',\n    '',\n    'NOTAS DO NEGÓCIO (mais recentes primeiro; inclui diagnóstico e resumo de reuniões quando houver):',\n    notas || '(sem notas)',\n    '',\n    'ATIVIDADES JÁ FEITAS PELO VENDEDOR:',\n    feitas || '(nenhuma registrada)',\n    '',\n    'CONVERSA NO WHATSAPP (Zayra):',\n    e.conversa || '(histórico ainda não conectado)',\n    '',\n    'MENSAGENS QUE JÁ ENVIAMOS A ESTE CLIENTE (não repita frases, ganchos nem aberturas):',\n    anteriores || '(nenhuma)',\n    '',\n    'REGRAS FINAIS:',\n    '- Chame o cliente pelo primeiro nome' + (primeiroNome ? ' (' + primeiroNome + ')' : ' se souber; se não souber, use um cumprimento neutro, sem nome') + '.',\n    '- Se as notas ou atividades mostram uma conversa recente, parta dela em vez de seguir o roteiro ao pé da letra.',\n    '- De 2 a 5 linhas, no máximo uma pergunta e no máximo um emoji.',\n    '- Não invente dados, números, prazos, preços, cases nem resultados. Não prometa posição no Google.',\n    '- Sem colchetes, variáveis, marcações, aspas em volta ou assinatura longa.',\n    '- Responda SOMENTE com o texto final da mensagem, pronto para enviar.',\n  ].join('\\n');\n\n  const zayraLiberada = ok('ZAYRA_MECANISMO') && val('ZAYRA_MECANISMO', '') === 'HTTP_WEBHOOK' && ok('ZAYRA_ENDPOINT_URL') && val('MODO_EXECUCAO', 'SIMULACAO').toUpperCase() !== 'SIMULACAO';\n  return Object.assign(base, {\n    cancelar: false, prompt, telefone, primeiro_nome: primeiroNome, deal_titulo: deal.title, owner_id: deal.owner_id,\n    person_id: pessoa ? pessoa.id : null, org_id: deal.org_id || null,\n    canal: zayraLiberada && telefone ? 'ZAYRA' : 'VENDEDOR',\n    zayra_endpoint: zayraLiberada ? val('ZAYRA_ENDPOINT_URL', '') : '',\n    motivo_vendedor: zayraLiberada ? (telefone ? '' : 'Contato sem telefone cadastrado') : 'Zayra ainda não conectada',\n  });\n}\n\n\nconst r = montarContexto({\n  config: $('Ler configuração').all(),\n  msg: $('Uma por vez').first().json,\n  deal: $('Buscar negócio').first().json,\n  pessoa: $('Buscar pessoa').first().json,\n  org: $('Buscar empresa').first().json,\n  notas: $('Buscar notas').first().json,\n  atividades: $('Buscar atividades feitas').first().json,\n  anteriores: $('Mensagens anteriores').all().filter((i) => i.json),\n  campos: (($('Campos do negócio').first().json || {}).data) || [],\n  agora: Date.now(),\n});\nif (r.prompt) r.prompt = r.prompt.replace(/[{}]/g, '');\nreturn [{ json: r }];"
+        }
+      },
+      {
+        "id": "7fdc6be6-14c5-4726-915b-52ae6bf0180b",
+        "name": "Cancelar envio?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          2688,
+          0
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.cancelar }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "b9c1ab63-cbfb-41b8-8032-1728f72b6914",
+        "name": "Marcar cancelada",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2976,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "zzbPCzCqyhV9ZklK",
+            "cachedResultName": "atom_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.row_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "CANCELADA",
+              "erro": "={{ $json.motivo }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "erro",
+                "displayName": "erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "0a8bbab5-d7df-4755-b842-9293e3d6c25d",
+        "name": "Uma por vez",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          896,
+          272
+        ],
+        "parameters": {
+          "batchSize": 1,
+          "options": {}
+        }
+      },
+      {
+        "id": "8abad217-047e-474f-8074-6cc96ee33971",
+        "name": "IA escreve a mensagem",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.9,
+        "position": [
+          2912,
+          304
+        ],
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.prompt }}"
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "eb9a37fc-7dd5-4e04-9ef7-0c6372fb15e7",
+        "name": "Claude",
+        "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+        "typeVersion": 1.6,
+        "position": [
+          2992,
+          528
+        ],
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "id",
+            "value": "claude-sonnet-5"
+          },
+          "options": {
+            "maxTokensToSample": 600
+          }
+        }
+      },
+      {
+        "id": "12034335-2b87-4502-a32e-38d0d99fbb44",
+        "name": "Preparar saída",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3264,
+          304
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// ===== Preparar saída =====\nconst ROTULO = { ABORDAGEM_1: 'Abordagem 1 (diagnóstico)', ABORDAGEM_2: 'Abordagem 2', ABORDAGEM_3: 'Abordagem 3 (última)', ETAPA_7: 'Contato feito', ETAPA_29: 'Diagnóstico em preparação', ETAPA_8: 'Diagnóstico enviado', LEMBRETE_VESPERA: 'Lembrete da reunião (véspera)', DIAG_FUP_1: 'Follow-up 1 do diagnóstico', DIAG_FUP_2: 'Follow-up 2 do diagnóstico', ETAPA_9: 'Pós-reunião', PROPOSTA_ENVIADA: 'Envio da proposta', PROP_FUP_1: 'Follow-up 1 da proposta', PROP_FUP_2: 'Follow-up final da proposta', ETAPA_28: 'Proposta aceita', LEMBRETE_ASSINATURA: 'Lembrete de assinatura', ETAPA_11: 'Boas-vindas', POS_INDICACAO_30: 'Pedido de indicação' };\nfunction prepararSaida(ctx, textoIA, agora) {\n  let t = String(textoIA || '').trim().replace(/^[\"“”']+|[\"“”']+$/g, '').replace(/^(mensagem|texto)\\s*:\\s*/i, '').trim();\n  const valido = t.length >= 15 && !/[{}\\[\\]]/.test(t);\n  const hoje = new Date(agora - 3 * 3600000).toISOString().slice(0, 10);\n  const rot = ROTULO[ctx.tipo_msg] || ctx.tipo_msg;\n  return {\n    row_id: ctx.row_id, texto: t, valido, canal: valido ? ctx.canal : 'VENDEDOR',\n    zayra: { request_id: 'msg-' + ctx.row_id, action: 'ENVIAR_MENSAGEM', pipedrive_deal_id: String(ctx.deal_id), pipedrive_person_id: String(ctx.person_id || ''), recipient_phone: String(ctx.telefone || '').replace(/[^\\d+]/g, ''), message_text: t, message_type: ctx.tipo_msg },\n    atividade: {\n      subject: '[Funil] 💬 ' + rot + ' — ' + ctx.deal_titulo, type: 'task', owner_id: ctx.owner_id, deal_id: Number(ctx.deal_id),\n      participants: ctx.person_id ? [{ person_id: ctx.person_id, primary: true }] : undefined, due_date: hoje,\n      note: (valido ? 'Mensagem personalizada pela IA, pronta para enviar' + (ctx.telefone ? ' para ' + ctx.telefone : '') + ':<br><br>' + t.replace(/\\n/g, '<br>')\n        : 'A IA não conseguiu gerar uma mensagem válida. Escreva manualmente com o objetivo: ' + (ctx.objetivo || rot)) +\n        '<br><br><i>' + (ctx.motivo_vendedor ? 'Enviar manualmente: ' + ctx.motivo_vendedor + '.' : '') + ' Marque como feita após enviar.</i>',\n    },\n  };\n}\n\n\nreturn [{ json: prepararSaida($('Montar contexto').first().json, $input.first().json.text, Date.now()) }];"
+        }
+      },
+      {
+        "id": "d9f2f277-5974-4405-b58a-58e9413367ae",
+        "name": "Enviar pela Zayra?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          3488,
+          304
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.canal }}",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                },
+                "rightValue": "ZAYRA"
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "28aa316b-90ec-47ff-ad47-b6e17dab64eb",
+        "name": "Zayra envia no WhatsApp",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3712,
+          208
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $('Montar contexto').first().json.zayra_endpoint }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Idempotency-Key",
+                "value": "={{ $json.zayra.request_id }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.zayra) }}",
+          "options": {
+            "timeout": 20000,
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "72e772b1-5923-4c3b-af1e-b894c5f36e44",
+        "name": "Resultado",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3936,
+          304
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const s = $('Preparar saída').first().json;\nconst r = $input.first().json || {};\nlet status; let erro = '';\nif (s.canal === 'ZAYRA') {\n  const ok = r.statusCode >= 200 && r.statusCode < 300;\n  status = ok ? 'ENVIADA_ZAYRA' : 'ERRO';\n  if (!ok) erro = 'Zayra HTTP ' + r.statusCode;\n} else {\n  status = r.success ? 'PRONTA_VENDEDOR' : 'ERRO';\n  if (!r.success) erro = JSON.stringify(r).slice(0, 300);\n}\nreturn [{ json: { row_id: s.row_id, texto: s.texto, status, canal_saida: s.canal, enviado_em: new Date().toISOString(), erro } }];\n"
+        }
+      },
+      {
+        "id": "12fe6acb-1892-4591-aeee-e7935c47353b",
+        "name": "Atualizar mensagem",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4160,
+          416
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "zzbPCzCqyhV9ZklK",
+            "cachedResultName": "atom_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.row_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "texto": "={{ $json.texto }}",
+              "status": "={{ $json.status }}",
+              "canal_saida": "={{ $json.canal_saida }}",
+              "enviado_em": "={{ $json.enviado_em }}",
+              "erro": "={{ $json.erro }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "canal_saida",
+                "displayName": "canal_saida",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "enviado_em",
+                "displayName": "enviado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "erro",
+                "displayName": "erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "f8198037-7c1b-4161-8ab5-b387aaef093d",
+        "name": "Tarefa com mensagem pronta",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3712,
+          400
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/api/v2/activities",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.atividade) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "fe99d24f-320e-4c30-9465-76c9808e2f6b",
+        "name": "Sticky Note e6e1a4f7",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          2016,
+          512
+        ],
+        "parameters": {
+          "content": "## ATOM_13 — Mensagens personalizadas pela IA\n- Lê a fila atom_mensagens (criada pelo ATOM_12) a cada 10 min, só em horário comercial.\n- Para cada mensagem: busca negócio, contato, empresa, notas, atividades e mensagens anteriores.\n- Cancela se o card mudou de etapa, foi ganho/perdido ou o contato pediu para não ser contatado.\n- Claude escreve a mensagem com a voz da ATOM (FUNIL_IA_VOZ) e o objetivo da etapa (FUNIL_OBJ_*).\n- Zayra conectada (ZAYRA_MECANISMO=HTTP_WEBHOOK + ZAYRA_ENDPOINT_URL + MODO_EXECUCAO≠SIMULACAO) → envia direto.\n- Até lá → tarefa no Pipedrive com a mensagem pronta para o vendedor enviar.",
+          "color": 4
+        }
+      },
+      {
+        "id": "665f94e4-d6d9-4394-b145-f6c7b0a5fa1d",
+        "name": "Campos do negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          336,
+          240
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          },
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "limit",
+                "value": "500"
+              }
+            ]
+          },
+          "sendQuery": true,
+          "url": "https://api.pipedrive.com/v1/dealFields"
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nSchedule trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: A cada 10 minutos\n\t\t\t\t</trigger 1>\n\nScheduled workflows do not take inputs. To execute a specific schedule trigger, pass triggerNodeName only: { triggerNodeName: \"<node name>\" }."
+}

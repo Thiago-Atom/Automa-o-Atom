@@ -178,5 +178,6 @@ Para abrir localmente com tudo funcionando (menos conectores): `npm run metodo` 
 
 | Data | Mudança |
 |---|---|
+| 15/10/2026 | Removida a seção Casos: o método é novo e ainda não tem casos próprios. O Coalumaq fica só como modelo de formato da entrega do Total |
 | 15/10/2026 | Integração com o Pipedrive; receita e lucro com preços de Site e SEO; imposto de 16%; franquias reais (Semrush 2M, Apify Starter); Gerar em passos; Passo a passo em raias; Site com dados do Semrush e limites revistos |
 | 14–15/10/2026 | Criação do método: 5 diagnósticos, 17 áreas, 12 pontos por diagnóstico, régua, custos por ferramenta, capacidade de 18 reuniões por dia, coleta no Apify, padrão Coalumaq no Total |

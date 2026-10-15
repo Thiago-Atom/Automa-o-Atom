@@ -1,0 +1,952 @@
+{
+  "workflow": {
+    "id": "zrIMrELfUM6ZMtTe",
+    "name": "ATOM_12_Regras_Funil",
+    "active": false,
+    "isArchived": false,
+    "versionId": "daf7779d-f288-4767-9ff8-859a6b084a90",
+    "activeVersionId": null,
+    "triggerCount": 1,
+    "nodeCount": 15,
+    "createdAt": "2026-09-29T00:17:41.888Z",
+    "updatedAt": "2026-10-01T22:54:06.435Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "errorWorkflow": "vd4MLxMjp8SlGgRh"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Regras do funil de vendas (Pipedrive): atender lead no mesmo dia, proposta em 2h úteis após reunião, follow-ups 2/5/9 dias, alertas e mensagens por etapa (aguardando Zayra).",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "A cada 15 minutos": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Buscar negócios",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar negócios": {
+        "main": [
+          [
+            {
+              "node": "Buscar atividades",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar atividades": {
+        "main": [
+          [
+            {
+              "node": "Ler estado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler estado": {
+        "main": [
+          [
+            {
+              "node": "Planejar ações",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Planejar ações": {
+        "main": [
+          [
+            {
+              "node": "Rotear ação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rotear ação": {
+        "main": [
+          [
+            {
+              "node": "Criar atividade",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Concluir atividade",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Excluir atividade",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Agendar mensagem (IA)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Salvar estado",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Remover estado",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Devolver card",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "0cfe44e7-53e9-47c4-93f7-3ef149305c1d",
+        "name": "A cada 15 minutos",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          480
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 15
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "ea3e2504-38dd-4fd8-b98e-5a0be1e2249b",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          480
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "0af99b65-b5ff-4c24-b2dc-3fbe17730320",
+        "name": "Buscar negócios",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          480
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/api/v2/deals",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "pipeline_id",
+                "value": "2"
+              },
+              {
+                "name": "status",
+                "value": "open"
+              },
+              {
+                "name": "limit",
+                "value": "500"
+              }
+            ]
+          },
+          "options": {
+            "pagination": {
+              "pagination": {
+                "paginationMode": "updateAParameterInEachRequest",
+                "parameters": {
+                  "parameters": [
+                    {
+                      "type": "qs",
+                      "name": "cursor",
+                      "value": "={{ $response.body.additional_data.next_cursor }}"
+                    }
+                  ]
+                },
+                "paginationCompleteWhen": "other",
+                "completeExpression": "={{ !$response.body.additional_data || !$response.body.additional_data.next_cursor }}",
+                "limitPagesFetched": true,
+                "maxRequests": 20
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "aaaf2947-7fb9-4524-a9a1-1d61086424c6",
+        "name": "Buscar atividades",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          480
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/api/v2/activities",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "done",
+                "value": "false"
+              },
+              {
+                "name": "limit",
+                "value": "500"
+              }
+            ]
+          },
+          "options": {
+            "pagination": {
+              "pagination": {
+                "paginationMode": "updateAParameterInEachRequest",
+                "parameters": {
+                  "parameters": [
+                    {
+                      "type": "qs",
+                      "name": "cursor",
+                      "value": "={{ $response.body.additional_data.next_cursor }}"
+                    }
+                  ]
+                },
+                "paginationCompleteWhen": "other",
+                "completeExpression": "={{ !$response.body.additional_data || !$response.body.additional_data.next_cursor }}",
+                "limitPagesFetched": true,
+                "maxRequests": 20
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "6cd34fce-22af-4379-a199-0b2ffe0d49a8",
+        "name": "Ler estado",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          480
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "mPe4WVQdbGIRvmwR",
+            "cachedResultName": "atom_funil_estado"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "2cfcfd96-86b0-4610-a4aa-01be93999788",
+        "name": "Planejar ações",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          480
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// ATOM_12 — fonte: planejar.js (7 etapas, cadência enxuta, 23 cenários)\n// ATOM_12 — Planejar ações das regras do funil\nconst OFF = -3 * 60 * 60000; // America/Sao_Paulo (UTC-3, sem horário de verão)\nconst PREF = '[Funil] ';\nconst DIA = 86400000;\n// Próximo passo sugerido por etapa quando o negócio fica sem atividade agendada\nconst PROXIMO_PASSO = {\n  6: 'Fazer o primeiro contato e marcar a reunião',\n  7: 'Conversar com o lead e combinar o envio do diagnóstico',\n  29: 'Finalizar o diagnóstico e mover para Proposta Enviada',\n  8: 'Confirmar a reunião de apresentação do diagnóstico',\n  9: 'Enviar a proposta com valores',\n  28: 'Enviar contrato e cobrança',\n  11: 'Iniciar o onboarding do cliente',\n};\n\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = row.valor === null || row.valor === undefined ? '' : String(row.valor).trim();\n  }\n  return cfg;\n}\nfunction v(cfg, k, d) {\n  const x = cfg[k];\n  return x !== undefined && x !== '' && !/^PENDENTE/i.test(x) ? x : d;\n}\nfunction parseHorario(s) {\n  const partes = String(s).split(';');\n  const hs = partes[0].split('-');\n  const min = (x) => { const p = x.split(':'); return Number(p[0]) * 60 + Number(p[1] || 0); };\n  return { ini: min(hs[0]), fim: min(hs[1]), dias: (partes[1] || '1,2,3,4,5').split(',').map(Number) };\n}\n// \"lms\" = milissegundos no relógio local (campos UTC do Date representam a hora local)\nconst diaSem = (lms) => { const d = new Date(lms).getUTCDay(); return d === 0 ? 7 : d; };\nconst minDia = (lms) => { const d = new Date(lms); return d.getUTCHours() * 60 + d.getUTCMinutes(); };\nconst inicioDia = (lms) => { const d = new Date(lms); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()); };\nfunction proxInicioUtil(lms, H) {\n  for (let i = 0; i < 20; i++) {\n    const d0 = inicioDia(lms);\n    if (H.dias.includes(diaSem(lms))) {\n      const m = minDia(lms);\n      if (m < H.ini) return d0 + H.ini * 60000;\n      if (m < H.fim) return lms;\n    }\n    lms = d0 + DIA;\n  }\n  return lms;\n}\nfunction somarHorasUteis(lms, horas, H) {\n  let cur = proxInicioUtil(lms, H);\n  let rest = horas * 60;\n  for (let i = 0; i < 60 && rest > 0; i++) {\n    const fimDia = inicioDia(cur) + H.fim * 60000;\n    const disp = (fimDia - cur) / 60000;\n    if (disp >= rest) return cur + rest * 60000;\n    rest -= disp;\n    cur = proxInicioUtil(fimDia, H);\n  }\n  return cur;\n}\nfunction proxDiaUtil(lms, H) {\n  let d = inicioDia(lms);\n  for (let i = 0; i < 20; i++) { if (H.dias.includes(diaSem(d))) return d; d += DIA; }\n  return d;\n}\nconst dataStr = (ms) => new Date(ms).toISOString().slice(0, 10);\nconst horaStr = (ms) => new Date(ms).toISOString().slice(11, 16);\nconst iso = (ms) => new Date(ms).toISOString();\nconst fmtLocal = (lms) => { const s = new Date(lms).toISOString(); return s.slice(8, 10) + '/' + s.slice(5, 7) + ' ' + s.slice(11, 16); };\nconst parseData = (s) => {\n  if (!s) return NaN;\n  const t = String(s).trim();\n  return Date.parse(/[zZ]|[+-]\\d\\d:?\\d\\d$/.test(t) ? t : t.replace(' ', 'T') + 'Z');\n};\n\nfunction planejar(entrada) {\n  const cfg = montar(entrada.config);\n  const H = parseHorario(v(cfg, 'HORARIO_COMERCIAL', '09:00-18:00;1,2,3,4,5'));\n  const ativo = v(cfg, 'FUNIL_REGRAS_ATIVAS', 'false') === 'true';\n  const pipeline = Number(v(cfg, 'FUNIL_PIPELINE_ID', '2'));\n  const S_NOVO = Number(v(cfg, 'FUNIL_STAGE_NOVO_ID', '6'));\n  const S_PROP = Number(v(cfg, 'FUNIL_STAGE_PROPOSTA_ENVIADA_ID', '8'));\n  const S_REUN = Number(v(cfg, 'FUNIL_STAGE_REUNIAO_CONCLUIDA_ID', '9'));\n  const slaH = Number(v(cfg, 'FUNIL_SLA_PROPOSTA_HORAS', '2')) || 2;\n  const lista = (k, d) => v(cfg, k, d).split(',').map((s) => Number(s.trim())).filter((n) => n > 0);\n  const fups = lista('FUNIL_DIAG_FUP_DIAS', '3,7');\n  const abordagemDias = lista('FUNIL_ABORDAGEM_DIAS', '3,7');\n  const alertaUser = Number(v(cfg, 'PD_ALERTA_USER_ID', '0')) || null;\n  const campoLink = v(cfg, 'PD_DEAL_PROPOSTA_LINK', '');\n  const campoServico = v(cfg, 'PD_DEAL_SERVICO', '');\n  const travaEtapas = v(cfg, 'FUNIL_TRAVA_ETAPAS', '28,11').split(',').map((s) => Number(s.trim())).filter(Boolean);\n  const S_ACEITA = Number(v(cfg, 'PD_STAGE_PROPOSTA_ACEITA_ID', '28'));\n  const S_CONTRATO = Number(v(cfg, 'FUNIL_STAGE_CONTRATO_ID', '11'));\n  const fupsProp = lista('FUNIL_PROP_FUP_DIAS', '2,7');\n  const S_DIAG = Number(v(cfg, 'FUNIL_STAGE_DIAGNOSTICO_ID', '29'));\n  const slaDiagH = Number(v(cfg, 'FUNIL_SLA_DIAGNOSTICO_HORAS', '4')) || 4;\n  const lembreteEtapas = v(cfg, 'FUNIL_LEMBRETE_ETAPAS', '6,7,8').split(',').map((s) => Number(s.trim())).filter(Boolean).concat([S_DIAG]);\n  // Etapas que disparam mensagem ao cliente quando o card entra (Contactado não: o vendedor já está conversando)\n  const msgEtapas = v(cfg, 'FUNIL_MSG_ETAPAS', '29,8,9,28,11').split(',').map((s) => Number(s.trim())).filter(Boolean);\n\n  const now = entrada.agora;\n  const nowL = now + OFF;\n\n  // Segurança: se a leitura do Pipedrive falhou, não faz nada (evita apagar tarefas por engano)\n  const paginas = (entrada.negocios || []).map((i) => (i && i.json ? i.json : i));\n  if (!paginas.length || paginas.some((p) => !p || p.success !== true)) throw new Error('Leitura de negócios do Pipedrive falhou — nada foi alterado.');\n  const pagAtv = (entrada.atividades || []).map((i) => (i && i.json ? i.json : i));\n  if (!pagAtv.length || pagAtv.some((p) => !p || p.success !== true)) throw new Error('Leitura de atividades do Pipedrive falhou — nada foi alterado.');\n\n  const deals = [].concat(...paginas.map((p) => p.data || [])).filter((d) => Number(d.pipeline_id) === pipeline && d.status === 'open');\n  const acts = [].concat(...pagAtv.map((p) => p.data || [])).filter((a) => !a.done);\n  const estadoRows = (entrada.estado || []).map((i) => (i && i.json ? i.json : i)).filter((r) => r && r.deal_id);\n  const estado = {};\n  for (const r of estadoRows) estado[String(r.deal_id)] = r;\n  const baselineFeita = !!estado.__linha_base__;\n\n  const out = [];\n  const criados = new Set();\n  const atvs = (dealId, prefixo) => acts.filter((a) => String(a.deal_id) === String(dealId) && typeof a.subject === 'string' && a.subject.startsWith(PREF + prefixo));\n  const criar = (body) => {\n    const ja = acts.some((a) => String(a.deal_id || '') === String(body.deal_id || '') && a.subject === body.subject);\n    const chave = body.deal_id + '|' + body.subject;\n    if (ja || criados.has(chave)) return;\n    criados.add(chave);\n    out.push({ tipo: 'criar_atividade', body });\n  };\n  const concluir = (id) => out.push({ tipo: 'concluir_atividade', id: String(id) });\n  const excluir = (id) => out.push({ tipo: 'excluir_atividade', id: String(id) });\n  const salvar = (row) => out.push({ tipo: 'estado', row: {\n    deal_id: String(row.deal_id), stage_id: Number(row.stage_id), entrou_etapa_em: row.entrou_etapa_em,\n    alerta_atender: !!row.alerta_atender, alerta_proposta: !!row.alerta_proposta, agendados: row.agendados || '', atualizado_em: iso(now) } });\n  const temChave = (st, k) => String(st.agendados || '').split(';').includes(k);\n  const addChave = (st, k) => { st.agendados = (st.agendados ? st.agendados + ';' : '') + k; };\n  // Ao mudar de etapa, só os lembretes de reunião (chaves R:) continuam valendo\n  const manterLembretes = (ag) => String(ag || '').split(';').filter((k) => k.startsWith('R:')).join(';');\n  const remover = (dealId) => out.push({ tipo: 'estado_remover', deal_id: String(dealId) });\n  const alerta = (d, titulo, texto) => criar({\n    subject: PREF + '⚠️ ' + titulo + ' — ' + d.title,\n    type: 'task',\n    owner_id: alertaUser || d.owner_id,\n    deal_id: d.id,\n    due_date: dataStr(nowL),\n    note: texto,\n  });\n  // Variação determinística de minutos para as mensagens não saírem sempre no mesmo horário\n  const jitter = (id, salt, max) => { let h = 7; const s = String(id) + ':' + String(salt); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 100003; return h % max; };\n  const roteiro = (tipo, padrao) => v(cfg, 'FUNIL_ROTEIRO_' + tipo, v(cfg, 'FUNIL_OBJ_' + tipo, padrao || ''));\n  const agendarMsg = (d, etapa, tipoMsg, objetivo, quandoUtc, ref) => out.push({ tipo: 'mensagem', row: {\n    deal_id: String(d.id), deal_titulo: d.title || '', person_id: d.person_id ? String(d.person_id) : '', stage_id: etapa,\n    etapa: String(etapa), tipo_msg: tipoMsg, objetivo: objetivo || roteiro(tipoMsg), agendado_para: iso(quandoUtc), texto: '', status: 'AGENDADA',\n    criado_em: iso(now), erro: '', ref: ref || '' } });\n  // Horário \"humano\" num dia útil: início do expediente + minutos variados\n  const noDiaUtil = (lmsDia, d, salt, minIni, faixa) => proxDiaUtil(lmsDia, H) + H.ini * 60000 + (minIni + jitter(d.id, salt, faixa)) * 60000;\n  const somarDiasUteis = (lms, n) => { let x = inicioDia(lms); let c = 0; while (c < n) { x += DIA; if (H.dias.includes(diaSem(x))) c++; } return x; };\n  const lerCampo = (d, id) => {\n    if (!id) return '';\n    const cf = d.custom_fields || {};\n    let x = cf[id] !== undefined ? cf[id] : d[id];\n    if (x && typeof x === 'object' && 'value' in x) x = x.value;\n    return x === null || x === undefined ? '' : String(x).trim();\n  };\n\n  // Primeira execução: só registra onde cada negócio está, sem criar nada\n  if (!baselineFeita) {\n    for (const d of deals) salvar({ deal_id: d.id, stage_id: d.stage_id, entrou_etapa_em: iso(parseData(d.stage_change_time || d.add_time) || now) });\n    salvar({ deal_id: '__linha_base__', stage_id: 0, entrou_etapa_em: iso(now) });\n    return out;\n  }\n\n  const saida = (dealId, etapa) => {\n    if (etapa === S_NOVO) atvs(dealId, 'Atender lead').forEach((a) => concluir(a.id));\n    if (etapa === S_PROP) atvs(dealId, 'Follow-up').forEach((a) => excluir(a.id));\n    if (etapa === S_REUN) atvs(dealId, 'Enviar proposta').forEach((a) => concluir(a.id));\n    if (etapa === S_DIAG) atvs(dealId, 'Preparar diagnóstico').forEach((a) => concluir(a.id));\n  };\n\n  const entradaEtapa = (d, etapa, entradaMs, etapaAnterior) => {\n    const entL = entradaMs + OFF;\n    if (etapa === S_NOVO) {\n      let ini = proxInicioUtil(entL, H);\n      const fimDia = inicioDia(ini) + H.fim * 60000;\n      if (fimDia - ini < 60 * 60000) ini = proxInicioUtil(fimDia, H); // menos de 1h útil no dia: vence no próximo dia útil\n      criar({ subject: PREF + 'Atender lead — ' + d.title, type: 'task', owner_id: d.owner_id, deal_id: d.id, due_date: dataStr(ini),\n        note: v(cfg, 'FUNIL_ROTEIRO_TAREFA_ATENDER', 'Regra do funil: todo lead deve ser atendido no mesmo dia útil em que entra (normalmente já marcando a reunião).') });\n      // Abordagem da prospecção: no dia e mais 2 tentativas em dias úteis (para quando o card sai da etapa)\n      const b0 = proxInicioUtil(Math.max(nowL, entL), H);\n      const q0 = b0 === Math.max(nowL, entL) ? b0 + (5 + jitter(d.id, 'a0', 25)) * 60000 : b0 + (20 + jitter(d.id, 'a0', 60)) * 60000;\n      agendarMsg(d, etapa, 'ABORDAGEM_1', null, q0 - OFF);\n      abordagemDias.forEach((n, i) => {\n        agendarMsg(d, etapa, 'ABORDAGEM_' + (i + 2), null, noDiaUtil(somarDiasUteis(entL, n), d, 'a' + (i + 1), 30, 120) - OFF);\n      });\n    }\n    if (etapa === S_REUN) {\n      const limUtc = somarHorasUteis(entL, slaH, H) - OFF;\n      criar({ subject: PREF + 'Enviar proposta — ' + d.title, type: 'task', owner_id: d.owner_id, deal_id: d.id, due_date: dataStr(limUtc), due_time: horaStr(limUtc),\n        note: v(cfg, 'FUNIL_ROTEIRO_TAREFA_PROPOSTA', 'Regra do funil: proposta com valores enviada em até ' + slaH + 'h úteis após a reunião. Ao enviar, preencha o campo \"Link da proposta\" no negócio.') });\n    }\n    // Diagnóstico (interno): tarefa para montar o mapa do cliente dentro do prazo\n    if (etapa === S_DIAG) {\n      const limUtc = somarHorasUteis(entL, slaDiagH, H) - OFF;\n      criar({ subject: PREF + 'Preparar diagnóstico — ' + d.title, type: 'task', owner_id: d.owner_id, deal_id: d.id, due_date: dataStr(limUtc), due_time: horaStr(limUtc),\n        note: v(cfg, 'FUNIL_ROTEIRO_TAREFA_DIAGNOSTICO', 'Monte o diagnóstico (SEO, GEO, site, SEO local e atendimento) em até ' + slaDiagH + 'h úteis. Ao enviar, mova o card para Proposta Enviada.') });\n    }\n    // Follow-ups do diagnóstico (cancelados pelo ATOM_13 se houver reunião agendada)\n    if (etapa === S_PROP) {\n      fups.forEach((n, i) => {\n        const quandoL = noDiaUtil(somarDiasUteis(entL, n), d, 'f' + i, 30, 150); // entre ~9h30 e ~12h\n        agendarMsg(d, etapa, 'DIAG_FUP_' + (i + 1), null, quandoL - OFF);\n      });\n    }\n    // Proposta aceita: lembrete de assinatura em 2 dias úteis (cancelado se o card avançar)\n    if (etapa === S_ACEITA) {\n      agendarMsg(d, etapa, 'LEMBRETE_ASSINATURA', null, noDiaUtil(somarDiasUteis(entL, 2), d, 'la', 45, 120) - OFF);\n    }\n    // Contrato assinado: pedido de indicação em 30 dias (continuam mesmo com o negócio ganho)\n    if (etapa === S_CONTRATO) {\n      agendarMsg(d, etapa, 'POS_INDICACAO_30', null, noDiaUtil(entL + 30 * DIA, d, 'p30', 60, 120) - OFF);\n    }\n    if (etapaAnterior !== null && msgEtapas.includes(etapa)) {\n      const objetivo = roteiro('ETAPA_' + etapa, v(cfg, 'FUNIL_MSG_ETAPA_' + etapa, ''));\n      if (objetivo) {\n        const base = proxInicioUtil(Math.max(nowL, entL), H);\n        const quandoL = base === Math.max(nowL, entL) ? base + (3 + jitter(d.id, etapa, 12)) * 60000 : base + (10 + jitter(d.id, etapa, 50)) * 60000;\n        agendarMsg(d, etapa, 'ETAPA_' + etapa, objetivo, quandoL - OFF);\n      }\n    }\n  };\n\n  // Proposta enviada (link preenchido): mensagem com a proposta + follow-ups em dias úteis\n  const cadenciaProposta = (d, st) => {\n    const base = proxInicioUtil(nowL, H);\n    const quandoL = base === nowL ? base + (4 + jitter(d.id, 'pe', 10)) * 60000 : base + (10 + jitter(d.id, 'pe', 40)) * 60000;\n    agendarMsg(d, S_REUN, 'PROPOSTA_ENVIADA', null, quandoL - OFF);\n    fupsProp.forEach((n, i) => {\n      agendarMsg(d, S_REUN, 'PROP_FUP_' + (i + 1), null, noDiaUtil(somarDiasUteis(nowL, n), d, 'fp' + i, 30, 150) - OFF);\n    });\n    addChave(st, 'P');\n  };\n\n  // Reuniões agendadas (atividade tipo Reunião com data e hora): lembrete na véspera\n  const lembretesReuniao = (d, st) => {\n    const reunioes = acts.filter((a) => String(a.deal_id) === String(d.id) && a.type === 'meeting' && a.due_date && a.due_time);\n    let mudou = false;\n    for (const a of reunioes) {\n      const hora = String(a.due_time).slice(0, 5);\n      const quando = Date.parse(a.due_date + 'T' + hora + ':00Z'); // Pipedrive guarda hora em UTC\n      if (!(quando > now)) continue;\n      const chave = 'R:' + a.id + '|' + a.due_date + '|' + hora;\n      if (temChave(st, chave)) continue;\n      const ref = a.id + '|' + a.due_date + '|' + hora;\n      const qL = quando + OFF;\n      // Véspera: último dia útil antes da reunião, entre 16h e 17h\n      let vesp = inicioDia(qL) - DIA;\n      for (let i = 0; i < 7 && !H.dias.includes(diaSem(vesp)); i++) vesp -= DIA;\n      const vespL = vesp + 16 * 60 * 60000 + jitter(d.id, 'v' + a.id, 50) * 60000;\n      if (qL - nowL > 20 * 3600000 && vespL > nowL) agendarMsg(d, Number(d.stage_id), 'LEMBRETE_VESPERA', null, vespL - OFF, ref);\n      addChave(st, chave);\n      mudou = true;\n    }\n    return mudou;\n  };\n\n  const vistos = new Set();\n  for (const d of deals) {\n    const id = String(d.id);\n    vistos.add(id);\n    const prev = estado[id];\n    const etapa = Number(d.stage_id);\n    const entradaMs = parseData(d.stage_change_time || d.add_time) || now;\n    let st;\n    let alterado = false;\n\n    if (!prev) {\n      st = { deal_id: id, stage_id: etapa, entrou_etapa_em: iso(entradaMs), agendados: '' };\n      if (ativo) entradaEtapa(d, etapa, entradaMs, null);\n      alterado = true;\n    } else if (Number(prev.stage_id) !== etapa) {\n      // Trava: não deixa avançar para as etapas protegidas sem valor e serviço preenchidos\n      if (ativo && travaEtapas.includes(etapa) && Number(prev.stage_id) > 0) {\n        const falta = [];\n        if (!(Number(d.value) > 0)) falta.push('Valor');\n        if (campoServico && !lerCampo(d, campoServico)) falta.push('Serviço');\n        if (falta.length) {\n          out.push({ tipo: 'mover', deal_id: id, stage_id: Number(prev.stage_id) });\n          alerta(d, 'Card devolvido: falta ' + falta.join(' e '), 'O card \"' + d.title + '\" foi movido para uma etapa que exige ' + falta.join(' e ') + ' preenchido(s) e voltou automaticamente para a etapa anterior. Preencha ' + falta.join(' e ') + ' no negócio e mova o card de novo.');\n          continue;\n        }\n      }\n      st = { deal_id: id, stage_id: etapa, entrou_etapa_em: iso(entradaMs), agendados: manterLembretes(prev.agendados) };\n      if (ativo) { saida(id, Number(prev.stage_id)); entradaEtapa(d, etapa, entradaMs, Number(prev.stage_id)); }\n      alterado = true;\n    } else {\n      st = Object.assign({}, prev);\n      if (!ativo) continue;\n      const entPrevL = (parseData(prev.entrou_etapa_em) || entradaMs) + OFF;\n      if (etapa === S_NOVO && !prev.alerta_atender) {\n        const pend = atvs(id, 'Atender lead');\n        if (pend.length && pend[0].due_date) {\n          const limiteL = Date.parse(pend[0].due_date + 'T00:00:00Z') + H.fim * 60000;\n          if (nowL > limiteL) {\n            alerta(d, 'Lead não atendido no prazo', 'O lead \"' + d.title + '\" entrou no funil em ' + fmtLocal(entPrevL) + ' e a tarefa \"Atender lead\" continua aberta. Regra: atender no mesmo dia útil.');\n            st.alerta_atender = true;\n            alterado = true;\n          }\n        }\n      }\n      if (etapa === S_REUN) {\n        const link = lerCampo(d, campoLink);\n        if (link) {\n          atvs(id, 'Enviar proposta').forEach((a) => concluir(a.id));\n        } else if (!prev.alerta_proposta) {\n          const limiteL = somarHorasUteis(entPrevL, slaH, H);\n          if (nowL > limiteL) {\n            alerta(d, 'Proposta fora do prazo', 'A reunião com \"' + d.title + '\" foi concluída em ' + fmtLocal(entPrevL) + ' e o campo \"Link da proposta\" continua vazio. Regra: proposta em até ' + slaH + 'h úteis.');\n            st.alerta_proposta = true;\n            alterado = true;\n          }\n        }\n      }\n    }\n\n    if (ativo) {\n      if (etapa === S_REUN && lerCampo(d, campoLink) && !temChave(st, 'P')) { cadenciaProposta(d, st); alterado = true; }\n      if (lembreteEtapas.includes(etapa) && lembretesReuniao(d, st)) alterado = true;\n    }\n    if (alterado) salvar(st);\n  }\n\n  // Regra: todo negócio aberto SEMPRE tem uma atividade pendente agendada\n  if (ativo) {\n    const fechadas = new Set(out.filter((o) => o.tipo === 'concluir_atividade' || o.tipo === 'excluir_atividade').map((o) => o.id));\n    const hojeL = dataStr(nowL);\n    for (const d of deals) {\n      const pendentes = acts.filter((a) => String(a.deal_id) === String(d.id) && !fechadas.has(String(a.id)));\n      const novas = out.filter((o) => o.tipo === 'criar_atividade' && String(o.body.deal_id) === String(d.id));\n      if (pendentes.length || novas.length) continue;\n      const passo = PROXIMO_PASSO[Number(d.stage_id)] || 'Definir e executar o próximo passo com o cliente';\n      criar({ subject: PREF + 'Próximo passo: ' + passo + ' — ' + d.title, type: 'task', owner_id: d.owner_id, deal_id: d.id, due_date: hojeL,\n        note: 'Regra do funil: todo negócio aberto precisa ter sempre uma atividade agendada. Execute hoje, registre o que aconteceu e agende a próxima.' });\n    }\n    // Atividades do funil não executadas no dia: um resumo diário para o gestor (a partir das 9h)\n    if (minDia(nowL) >= H.ini) {\n      const idsFunil = new Set(deals.map((d) => String(d.id)));\n      const atrasadas = acts.filter((a) => a.deal_id && idsFunil.has(String(a.deal_id)) && a.due_date && a.due_date < hojeL && !fechadas.has(String(a.id)));\n      if (atrasadas.length) {\n        const titulo = (id) => (deals.find((d) => String(d.id) === String(id)) || {}).title || id;\n        criar({ subject: PREF + '⚠️ Atividades atrasadas no funil — ' + fmtLocal(nowL).slice(0, 5), type: 'task', owner_id: alertaUser || deals[0].owner_id, due_date: hojeL,\n          note: 'Regra: todas as atividades devem ser executadas no dia. Pendentes de dias anteriores (' + atrasadas.length + '):<br>' +\n            atrasadas.slice(0, 40).map((a) => '• ' + titulo(a.deal_id) + ' — ' + a.subject + ' (venceu ' + a.due_date.slice(8, 10) + '/' + a.due_date.slice(5, 7) + ')').join('<br>') });\n      }\n    }\n  }\n\n  // Negócios que saíram do funil aberto (ganhos, perdidos, excluídos ou movidos de funil)\n  for (const r of estadoRows) {\n    const id = String(r.deal_id);\n    if (id === '__linha_base__' || vistos.has(id)) continue;\n    if (ativo) atvs(id, '').filter((a) => !a.subject.startsWith(PREF + '⚠️')).forEach((a) => excluir(a.id));\n    remover(id);\n  }\n  return out;\n}\n\nconst acoes = planejar({\n  config: $('Ler configuração').all(),\n  negocios: $('Buscar negócios').all(),\n  atividades: $('Buscar atividades').all(),\n  estado: $('Ler estado').all(),\n  agora: Date.now(),\n});\nreturn acoes.map((a) => ({ json: a }));\n"
+        }
+      },
+      {
+        "id": "4dacc4da-8cbc-4954-8f92-043effc437f5",
+        "name": "Rotear ação",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1344,
+          416
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "criar_atividade",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "criar_atividade"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "concluir_atividade",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "concluir_atividade"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "excluir_atividade",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "excluir_atividade"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "mensagem",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "mensagem"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "estado",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "estado"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "estado_remover",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "estado_remover"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "mover",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "mover"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "f350d30c-2fc4-44ff-bd0c-d3b78b226317",
+        "name": "Criar atividade",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          0
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/api/v2/activities",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}"
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "bebb4f62-a731-434c-950e-840ff24c6224",
+        "name": "Concluir atividade",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          192
+        ],
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://api.pipedrive.com/api/v2/activities/{{ $json.id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "{ \"done\": true }"
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "fa1c7d9b-1e3c-45a0-899d-b624da35bb85",
+        "name": "Excluir atividade",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          384
+        ],
+        "parameters": {
+          "method": "DELETE",
+          "url": "=https://api.pipedrive.com/api/v2/activities/{{ $json.id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi"
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "10fad71f-b4e5-443c-bc75-89c150ace3a0",
+        "name": "Agendar mensagem (IA)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          576
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "zzbPCzCqyhV9ZklK",
+            "cachedResultName": "atom_mensagens"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "deal_id": "={{ $json.row.deal_id }}",
+              "deal_titulo": "={{ $json.row.deal_titulo }}",
+              "person_id": "={{ $json.row.person_id }}",
+              "stage_id": "={{ $json.row.stage_id }}",
+              "etapa": "={{ $json.row.etapa }}",
+              "tipo_msg": "={{ $json.row.tipo_msg }}",
+              "objetivo": "={{ $json.row.objetivo }}",
+              "agendado_para": "={{ $json.row.agendado_para }}",
+              "texto": "",
+              "status": "={{ $json.row.status }}",
+              "criado_em": "={{ $json.row.criado_em }}",
+              "erro": "",
+              "ref": "={{ $json.row.ref }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_titulo",
+                "displayName": "deal_titulo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "person_id",
+                "displayName": "person_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "stage_id",
+                "displayName": "stage_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "etapa",
+                "displayName": "etapa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tipo_msg",
+                "displayName": "tipo_msg",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "objetivo",
+                "displayName": "objetivo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "agendado_para",
+                "displayName": "agendado_para",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "criado_em",
+                "displayName": "criado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "erro",
+                "displayName": "erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ref",
+                "displayName": "ref",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "7ae76c28-b303-40d2-abc4-d4833cf98cba",
+        "name": "Salvar estado",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          768
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "mPe4WVQdbGIRvmwR",
+            "cachedResultName": "atom_funil_estado"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.row.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "deal_id": "={{ $json.row.deal_id }}",
+              "stage_id": "={{ $json.row.stage_id }}",
+              "entrou_etapa_em": "={{ $json.row.entrou_etapa_em }}",
+              "alerta_atender": "={{ $json.row.alerta_atender }}",
+              "alerta_proposta": "={{ $json.row.alerta_proposta }}",
+              "agendados": "={{ $json.row.agendados }}",
+              "atualizado_em": "={{ $json.row.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "stage_id",
+                "displayName": "stage_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "entrou_etapa_em",
+                "displayName": "entrou_etapa_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "alerta_atender",
+                "displayName": "alerta_atender",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "alerta_proposta",
+                "displayName": "alerta_proposta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "agendados",
+                "displayName": "agendados",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "ed953e60-a69d-4aa4-98d5-d597cb90557a",
+        "name": "Remover estado",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          960
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "mPe4WVQdbGIRvmwR",
+            "cachedResultName": "atom_funil_estado"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.deal_id }}"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "65b7849a-3975-4bc9-920d-a03f44cd4bc1",
+        "name": "Sticky Note 0715d242",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          720,
+          960
+        ],
+        "parameters": {
+          "content": "## ATOM_12 — Regras do funil\n- A cada 15 min compara o funil com a última foto (atom_funil_estado).\n- Novo negócio: tarefa \"Atender lead\" no mesmo dia útil; aberta após 18h → alerta.\n- Proposta Enviada (diagnóstico): follow-ups em 2, 5 e 9 dias; apagados se o card sair da etapa.\n- Reunião concluída: \"Enviar proposta\" em 2h úteis; alerta se \"Link da proposta\" seguir vazio.\n- Mudança de etapa: mensagem ao cliente registrada em atom_mensagens (status AGUARDANDO_ZAYRA).\n- Tudo configurável em atom_config (chaves FUNIL_*). FUNIL_REGRAS_ATIVAS=false desliga.\n- 1ª execução só tira a foto inicial, sem criar tarefas.",
+          "color": 4
+        }
+      },
+      {
+        "id": "cdc9d9f0-11a8-4afa-8745-df6c6ab3edc8",
+        "name": "Devolver card",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          1152
+        ],
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ stage_id: $json.stage_id }) }}",
+          "options": {}
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nSchedule trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: A cada 15 minutos\n\t\t\t\t</trigger 1>\n\nScheduled workflows do not take inputs. To execute a specific schedule trigger, pass triggerNodeName only: { triggerNodeName: \"<node name>\" }."
+}

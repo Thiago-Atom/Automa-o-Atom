@@ -1,0 +1,1038 @@
+{
+  "workflow": {
+    "id": "fBf24Izy0HP3ydp1",
+    "name": "ATOM2_W06_CRM_Sync",
+    "active": true,
+    "isArchived": false,
+    "versionId": "c48bda35-7937-4cc9-9d1b-38e7c3fc0a5f",
+    "activeVersionId": "c48bda35-7937-4cc9-9d1b-38e7c3fc0a5f",
+    "triggerCount": 1,
+    "nodeCount": 27,
+    "createdAt": "2026-10-09T21:24:19.915Z",
+    "updatedAt": "2026-10-09T22:39:34.683Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · W06: empresas com QA aprovado (F3) → organização + negócio no funil Prospecção Ativa (F4) + nota + cadência D1. Idempotente por ATOM · company_id.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Executar": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas F3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "A cada 30 min (seg–sex 8h–18h)": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas F3": {
+        "main": [
+          [
+            {
+              "node": "Ler auditorias aprovadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditorias aprovadas": {
+        "main": [
+          [
+            {
+              "node": "Ler achados aprovados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Selecionar": {
+        "main": [
+          [
+            {
+              "node": "Uma empresa por vez",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar negócio": {
+        "main": [
+          [
+            {
+              "node": "Buscar organização",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar organização": {
+        "main": [
+          [
+            {
+              "node": "Plano organização",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano organização": {
+        "main": [
+          [
+            {
+              "node": "Aplicar organização",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar organização": {
+        "main": [
+          [
+            {
+              "node": "Plano negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano negócio": {
+        "main": [
+          [
+            {
+              "node": "Aplicar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar negócio": {
+        "main": [
+          [
+            {
+              "node": "Plano nota",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano nota": {
+        "main": [
+          [
+            {
+              "node": "Aplicar nota",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar nota": {
+        "main": [
+          [
+            {
+              "node": "Registros",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registros": {
+        "main": [
+          [
+            {
+              "node": "Roteador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Roteador": {
+        "main": [
+          [
+            {
+              "node": "Linha empresa",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha cadência",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha empresa": {
+        "main": [
+          [
+            {
+              "node": "Atualizar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha cadência": {
+        "main": [
+          [
+            {
+              "node": "Gravar cadência",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha evento": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gravar evento": {
+        "main": [
+          [
+            {
+              "node": "Uma empresa por vez",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Uma empresa por vez": {
+        "main": [
+          [
+            {
+              "node": "Fim",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Buscar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler achados aprovados": {
+        "main": [
+          [
+            {
+              "node": "Ler cadências",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler cadências": {
+        "main": [
+          [
+            {
+              "node": "Selecionar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "98ce48a7-0e0d-4a14-9632-8a2d5820b7fb",
+        "name": "Executar",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          100
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "6248a197-0ff6-4aad-9aca-3fd755940440",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "2ad01721-e392-499a-b4f9-67149c7e49c5",
+        "name": "A cada 30 min (seg–sex 8h–18h)",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          300
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "*/30 8-17 * * 1-5"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "de5fcb5e-03e8-4036-8515-c60ae7b5d085",
+        "name": "Ler empresas F3",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "funil_etapa",
+                "condition": "eq",
+                "keyValue": "F3"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "231dad5a-4b24-4fb9-be03-ed5effc5aafa",
+        "name": "Ler auditorias aprovadas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "qa_status",
+                "condition": "eq",
+                "keyValue": "aprovado"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "94510ae5-2b9c-47d1-9627-d972621c14d6",
+        "name": "Ler achados aprovados",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "reviewer_status",
+                "condition": "eq",
+                "keyValue": "aprovado"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "9bb55484-c126-4a0a-87cc-bdb00775a13f",
+        "name": "Selecionar",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1100,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W06 · CRM Sync · biblioteca (cada Code node do workflow cola esta lib + uma linha de retorno).\n// Fonte: 03_FUNIS_PIPEDRIVE.md §3 (entrada do funil Prospecção Ativa só com QA aprovado) e Fluxo do Funil v1.0 §7.\n// Idempotente: procura o negócio pelo campo ATOM · company_id antes de criar; organização por nome exato.\n// Itens de plano { method, url, body } vão para um nó HTTP Request; o que já existe vira GET inofensivo.\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\nconst cfgMapa = (rows) => Object.fromEntries((rows || []).filter((r) => r && r.chave).map((r) => [r.chave, String(r.valor ?? '')]));\nconst dados = (r) => (r && r.data) || null;\nconst hoje = () => new Date().toISOString().slice(0, 10);\nfunction selecionar(empresas, auditorias, achados, cfgRows, limite) {\n  const cfg = cfgMapa(cfgRows);\n  const faltando = ['PD2_PIPE_OUT_ID', 'PD2_STAGE_OUT_PRONTO_ID', 'PD2_FIELD_COMPANY_ID'].filter((k) => !cfg[k]);\n  if (faltando.length) throw new Error('Configuração do Pipedrive ausente: ' + faltando.join(', ') + ' (rode ATOM2_06_Setup_Pipedrive)');\n  const out = [];\n  for (const e of empresas || []) {\n    if (!e || e.funil_etapa !== 'F3' || e.pipedrive_deal_id || e.opt_out === true || String(e.opt_out) === 'true') continue;\n    const aud = (auditorias || []).filter((a) => a && a.company_id === e.company_id && a.qa_status === 'aprovado').sort((a, b) => String(b.qa_em).localeCompare(String(a.qa_em)))[0];\n    if (!aud || !aud.mensagem_aprovada) continue;\n    const doAud = (achados || []).filter((f) => f && f.audit_id === aud.audit_id);\n    const principal = doAud.find((f) => f.finding_id === aud.principal_finding_id) || null;\n    out.push({ empresa: e, auditoria: aud, principal, resumo: doAud.filter((f) => f.usado_em === 'principal' || f.usado_em === 'resumo'), cfg });\n  }\n  return out.slice(0, Math.max(1, Math.min(50, Number(limite) || 20)));\n}\nreturn selecionar($('Ler empresas F3').all().map((i) => i.json), $('Ler auditorias aprovadas').all().map((i) => i.json), $('Ler achados aprovados').all().map((i) => i.json), $('Ler configuração').all().map((i) => i.json), 20).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "38f89143-93c0-44b5-bf78-c811e6e88fb1",
+        "name": "Fim",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1540,
+          60
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "28fadea4-e936-4769-b75e-2814c66ebf90",
+        "name": "Buscar negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1540,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/deals/search",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "term",
+                "value": "={{ $json.empresa.company_id }}"
+              },
+              {
+                "name": "fields",
+                "value": "custom_fields"
+              },
+              {
+                "name": "exact_match",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "c1feffd1-8981-4b4c-8f64-2e838222746b",
+        "name": "Buscar organização",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1760,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/organizations/search",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "term",
+                "value": "={{ $('Uma empresa por vez').first().json.empresa.nome }}"
+              },
+              {
+                "name": "fields",
+                "value": "name"
+              },
+              {
+                "name": "exact_match",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "52d3f836-aeb6-4e6c-9cce-6f2183bc59e0",
+        "name": "Plano organização",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1980,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W06 · Plano organização (trecho de n8n/code/w06_sync.js).\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\nconst dados = (r) => (r && r.data) || null;\nfunction planoOrg(ctx, buscaDeal, buscaOrg) {\n  const deal = ((dados(buscaDeal) || {}).items || [])[0];\n  if (deal) return { ...NOOP, ref: 'org:negocio_existe' };\n  const org = ((dados(buscaOrg) || {}).items || []).map((i) => i.item).find((o) => o && String(o.name).trim().toLowerCase() === String(ctx.empresa.nome).trim().toLowerCase());\n  if (org) return { ...NOOP, ref: 'org:existe' };\n  const e = ctx.empresa;\n  const body = { name: e.nome, visible_to: 3 };\n  const c = ctx.cfg;\n  if (c.PD_ORG_TELEFONE_KEY && e.telefone) body[c.PD_ORG_TELEFONE_KEY] = '+' + String(e.telefone).replace(/\\D/g, '');\n  if (c.PD_ORG_CIDADE_KEY && e.cidade) body[c.PD_ORG_CIDADE_KEY] = e.cidade;\n  if (c.PD_ORG_UF_KEY && e.uf) body[c.PD_ORG_UF_KEY] = e.uf;\n  return { method: 'POST', url: API + '/organizations', body, ref: 'org:criar' };\n}\nconst ctx = $('Uma empresa por vez').first().json;\nreturn [{ json: planoOrg(ctx, $('Buscar negócio').first().json, $('Buscar organização').first().json) }];"
+        }
+      },
+      {
+        "id": "47905e14-318c-4c18-9559-8c7b873b1a79",
+        "name": "Aplicar organização",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2200,
+          300
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "801bca18-8a81-4891-980e-239b6c27b6dc",
+        "name": "Plano negócio",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2420,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W06 · Plano negócio (trecho de n8n/code/w06_sync.js).\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\nconst dados = (r) => (r && r.data) || null;\n// Resposta de uma etapa só conta se o plano foi POST (o GET inofensivo /users/me devolve o id do usuário!).\nconst respSe = (plano, resp) => (plano && plano.method === 'POST' ? resp : {});\nconst orgId = (buscaOrg, respOrg, ctx) => {\n  const criada = dados(respOrg);\n  if (criada && criada.id && respOrg && respOrg.success) return criada.id;\n  const org = ((dados(buscaOrg) || {}).items || []).map((i) => i.item).find((o) => o && String(o.name).trim().toLowerCase() === String(ctx.empresa.nome).trim().toLowerCase());\n  return org ? org.id : null;\n};\nfunction corpoNegocio(ctx, org) {\n  const { empresa: e, auditoria: a, principal: p, cfg } = ctx;\n  const f = (k) => cfg['PD2_FIELD_' + k];\n  const opt = (k, slug) => cfg['PD2_OPT_' + k + '_' + slug];\n  const body = { title: e.nome + ' — Prospecção ativa', org_id: org || undefined, pipeline_id: Number(cfg.PD2_PIPE_OUT_ID), stage_id: Number(cfg.PD2_STAGE_OUT_PRONTO_ID), status: 'open', visible_to: 3 };\n  const set = (k, v) => { if (k && v !== undefined && v !== null && v !== '') body[k] = v; };\n  set(f('ORIGEM'), opt('ORIGEM', 'PROSPECCAO_ATIVA') && Number(opt('ORIGEM', 'PROSPECCAO_ATIVA')));\n  set(f('CANAL'), opt('CANAL', 'WHATSAPP_N_2') && Number(opt('CANAL', 'WHATSAPP_N_2')));\n  set(f('OFERTA'), opt('OFERTA', 'CLINICA_COMPLETA') && Number(opt('OFERTA', 'CLINICA_COMPLETA')));\n  set(f('COMPANY_ID'), e.company_id);\n  set(f('AUDIT_ID'), a.audit_id);\n  set(f('FINDING_ID'), p && p.finding_id);\n  set(f('EVIDENCE_URL'), p && p.source_url);\n  set(f('EVIDENCE_DATE'), p && String(p.observed_at || '').slice(0, 10));\n  set(f('SCORE'), a.score != null ? Number(a.score) : null);\n  set(f('FAIXA'), a.faixa && opt('FAIXA', a.faixa) && Number(opt('FAIXA', a.faixa)));\n  set(f('QA_STATUS'), opt('QA_STATUS', 'APROVADO') && Number(opt('QA_STATUS', 'APROVADO')));\n  set(f('PERMISSAO'), opt('PERMISSAO', e.telefone ? 'AUTORIZADA' : 'NAO_AVALIADA') && Number(opt('PERMISSAO', e.telefone ? 'AUTORIZADA' : 'NAO_AVALIADA')));\n  set(f('TOQUE'), opt('TOQUE', 'D1') && Number(opt('TOQUE', 'D1')));\n  set(f('PROXIMA_ACAO'), 'Enviar 1º contato (recepção) pela fila W07');\n  if (cfg.PD_DEAL_DOMINIO_KEY) set(cfg.PD_DEAL_DOMINIO_KEY, e.dominio);\n  if (cfg.PD_DEAL_NICHO_KEY) set(cfg.PD_DEAL_NICHO_KEY, { dental: 'Odontologia', medical: 'Clínica médica', tires: 'Pneus' }[e.vertical] || e.vertical);\n  return body;\n}\nfunction planoNegocio(ctx, buscaDeal, buscaOrg, respOrg) {\n  const deal = ((dados(buscaDeal) || {}).items || [])[0];\n  if (deal) return { ...NOOP, ref: 'negocio:existe', existente: deal.item.id };\n  return { method: 'POST', url: API + '/deals', body: corpoNegocio(ctx, orgId(buscaOrg, respOrg, ctx)), ref: 'negocio:criar' };\n}\nconst ctx = $('Uma empresa por vez').first().json;\nconst ro = respSe($('Plano organização').first().json, $('Aplicar organização').first().json);\nreturn [{ json: planoNegocio(ctx, $('Buscar negócio').first().json, $('Buscar organização').first().json, ro) }];"
+        }
+      },
+      {
+        "id": "3add9784-3bb3-4c93-94c8-ec8e02048d9b",
+        "name": "Aplicar negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2640,
+          300
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "98875920-3ad4-4917-a210-70aba3f7848b",
+        "name": "Plano nota",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2860,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W06 · Plano nota (trecho de n8n/code/w06_sync.js).\nconst API = 'https://api.pipedrive.com/v1';\nconst NOOP = { method: 'GET', url: API + '/users/me', body: {} };\nconst dados = (r) => (r && r.data) || null;\nconst respSe = (plano, resp) => (plano && plano.method === 'POST' ? resp : {});\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst dealId = (buscaDeal, respDeal) => {\n  const d = dados(respDeal);\n  if (d && d.id && respDeal.success) return { id: d.id, criado: true };\n  const ex = ((dados(buscaDeal) || {}).items || [])[0];\n  return ex ? { id: ex.item.id, criado: false } : { id: null, criado: false };\n};\nfunction corpoNota(ctx, deal) {\n  const { empresa: e, auditoria: a, resumo } = ctx;\n  const linhas = resumo.map((f) => `<li><b>${esc(f.claim)}</b><br>Evidência: ${esc(f.evidence)}<br>Fonte: <a href=\"${esc(f.source_url)}\">${esc(f.source_url)}</a> (${esc(String(f.observed_at).slice(0, 10))}, confiança ${Math.round((f.confidence || 0) * 100)}%)</li>`).join('');\n  return { deal_id: deal, pinned_to_deal_flag: 1, content: `<p><b>Diagnóstico N1</b> · ${esc(a.audit_id)} · score ${esc(a.score)} (faixa ${esc(a.faixa)}) · QA aprovado por ${esc(a.qa_por)} em ${esc(String(a.qa_em).slice(0, 10))}</p><ul>${linhas}</ul><p><b>1º contato (recepção):</b><br>${esc(a.mensagem_aprovada)}</p><p><b>Mensagem ao decisor:</b><br>${esc(a.mensagem_decisor)}</p><p>Site: ${esc(e.dominio)} · Fonte da empresa: ${esc(e.fonte_url)} (${esc(String(e.fonte_data).slice(0, 10))})</p><p><i>Regra: nenhum agente fala de preço antes da proposta enviada.</i></p>` };\n}\nfunction planoNota(ctx, buscaDeal, respDeal) {\n  const d = dealId(buscaDeal, respDeal);\n  return d.criado ? { method: 'POST', url: API + '/notes', body: corpoNota(ctx, d.id), ref: 'nota:criar' } : { ...NOOP, ref: 'nota:pular' };\n}\nconst ctx = $('Uma empresa por vez').first().json;\nconst rd = respSe($('Plano negócio').first().json, $('Aplicar negócio').first().json);\nreturn [{ json: planoNota(ctx, $('Buscar negócio').first().json, rd) }];"
+        }
+      },
+      {
+        "id": "2512d36b-b93b-478e-9de1-aab6fea5e60f",
+        "name": "Aplicar nota",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3080,
+          300
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "ef45f75c-8507-4b94-86b4-3005af97518e",
+        "name": "Registros",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3300,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W06 · Registros (trecho de n8n/code/w06_sync.js).\nconst dados = (r) => (r && r.data) || null;\nconst respSe = (plano, resp) => (plano && plano.method === 'POST' ? resp : {});\n// 1º contato na janela da manhã (9h–11h de São Paulo, dia útil): fora dela, agenda para o próximo dia útil às 9h.\nconst FERIADOS = ['2026-01-01', '2026-02-16', '2026-02-17', '2026-04-03', '2026-04-21', '2026-05-01', '2026-06-04', '2026-09-07', '2026-10-12', '2026-11-02', '2026-11-15', '2026-11-20', '2026-12-25',\n  '2027-01-01', '2027-02-08', '2027-02-09', '2027-03-26', '2027-04-21', '2027-05-01', '2027-05-27', '2027-09-07', '2027-10-12', '2027-11-02', '2027-11-15', '2027-11-20', '2027-12-25'];\nconst util = (dia) => { const w = new Date(dia + 'T12:00:00Z').getUTCDay(); return w !== 0 && w !== 6 && !FERIADOS.includes(dia); };\nfunction janelaD1(agoraISO) {\n  const sp = new Date(new Date(agoraISO).getTime() - 3 * 3600 * 1000);\n  let dia = sp.toISOString().slice(0, 10);\n  const h = sp.getUTCHours() + sp.getUTCMinutes() / 60;\n  if (util(dia) && h >= 9 && h < 11) return agoraISO;\n  if (!(util(dia) && h < 9)) { do { const d = new Date(dia + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); dia = d.toISOString().slice(0, 10); } while (!util(dia)); }\n  return dia + 'T12:00:00.000Z';\n}\n\nconst orgId = (buscaOrg, respOrg, ctx) => {\n  const criada = dados(respOrg);\n  if (criada && criada.id && respOrg && respOrg.success) return criada.id;\n  const org = ((dados(buscaOrg) || {}).items || []).map((i) => i.item).find((o) => o && String(o.name).trim().toLowerCase() === String(ctx.empresa.nome).trim().toLowerCase());\n  return org ? org.id : null;\n};\n\nconst dealId = (buscaDeal, respDeal) => {\n  const d = dados(respDeal);\n  if (d && d.id && respDeal.success) return { id: d.id, criado: true };\n  const ex = ((dados(buscaDeal) || {}).items || [])[0];\n  return ex ? { id: ex.item.id, criado: false } : { id: null, criado: false };\n};\n\n// 5) Registros internos: empresa (F4 + IDs), cadência D1 e evento. Sem negócio = falha documentada.\n// A cadência nasce sempre que o negócio ainda não tem uma (inclusive se o negócio já existia de uma rodada que falhou no meio).\nfunction registros(ctx, buscaDeal, respDeal, buscaOrg, respOrg, cadencias, agoraISO) {\n  const agora = agoraISO || new Date().toISOString();\n  const d = dealId(buscaDeal, respDeal);\n  const e = ctx.empresa;\n  const ev = (tipo, motivo, dadosEv) => ({ destino: 'evento', evento: { event_id: 'e_w06_' + e.company_id + '_' + tipo.toLowerCase(), correlation_id: ctx.auditoria.audit_id, company_id: e.company_id, workflow: 'ATOM2_W06', tipo, motivo, dados: JSON.stringify(dadosEv || {}), ocorrido_em: agora } });\n  if (!d.id) return [ev('CRM_FALHA', 'negócio não criado', { resposta: respDeal && (respDeal.error || respDeal.error_info) || null })];\n  const out = [\n    { destino: 'empresa', linha: { company_id: e.company_id, pipedrive_deal_id: String(d.id), pipedrive_org_id: String(orgId(buscaOrg, respOrg, ctx) || ''), funil_etapa: 'F4', status_motivo: 'No Pipedrive (Prospecção ativa) aguardando 1º contato', atualizado_em: agora } }\n  ];\n  const temCadencia = (cadencias || []).some((c) => c && String(c.deal_id) === String(d.id));\n  if (!temCadencia) out.push({ destino: 'cadencia', linha: { company_id: e.company_id, deal_id: String(d.id), funil: 'OUT', passo_atual: '', proximo_passo: 'D1', proximo_em: janelaD1(agora), status: 'ativa', envios: 0, iniciado_em: agora, atualizado_em: agora } });\n  out.push(ev(d.criado ? 'CRM_CRIADO' : 'CRM_JA_EXISTIA', 'deal ' + d.id, { deal_id: d.id }));\n  return out;\n}\n\nconst ctx = $('Uma empresa por vez').first().json;\nconst ro = respSe($('Plano organização').first().json, $('Aplicar organização').first().json);\nconst rd = respSe($('Plano negócio').first().json, $('Aplicar negócio').first().json);\nreturn registros(ctx, $('Buscar negócio').first().json, rd, $('Buscar organização').first().json, ro, $('Ler cadências').all().map((i) => i.json)).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "a3db5082-e900-449a-924e-b21a8a3cb5a2",
+        "name": "Roteador",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          3520,
+          300
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "empresa",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "empresa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "cadencia",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "cadencia"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "evento",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "evento"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "a30726f0-d796-4d6a-bd07-72c23681eb68",
+        "name": "Linha empresa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3740,
+          100
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "c6972b7c-29be-4e89-8d7e-ee824e2b7b8c",
+        "name": "Atualizar empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3960,
+          100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "e52ff4cb-686a-4d4d-b0bc-b4d7676f10a4",
+        "name": "Linha cadência",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3740,
+          300
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "a68606a9-50d8-42ca-8af7-192611108274",
+        "name": "Gravar cadência",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3960,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yg5jYnoqI2f4aYOd",
+            "cachedResultName": "atom2_cadencia"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "1114adb6-9bad-483d-9f8a-7dc0cc00f5a2",
+        "name": "Linha evento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3740,
+          500
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.evento }}"
+        }
+      },
+      {
+        "id": "d741f50c-6d3d-4a4f-a0e7-1db88ec63d92",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3960,
+          500
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "9fba31c3-7628-478e-8fd3-2967f45efd90",
+        "name": "Uma empresa por vez",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1320,
+          200
+        ],
+        "parameters": {
+          "batchSize": 1,
+          "options": {}
+        }
+      },
+      {
+        "id": "18d9877e-7a2b-405d-a0c3-3eecbd86c7d0",
+        "name": "Sticky Note 40cd490d",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -220
+        ],
+        "parameters": {
+          "content": "## ATOM2_W06 · CRM Sync\nEmpresas F3 (QA aprovado) → organização + negócio no funil Prospecção Ativa (etapa Abordagem autorizada, F4) + nota fixada com achados e mensagens + cadência D1 em atom2_cadencia.\nIdempotente: busca o negócio por ATOM · company_id antes de criar. Não envia mensagens.\nFonte: n8n/code/w06_sync.js · testes: n8n/tests/run_w06.js",
+          "color": 4,
+          "width": 560,
+          "height": 200
+        }
+      },
+      {
+        "id": "bc6eecca-b34b-4470-a382-b9a5cb8d661b",
+        "name": "Ler cadências",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          990,
+          360
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yg5jYnoqI2f4aYOd",
+            "cachedResultName": "atom2_cadencia"
+          },
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nSchedule trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: A cada 30 min (seg–sex 8h–18h)\n\t\t\t\t</trigger 1>\n\nScheduled workflows do not take inputs. To execute a specific schedule trigger, pass triggerNodeName only: { triggerNodeName: \"<node name>\" }."
+}

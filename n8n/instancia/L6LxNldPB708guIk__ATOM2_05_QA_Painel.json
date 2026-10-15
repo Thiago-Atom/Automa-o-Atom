@@ -1,0 +1,1002 @@
+{
+  "workflow": {
+    "id": "L6LxNldPB708guIk",
+    "name": "ATOM2_05_QA_Painel",
+    "active": true,
+    "isArchived": false,
+    "versionId": "be39c0e7-f778-4877-ba51-ee03f351f5e1",
+    "activeVersionId": "be39c0e7-f778-4877-ba51-ee03f351f5e1",
+    "triggerCount": 2,
+    "nodeCount": 28,
+    "createdAt": "2026-10-09T21:17:44.070Z",
+    "updatedAt": "2026-10-09T22:36:33.787Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "saveExecutionProgress": true,
+      "saveDataErrorExecution": "all",
+      "saveDataSuccessExecution": "all"
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · Painel de QA (GET página / POST decisão) protegido por chave em atom2_config.QA_TOKEN. Aprovar = F3; trava de preço e termos proibidos no servidor.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Página (GET)": {
+        "main": [
+          [
+            {
+              "node": "Config (GET)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Config (GET)": {
+        "main": [
+          [
+            {
+              "node": "Token",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Token": {
+        "main": [
+          [
+            {
+              "node": "Chave ok? (GET)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Chave ok? (GET)": {
+        "main": [
+          [
+            {
+              "node": "Ler auditorias",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Negar (GET)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditorias": {
+        "main": [
+          [
+            {
+              "node": "Ler achados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler achados": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas": {
+        "main": [
+          [
+            {
+              "node": "Montar página",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar página": {
+        "main": [
+          [
+            {
+              "node": "Responder página",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Decisão (POST)": {
+        "main": [
+          [
+            {
+              "node": "Config (POST)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Config (POST)": {
+        "main": [
+          [
+            {
+              "node": "Token POST",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Token POST": {
+        "main": [
+          [
+            {
+              "node": "Chave ok? (POST)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Chave ok? (POST)": {
+        "main": [
+          [
+            {
+              "node": "Ler auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Negar (POST)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditoria": {
+        "main": [
+          [
+            {
+              "node": "Decidir",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Decidir": {
+        "main": [
+          [
+            {
+              "node": "Decisão válida?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Decisão válida?": {
+        "main": [
+          [
+            {
+              "node": "Linha auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Recusar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha auditoria": {
+        "main": [
+          [
+            {
+              "node": "Atualizar auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar auditoria": {
+        "main": [
+          [
+            {
+              "node": "Linha empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha empresa": {
+        "main": [
+          [
+            {
+              "node": "Atualizar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar empresa": {
+        "main": [
+          [
+            {
+              "node": "Atualizar achados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar achados": {
+        "main": [
+          [
+            {
+              "node": "Linha evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha evento": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gravar evento": {
+        "main": [
+          [
+            {
+              "node": "Responder ok",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "64a8c1b4-ff9c-4321-8b45-ca3b171181d5",
+        "name": "Página (GET)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom2-qa",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "5821a032-b5fe-474b-b1e3-709147abe55f"
+      },
+      {
+        "id": "ad364c67-d738-4f7b-a8e9-81ae9749607f",
+        "name": "Config (GET)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "chave",
+                "condition": "eq",
+                "keyValue": "QA_TOKEN"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "b3cefbe2-384a-457d-bc6f-6fb0788334ce",
+        "name": "Token",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          440,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const t = ($('Config (GET)').all().map((i) => i.json).find((r) => r && r.chave === 'QA_TOKEN') || {}).valor;\nconst w = $('Página (GET)').first().json;\nconst k = String((w.query || {}).k || '');\nreturn [{ json: { ok: !!t && t.length >= 20 && k === t, k } }];"
+        }
+      },
+      {
+        "id": "8980ed05-5486-453f-9c79-bd0d917c8f52",
+        "name": "Chave ok? (GET)",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          660,
+          0
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "17ed8024-0e7e-45c4-89f3-a49b33c3f04f",
+        "name": "Ler auditorias",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          -100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "qa_status",
+                "condition": "eq",
+                "keyValue": "pendente"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "dc4fd589-a406-46e8-bbe6-3993227290e8",
+        "name": "Ler achados",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          -100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "2c21fdbd-7e5e-43b5-9c7e-0bd29e470cdf",
+        "name": "Ler empresas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          -100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "c32060d2-9d2d-458c-831d-f12dc4011804",
+        "name": "Montar página",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1540,
+          -100
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_05 · Painel de QA · página (Code node, \"Run Once for All Items\").\n// Entrada: $('Ler auditorias'), $('Ler achados'), $('Ler empresas'); $('Token').first().json.k = token válido.\n// Saída: 1 item { html } com a fila de QA (qa_status = pendente), mais fortes primeiro.\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst k = $('Token').first().json.k;\n// Só a auditoria pendente mais recente de cada empresa (um N1 refeito em outro dia não gera cartão duplicado).\nconst todas = $('Ler auditorias').all().map((i) => i.json).filter((a) => a && a.audit_id && a.qa_status === 'pendente');\nconst maisNova = {};\nfor (const a of todas) if (!maisNova[a.company_id] || String(a.observado_em) > String(maisNova[a.company_id].observado_em)) maisNova[a.company_id] = a;\nconst auds = Object.values(maisNova);\nconst achados = $('Ler achados').all().map((i) => i.json).filter((a) => a && a.finding_id);\nconst empresas = Object.fromEntries($('Ler empresas').all().map((i) => i.json).filter((e) => e && e.company_id).map((e) => [e.company_id, e]));\nauds.sort((a, b) => (b.score || 0) - (a.score || 0));\nconst SEV = { alta: 'Alta', media: 'Média', baixa: 'Baixa' };\n\nconst cartao = (a) => {\n  const e = empresas[a.company_id] || {};\n  const lista = achados.filter((f) => f.audit_id === a.audit_id).sort((x, y) => (x.usado_em === 'principal' ? -1 : y.usado_em === 'principal' ? 1 : 0) || ['alta', 'media', 'baixa'].indexOf(x.severity) - ['alta', 'media', 'baixa'].indexOf(y.severity));\n  const semOport = !a.mensagem_d1;\n  return `<article class=\"card\" data-audit=\"${esc(a.audit_id)}\">\n  <header><div><h2>${esc(e.nome || a.company_id)}</h2><p class=\"meta\">${esc(e.cidade || '')}/${esc(e.uf || '')} · <a href=\"https://${esc(e.dominio)}\" target=\"_blank\" rel=\"noopener noreferrer\">${esc(e.dominio)}</a> · ${esc(e.telefone || 'sem telefone')}</p></div>\n  <div class=\"score faixa-${esc(a.faixa || 'C')}\"><strong>${a.score ?? '—'}</strong><span>Faixa ${esc(a.faixa || '—')}</span></div></header>\n  <details ${semOport ? '' : 'open'}><summary>${lista.length} achado(s) · observado em ${esc(String(a.observado_em || '').slice(0, 10))}</summary>\n  <ul class=\"achados\">${lista.map((f) => `<li class=\"${f.usado_em === 'principal' ? 'principal' : ''}\"><span class=\"sev sev-${esc(f.severity)}\">${SEV[f.severity] || esc(f.severity)}</span>${f.usado_em === 'principal' ? '<span class=\"tag\">principal</span>' : ''}<p>${esc(f.claim)}</p><p class=\"ev\">Evidência: ${esc(f.evidence)} · <a href=\"${esc(f.source_url)}\" target=\"_blank\" rel=\"noopener noreferrer\">fonte</a> · confiança ${Math.round((f.confidence || 0) * 100)}%</p></li>`).join('')}</ul></details>\n  ${semOport ? `<p class=\"aviso\">Sem oportunidade verificada: não abordar com personalização. Reprove ou deixe para depois.</p>` : `\n  <label>1º contato (recepção)<textarea name=\"d1\" rows=\"3\">${esc(a.mensagem_d1)}</textarea></label>\n  <label>Mensagem ao decisor (com o achado; [Nome] é preenchido quando a recepção indicar)<textarea name=\"decisor\" rows=\"4\">${esc(a.mensagem_decisor || '')}</textarea></label>`}\n  <label>Observação (opcional)<input name=\"obs\" type=\"text\" maxlength=\"300\"></label>\n  <div class=\"acoes\">${semOport ? '' : '<button class=\"ok\" data-acao=\"aprovar\">Aprovar</button>'}<button class=\"nao\" data-acao=\"reprovar\">Reprovar</button><span class=\"status\" role=\"status\"></span></div>\n</article>`;\n};\n\nconst html = `<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>QA · Prospecção Ativa</title>\n<style>\n:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--mut:#5d6677;--bd:#e3e6ec;--ok:#1f7a4d;--no:#b42318;--alta:#b42318;--media:#b25e09;--baixa:#53627a;--pri:#2f5bd3}\n@media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--tx:#e8ebf1;--mut:#9aa3b2;--bd:#2c3340;--pri:#7c9cff}}\n*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}\nmain{max-width:920px;margin:0 auto;padding:24px 16px 64px}h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mut);margin:0 0 20px}\n.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:0 0 16px}.card.feito{opacity:.55}\nheader{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}h2{font-size:18px;margin:0}.meta{color:var(--mut);margin:2px 0 0;font-size:13px;word-break:break-all}\n.score{text-align:center;min-width:70px;border-radius:10px;padding:6px 8px;border:1px solid var(--bd)}.score strong{display:block;font-size:22px}.score span{font-size:12px;color:var(--mut)}\n.faixa-A strong{color:var(--ok)}.faixa-C strong{color:var(--mut)}\ndetails{margin:12px 0}summary{cursor:pointer;color:var(--mut)}.achados{list-style:none;padding:0;margin:8px 0 0}.achados li{border-left:3px solid var(--bd);padding:6px 10px;margin:6px 0}.achados li.principal{border-color:var(--pri)}\n.achados p{margin:2px 0}.ev{font-size:12px;color:var(--mut);word-break:break-word}.sev{font-size:11px;font-weight:600;text-transform:uppercase;margin-right:6px}.sev-alta{color:var(--alta)}.sev-media{color:var(--media)}.sev-baixa{color:var(--baixa)}\n.tag{font-size:11px;background:var(--pri);color:#fff;border-radius:4px;padding:1px 6px}\nlabel{display:block;font-size:13px;color:var(--mut);margin:10px 0 0}textarea,input{width:100%;margin-top:4px;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}\n.acoes{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}button{font:inherit;border:0;border-radius:8px;padding:8px 16px;cursor:pointer;color:#fff}button.ok{background:var(--ok)}button.nao{background:var(--no)}button:disabled{opacity:.5;cursor:default}\n.status{font-size:13px;color:var(--mut)}.aviso{background:var(--bg);border-radius:8px;padding:8px;color:var(--mut)}.vazio{color:var(--mut);text-align:center;padding:40px}\n</style></head><body><main>\n<h1>QA · Prospecção Ativa</h1><p class=\"sub\">${auds.length} diagnóstico(s) aguardando revisão. Nada é enviado daqui: aprovar libera a empresa para a fila (F3), que respeita o modo de execução. Mensagens com preço são recusadas (regra absoluta).</p>\n${auds.length ? auds.map(cartao).join('') : '<p class=\"vazio\">Fila vazia.</p>'}\n</main><script>\nconst K=${JSON.stringify(k)};\ndocument.querySelectorAll('button[data-acao]').forEach(b=>b.addEventListener('click',async()=>{\n const c=b.closest('.card'),st=c.querySelector('.status');c.querySelectorAll('button').forEach(x=>x.disabled=true);st.textContent='Salvando…';\n const v=n=>{const el=c.querySelector('[name='+n+']');return el?el.value:''};\n try{const r=await fetch(location.pathname+'-decisao?k='+encodeURIComponent(K),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({audit_id:c.dataset.audit,acao:b.dataset.acao,d1:v('d1'),decisor:v('decisor'),obs:v('obs')})});\n  const j=await r.json();if(!r.ok||!j.ok)throw new Error(j.erro||'erro '+r.status);st.textContent=j.mensagem;c.classList.add('feito');}\n catch(e){st.textContent='Não salvo: '+e.message;c.querySelectorAll('button').forEach(x=>x.disabled=false);}\n}));\n</script></body></html>`;\nreturn [{ json: { html } }];\n"
+        }
+      },
+      {
+        "id": "aa21c0ff-03bd-41dc-ace4-aeb5e1b06d69",
+        "name": "Responder página",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1760,
+          -100
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseCode": 200,
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "ea75afa3-8946-4446-9836-a57f2674567d",
+        "name": "Negar (GET)",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          880,
+          100
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "Acesso negado.",
+          "options": {
+            "responseCode": 403
+          }
+        }
+      },
+      {
+        "id": "83edff7c-1783-4c73-b749-2e371ca25a3a",
+        "name": "Decisão (POST)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          400
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atom2-qa-decisao",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "dc98dd83-e4b5-4c24-8748-9eb536cce0b1"
+      },
+      {
+        "id": "9a2de1cd-df14-4e47-9017-58c310362fe2",
+        "name": "Config (POST)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          400
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "chave",
+                "condition": "eq",
+                "keyValue": "QA_TOKEN"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f4e7748e-3e02-427e-a33e-54b7f70129e6",
+        "name": "Token POST",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          440,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const t = ($('Config (POST)').all().map((i) => i.json).find((r) => r && r.chave === 'QA_TOKEN') || {}).valor;\nconst w = $('Decisão (POST)').first().json;\nconst k = String((w.query || {}).k || '');\nreturn [{ json: { ok: !!t && t.length >= 20 && k === t, body: w.body || {} } }];"
+        }
+      },
+      {
+        "id": "41d0b9dc-5c8c-48ce-97aa-8db34fd7246b",
+        "name": "Chave ok? (POST)",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          660,
+          400
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "855ad74c-e16c-4050-9cb8-4207375e14eb",
+        "name": "Ler auditoria",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.body.audit_id }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "8fb26363-41e6-4370-9e18-81acad05207e",
+        "name": "Decidir",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1100,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_05 · Painel de QA · decisão (Code node, \"Run Once for All Items\").\n// Entrada: corpo do POST em $('Token POST').body { audit_id, acao: aprovar|reprovar, d1, decisor, obs } e $('Ler auditoria').\n// Saída: 1 item { ok, erro?, mensagem, auditoria?, empresa?, evento? } — as gravações vêm depois, só se ok.\n// Trava de preço (regra absoluta, lib_guarda_preco.js) e termos proibidos (W05) valem para o texto editado.\n// <guarda> — bloco canônico: copiado idêntico para W05, W05b, W07 e W08 por n8n/tools/sync_guarda.js (teste confere).\n// Fronteiras Unicode: \\b do JavaScript não trata \"é\", \"à\" etc. como letra.\nconst I = '(?<![\\\\p{L}\\\\p{N}])', F = '(?![\\\\p{L}\\\\p{N}])';\nconst rx = (corpo) => new RegExp(I + corpo + F, 'iu');\nconst EXTENSO = '(um|uma|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|treze|quatorze|catorze|quinze|dezesseis|dezessete|dezoito|dezenove|vinte|trinta|quarenta|cinquenta|sessenta|setenta|oitenta|noventa|cem|cento|duzentos|duzentas|trezentos|trezentas|quatrocentos|quinhentos|seiscentos|setecentos|oitocentos|novecentos)';\nconst PRECO_RX = [\n  /(R|US|U)?\\s*[$＄]\\s*\\d/i,                                                                   // R$ 3.000, R $3000, US$ 500, $500\n  rx('\\\\d{1,3}([.\\\\s]\\\\d{3})+([.,]\\\\d{2})?'),                                                 // 3.000 / 14.000,00 / 1 500,00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(mil|reais|k)'),                                                     // 3 mil, 900 reais, 3k\n  rx(EXTENSO + '(\\\\s+e\\\\s+' + EXTENSO + ')*\\\\s+(mil|reais)'),                                 // três mil, dois mil e quinhentos\n  rx('\\\\d+,\\\\d{2}'), rx('\\\\d+\\\\.\\\\d{2}'),                                                     // 500,00 / 500.00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(/\\\\s*m[eê]s|por m[eê]s|mensais|ao m[eê]s|/\\\\s*ano|por ano)'),       // 1500/mês, 990 mensais\n  rx('\\\\d+\\\\s*x\\\\s*(de\\\\s*)?(R\\\\$\\\\s*)?\\\\d+'),                                                 // 12x 300, 2x de 750\n  rx('(valor|custo|taxa|or[cç]amento|ticket|plano|investimento)\\\\s*(:|mensal|anual|de|é|e|fica|sai|total|inicial)?\\\\s*(R\\\\$\\\\s*)?\\\\d+'), // Valor: 1500, orçamento de 1500\n  rx('(?<!(oportunidades|resultados|dados|casos|problemas|ganhos|melhorias|clientes|pacientes|n[uú]meros|exemplos|situa[cç][oõ]es|pessoas|avalia[cç][oõ]es|depoimentos|evid[eê]ncias|mudan[cç]as|benef[ií]cios)\\\\s)reais'),\n  rx('pre[cç]os?'),\n  rx('valor(es)?\\\\s+(de|do|da|para|é|e|fica|sai|total|mensal)'),\n  rx('investimento\\\\s+(de|é|e|fica|sai|total|inicial|mensal)'),\n  rx('(mensalidade|parcelas?|parcelado|entrada de|setup de|desconto|à vista|a vista|boleto|pix)'),\n  rx('(custa|custo de|cobramos|sai por|fica por|a partir de)')\n];\n// Promessas e alegações proibidas (handoff §8; scripts de 09/10). \"Ninguém pode garantir isso\" (script ChatGPT) passa.\nconst PROIBIDOS = [/primeira posi[cç][aã]o/i, /topo do google/i, /garant(imos|ido|idos|ida|idas|o\\b|ia de)/i, /posi[cç][aã]o\\s*\\d/i, /\\b\\d+\\s*(visitas|clientes|pacientes) (por|ao) m[eê]s/i, /preju[ií]zo/i, /queda de vendas/i, /perdendo (clientes|pacientes|vendas)/i, /cliente oculto/i, /chatgpt (indicou|citou|recomendou)/i];\nconst bloqueios = (t) => [...PRECO_RX.filter((r) => r.test(String(t || ''))).map(() => 'preço antes da proposta'), ...PROIBIDOS.filter((r) => r.test(String(t || ''))).map((r) => 'termo proibido ' + r.source)];\n// </guarda>\nconst problemas = (t) => bloqueios(t).map((m) => (m.startsWith('preço') ? 'menciona preço (proibido antes da proposta)' : m));\n\nconst b = $('Token POST').first().json.body || {};\nconst aud = $('Ler auditoria').all().map((i) => i.json).find((a) => a && a.audit_id === b.audit_id);\nconst agora = new Date().toISOString();\nconst falha = (erro) => [{ json: { ok: false, erro } }];\nif (!aud) return falha('auditoria não encontrada');\nif (aud.qa_status !== 'pendente') return falha('já revisada (' + aud.qa_status + ')');\nif (!['aprovar', 'reprovar'].includes(b.acao)) return falha('ação inválida');\nconst obs = String(b.obs || '').slice(0, 300);\nconst evento = (tipo) => ({ event_id: 'e_qa_' + aud.audit_id + '_' + tipo.toLowerCase(), correlation_id: aud.audit_id, company_id: aud.company_id, workflow: 'ATOM2_05', tipo, motivo: obs || tipo, dados: JSON.stringify({ por: 'Thiago' }), ocorrido_em: agora });\n\nif (b.acao === 'reprovar') {\n  return [{ json: { ok: true, mensagem: 'Reprovado.', auditoria: { audit_id: aud.audit_id, qa_status: 'reprovado', qa_por: 'Thiago', qa_em: agora, qa_obs: obs }, achados_status: 'reprovado',\n    empresa: { company_id: aud.company_id, status_motivo: 'QA reprovado' + (obs ? ': ' + obs : ''), atualizado_em: agora }, evento: evento('QA_REPROVADO') } }];\n}\nconst d1 = String(b.d1 || '').trim(), decisor = String(b.decisor || '').trim();\nif (!aud.mensagem_d1) return falha('sem oportunidade verificada: não há mensagem para aprovar');\nif (!d1 || d1.length > 700 || !decisor || decisor.length > 900) return falha('mensagens vazias ou longas demais');\nconst p = [...problemas(d1), ...problemas(decisor)];\nif (p.length) return falha('Mensagem bloqueada: ' + [...new Set(p)].join('; '));\nreturn [{ json: { ok: true, mensagem: 'Aprovado: liberado para a fila (F3).', auditoria: { audit_id: aud.audit_id, qa_status: 'aprovado', qa_por: 'Thiago', qa_em: agora, qa_obs: obs, mensagem_aprovada: d1, mensagem_decisor: decisor },\n  achados_status: 'aprovado', empresa: { company_id: aud.company_id, funil_etapa: 'F3', status_motivo: 'QA aprovado', atualizado_em: agora }, evento: evento('QA_APROVADO') } }];\n"
+        }
+      },
+      {
+        "id": "398978cd-3ec9-48c8-91ed-3ec65ef24f8b",
+        "name": "Decisão válida?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1320,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "c8ed0f76-0677-4df9-a948-e727390b886a",
+        "name": "Linha auditoria",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1540,
+          200
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.auditoria }}"
+        }
+      },
+      {
+        "id": "78a26e06-2ecb-4854-ba39-7c9bb788032c",
+        "name": "Atualizar auditoria",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1760,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.audit_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e6e9b0e7-66db-4df3-8700-d8f41a54c686",
+        "name": "Linha empresa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1980,
+          200
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $('Decidir').first().json.empresa }}"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "8850adc0-4b87-40db-9b2a-e253db50ae51",
+        "name": "Atualizar empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2200,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4b175e0f-20cd-4015-9e30-077b2ea1c05e",
+        "name": "Atualizar achados",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2420,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Decidir').first().json.auditoria.audit_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "reviewer_status": "={{ $('Decidir').first().json.achados_status }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "reviewer_status",
+                "displayName": "reviewer_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "ac7d3e2e-a1aa-4266-8ed1-f02e35cf224d",
+        "name": "Linha evento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2640,
+          200
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $('Decidir').first().json.evento }}"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "ca832a6c-b0a7-4da0-aaf0-a5edc44513ce",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2860,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e3468653-69c1-4d0e-ad2e-c54dc34b6adc",
+        "name": "Responder ok",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          3080,
+          200
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ ok: true, mensagem: $('Decidir').first().json.mensagem }) }}",
+          "options": {
+            "responseCode": 200
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "68ed8c1c-4880-4d4b-ab1f-c4bd37d2e25d",
+        "name": "Recusar",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1540,
+          400
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ ok: false, erro: $json.erro }) }}",
+          "options": {
+            "responseCode": 422
+          }
+        }
+      },
+      {
+        "id": "e51bddd6-8963-4905-8442-c9848c5d978d",
+        "name": "Negar (POST)",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          880,
+          500
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\"ok\":false,\"erro\":\"acesso negado\"}",
+          "options": {
+            "responseCode": 403
+          }
+        }
+      },
+      {
+        "id": "e86630d4-4f2e-40aa-bce5-bf16fa4fa88e",
+        "name": "Sticky Note acf321c3",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -300
+        ],
+        "parameters": {
+          "content": "## ATOM2_05 · Painel de QA\nGET /webhook/atom2-qa?k=CHAVE → fila de QA (pendentes). POST → aprovar/reprovar.\nChave em atom2_config.QA_TOKEN (trocar se vazar). Aprovar grava qa_status, mensagem_aprovada, achados aprovados e empresa F3. Nada é enviado.\nFontes: n8n/code/w05b_qa_pagina.js, w05b_qa_decidir.js · testes: n8n/tests/run_qa.js",
+          "color": 4,
+          "width": 600,
+          "height": 200
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Página (GET)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-qa\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-qa\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\n\n\t\t\t\t<trigger 2>\n\t\t\t\t\t - Node name: Decisão (POST)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-qa-decisao\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-qa-decisao\n\t\t\t\t\t - HTTP Method: POST\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 2>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }."
+}

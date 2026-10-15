@@ -1,0 +1,825 @@
+{
+  "workflow": {
+    "id": "bYTd1j9oEA0bI0M1",
+    "name": "ATOM2_03_Diagnostico_N1",
+    "active": false,
+    "isArchived": false,
+    "versionId": "4a671e5b-04f0-4872-ae98-ed3598a51947",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 22,
+    "createdAt": "2026-10-09T19:13:48.701Z",
+    "updatedAt": "2026-10-09T22:34:52.357Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · W03+W04+W05: rastreia site público, gera achados N1 com evidência, score v1 e rascunho D1 para QA. Não envia nada.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Entrada": {
+        "main": [
+          [
+            {
+              "node": "Parâmetros",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parâmetros": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Teste manual": {
+        "main": [
+          [
+            {
+              "node": "Parâmetros",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas F1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas F1": {
+        "main": [
+          [
+            {
+              "node": "Selecionar lote",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Selecionar lote": {
+        "main": [
+          [
+            {
+              "node": "Uma empresa por vez",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "W03 Rastrear site": {
+        "main": [
+          [
+            {
+              "node": "W04 Analisar N1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "W04 Analisar N1": {
+        "main": [
+          [
+            {
+              "node": "W05 Score e QA",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "W05 Score e QA": {
+        "main": [
+          [
+            {
+              "node": "Roteador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Roteador": {
+        "main": [
+          [
+            {
+              "node": "Linha da auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha do achado",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha da empresa",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha do evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha da auditoria": {
+        "main": [
+          [
+            {
+              "node": "Gravar auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha do achado": {
+        "main": [
+          [
+            {
+              "node": "Gravar achado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha da empresa": {
+        "main": [
+          [
+            {
+              "node": "Atualizar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha do evento": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gravar evento": {
+        "main": [
+          [
+            {
+              "node": "Uma empresa por vez",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Uma empresa por vez": {
+        "main": [
+          [
+            {
+              "node": "Lote concluído",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "W03 Rastrear site",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gravar auditoria": {
+        "main": [
+          [
+            {
+              "node": "Limpar achados antigos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "5e490385-8556-4522-aefc-b66b22c2b17e",
+        "name": "Entrada",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "workflowInputs",
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "limite",
+                "type": "number"
+              },
+              {
+                "name": "company_ids",
+                "type": "string"
+              },
+              {
+                "name": "reprocessar_falhas",
+                "type": "boolean"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "91d9222e-a04e-4f31-95e5-1d809c4d41ae",
+        "name": "Parâmetros",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          220,
+          100
+        ],
+        "parameters": {
+          "mode": "manual",
+          "includeOtherFields": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "limite",
+                "name": "limite",
+                "value": "={{ $json.limite || 15 }}",
+                "type": "number"
+              },
+              {
+                "id": "company_ids",
+                "name": "company_ids",
+                "value": "={{ $json.company_ids ?? \"\" }}",
+                "type": "string"
+              },
+              {
+                "id": "reprocessar_falhas",
+                "name": "reprocessar_falhas",
+                "value": "={{ $json.reprocessar_falhas === true }}",
+                "type": "boolean"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "881f076c-f6bd-4002-ba8a-09bfce5b1447",
+        "name": "Teste manual",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "696df729-f155-47f4-828e-7283560fab48",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "eac6b28e-ee23-4fe6-b35e-2244fe0f1d2d",
+        "name": "Ler empresas F1",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "validated"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "720f75f5-4a73-4822-9a85-076b6dcc1bc7",
+        "name": "Selecionar lote",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          100
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_03 · Selecionar lote: empresas validadas, sem opt-out. Padrão: só F1. Com company_ids: reprocessa as indicadas (mesmo em F2).\n// Falhas anteriores só voltam com reprocessar_falhas.\nconst p = $('Parâmetros').first().json;\nconst limite = Math.max(1, Math.min(50, Number(p.limite) || 15));\nconst ids = String(p.company_ids || '').split(',').map((s) => s.trim()).filter(Boolean);\nconst rows = $input.all().map((i) => i.json).filter((r) => r && r.company_id && r.dominio);\nreturn rows\n  .filter((r) => r.opt_out !== true && String(r.opt_out) !== 'true')\n  .filter((r) => (ids.length ? ids.includes(r.company_id) : r.funil_etapa === 'F1'))\n  .filter((r) => ids.length || p.reprocessar_falhas === true || !/^N1 falhou/.test(String(r.status_motivo || '')))\n  .sort((a, b) => String(a.criado_em || '').localeCompare(String(b.criado_em || '')) || a.company_id.localeCompare(b.company_id))\n  .slice(0, limite)\n  .map((r) => ({ json: r }));"
+        }
+      },
+      {
+        "id": "7141c1ef-cc64-43db-a63f-b6cd0a9e3582",
+        "name": "Lote concluído",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1320,
+          -40
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "27477da7-abec-45c2-9ba0-d8031d63eed2",
+        "name": "W03 Rastrear site",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1320,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_03 · W03_N1_CRAWL · Rastrear site (Code node, \"Run Once for All Items\").\n// Fonte: Playbook Operacional §4 (A, B, C) e spec 01 §3. Edite aqui e recole no nó.\n// Entrada: itens de atom2_empresas (funil_etapa F1, com dominio). Saída: 1 item por empresa com o rastreio bruto.\n// Só faz GET em páginas públicas: respeita robots.txt, não envia formulários, não contorna bloqueios.\n// URL mínima: o Code node do n8n Cloud não expõe o global URL (verificado em 09/10/2026, execução 3541).\n// Resolve relativo/absoluto e normaliza ./ e ../; suficiente para http(s), tel:, mailto:.\nclass URLMin {\n  constructor(ref, base) {\n    ref = String(ref ?? '').trim();\n    const ABS = /^([a-z][a-z0-9+.-]*:)\\/\\/(?:([^:@\\/?#]*)(?::([^@\\/?#]*))?@)?(\\[[^\\]]+\\]|[^:\\/?#]*)(?::(\\d*))?([^?#]*)(\\?[^#]*)?(#.*)?$/i;\n    let m = ABS.exec(ref);\n    if (!m && /^[a-z][a-z0-9+.-]*:/i.test(ref)) {\n      const p = /^([a-z][a-z0-9+.-]*:)(.*)$/i.exec(ref);\n      Object.assign(this, { protocol: p[1].toLowerCase(), username: '', password: '', hostname: '', port: '', pathname: p[2], search: '', hash: '' });\n      return;\n    }\n    if (!m) {\n      if (base === undefined) throw new TypeError('URL inválida: ' + ref);\n      const b = base instanceof URLMin ? base : new URLMin(base);\n      const origem = b.protocol + '//' + (b.username ? b.username + (b.password ? ':' + b.password : '') + '@' : '') + b.hostname + (b.port ? ':' + b.port : '');\n      let abs;\n      if (ref.startsWith('//')) abs = b.protocol + ref;\n      else if (ref.startsWith('/')) abs = origem + ref;\n      else if (ref.startsWith('?')) abs = origem + b.pathname + ref;\n      else if (ref.startsWith('#') || ref === '') abs = origem + b.pathname + b.search + ref;\n      else abs = origem + b.pathname.replace(/[^/]*$/, '') + ref;\n      m = ABS.exec(abs);\n      if (!m) throw new TypeError('URL inválida: ' + ref);\n    }\n    const partes = [];\n    for (const s of (m[6] || '/').split('/').slice(1)) {\n      if (s === '..') partes.pop();\n      else if (s !== '.') partes.push(s);\n    }\n    const ultimo = (m[6] || '/').split('/').pop();\n    Object.assign(this, {\n      protocol: m[1].toLowerCase(), username: m[2] || '', password: m[3] || '', hostname: (m[4] || '').toLowerCase(), port: m[5] || '',\n      pathname: '/' + partes.join('/') + (ultimo === '.' || ultimo === '..' ? '/' : ''), search: m[7] && m[7] !== '?' ? m[7] : '', hash: m[8] && m[8] !== '#' ? m[8] : ''\n    });\n    if (!this.hostname) throw new TypeError('URL sem host: ' + ref);\n    if ((this.protocol === 'https:' && this.port === '443') || (this.protocol === 'http:' && this.port === '80')) this.port = '';\n  }\n  toString() {\n    if (!this.hostname) return this.protocol + this.pathname;\n    return this.protocol + '//' + (this.username ? this.username + (this.password ? ':' + this.password : '') + '@' : '') + this.hostname + (this.port ? ':' + this.port : '') + this.pathname + this.search + this.hash;\n  }\n}\nconst URL_ = typeof URL === 'function' ? URL : URLMin;\n\nconst http = this.helpers.httpRequest.bind(this.helpers);\nconst empresas = $input.all().map((i) => i.json).filter((e) => e && e.company_id && e.dominio);\n\nconst UA = 'AtomDigitalN1/1.0 (+https://atomdigital.com.br; diagnostico publico)';\nconst TIMEOUT_MS = 15000, MAX_REDIRECTS = 5, MAX_HTML = 2000000, MAX_EXTRAS = 5, PAUSA_MS = 700;\n// Contato e \"sobre\" só como segmento inteiro do caminho ou texto exato do link (\"lentes-de-contato\" e \"protese-sobre-implantes\" não contam).\nconst GRUPOS = [\n  ['agendamento', (c, t) => /agend|marcar|marque|consulta-online|reserv|booking/.test(c + ' ' + t)],\n  ['contato', (c, t) => /\\/(contato|contatos|fale-conosco|faleconosco|contact|contact-us|atendimento)(\\/|\\.|$)/.test(c) || /^(contato|fale conosco|contact)$/.test(t)],\n  ['servicos', (c, t) => /tratamento|servico|especialidade|procedimento|exame|odontologia-|implante|ortodont/.test(c + ' ' + t)],\n  ['sobre', (c, t) => /\\/(sobre|sobre-nos|quem-somos|equipe|corpo-clinico|institucional|nossa-clinica|a-clinica)(\\/|\\.|$)/.test(c) || /^(sobre|sobre nos|quem somos|equipe|a clinica)$/.test(t)],\n  ['local', (c, t) => /unidade|localiza|onde-estamos|endereco|como-chegar/.test(c + ' ' + t)]\n];\n\nconst texto = (v) => (v === null || v === undefined ? '' : String(v).trim());\nconst dormir = (ms) => new Promise((r) => setTimeout(r, ms));\nconst semAcento = (s) => String(s ?? '').normalize('NFD').replace(/\\p{M}/gu, '').toLowerCase();\n\n// Anti-SSRF sem DNS (Code node não resolve DNS): só http(s), porta padrão, host público por nome.\nfunction urlSegura(u) {\n  let p;\n  try { p = new URL_(u); } catch (e) { return false; }\n  if (!['http:', 'https:'].includes(p.protocol) || p.username || p.password) return false;\n  if (p.port && !['80', '443'].includes(p.port)) return false;\n  const h = p.hostname.toLowerCase();\n  if (/^\\d+(\\.\\d+){3}$/.test(h) || h.includes(':') || h.startsWith('[')) return false;\n  if (h === 'localhost' || /\\.(local|internal|localhost|lan|home|corp|intranet)$/.test(h)) return false;\n  return /^[a-z0-9-]+(\\.[a-z0-9-]+)+$/.test(h);\n}\nconst mesmoSite = (u, dominio) => {\n  try { const h = new URL_(u).hostname.toLowerCase().replace(/^www\\./, ''); return h === dominio || h.endsWith('.' + dominio); } catch (e) { return false; }\n};\n\nasync function buscar(url) {\n  const saltos = [];\n  let atual = url;\n  for (let i = 0; i <= MAX_REDIRECTS; i++) {\n    if (!urlSegura(atual)) return { url, url_final: atual, status: 0, saltos, erro: 'url_bloqueada' };\n    let r;\n    try {\n      r = await http({ method: 'GET', url: atual, headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml,text/plain,application/xml;q=0.9,*/*;q=0.5' }, timeout: TIMEOUT_MS, returnFullResponse: true, disableFollowRedirect: true, ignoreHttpStatusErrors: true, encoding: 'text' });\n    } catch (e) {\n      const msg = texto(e && (e.code || e.message)).slice(0, 120);\n      return { url, url_final: atual, status: 0, saltos, erro: /timeout|ETIMEDOUT|ESOCKETTIMEDOUT/i.test(msg) ? 'timeout' : 'falha_rede: ' + msg };\n    }\n    const status = Number(r.statusCode || 0);\n    const hdr = {};\n    for (const [k, v] of Object.entries(r.headers || {})) hdr[k.toLowerCase()] = Array.isArray(v) ? v.join(', ') : texto(v);\n    if (status >= 300 && status < 400 && hdr.location) {\n      const prox = new URL_(hdr.location, atual).toString();\n      saltos.push({ de: atual, para: prox, status });\n      atual = prox;\n      continue;\n    }\n    const corpo = typeof r.body === 'string' ? r.body : r.body ? JSON.stringify(r.body) : '';\n    return { url, url_final: atual, status, saltos, content_type: hdr['content-type'] || '', x_robots_tag: hdr['x-robots-tag'] || '', corpo: corpo.slice(0, MAX_HTML), truncado: corpo.length > MAX_HTML, erro: status === 429 ? 'limite_429' : null };\n  }\n  return { url, url_final: atual, status: 0, saltos, erro: 'redirecionamentos_demais' };\n}\n\n// robots.txt simplificado: grupos \"User-agent: *\" (e o nosso), Disallow/Allow por prefixo, Sitemap.\nfunction lerRobots(txt) {\n  const regras = [], sitemaps = [];\n  let aplica = false, emGrupo = false;\n  for (const linha of String(txt || '').split(/\\r?\\n/)) {\n    const l = linha.replace(/#.*/, '').trim();\n    const m = /^([a-z-]+)\\s*:\\s*(.*)$/i.exec(l);\n    if (!m) continue;\n    const campo = m[1].toLowerCase(), valor = m[2].trim();\n    if (campo === 'sitemap') { if (valor) sitemaps.push(valor); continue; }\n    if (campo === 'user-agent') {\n      if (!emGrupo) aplica = false;\n      emGrupo = true;\n      if (valor === '*' || /atomdigitaln1/i.test(valor)) aplica = true;\n      continue;\n    }\n    emGrupo = false;\n    if (aplica && (campo === 'disallow' || campo === 'allow')) regras.push({ tipo: campo, caminho: valor });\n  }\n  const permitido = (caminho) => {\n    let melhor = null;\n    for (const r of regras) {\n      if (!r.caminho) continue;\n      const pref = r.caminho.replace(/\\*.*$/, '').replace(/\\$$/, '');\n      if (caminho.startsWith(pref) && (!melhor || pref.length > melhor.pref.length || (pref.length === melhor.pref.length && r.tipo === 'allow'))) melhor = { pref, tipo: r.tipo };\n    }\n    return !melhor || melhor.tipo === 'allow';\n  };\n  return { regras, sitemaps, permitido, bloqueia_tudo: !permitido('/') };\n}\n\nfunction escolherExtras(html, base, dominio, permitido) {\n  const vistos = new Set(), porGrupo = {};\n  const re = /<a\\b[^>]*href\\s*=\\s*[\"']([^\"'#]+)[^\"']*[\"'][^>]*>([\\s\\S]*?)<\\/a\\s*>/gi;\n  let m;\n  while ((m = re.exec(html))) {\n    let u;\n    try { u = new URL_(m[1].trim(), base); } catch (e) { continue; }\n    if (!['http:', 'https:'].includes(u.protocol) || !mesmoSite(u.toString(), dominio)) continue;\n    u.hash = '';\n    const chave = u.pathname.replace(/\\/$/, '') || '/';\n    if (chave === '/' || vistos.has(chave) || /\\.(pdf|jpe?g|png|gif|webp|svg|zip|mp4)$/i.test(chave)) continue;\n    vistos.add(chave);\n    if (!permitido(u.pathname)) continue;\n    const caminho = semAcento(u.pathname), rotulo = semAcento(m[2].replace(/<[^>]+>/g, ' ')).replace(/\\s+/g, ' ').trim();\n    for (const [g, testa] of GRUPOS) if (!porGrupo[g] && testa(caminho, rotulo)) { porGrupo[g] = u.toString(); break; }\n  }\n  return GRUPOS.map(([g]) => porGrupo[g] && { grupo: g, url: porGrupo[g] }).filter(Boolean).slice(0, MAX_EXTRAS);\n}\n\nconst saida = [];\nfor (const e of empresas) {\n  const observado = new Date().toISOString();\n  const dominio = texto(e.dominio).toLowerCase();\n  const reg = { company_id: e.company_id, empresa: e, dominio, observado_em: observado, robots: null, sitemap: null, http_inseguro: null, paginas: [], limitacoes: [], falha: null };\n  const base = 'https://' + dominio + '/';\n\n  const rb = await buscar(base + 'robots.txt');\n  const robots = rb.status === 200 && !/html/i.test(rb.content_type) ? lerRobots(rb.corpo) : lerRobots('');\n  reg.robots = { url: base + 'robots.txt', status: rb.status, erro: rb.erro, encontrado: rb.status === 200 && !/html/i.test(rb.content_type), bloqueia_tudo: robots.bloqueia_tudo, sitemaps: robots.sitemaps };\n  if (robots.bloqueia_tudo) {\n    reg.limitacoes.push('robots.txt bloqueia o rastreio de todo o site; nada além do robots.txt foi lido');\n    reg.falha = 'robots_bloqueia';\n    saida.push({ json: reg });\n    continue;\n  }\n  await dormir(PAUSA_MS);\n\n  let home = await buscar(base);\n  if (home.status === 0 && /ENOTFOUND/.test(home.erro || '') && !dominio.startsWith('www.')) {\n    await dormir(PAUSA_MS);\n    const www = await buscar('https://www.' + dominio + '/');\n    if (www.status) { home = www; reg.limitacoes.push('o domínio sem www não resolve; a home foi lida em www.' + dominio); }\n  }\n  if (home.status === 0 && /^(timeout|falha_rede)/.test(home.erro || '')) {\n    await dormir(PAUSA_MS);\n    const alt = await buscar('http://' + dominio + '/');\n    if (alt.status) { home = alt; reg.limitacoes.push('HTTPS não respondeu; a home foi lida por HTTP'); }\n  }\n  reg.paginas.push({ grupo: 'home', ...home });\n  if (home.erro === 'limite_429') { reg.falha = 'limite_429'; reg.limitacoes.push('o site respondeu 429 (limite de acessos); rastreio interrompido para tentar depois'); saida.push({ json: reg }); continue; }\n  if (home.status !== 200 || !/html/i.test(home.content_type || '')) {\n    reg.falha = home.status === 0 ? (home.erro || 'sem_resposta') : 'home_status_' + home.status;\n    reg.limitacoes.push('a página inicial não pôde ser lida (' + reg.falha + ')');\n    saida.push({ json: reg });\n    continue;\n  }\n  if (home.truncado) reg.limitacoes.push('HTML da home maior que ' + MAX_HTML + ' caracteres; analisado só o início');\n  // Daqui em diante usa o host que de fato respondeu (pode ser www.).\n  const hostLido = (/^https?:\\/\\/([^/:?#]+)/i.exec(home.url_final) || [, dominio])[1].toLowerCase();\n  const origemLida = home.url_final.replace(/^(https?:\\/\\/[^/?#]+).*$/i, '$1') + '/';\n\n  // A. A versão http:// redireciona para https://?\n  if (/^https:/.test(home.url_final)) {\n    await dormir(PAUSA_MS);\n    const h = await buscar('http://' + hostLido + '/');\n    reg.http_inseguro = { url: 'http://' + hostLido + '/', status: h.status, url_final: h.url_final, saltos: h.saltos, vai_para_https: /^https:/.test(h.url_final), erro: h.erro };\n  }\n\n  // B. Sitemap: o do robots.txt ou /sitemap.xml.\n  const smUrl = robots.sitemaps.find((s) => urlSegura(s) && mesmoSite(s, dominio)) || origemLida + 'sitemap.xml';\n  await dormir(PAUSA_MS);\n  const sm = await buscar(smUrl);\n  reg.sitemap = { url: smUrl, origem: robots.sitemaps.length ? 'robots.txt' : 'padrao', status: sm.status, encontrado: sm.status === 200 && /<(urlset|sitemapindex)\\b/i.test(sm.corpo || ''), erro: sm.erro };\n\n  // C. Até 5 URLs estratégicas ligadas a partir da home.\n  for (const x of escolherExtras(home.corpo, home.url_final, dominio, robots.permitido)) {\n    await dormir(PAUSA_MS);\n    const p = await buscar(x.url);\n    reg.paginas.push({ grupo: x.grupo, ...p });\n    if (p.erro === 'limite_429') { reg.limitacoes.push('429 ao ler páginas internas; rastreio parcial'); break; }\n  }\n  reg.limitacoes.push('PageSpeed/Lighthouse não executado neste rastreio: nenhum número de velocidade é reportado');\n  saida.push({ json: reg });\n}\nreturn saida;\n"
+        }
+      },
+      {
+        "id": "5424eb36-5a62-45c4-8b77-b51e8924ed63",
+        "name": "W04 Analisar N1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1540,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_03 · W04_N1_ANALYZE · Achados N1 (Code node, \"Run Once for All Items\").\n// Fonte: Playbook Operacional §4 (A–J) e spec 01 §2.3. Edite aqui e recole no nó.\n// Entrada: itens do W03 (rastreio bruto). Saída: 1 item por empresa { company_id, empresa, auditoria, achados[] }.\n// Regras: só afirma o que está no HTML lido; cada achado tem URL, data, método, evidência e confiança.\n// GEO é prontidão, nunca prova de citação. Não infere posição em mapas, velocidade nem taxa de conversão.\n// URL mínima: o Code node do n8n Cloud não expõe o global URL (verificado em 09/10/2026, execução 3541).\n// Resolve relativo/absoluto e normaliza ./ e ../; suficiente para http(s), tel:, mailto:.\nclass URLMin {\n  constructor(ref, base) {\n    ref = String(ref ?? '').trim();\n    const ABS = /^([a-z][a-z0-9+.-]*:)\\/\\/(?:([^:@\\/?#]*)(?::([^@\\/?#]*))?@)?(\\[[^\\]]+\\]|[^:\\/?#]*)(?::(\\d*))?([^?#]*)(\\?[^#]*)?(#.*)?$/i;\n    let m = ABS.exec(ref);\n    if (!m && /^[a-z][a-z0-9+.-]*:/i.test(ref)) {\n      const p = /^([a-z][a-z0-9+.-]*:)(.*)$/i.exec(ref);\n      Object.assign(this, { protocol: p[1].toLowerCase(), username: '', password: '', hostname: '', port: '', pathname: p[2], search: '', hash: '' });\n      return;\n    }\n    if (!m) {\n      if (base === undefined) throw new TypeError('URL inválida: ' + ref);\n      const b = base instanceof URLMin ? base : new URLMin(base);\n      const origem = b.protocol + '//' + (b.username ? b.username + (b.password ? ':' + b.password : '') + '@' : '') + b.hostname + (b.port ? ':' + b.port : '');\n      let abs;\n      if (ref.startsWith('//')) abs = b.protocol + ref;\n      else if (ref.startsWith('/')) abs = origem + ref;\n      else if (ref.startsWith('?')) abs = origem + b.pathname + ref;\n      else if (ref.startsWith('#') || ref === '') abs = origem + b.pathname + b.search + ref;\n      else abs = origem + b.pathname.replace(/[^/]*$/, '') + ref;\n      m = ABS.exec(abs);\n      if (!m) throw new TypeError('URL inválida: ' + ref);\n    }\n    const partes = [];\n    for (const s of (m[6] || '/').split('/').slice(1)) {\n      if (s === '..') partes.pop();\n      else if (s !== '.') partes.push(s);\n    }\n    const ultimo = (m[6] || '/').split('/').pop();\n    Object.assign(this, {\n      protocol: m[1].toLowerCase(), username: m[2] || '', password: m[3] || '', hostname: (m[4] || '').toLowerCase(), port: m[5] || '',\n      pathname: '/' + partes.join('/') + (ultimo === '.' || ultimo === '..' ? '/' : ''), search: m[7] && m[7] !== '?' ? m[7] : '', hash: m[8] && m[8] !== '#' ? m[8] : ''\n    });\n    if (!this.hostname) throw new TypeError('URL sem host: ' + ref);\n    if ((this.protocol === 'https:' && this.port === '443') || (this.protocol === 'http:' && this.port === '80')) this.port = '';\n  }\n  toString() {\n    if (!this.hostname) return this.protocol + this.pathname;\n    return this.protocol + '//' + (this.username ? this.username + (this.password ? ':' + this.password : '') + '@' : '') + this.hostname + (this.port ? ':' + this.port : '') + this.pathname + this.search + this.hash;\n  }\n}\nconst URL_ = typeof URL === 'function' ? URL : URLMin;\n\nconst ANALISADOR_VERSAO = 'n1_v1';\nconst SEV_PESO = { alta: 3, media: 2, baixa: 1 };\nconst CONF_MIN_ABORDAGEM = 0.8;\n\nconst texto = (v) => (v === null || v === undefined ? '' : String(v).trim());\nconst semAcento = (s) => String(s ?? '').normalize('NFD').replace(/\\p{M}/gu, '').toLowerCase();\nfunction hash(s) {\n  let h = 0x811c9dc5;\n  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }\n  return h.toString(16).padStart(8, '0');\n}\nconst decodificar = (s) => String(s || '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '\"').replace(/&#39;|&apos;/g, \"'\").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#(\\d+);/g, (_, n) => String.fromCharCode(Number(n)));\nconst recorte = (s, n = 160) => { const t = decodificar(s).replace(/\\s+/g, ' ').trim(); return t.length > n ? t.slice(0, n - 1) + '…' : t; };\n\nfunction lerHtml(html) {\n  const h = String(html || '');\n  const semScripts = h.replace(/<!--[\\s\\S]*?-->/g, ' ').replace(/<(script|style|noscript|template|svg)\\b[\\s\\S]*?<\\/\\1>/gi, ' ');\n  const head = (/<head\\b[\\s\\S]*?<\\/head>/i.exec(h) || [''])[0];\n  const meta = (nome) => {\n    const re = new RegExp('<meta\\\\b[^>]*(?:name|property)\\\\s*=\\\\s*[\"\\']' + nome + '[\"\\'][^>]*>', 'i');\n    const tag = (re.exec(h) || [''])[0];\n    const c = /content\\s*=\\s*[\"']([^\"']*)[\"']/i.exec(tag);\n    return tag ? { tag: recorte(tag, 200), valor: c ? decodificar(c[1]).trim() : '' } : null;\n  };\n  const titulos = (n) => [...semScripts.matchAll(new RegExp('<h' + n + '\\\\b[^>]*>([\\\\s\\\\S]*?)<\\\\/h' + n + '>', 'gi'))].map((m) => recorte(m[1].replace(/<[^>]+>/g, ' '), 120)).filter(Boolean);\n  // </a > com espaços existe em sites reais (execução 3543, Barsotini): aceitar \\s* antes do >.\n  const links = [...h.matchAll(/<a\\b([^>]*)>([\\s\\S]*?)<\\/a\\s*>/gi)].map((m) => {\n    const href = (/href\\s*=\\s*[\"']([^\"']*)[\"']/i.exec(m[1]) || [])[1] || '';\n    return { href: decodificar(href).trim(), texto: recorte(m[2].replace(/<[^>]+>/g, ' '), 80), tag: recorte(m[0], 200) };\n  });\n  const botoes = [...h.matchAll(/<button\\b[^>]*>([\\s\\S]*?)<\\/button\\s*>/gi)].map((m) => ({ texto: recorte(m[1].replace(/<[^>]+>/g, ' '), 80), tag: recorte(m[0], 200) }));\n  const ldjson = [...h.matchAll(/<script\\b[^>]*type\\s*=\\s*[\"']application\\/ld\\+json[\"'][^>]*>([\\s\\S]*?)<\\/script>/gi)].map((m) => m[1].trim());\n  const corpoTexto = decodificar(((/<body\\b[\\s\\S]*$/i.exec(semScripts) || [semScripts])[0]).replace(/<[^>]+>/g, ' ')).replace(/\\s+/g, ' ').trim();\n  const canonicalTag = (/<link\\b[^>]*rel\\s*=\\s*[\"']canonical[\"'][^>]*>/i.exec(h) || [''])[0];\n  return {\n    title: (() => { const m = /<title\\b[^>]*>([\\s\\S]*?)<\\/title>/i.exec(head || h); return m ? recorte(m[1], 200) : null; })(),\n    description: meta('description'), robots: meta('robots'), viewport: meta('viewport'),\n    canonical: canonicalTag ? { tag: recorte(canonicalTag, 200), href: ((/href\\s*=\\s*[\"']([^\"']*)[\"']/i.exec(canonicalTag) || [])[1] || '').trim() } : null,\n    h1: titulos(1), h2: titulos(2), h3: titulos(3), links, botoes, ldjson,\n    formularios: (h.match(/<form\\b/gi) || []).length,\n    iframes: [...h.matchAll(/<iframe\\b[^>]*src\\s*=\\s*[\"']([^\"']+)[\"']/gi)].map((m) => m[1]),\n    texto: corpoTexto, palavras: corpoTexto ? corpoTexto.split(' ').length : 0,\n    spa: /<div[^>]+id\\s*=\\s*[\"'](root|app|__next|__nuxt)[\"'][^>]*>\\s*<\\/div>/i.test(h) || /window\\.__NUXT__|data-reactroot|ng-version/i.test(h)\n  };\n}\n\nfunction tiposSchema(blocos) {\n  const tipos = [], erros = [];\n  const coletar = (o) => {\n    if (!o || typeof o !== 'object') return;\n    if (Array.isArray(o)) return o.forEach(coletar);\n    const t = o['@type'];\n    if (t) (Array.isArray(t) ? t : [t]).forEach((x) => tipos.push(String(x)));\n    if (o['@graph']) coletar(o['@graph']);\n  };\n  for (const b of blocos) {\n    try { coletar(JSON.parse(b)); } catch (e) { erros.push(recorte(b, 120)); }\n  }\n  return { tipos: [...new Set(tipos)], erros };\n}\n\nconst RX = {\n  agendamento: /agend|marcar|marque|agende|consulta online|reserv|book/,\n  whatsapp: /wa\\.me\\/|api\\.whatsapp\\.com|web\\.whatsapp\\.com|whatsapp:\\/\\//i,\n  telefone: /(?:\\+?55\\s?)?\\(?\\b[1-9]{2}\\)?\\s?(?:9\\s?)?\\d{4}[-\\s.]?\\d{4}\\b/,\n  cep: /\\b\\d{5}-?\\d{3}\\b/,\n  logradouro: /\\b(rua|r\\.|avenida|av\\.|alameda|travessa|rodovia|praca|praça|quadra|qd\\.)\\s/i,\n  faq: /perguntas frequentes|duvidas frequentes|dúvidas frequentes|\\bfaq\\b/i,\n  servicos: /tratamento|servico|especialidade|procedimento|exame/,\n  agendaExterna: /doctoralia|simplesdental|clinicorp|codental|feegow|iclinic|calendly|agendor|booking/i\n};\nconst TIPOS_LOCAIS = /^(LocalBusiness|Dentist|MedicalClinic|MedicalBusiness|MedicalOrganization|Physician|Hospital|Organization|HealthAndBeautyBusiness|AutoPartsStore|TireShop|Store)$/i;\n\nfunction analisar(reg) {\n  const e = reg.empresa || {};\n  const observado = reg.observado_em;\n  const auditId = 'a_' + hash(reg.company_id + '|' + observado.slice(0, 10) + '|' + ANALISADOR_VERSAO);\n  const paginasOk = (reg.paginas || []).filter((p) => p.status === 200 && /html/i.test(p.content_type || '') && p.corpo);\n  const auditoria = {\n    audit_id: auditId, company_id: reg.company_id, versao: ANALISADOR_VERSAO, observado_em: observado,\n    urls: (reg.paginas || []).map((p) => ({ grupo: p.grupo, url: p.url, url_final: p.url_final, status: p.status, erro: p.erro || null })),\n    limitacoes: [...(reg.limitacoes || [])], status: 'concluido', falha: reg.falha || null,\n    principal_finding_id: null, resumo_finding_ids: []\n  };\n  const achados = [];\n  if (reg.falha || !paginasOk.length) {\n    auditoria.status = 'falha';\n    auditoria.falha = reg.falha || 'nenhuma_pagina_lida';\n    return { auditoria, achados };\n  }\n  const home = paginasOk.find((p) => p.grupo === 'home') || paginasOk[0];\n  const H = lerHtml(home.corpo);\n  const todas = paginasOk.map((p) => ({ p, d: p === home ? H : lerHtml(p.corpo) }));\n  const urlHome = home.url_final;\n  if (H.spa && H.palavras < 80) auditoria.limitacoes.push('conteúdo da home parece renderizado por JavaScript; achados de conteúdo, títulos e CTAs foram suprimidos para não afirmar ausência falsa');\n  if (home.truncado) auditoria.limitacoes.push('HTML da home foi cortado no limite de leitura; achados de ausência (conteúdo, contato, CTA) foram suprimidos');\n  const conteudoConfiavel = !(H.spa && H.palavras < 80) && !home.truncado;\n\n  // trecho = frase nominal com artigo, para encaixar em \"[achado verificável]\" dos scripts.\n  const add = (codigo, categoria, severidade, confianca, claim, trecho, evidencia, recomendacao, url = urlHome, metodo = 'GET público + leitura do HTML') => {\n    achados.push({\n      finding_id: 'f_' + hash(auditId + '|' + codigo + '|' + url), audit_id: auditId, company_id: reg.company_id,\n      codigo, category: categoria, claim, trecho, source_url: url, method: metodo, observed_at: observado,\n      evidence: recorte(evidencia, 300), confidence: confianca, severity: severidade, recommendation: recomendacao,\n      reviewer_status: 'pendente'\n    });\n  };\n\n  // A. HTTPS, redirecionamentos, canônica.\n  if (/^http:/.test(urlHome)) add('SEM_HTTPS', 'tecnico', 'alta', 0.95, 'O site abre sem conexão segura (HTTPS).', 'o site abrindo com o aviso de \"não seguro\" no navegador', 'URL final da home: ' + urlHome, 'Instalar certificado SSL e redirecionar todo o tráfego para HTTPS.');\n  else if (reg.http_inseguro && reg.http_inseguro.status === 200 && !reg.http_inseguro.vai_para_https) add('HTTP_SEM_REDIRECT', 'tecnico', 'media', 0.9, 'A versão http:// do site abre sem redirecionar para a versão segura.', 'a versão sem HTTPS do site abrindo sem redirecionar para a versão segura', 'GET ' + reg.http_inseguro.url + ' → status 200, URL final ' + reg.http_inseguro.url_final, 'Redirecionar (301) todas as URLs http:// para https://.', reg.http_inseguro.url);\n  if (!H.canonical) add('CANONICAL_AUSENTE', 'seo', 'baixa', 0.9, 'A página inicial não declara URL canônica.', 'a falta de URL canônica na página inicial', 'Nenhuma tag <link rel=\"canonical\"> no HTML da home.', 'Declarar a URL canônica em todas as páginas.');\n  else if (H.canonical.href) {\n    let host = '';\n    try { host = new URL_(H.canonical.href, urlHome).hostname.replace(/^www\\./, ''); } catch (err) { host = ''; }\n    if (host && host !== reg.dominio && !host.endsWith('.' + reg.dominio)) add('CANONICAL_OUTRO_DOMINIO', 'seo', 'media', 0.9, 'A URL canônica da página inicial aponta para outro domínio.', 'a URL canônica da página inicial apontando para outro domínio', H.canonical.tag, 'Corrigir a canônica para o próprio domínio.');\n  }\n\n  // B. Title, description, títulos, robots, sitemap.\n  const marcaNorm = semAcento(e.nome || '');\n  if (!H.title) add('TITLE_AUSENTE', 'seo', 'alta', 0.95, 'A página inicial não tem título (tag title).', 'a página inicial sem título para o Google e para a aba do navegador', 'Nenhuma tag <title> no HTML da home.', 'Criar título com especialidade, cidade e marca.');\n  else {\n    const t = semAcento(H.title);\n    if (H.title.length < 15 || /^(home|inicio|pagina inicial|bem[- ]vindo|site|index)$/.test(t)) add('TITLE_GENERICO', 'seo', 'media', 0.85, 'O título da página inicial é curto ou genérico (\"' + H.title + '\").', 'o título genérico da página inicial (\"' + H.title + '\")', '<title>' + H.title + '</title>', 'Usar título descritivo com o serviço principal e a cidade.');\n    else if (H.title.length > 70) add('TITLE_LONGO', 'seo', 'baixa', 0.85, 'O título da página inicial tem ' + H.title.length + ' caracteres e tende a ser cortado nos resultados de busca.', 'o título longo da página inicial', '<title>' + H.title + '</title>', 'Reduzir o título para até ~60 caracteres.');\n    if (e.cidade && !t.includes(semAcento(e.cidade)) && !(H.description && semAcento(H.description.valor).includes(semAcento(e.cidade)))) add('SEM_CIDADE_TITULO', 'local', 'baixa', 0.85, 'Nem o título nem a descrição da página inicial citam a cidade (' + e.cidade + ').', 'o nome da cidade fora do título e da descrição da página inicial', 'Título: \"' + H.title + '\"; descrição: \"' + (H.description ? H.description.valor : '(ausente)') + '\"', 'Incluir a cidade no título e na descrição para buscas locais.');\n  }\n  if (!H.description || !H.description.valor) add('META_DESC_AUSENTE', 'seo', 'media', 0.95, 'A página inicial não tem meta description.', 'a falta do texto de resumo da página inicial que aparece no Google', H.description ? H.description.tag : 'Nenhuma <meta name=\"description\"> no HTML da home.', 'Escrever descrição com oferta, cidade e chamada para agendamento.');\n  if (conteudoConfiavel) {\n    if (!H.h1.length) add('H1_AUSENTE', 'seo', 'media', 0.9, 'A página inicial não tem título principal (H1).', 'a ausência de título principal (H1) na página inicial', 'Nenhuma tag <h1> no HTML da home (H2 encontrados: ' + H.h2.length + ').', 'Definir um H1 claro com o serviço principal.');\n    else if (H.h1.length > 1) add('H1_MULTIPLOS', 'seo', 'baixa', 0.9, 'A página inicial tem ' + H.h1.length + ' títulos H1.', 'os ' + H.h1.length + ' títulos H1 da página inicial', 'H1: ' + H.h1.slice(0, 4).join(' | '), 'Manter um único H1 e usar H2/H3 para seções.');\n  }\n  const robotsMeta = semAcento((H.robots && H.robots.valor) || '') + ' ' + semAcento(home.x_robots_tag || '');\n  if (/noindex/.test(robotsMeta)) add('NOINDEX_HOME', 'seo', 'alta', 0.95, 'A página inicial pede aos buscadores para não ser indexada (noindex).', 'a página inicial marcada como \"noindex\" (pedido para não aparecer no Google)', H.robots ? H.robots.tag : 'Cabeçalho X-Robots-Tag: ' + home.x_robots_tag, 'Remover o noindex da home e das páginas comerciais.');\n  if (reg.sitemap && !reg.sitemap.encontrado) add('SITEMAP_AUSENTE', 'seo', 'baixa', 0.85, 'Não foi encontrado sitemap XML.', 'a falta de sitemap XML', 'GET ' + reg.sitemap.url + ' → status ' + reg.sitemap.status + (reg.robots && reg.robots.encontrado ? '; robots.txt sem linha Sitemap' : '; robots.txt não encontrado'), 'Publicar sitemap.xml e declará-lo no robots.txt.', reg.sitemap.url);\n\n  // C. Páginas comerciais.\n  const grupos = new Set(paginasOk.map((p) => p.grupo));\n  if (conteudoConfiavel && !grupos.has('servicos') && !H.links.some((l) => RX.servicos.test(semAcento(l.href + ' ' + l.texto)))) add('SEM_PAGINA_SERVICOS', 'conteudo', 'media', 0.75, 'A página inicial não leva a uma página de serviços, tratamentos ou especialidades.', 'a falta de uma página de serviços ou tratamentos ligada à página inicial', 'Nenhum link da home com \"tratamento\", \"serviço\", \"especialidade\", \"procedimento\" ou \"exame\" (' + H.links.length + ' links lidos).', 'Criar uma página por serviço principal, com descrição e chamada para agendamento.');\n\n  // D. JSON-LD.\n  const sch = tiposSchema(todas.flatMap((x) => x.d.ldjson));\n  if (!todas.some((x) => x.d.ldjson.length)) add('SCHEMA_AUSENTE', 'dados_estruturados', 'media', 0.9, 'Nenhuma das páginas analisadas tem dados estruturados (JSON-LD/schema.org).', 'as páginas sem informar ao Google, no formato próprio, os dados da clínica', 'Nenhum <script type=\"application/ld+json\"> em ' + paginasOk.length + ' página(s) lida(s).', 'Adicionar JSON-LD do tipo Dentist/MedicalClinic com nome, endereço, telefone e horário.');\n  else if (sch.erros.length) add('SCHEMA_INVALIDO', 'dados_estruturados', 'media', 0.9, 'Há bloco de dados estruturados com erro de sintaxe JSON.', 'um bloco de dados estruturados com erro de sintaxe', 'Trecho: ' + sch.erros[0], 'Corrigir o JSON-LD e validar no Teste de Pesquisa Aprimorada do Google.');\n  else if (!sch.tipos.some((t) => TIPOS_LOCAIS.test(t))) add('SCHEMA_SEM_NEGOCIO', 'dados_estruturados', 'baixa', 0.85, 'Os dados estruturados não identificam a clínica como negócio local (tipos: ' + sch.tipos.join(', ') + ').', 'os dados estruturados sem identificar a clínica como negócio local', 'Tipos JSON-LD encontrados: ' + sch.tipos.join(', '), 'Incluir o tipo Dentist/MedicalClinic (LocalBusiness) com NAP completo.');\n\n  // E. Mobile.\n  if (!H.viewport) add('VIEWPORT_AUSENTE', 'mobile', 'alta', 0.95, 'A página inicial não tem a configuração de tela para celular (meta viewport).', 'a página inicial sem ajuste para a tela do celular', 'Nenhuma <meta name=\"viewport\"> no HTML da home.', 'Adicionar meta viewport e revisar o layout responsivo.');\n\n  // G. Conteúdo.\n  if (conteudoConfiavel && H.palavras < 150) add('CONTEUDO_RASO', 'conteudo', 'media', 0.7, 'A página inicial tem pouco texto legível (cerca de ' + H.palavras + ' palavras).', 'a página inicial com pouco texto sobre os tratamentos', 'Contagem de palavras do texto visível no HTML: ' + H.palavras + '.', 'Explicar serviços, diferenciais, equipe e como agendar.');\n\n  // H. GEO/AEO = prontidão.\n  const temFaq = todas.some((x) => RX.faq.test(semAcento(x.d.texto)) || x.d.ldjson.some((b) => /FAQPage/.test(b)));\n  if (conteudoConfiavel && !temFaq && !todas.some((x) => x.d.ldjson.length)) add('GEO_PRONTIDAO_BAIXA', 'geo', 'baixa', 0.75, 'As páginas analisadas não têm perguntas frequentes nem dados estruturados, sinais que ajudam buscadores e assistentes de IA a entender o conteúdo (prontidão, não prova de citação).', 'a falta de perguntas frequentes e de dados estruturados para buscadores e assistentes de IA', 'Sem \"perguntas frequentes\"/FAQ e sem JSON-LD em ' + paginasOk.length + ' página(s).', 'Criar seção de perguntas frequentes por serviço, com marcação FAQPage.');\n\n  // I. Local (NAP) em todas as páginas analisadas.\n  const juntar = todas.map((x) => x.d.texto).join(' ');\n  const linksTodos = todas.flatMap((x) => x.d.links);\n  const telLink = linksTodos.find((l) => /^tel:/i.test(l.href));\n  // Botão de WhatsApp aberto por script (href=\"#\", aria-label/classe \"whatsapp\") também conta (execução 3543, Fahl).\n  const waLink = linksTodos.find((l) => RX.whatsapp.test(l.href) || /whatsapp/i.test(l.tag + ' ' + l.texto));\n  const waMencao = !waLink && paginasOk.some((p) => /whatsapp|wa\\.me/i.test(p.corpo));\n  const telTexto = RX.telefone.exec(juntar);\n  if (conteudoConfiavel && !telLink && !telTexto && !waLink) add('TELEFONE_NAO_ENCONTRADO', 'local', 'media', 0.75, 'Não encontramos telefone ou WhatsApp publicado nas páginas analisadas.', 'a falta de telefone ou WhatsApp visível no site', 'Sem link tel:, sem link de WhatsApp e sem número no texto de ' + paginasOk.length + ' página(s).', 'Publicar telefone e WhatsApp clicáveis no topo e no rodapé.');\n  if (conteudoConfiavel && !RX.cep.test(juntar) && !RX.logradouro.test(juntar)) add('ENDERECO_NAO_ENCONTRADO', 'local', 'media', 0.7, 'Não encontramos endereço publicado nas páginas analisadas.', 'a falta de endereço publicado no site', 'Sem CEP e sem logradouro (rua, avenida…) no texto de ' + paginasOk.length + ' página(s).', 'Publicar endereço completo e mapa na página de contato e no rodapé.');\n\n  // J. Conversão.\n  if (conteudoConfiavel) {\n    const ctas = [...H.links, ...H.botoes].filter((l) => RX.agendamento.test(semAcento(l.texto + ' ' + (l.href || ''))));\n    const agendaExterna = H.iframes.some((s) => RX.agendaExterna.test(s)) || H.links.some((l) => RX.agendaExterna.test(l.href));\n    if (!ctas.length && !agendaExterna && !waLink) add('SEM_CTA_AGENDAMENTO', 'conversao', 'alta', 0.8, 'A página inicial não tem botão ou link de agendamento.', 'a ausência de um botão de agendamento na página inicial', 'Nenhum link ou botão da home com \"agendar\", \"marcar\", \"consulta online\" ou \"reservar\"; sem agenda online incorporada (' + H.links.length + ' links e ' + H.botoes.length + ' botões lidos).', 'Colocar um botão \"Agendar consulta\" visível no topo e em cada serviço.');\n    if (!waLink) add('SEM_LINK_WHATSAPP', 'conversao', 'media', waMencao ? 0.6 : 0.85, 'Nenhuma das páginas analisadas tem link direto para conversar no WhatsApp.', 'a falta de um link direto para o WhatsApp no site', 'Nenhum link wa.me/api.whatsapp.com em ' + paginasOk.length + ' página(s) (' + linksTodos.length + ' links lidos).' + (waMencao ? ' A palavra WhatsApp aparece no código: pode haver botão carregado por script; conferir no navegador.' : ''), 'Adicionar botão de WhatsApp com mensagem inicial pronta.');\n    if (!telLink && !waLink && !waMencao && !todas.some((x) => x.d.formularios)) add('SEM_CONTATO_DIRETO', 'conversao', 'alta', 0.85, 'As páginas analisadas não têm formulário, telefone clicável nem link de WhatsApp.', 'a falta de um canal de contato com um clique (formulário, telefone ou WhatsApp)', 'Sem <form>, sem tel: e sem link de WhatsApp em ' + paginasOk.length + ' página(s).', 'Oferecer pelo menos um canal de contato com um clique em todas as páginas.');\n  }\n\n  // Principal e resumo (revisão de conversão, 09/10/2026): primeiro o que o dono da clínica entende na hora e afeta\n  // agendamento/contato (faixa 1), depois visibilidade compreensível (faixa 2); itens técnicos (faixa 3: schema, canonical,\n  // sitemap, H1…) só entram no resumo. Sem faixa 1/2, o decisor recebe o script \"Abordagem alternativa\" (sem [achado]).\n  const FAIXA1 = ['SEM_CTA_AGENDAMENTO', 'SEM_CONTATO_DIRETO', 'SEM_LINK_WHATSAPP', 'TELEFONE_NAO_ENCONTRADO', 'VIEWPORT_AUSENTE'];\n  const FAIXA2 = ['NOINDEX_HOME', 'SEM_HTTPS', 'ENDERECO_NAO_ENCONTRADO', 'SEM_PAGINA_SERVICOS', 'TITLE_AUSENTE', 'TITLE_GENERICO', 'SEM_CIDADE_TITULO', 'META_DESC_AUSENTE', 'HTTP_SEM_REDIRECT'];\n  const FAIXA3 = ['H1_AUSENTE', 'SCHEMA_AUSENTE', 'SCHEMA_INVALIDO', 'CANONICAL_OUTRO_DOMINIO', 'SITEMAP_AUSENTE', 'SCHEMA_SEM_NEGOCIO', 'H1_MULTIPLOS', 'TITLE_LONGO', 'CANONICAL_AUSENTE', 'CONTEUDO_RASO', 'GEO_PRONTIDAO_BAIXA'];\n  const ORDEM = [...FAIXA1, ...FAIXA2, ...FAIXA3];\n  const apelo = (c) => (ORDEM.indexOf(c) < 0 ? 99 : ORDEM.indexOf(c));\n  const elegiveis = achados.filter((a) => a.confidence >= CONF_MIN_ABORDAGEM).sort((a, b) =>\n    apelo(a.codigo) - apelo(b.codigo) || SEV_PESO[b.severity] - SEV_PESO[a.severity] || b.confidence - a.confidence || a.codigo.localeCompare(b.codigo));\n  const resumo = [];\n  for (const a of elegiveis) if (resumo.length < 3 && !resumo.some((r) => r.category === a.category)) resumo.push(a);\n  for (const a of elegiveis) if (resumo.length < 3 && !resumo.includes(a)) resumo.push(a);\n  // Gancho comercial: faixa 1 ou 2 de severidade média/alta. Sem ele, um achado técnico médio/alto ainda sustenta a abordagem\n  // pelo script alternativo (gancho_tecnico = true). Severidade baixa nunca sustenta sozinha (QA da Fase C).\n  const principal = resumo.find((a) => !FAIXA3.includes(a.codigo) && a.severity !== 'baixa') || resumo.find((a) => a.severity !== 'baixa') || null;\n  auditoria.gancho_tecnico = !!principal && FAIXA3.includes(principal.codigo);\n  auditoria.principal_finding_id = principal ? principal.finding_id : null;\n  auditoria.resumo_finding_ids = resumo.map((a) => a.finding_id);\n  if (!principal) auditoria.status = 'sem_oportunidade';\n  return { auditoria, achados };\n}\n\nreturn $input.all().map((i) => {\n  const reg = i.json;\n  const { auditoria, achados } = analisar(reg);\n  return { json: { company_id: reg.company_id, empresa: reg.empresa, auditoria, achados } };\n});\n"
+        }
+      },
+      {
+        "id": "b6b0adb8-3384-4f41-90be-af2629495f88",
+        "name": "W05 Score e QA",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1760,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_03 · W05_SCORE_QA · Score v1 + rascunho D1 + fila de QA (Code node, \"Run Once for All Items\").\n// Fonte: Playbook Operacional §5, §7 e spec 01 §2.4. Edite aqui e recole no nó.\n// Entrada: itens do W04. Saída: linhas com destino auditoria | achado | empresa | evento (gravadas por nós Data Table).\n// Nada é enviado: a mensagem D1 é só rascunho para o QA humano (Thiago). F3 só existe após aprovação humana.\nconst cfgRows = $('Ler configuração').all().map((i) => i.json);\nconst cfg = {};\nfor (const r of cfgRows) if (r && r.chave) cfg[String(r.chave).trim()] = { valor: String(r.valor ?? '').trim(), status: String(r.status ?? '').trim().toUpperCase() };\nconst cfgValor = (k, padrao) => (cfg[k] && cfg[k].status === 'CONFIGURADO' && cfg[k].valor && !/^PENDENTE/i.test(cfg[k].valor) ? cfg[k].valor : padrao);\n\nconst VERSAO = cfgValor('SCORE_VERSAO', 'score_v1');\nconst FAIXA_A = Number(cfgValor('SCORE_FAIXA_A', '75')), FAIXA_B = Number(cfgValor('SCORE_FAIXA_B', '50'));\nconst verticais = cfgValor('VERTICAIS_PERMITIDAS', 'dental,medical').split(',').map((s) => s.trim()).filter(Boolean);\nconst cidadesCfg = cfgValor('CIDADES_ALVO', '');\nconst CONSULTOR = cfgValor('CONSULTOR_NOME', 'Zayra');\nconst SEV_PONTOS = { alta: 12, media: 7, baixa: 3 };\n\nconst texto = (v) => (v === null || v === undefined ? '' : String(v).trim());\nconst semAcento = (s) => String(s ?? '').normalize('NFD').replace(/\\p{M}/gu, '').toLowerCase();\nfunction hash(s) {\n  let h = 0x811c9dc5;\n  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }\n  return h.toString(16).padStart(8, '0');\n}\n\n// Scripts da Biblioteca \"Somente Scripts Comerciais\" (09/10/2026), usados como estão. [achado] = trecho do achado principal.\n// Sem nome do decisor (caso das listas de pesquisa), o 1º contato é o script da recepção; a mensagem com o achado fica pronta para o decisor.\nconst SCRIPTS = {\n  dental: 'Olá, [Nome]! Identificamos uma oportunidade no site da [Empresa] que pode facilitar novos agendamentos: [achado].\\nPreparei um diagnóstico rápido. Posso enviar?',\n  medical: 'Olá, [Nome]! Encontramos um ponto de melhoria na jornada de agendamento da [Empresa]: [achado].\\nTenho uma análise objetiva, com evidências. Posso compartilhar?',\n  tires: 'Olá, [Nome]! Analisamos o site da [Empresa] e encontramos uma oportunidade para facilitar pedidos de orçamento: [achado].\\nPosso te mostrar?'\n};\n// \"Abordagem alternativa\" (mesma biblioteca): quando só há achado técnico (schema, sitemap, H1…), que não faz sentido para o dono da clínica.\nconst SCRIPT_ALTERNATIVA = 'Olá, [Nome]! Analisei algumas páginas públicas da [Empresa] e preparei duas sugestões para melhorar a jornada do cliente.\\nPosso compartilhar?';\nconst SCRIPT_RECEPCAO = 'Olá! Tenho um diagnóstico breve do site da [Empresa]. Quem cuida do marketing ou comercial para eu encaminhar?';\n// Mensagem ao decisor; sem nome, mantém [Nome] para preencher quando a recepção indicar a pessoa.\nfunction montarMensagem(vertical, empresa, trecho, nomeContato) {\n  const modelo = SCRIPTS[vertical];\n  if (!modelo || !trecho) return null;\n  return modelo.replace('[Nome]', nomeContato || '[Nome]').replace('[Empresa]', empresa).replace('[achado]', trecho);\n}\nconst montarRecepcao = (empresa) => SCRIPT_RECEPCAO.replace('[Empresa]', empresa);\n\n// Lista reaproveitada do ATOM_02 + Playbook (sem promessa de posição, prejuízo, garantia ou números inventados).\n// <guarda> — bloco canônico: copiado idêntico para W05, W05b, W07 e W08 por n8n/tools/sync_guarda.js (teste confere).\n// Fronteiras Unicode: \\b do JavaScript não trata \"é\", \"à\" etc. como letra.\nconst I = '(?<![\\\\p{L}\\\\p{N}])', F = '(?![\\\\p{L}\\\\p{N}])';\nconst rx = (corpo) => new RegExp(I + corpo + F, 'iu');\nconst EXTENSO = '(um|uma|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|treze|quatorze|catorze|quinze|dezesseis|dezessete|dezoito|dezenove|vinte|trinta|quarenta|cinquenta|sessenta|setenta|oitenta|noventa|cem|cento|duzentos|duzentas|trezentos|trezentas|quatrocentos|quinhentos|seiscentos|setecentos|oitocentos|novecentos)';\nconst PRECO_RX = [\n  /(R|US|U)?\\s*[$＄]\\s*\\d/i,                                                                   // R$ 3.000, R $3000, US$ 500, $500\n  rx('\\\\d{1,3}([.\\\\s]\\\\d{3})+([.,]\\\\d{2})?'),                                                 // 3.000 / 14.000,00 / 1 500,00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(mil|reais|k)'),                                                     // 3 mil, 900 reais, 3k\n  rx(EXTENSO + '(\\\\s+e\\\\s+' + EXTENSO + ')*\\\\s+(mil|reais)'),                                 // três mil, dois mil e quinhentos\n  rx('\\\\d+,\\\\d{2}'), rx('\\\\d+\\\\.\\\\d{2}'),                                                     // 500,00 / 500.00\n  rx('\\\\d+([.,]\\\\d+)?\\\\s*(/\\\\s*m[eê]s|por m[eê]s|mensais|ao m[eê]s|/\\\\s*ano|por ano)'),       // 1500/mês, 990 mensais\n  rx('\\\\d+\\\\s*x\\\\s*(de\\\\s*)?(R\\\\$\\\\s*)?\\\\d+'),                                                 // 12x 300, 2x de 750\n  rx('(valor|custo|taxa|or[cç]amento|ticket|plano|investimento)\\\\s*(:|mensal|anual|de|é|e|fica|sai|total|inicial)?\\\\s*(R\\\\$\\\\s*)?\\\\d+'), // Valor: 1500, orçamento de 1500\n  rx('(?<!(oportunidades|resultados|dados|casos|problemas|ganhos|melhorias|clientes|pacientes|n[uú]meros|exemplos|situa[cç][oõ]es|pessoas|avalia[cç][oõ]es|depoimentos|evid[eê]ncias|mudan[cç]as|benef[ií]cios)\\\\s)reais'),\n  rx('pre[cç]os?'),\n  rx('valor(es)?\\\\s+(de|do|da|para|é|e|fica|sai|total|mensal)'),\n  rx('investimento\\\\s+(de|é|e|fica|sai|total|inicial|mensal)'),\n  rx('(mensalidade|parcelas?|parcelado|entrada de|setup de|desconto|à vista|a vista|boleto|pix)'),\n  rx('(custa|custo de|cobramos|sai por|fica por|a partir de)')\n];\n// Promessas e alegações proibidas (handoff §8; scripts de 09/10). \"Ninguém pode garantir isso\" (script ChatGPT) passa.\nconst PROIBIDOS = [/primeira posi[cç][aã]o/i, /topo do google/i, /garant(imos|ido|idos|ida|idas|o\\b|ia de)/i, /posi[cç][aã]o\\s*\\d/i, /\\b\\d+\\s*(visitas|clientes|pacientes) (por|ao) m[eê]s/i, /preju[ií]zo/i, /queda de vendas/i, /perdendo (clientes|pacientes|vendas)/i, /cliente oculto/i, /chatgpt (indicou|citou|recomendou)/i];\nconst bloqueios = (t) => [...PRECO_RX.filter((r) => r.test(String(t || ''))).map(() => 'preço antes da proposta'), ...PROIBIDOS.filter((r) => r.test(String(t || ''))).map((r) => 'termo proibido ' + r.source)];\n// </guarda>\n// Mensagens e achados passam pela trava completa (preço + termos proibidos): o título do site entra em alguns trechos.\nconst violacoes = (t) => bloqueios(t);\n\nfunction pontuar(e, aud, achados) {\n  const det = {};\n  // Fit (25): vertical 10, região 10, porte 5.\n  let regiao, regiaoMotivo;\n  if (!cidadesCfg) { regiao = 5; regiaoMotivo = 'CIDADES_ALVO pendente: valor neutro'; }\n  else {\n    const alvo = cidadesCfg.split(',').map((c) => semAcento(c).trim()).filter(Boolean);\n    const ok = alvo.some((c) => c === semAcento(e.cidade) || c === semAcento(e.cidade + '/' + e.uf) || c === semAcento(e.uf));\n    regiao = ok ? 10 : 0; regiaoMotivo = ok ? 'cidade no alvo' : 'cidade fora do alvo';\n  }\n  const unidades = Number(e.unidades) || 0;\n  const porte = unidades >= 2 ? 5 : unidades === 1 ? 3 : 2;\n  det.fit = { pontos: (verticais.includes(e.vertical) ? 10 : 0) + regiao + porte, max: 25, motivo: [verticais.includes(e.vertical) ? 'vertical permitida' : 'vertical fora do ICP', regiaoMotivo, 'porte: ' + (unidades || 'desconhecido') + ' unidade(s)'].join('; ') };\n  // Necessidade demonstrável (35): achados com confiança ≥ 0,7, por severidade.\n  const fortes = achados.filter((a) => a.confidence >= 0.7);\n  const nec = Math.min(35, fortes.reduce((s, a) => s + SEV_PONTOS[a.severity], 0));\n  det.necessidade = { pontos: nec, max: 35, motivo: fortes.length + ' achado(s) candidatos (antes do QA): ' + fortes.map((a) => a.codigo + '/' + a.severity).join(', ') };\n  // Capacidade comercial (20): sinais observáveis, sem inventar faturamento.\n  const codigos = new Set(achados.map((a) => a.codigo));\n  const temCanal = !!(texto(e.telefone) || texto(e.whatsapp)) || !codigos.has('TELEFONE_NAO_ENCONTRADO');\n  const cap = 5 + (temCanal ? 5 : 0) + (!codigos.has('SEM_PAGINA_SERVICOS') ? 5 : 0) + (unidades >= 2 ? 5 : 0);\n  det.capacidade = { pontos: cap, max: 20, motivo: ['site próprio respondendo', temCanal ? 'canal comercial publicado' : 'sem canal publicado', !codigos.has('SEM_PAGINA_SERVICOS') ? 'páginas de serviço' : 'sem páginas de serviço', unidades >= 2 ? 'várias unidades' : 'uma unidade ou desconhecido'].join('; ') };\n  // Canal permitido (10): canal existe 5 + permissão registrada 5.\n  const permissao = texto(e.contact_permission_status) === 'autorizado';\n  det.canal = { pontos: (temCanal ? 5 : 0) + (permissao ? 5 : 0), max: 10, motivo: (temCanal ? 'canal disponível' : 'sem canal') + '; permissão: ' + (texto(e.contact_permission_status) || 'nao_avaliado') };\n  // Qualidade das evidências (10): confiança média dos achados do resumo.\n  const resumo = achados.filter((a) => aud.resumo_finding_ids.includes(a.finding_id));\n  const media = resumo.length ? resumo.reduce((s, a) => s + a.confidence, 0) / resumo.length : 0;\n  det.evidencia = { pontos: Math.round(10 * media), max: 10, motivo: resumo.length ? 'confiança média ' + media.toFixed(2) + ' em ' + resumo.length + ' achado(s) com URL e evidência' : 'sem achado elegível' };\n  let total = Object.values(det).reduce((s, d) => s + d.pontos, 0);\n  if (e.opt_out === true || texto(e.opt_out) === 'true') { total = 0; det.bloqueio = 'opt_out'; }\n  const faixa = total >= FAIXA_A ? 'A' : total >= FAIXA_B ? 'B' : 'C';\n  return { total, faixa, det };\n}\n\nconst agora = new Date().toISOString();\nconst out = [];\nfor (const item of $input.all()) {\n  const { company_id, empresa: e = {}, auditoria: aud, achados = [] } = item.json;\n  const evento = (tipo, motivo, dados) => out.push({ json: { destino: 'evento', evento: { event_id: 'e_' + hash(company_id + '|' + tipo + '|' + aud.audit_id), correlation_id: aud.audit_id, company_id, workflow: 'ATOM2_03', tipo, motivo, dados: JSON.stringify(dados || {}), ocorrido_em: agora } } });\n\n  if (aud.status === 'falha') {\n    out.push({ json: { destino: 'auditoria', linha: { ...aud, urls: JSON.stringify(aud.urls), limitacoes: JSON.stringify(aud.limitacoes), resumo_finding_ids: '[]', score: null, faixa: null, score_versao: VERSAO, score_detalhe: '{}', mensagem_d1: null, mensagem_decisor: null, qa_status: 'nao_aplicavel', qa_motivo: 'falha documentada: ' + aud.falha } } });\n    out.push({ json: { destino: 'empresa', linha: { company_id, status_motivo: 'N1 falhou: ' + aud.falha, atualizado_em: agora } } });\n    evento('N1_FALHA', aud.falha, { limitacoes: aud.limitacoes });\n    continue;\n  }\n\n  const s = pontuar(e, aud, achados);\n  const principal = achados.find((a) => a.finding_id === aud.principal_finding_id) || null;\n  const optOut = e.opt_out === true || texto(e.opt_out) === 'true';\n  const nomeContato = texto(e.contato_nome);\n  const tecnico = aud.gancho_tecnico === true;\n  delete aud.gancho_tecnico; // não é coluna de atom2_auditorias\n  let decisor = !principal || optOut ? null : tecnico ? SCRIPT_ALTERNATIVA.replace('[Nome]', nomeContato || '[Nome]').replace('[Empresa]', texto(e.nome)) : montarMensagem(e.vertical, texto(e.nome), principal.trecho, nomeContato);\n  const problemas = [...violacoes(decisor), ...achados.flatMap((a) => violacoes(a.claim))];\n  if (problemas.length) decisor = null;\n  // 1º contato: com nome do decisor, a mensagem com achado; sem nome, a recepção (só se houver achado aprovado para depois).\n  const mensagem = decisor ? (nomeContato ? decisor : montarRecepcao(texto(e.nome))) : null;\n  const qaMotivo = optOut ? 'opt-out: não abordar' : problemas.length ? 'termos proibidos: ' + problemas.join(', ') : !principal ? 'sem oportunidade verificada: não abordar com personalização' : 'revisar achados, a mensagem à recepção e 100% da mensagem ao decisor';\n\n  for (const a of achados) out.push({ json: { destino: 'achado', linha: { ...a, usado_em: aud.resumo_finding_ids.includes(a.finding_id) ? (a.finding_id === aud.principal_finding_id ? 'principal' : 'resumo') : 'apoio' } } });\n  out.push({ json: { destino: 'auditoria', linha: { ...aud, urls: JSON.stringify(aud.urls), limitacoes: JSON.stringify(aud.limitacoes), resumo_finding_ids: JSON.stringify(aud.resumo_finding_ids), score: s.total, faixa: s.faixa, score_versao: VERSAO, score_detalhe: JSON.stringify(s.det), mensagem_d1: mensagem, mensagem_decisor: decisor, qa_status: 'pendente', qa_motivo: qaMotivo } } });\n  out.push({ json: { destino: 'empresa', linha: { company_id, funil_etapa: 'F2', score: s.total, faixa: s.faixa, score_versao: VERSAO, score_detalhe: JSON.stringify(s.det), status_motivo: aud.status === 'sem_oportunidade' ? 'N1 concluído: sem oportunidade verificada' : 'N1 concluído: aguardando QA', atualizado_em: agora } } });\n  evento('N1_CONCLUIDO', aud.status, { achados: achados.length, principal: principal && principal.codigo, score: s.total, faixa: s.faixa });\n}\nreturn out;\n"
+        }
+      },
+      {
+        "id": "218fdb89-8830-4239-9b95-3cca980e344d",
+        "name": "Roteador",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1980,
+          200
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "auditoria",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "auditoria"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "achado",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "achado"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "empresa",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "empresa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "evento",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "evento"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "65f0cb1c-84d8-4f52-960e-a8f0e42fce4b",
+        "name": "Linha da auditoria",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2200,
+          0
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "3a38d1a3-01f9-404d-a362-43a6cbb38aa1",
+        "name": "Gravar auditoria",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2420,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.audit_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "c7a75ea7-a762-4b6e-b664-47d028ce833f",
+        "name": "Linha do achado",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2200,
+          160
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "88f328f0-ad55-4e56-94fb-d399262ab1ed",
+        "name": "Gravar achado",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2420,
+          160
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "finding_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.finding_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "6aca93cb-4268-4289-8eaf-f0da0296ad50",
+        "name": "Linha da empresa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2200,
+          320
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "d4e22f48-1898-40eb-a95c-7e98c64ccf21",
+        "name": "Atualizar empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2420,
+          320
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "e19b093f-f30b-467b-80b7-f433c6f1cdd8",
+        "name": "Linha do evento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2200,
+          480
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.evento }}"
+        }
+      },
+      {
+        "id": "a66c7a90-f58d-4442-819b-3c258397e7de",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2420,
+          480
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "bb630e42-be9d-44df-a6a5-d1a3b4a66ba7",
+        "name": "Uma empresa por vez",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1100,
+          100
+        ],
+        "parameters": {
+          "batchSize": 1,
+          "options": {}
+        }
+      },
+      {
+        "id": "296ffebf-918e-4ef6-bdeb-06f8ec6b2d83",
+        "name": "Sticky Note e06d1cf2",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -300
+        ],
+        "parameters": {
+          "content": "## ATOM2_03 · Diagnóstico N1 (W03 + W04 + W05)\nPara cada empresa F1: rastreia o site público (robots, home + até 5 URLs, sitemap, http→https), gera achados com URL/data/evidência/confiança, calcula o score v1 e o rascunho da mensagem D1.\n\n**Grava:** atom2_auditorias (qa_status=pendente), atom2_achados, atom2_empresas (F2) e atom2_eventos.\n**Não envia nada para ninguém.** F3 só após aprovação do Thiago.\n\nFontes: n8n/code/w03_rastrear.js, w04_analisar.js, w05_pontuar.js. Testes: n8n/tests/run_n1.js",
+          "color": 4,
+          "width": 560,
+          "height": 260
+        }
+      },
+      {
+        "id": "2ef327d7-4815-4c9e-a15f-c0e0b89a1527",
+        "name": "Limpar achados antigos",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bi2WyZ8H2yAIeCnz",
+            "cachedResultName": "atom2_achados"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "audit_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Linha da auditoria').item.json.audit_id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "notes": "Roda antes do ramo de achados (saída 0 do Roteador executa primeiro): reprocessar no mesmo dia não deixa achado obsoleto."
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

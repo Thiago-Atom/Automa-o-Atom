@@ -1,0 +1,300 @@
+{
+  "workflow": {
+    "id": "CNwB6VcvosSfc8rz",
+    "name": "ATOM2_07_Setup_Motivos_Perda",
+    "active": false,
+    "isArchived": false,
+    "versionId": "cc471153-5273-4cd9-a2f8-18b93731a28e",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 8,
+    "createdAt": "2026-10-09T21:13:50.015Z",
+    "updatedAt": "2026-10-09T21:13:56.550Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · Cadastra a lista oficial de motivos de perda (campo nativo do Pipedrive, se a API permitir) e o campo ATOM · Motivo de perda. Idempotente.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Executar": {
+        "main": [
+          [
+            {
+              "node": "Ler campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler campos": {
+        "main": [
+          [
+            {
+              "node": "Plano",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plano": {
+        "main": [
+          [
+            {
+              "node": "Aplicar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar": {
+        "main": [
+          [
+            {
+              "node": "Reler campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reler campos": {
+        "main": [
+          [
+            {
+              "node": "Linhas de config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linhas de config": {
+        "main": [
+          [
+            {
+              "node": "Gravar atom2_config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "49785413-12b9-49de-9ca0-fff17bea005c",
+        "name": "Executar",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "70d096ba-b786-456a-85b6-8a69ec376089",
+        "name": "Ler campos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/dealFields?limit=500",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "00ba4b97-e25c-4a82-bce8-7d14dd209148",
+        "name": "Plano",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          440,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_07 · Motivos de perda (03_FUNIS_PIPEDRIVE.md §5). Idempotente: só acrescenta o que falta.\nconst API = 'https://api.pipedrive.com/v1';\nconst MOTIVOS = ['Sem resposta', 'Agora não (sem recontato)', 'Agora não (recontato autorizado)', 'Investimento', 'Já tem fornecedor', 'Não compareceu', 'Fora do perfil', 'Sem interesse', 'Opt-out (não contatar)', 'Duplicado', 'Contato inválido', 'Não é cliente (emprego/fornecedor)', 'Paciente buscando atendimento clínico'];\nconst campos = ($('Ler campos').first().json.data) || [];\nconst igual = (a, b) => String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();\nconst out = [];\nconst nativo = campos.find((c) => c.key === 'lost_reason');\nif (nativo) {\n  const atuais = (nativo.options || []).map((o) => ({ id: o.id, label: o.label }));\n  const faltam = MOTIVOS.filter((m) => !atuais.some((o) => igual(o.label, m)));\n  out.push(faltam.length ? { method: 'PUT', url: API + '/dealFields/' + nativo.id, body: { options: [...atuais, ...faltam.map((label) => ({ label }))] }, ref: 'nativo' } : { method: 'GET', url: API + '/users/me', body: {}, ref: 'nativo:ok' });\n}\nconst proprio = campos.find((c) => igual(c.name, 'ATOM · Motivo de perda'));\nif (!proprio) out.push({ method: 'POST', url: API + '/dealFields', body: { name: 'ATOM · Motivo de perda', field_type: 'enum', options: MOTIVOS.map((label) => ({ label })) }, ref: 'proprio' });\nelse {\n  const faltam = MOTIVOS.filter((m) => !(proprio.options || []).some((o) => igual(o.label, m)));\n  out.push(faltam.length ? { method: 'PUT', url: API + '/dealFields/' + proprio.id, body: { options: [...(proprio.options || []).map((o) => ({ id: o.id, label: o.label })), ...faltam.map((label) => ({ label }))] }, ref: 'proprio' } : { method: 'GET', url: API + '/users/me', body: {}, ref: 'proprio:ok' });\n}\nreturn out.map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "941dceef-1c3f-4535-82f8-d1bae6e2494e",
+        "name": "Aplicar",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          660,
+          200
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 400
+              }
+            },
+            "response": {
+              "response": {
+                "neverError": true,
+                "fullResponse": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "71c76a4f-a963-4d65-8361-c04342a975d2",
+        "name": "Reler campos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          880,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/dealFields?limit=500",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {}
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "1addc26b-91d2-42d3-95d3-17707221e5d2",
+        "name": "Linhas de config",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1100,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// Grava chaves dos motivos em atom2_config e o resultado de cada tentativa (o campo nativo pode recusar edição pela API).\nconst campos = ($('Reler campos').first().json.data) || [];\nconst res = $('Aplicar').all().map((i, n) => ({ ref: $('Plano').all()[n].json.ref, status: i.json.statusCode, ok: i.json.body && i.json.body.success === true, erro: i.json.body && (i.json.body.error || i.json.body.error_info) || null }));\nconst nat = campos.find((c) => c.key === 'lost_reason');\nconst prop = campos.find((c) => String(c.name).trim() === 'ATOM · Motivo de perda');\nconst slug = (s) => String(s).normalize('NFD').replace(/\\p{M}/gu, '').toUpperCase().replace(/[^A-Z0-9]+/g, '_').replace(/^_|_$/g, '');\nconst out = [{ chave: 'PD2_MOTIVOS_RESULTADO', valor: JSON.stringify(res).slice(0, 900), status: 'CONFIGURADO', descricao: 'Resultado do setup de motivos de perda (nativo e próprio)' }];\nif (prop) {\n  out.push({ chave: 'PD2_FIELD_MOTIVO_PERDA', valor: prop.key, status: 'CONFIGURADO', descricao: 'Chave do campo ATOM · Motivo de perda' });\n  for (const o of prop.options || []) out.push({ chave: 'PD2_OPT_MOTIVO_' + slug(o.label), valor: String(o.id), status: 'CONFIGURADO', descricao: 'Motivo de perda: ' + o.label });\n}\nout.push({ chave: 'PD2_LOST_REASON_NATIVO', valor: nat && (nat.options || []).length ? 'SIM' : 'NAO', status: 'CONFIGURADO', descricao: 'SIM se a lista nativa de motivos do Pipedrive foi preenchida; NAO = usar texto livre + campo próprio' });\nreturn out.map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "62d6a64a-db00-415c-8f98-8be589113f31",
+        "name": "Gravar atom2_config",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "chave",
+                "condition": "eq",
+                "keyValue": "={{ $json.chave }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "9a75b132-8a13-47bf-938d-ddb819e6f33a",
+        "name": "Sticky Note aec7cda9",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -60
+        ],
+        "parameters": {
+          "content": "## ATOM2_07 · Motivos de perda\nLista oficial (03_FUNIS §5). Tenta preencher o campo nativo \"Motivo da perda\"; sempre cria/atualiza o campo próprio ATOM · Motivo de perda (enum). Idempotente.",
+          "color": 4,
+          "width": 520,
+          "height": 160
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}
