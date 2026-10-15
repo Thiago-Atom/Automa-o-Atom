@@ -1,829 +1,738 @@
-<title>Método de Diagnóstico ATOM</title>
+<title>Diagnósticos Atom</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Roboto:wght@300;400;500;700&display=swap">
 <style>
-/* Mesmo sistema do deck "Atom 2026 · Agência de IA": página branca, título Light com a segunda frase em Bold,
-   lascas de foto roxa nos cantos, fio e ponto verdes, etiqueta mono espaçada, número de página mono. Um tema só, de propósito. */
+/* Aplicação web: barra no topo, menu lateral com os tipos de diagnóstico, conteúdo com abas Método / Processo / Gerar.
+   Tudo é clicável e conectado: área ↔ etapa do processo ↔ serviço que resolve ↔ outros diagnósticos.
+   Cores e fontes da marca Atom (roxo, verde, Roboto, IBM Plex Mono). Tema claro, como a marca. */
 :root {
   color-scheme: light;
   --roxo: #461b77;
+  --roxo-esc: #36135e;
   --verde: #00c864;
-  --verde-escuro: #078a48;
+  --verde-esc: #078a48;
   --tinta: #1e1e1e;
-  --cinza: #585858;
-  --fio: #e4e4e4;
-  --lavanda: #f3f1f8;
-  --branco: #ffffff;
-  --ruim: #b3261e;
-  --medio: #a35f00;
-  --bom: #2e7d32;
+  --cinza: #5f5a66;
+  --fio: #e6e3ea;
+  --fundo: #ffffff;
+  --lateral: #f7f6f9;
+  --lavanda: #f1edf8;
+  --ruim: #c0392b; --ruim-bg: #fdecea;
+  --medio: #b26a00; --medio-bg: #fdf3e1;
+  --bom: #078a48; --bom-bg: #e6f7ee;
   --sans: Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: "IBM Plex Mono", "Courier New", monospace;
 }
 * { box-sizing: border-box; }
-body { background: var(--branco); color: var(--tinta); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
+html, body { height: 100%; }
+body { background: var(--fundo); color: var(--tinta); font-family: var(--sans); font-size: 14px; line-height: 1.55; }
 p { margin: 0; }
-h1, h2, h3 { margin: 0; font-weight: 300; letter-spacing: -.01em; text-wrap: balance; }
-h1 b, h2 b { font-weight: 700; }
-h1 { font-size: clamp(2.2rem, 4.2vw, 3.5rem); line-height: 1.12; }
-h2 { font-size: clamp(1.9rem, 3.4vw, 2.8rem); line-height: 1.14; }
-a { color: inherit; }
-:focus-visible { outline: 2px solid var(--verde); outline-offset: 3px; }
-
-.mono { font-family: var(--mono); font-size: .72rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); }
-.fecho { font-weight: 700; color: var(--roxo); }
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px; }
+.mono { font-family: var(--mono); font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--roxo); }
 .cinza { color: var(--cinza); }
 
 /* Barra */
-.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--branco); border-bottom: 1px solid var(--fio); }
-.barra .in { max-width: 1440px; margin: 0 auto; padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-.barra img { height: 30px; width: auto; display: block; }
-.migalha { font-family: var(--mono); font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cinza); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.migalha a { color: var(--roxo); text-decoration: none; font-weight: 500; }
+.topo { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--fundo); border-bottom: 1px solid var(--fio); }
+.topo .in { display: flex; align-items: center; gap: 20px; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); }
+.topo img { height: 28px; width: auto; display: block; }
+.topo .app { font-weight: 500; color: var(--cinza); padding-left: 16px; border-left: 1px solid var(--fio); }
+.topo nav { margin-left: auto; display: flex; gap: 4px; }
+.topo nav a { text-decoration: none; color: var(--cinza); font-weight: 500; padding: 8px 12px; border-radius: 6px; }
+.topo nav a:hover { background: var(--lateral); color: var(--tinta); }
+.topo nav a.on { color: var(--roxo); background: var(--lavanda); }
+@media (max-width: 640px) { .topo .app { display: none; } .topo nav a { padding: 8px 8px; } }
 
-/* Página: cada seção se comporta como uma página do deck */
-.pag { position: relative; overflow: hidden; border-bottom: 1px solid var(--fio); }
-.pag .in { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding-block: clamp(48px, 6vw, 80px) clamp(56px, 6vw, 88px); padding-left: max(16px, min(5vw, 72px), env(safe-area-inset-left, 0px)); padding-right: max(16px, min(5vw, 72px), env(safe-area-inset-right, 0px)); }
-.num { position: absolute; right: max(16px, min(5vw, 72px)); bottom: 22px; font-family: var(--mono); font-size: .72rem; letter-spacing: .35em; color: var(--roxo); z-index: 2; }
-.lasca { position: absolute; top: 0; right: max(16px, 4vw); width: clamp(150px, 20vw, 290px); height: auto; z-index: 0; pointer-events: none; }
-.lasca-base { position: absolute; bottom: 0; left: 0; width: clamp(140px, 18vw, 260px); height: auto; z-index: 0; pointer-events: none; }
-.pag.roxa { background: var(--roxo); color: var(--branco); border-bottom: 0; }
-.pag.roxa .mono, .pag.roxa .num { color: var(--verde); }
-.pag.roxa .fecho { color: var(--branco); }
-.pag.lav { background: var(--lavanda); }
-.titulo { display: grid; gap: 10px; max-width: 760px; margin-bottom: clamp(32px, 4vw, 52px); padding-right: clamp(0px, 16vw, 260px); }
-.titulo p { color: var(--cinza); max-width: 62ch; }
-.pag.roxa .titulo p { color: #dcd3ea; }
+/* Estrutura */
+.app-grid { display: grid; grid-template-columns: 270px minmax(0, 1fr); min-height: calc(100% - 50px); }
+@media (max-width: 900px) { .app-grid { grid-template-columns: 1fr; } }
+.lado { background: var(--lateral); border-right: 1px solid var(--fio); padding: 20px 12px 32px max(12px, env(safe-area-inset-left, 0px)); }
+@media (max-width: 900px) { .lado { display: none; } }
+.lado h4 { font-family: var(--mono); font-weight: 500; font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cinza); padding: 0 10px; margin: 18px 0 6px; }
+.lado h4:first-child { margin-top: 0; }
+.lado a { display: grid; gap: 1px; padding: 9px 10px; border-radius: 6px; text-decoration: none; color: var(--tinta); }
+.lado a small { color: var(--cinza); font-size: .76rem; }
+.lado a:hover { background: #eeebf3; }
+.lado a.on { background: var(--fundo); box-shadow: inset 3px 0 0 var(--roxo), 0 1px 2px rgba(30, 30, 30, .06); }
+.lado a.on b { color: var(--roxo); }
+.lado b { font-weight: 500; }
+.escolha { display: none; margin: 0 0 16px; }
+@media (max-width: 900px) { .escolha { display: block; } }
+.escolha select { width: 100%; padding: 10px 12px; border: 1px solid var(--fio); border-radius: 6px; background: var(--fundo); }
 
-/* Capa */
-.capa .in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 24px; padding-block: 0; min-height: min(640px, 82vh); }
-.capa .txt { display: grid; gap: 22px; padding-block: 56px; }
-.capa .sub { font-weight: 700; font-size: .95rem; line-height: 1.7; }
-.capa .logo { width: 150px; height: auto; display: block; margin-top: 18px; }
-.capa .arte { align-self: stretch; display: flex; justify-content: flex-end; }
-.capa .arte img { height: 100%; max-height: 640px; width: auto; max-width: 100%; object-fit: contain; object-position: right top; display: block; }
-@media (max-width: 760px) {
-  .capa .in { grid-template-columns: 1fr; min-height: 0; }
-  .capa .arte img { max-height: 300px; }
-}
+main { padding: 26px max(16px, env(safe-area-inset-right, 0px)) 60px 32px; min-width: 0; }
+@media (max-width: 900px) { main { padding-left: max(16px, env(safe-area-inset-left, 0px)); } }
+.miolo { max-width: 1200px; }
 
-/* Duas colunas como nas páginas 4 e 9 */
-.duas { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
-.duas.meio { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-@media (max-width: 900px) { .duas, .duas.meio { grid-template-columns: 1fr; } }
-.lado { display: grid; gap: 18px; align-content: start; }
-.lado h2 { font-size: clamp(1.9rem, 3.2vw, 2.6rem); }
-.lado p { color: var(--cinza); }
+/* Cabeçalho do tipo */
+.cab { display: grid; gap: 8px; padding-bottom: 18px; }
+.cab h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); font-weight: 300; line-height: 1.15; }
+.cab h1 b { font-weight: 700; }
+.cab p { color: var(--cinza); max-width: 78ch; }
+.fichas { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 6px; }
+.fichas div { display: grid; gap: 1px; }
+.fichas b { font-weight: 500; }
+.selo { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; white-space: nowrap; font-weight: 500; }
+.selo.ok { background: var(--bom-bg); color: var(--bom); }
+.selo.disc { background: var(--medio-bg); color: var(--medio); }
+.selo.adef { background: var(--lateral); color: var(--cinza); box-shadow: inset 0 0 0 1px var(--fio); }
+.selo.auto { background: var(--lavanda); color: var(--roxo); }
+.selo.parcial { background: var(--medio-bg); color: var(--medio); }
+.selo.manual { background: var(--lateral); color: var(--cinza); box-shadow: inset 0 0 0 1px var(--fio); }
 
-/* Lista de pontos verdes (páginas 4, 9 e 14) */
-.pontos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 36px; }
-.pontos.uma { grid-template-columns: 1fr; }
-@media (max-width: 640px) { .pontos { grid-template-columns: 1fr; } }
-.pontos li { border-top: 1px solid var(--fio); padding: 14px 0 16px; }
-.pontos b { display: flex; gap: 10px; align-items: baseline; font-weight: 700; font-size: .95rem; }
-.pontos b::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--verde); flex: none; transform: translateY(-2px); }
-.pontos b .n { font-family: var(--mono); font-weight: 500; font-size: .7rem; letter-spacing: .15em; color: var(--roxo); }
-.pontos p { margin-top: 4px; padding-left: 17px; font-size: .9rem; color: var(--cinza); line-height: 1.55; }
-.pag.roxa .pontos li { border-top-color: rgba(255, 255, 255, .18); }
-.pag.roxa .pontos p { color: #dcd3ea; }
+/* Abas */
+.abas { display: flex; gap: 2px; border-bottom: 1px solid var(--fio); margin-bottom: 24px; overflow-x: auto; }
+.abas a { text-decoration: none; color: var(--cinza); font-weight: 500; padding: 10px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+.abas a:hover { color: var(--tinta); }
+.abas a.on { color: var(--roxo); border-bottom-color: var(--roxo); }
+.abas a span { font-family: var(--mono); font-size: .62rem; color: var(--cinza); margin-left: 6px; }
 
-/* Fio verde com ponto (páginas 8 e 19) */
-.passos { display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 22px; }
-@media (max-width: 960px) { .passos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 540px) { .passos { grid-template-columns: 1fr; } }
-.passo { display: grid; gap: 8px; align-content: start; }
-.passo .fio { display: flex; align-items: center; margin-bottom: 10px; }
-.passo .fio::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--verde); flex: none; }
-.passo .fio::after { content: ""; flex: 1; height: 2px; background: var(--verde); }
-.passo h3 { font-size: 1.1rem; font-weight: 700; }
-.passo p { font-size: .9rem; color: var(--cinza); }
-.passo .mono { font-size: .64rem; letter-spacing: .25em; margin-top: 18px; }
-.pag.roxa .passo p { color: #dcd3ea; }
-.passo ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 6px; font-size: .9rem; }
-.passo li { display: grid; grid-template-columns: 18px 1fr; }
-.passo li::before { content: "→"; color: var(--verde); }
+.bloco { margin-bottom: 34px; }
+.bloco > h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+.bloco > p.sub { color: var(--cinza); margin-bottom: 14px; max-width: 80ch; }
 
-/* Cartões no formato "Cases de sucesso" (página 17) */
-.casos { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 18px; }
-.caso { display: flex; flex-direction: column; background: var(--branco); color: var(--tinta); text-decoration: none; box-shadow: 0 1px 2px rgba(30, 30, 30, .06), 0 6px 18px rgba(30, 30, 30, .07); min-width: 0; }
-.caso:hover .caso-cab { background: #3a1564; }
-.caso-cab { background: var(--roxo); color: var(--branco); padding: 14px 18px 16px; display: grid; gap: 4px; min-height: 76px; align-content: start; transition: background .15s; }
-.caso-cab .cat { font-family: var(--mono); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--verde); }
-.caso-cab b { font-weight: 700; font-size: 1rem; line-height: 1.3; }
-.caso img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-bottom: 1px solid var(--fio); }
-.caso-corpo { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.caso .big { font-size: 2.8rem; font-weight: 500; line-height: 1; color: var(--roxo); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.caso .leg { font-size: .85rem; color: var(--tinta); padding-bottom: 10px; border-bottom: 1px solid var(--fio); }
-.setas { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: .82rem; color: var(--cinza); line-height: 1.45; }
-.setas li { display: grid; grid-template-columns: 16px 1fr; }
-.setas li::before { content: "→"; color: var(--verde-escuro); }
-.caso-pe { margin-top: auto; padding-top: 14px; font-family: var(--mono); font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cinza); display: flex; justify-content: space-between; gap: 8px; }
-.caso-pe span:last-child { color: var(--roxo); font-weight: 500; }
+/* Método: lista de áreas + painel da área selecionada */
+.met { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 24px; align-items: start; }
+@media (max-width: 1060px) { .met { grid-template-columns: 1fr; } }
+.areas-tab { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 10px; }
+.area-m { border: 1px solid var(--fio); border-radius: 6px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; background: var(--fundo); text-align: left; cursor: pointer; transition: border-color .12s, box-shadow .12s; }
+.area-m:hover { border-color: #c9bfd9; }
+.area-m.on { border-color: var(--roxo); box-shadow: inset 3px 0 0 var(--roxo); }
+.area-m.luz { border-color: var(--verde); box-shadow: inset 3px 0 0 var(--verde); }
+.area-m .t { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.area-m h3 { font-size: .95rem; font-weight: 700; }
+.area-m .mini { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .76rem; color: var(--cinza); }
+.painel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 66px); border: 1px solid var(--fio); border-radius: 8px; overflow: hidden; background: var(--fundo); }
+.painel .pc { background: var(--roxo); color: #fff; padding: 14px 16px; display: grid; gap: 3px; }
+.painel .pc .mono { color: var(--verde); }
+.painel .pc h3 { font-size: 1.15rem; font-weight: 700; }
+.painel .pb { padding: 14px 16px; display: grid; gap: 14px; }
+.painel ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; counter-reset: k; }
+.painel ol li { counter-increment: k; display: grid; grid-template-columns: 20px 1fr auto; gap: 6px; font-size: .86rem; }
+.painel ol li::before { content: counter(k); font-family: var(--mono); font-size: .7rem; color: var(--roxo); padding-top: 2px; }
+.rap { font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; color: var(--verde-esc); white-space: nowrap; padding-top: 3px; }
+.liga { display: grid; gap: 6px; }
+.liga .mono { color: var(--cinza); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--fio); background: var(--fundo); border-radius: 999px; padding: 5px 11px; font-size: .8rem; cursor: pointer; text-decoration: none; color: var(--tinta); display: inline-flex; gap: 6px; align-items: center; }
+.chip:hover { border-color: var(--roxo); color: var(--roxo); }
+.chip.sol { background: var(--lavanda); border-color: transparent; color: var(--roxo); font-weight: 500; }
+.chip.etapa::before { content: attr(data-n); font-family: var(--mono); font-size: .68rem; color: var(--verde-esc); }
 
-/* Tabela no formato da página 6 */
-.tabela { width: 100%; border-collapse: collapse; }
-.tabela th { text-align: left; font-family: var(--mono); font-weight: 400; font-size: .64rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); padding: 0 0 10px; }
-.tabela td { border-top: 1px solid var(--fio); padding: 14px 16px 14px 0; vertical-align: baseline; font-size: .92rem; }
-.tabela td.rot { font-family: var(--mono); font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); white-space: nowrap; width: 1%; padding-right: 28px; }
-.tabela a { text-decoration: none; font-weight: 700; }
-.tabela a:hover { color: var(--roxo); }
-.tabela .ir { text-align: right; color: var(--roxo); font-family: var(--mono); font-size: .7rem; letter-spacing: .15em; white-space: nowrap; }
+.regua { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--fio); border-radius: 6px; overflow: hidden; }
+@media (max-width: 640px) { .regua { grid-template-columns: 1fr; } }
+.regua div { padding: 14px 16px; display: grid; gap: 4px; }
+.regua b { font-size: 1.5rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.regua .r { background: var(--ruim-bg); } .regua .r b { color: var(--ruim); }
+.regua .m { background: var(--medio-bg); } .regua .m b { color: var(--medio); }
+.regua .b { background: var(--bom-bg); } .regua .b b { color: var(--bom); }
+
+.doze { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+@media (max-width: 760px) { .doze { grid-template-columns: 1fr; } }
+.doze li { display: grid; grid-template-columns: 30px 1fr; gap: 8px; padding: 11px 0; border-top: 1px solid var(--fio); }
+.doze .n { font-family: var(--mono); font-size: .76rem; color: var(--roxo); padding-top: 1px; }
+.doze li:nth-child(-n+3) .n { color: var(--verde-esc); font-weight: 500; }
+.doze b { font-weight: 700; display: block; }
+.doze p { color: var(--cinza); font-size: .86rem; }
+
+/* Processo */
+.resumo-proc { display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin: 6px 0 18px; max-width: 520px; }
+.resumo-proc i { display: block; }
+.proc { list-style: none; margin: 0; padding: 0; }
+.proc li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding-bottom: 14px; position: relative; }
+.proc li::after { content: ""; position: absolute; left: 16px; top: 34px; bottom: 0; width: 2px; background: var(--fio); }
+.proc li:last-child::after { display: none; }
+.proc .bola { width: 34px; height: 34px; border-radius: 50%; background: var(--fundo); border: 2px solid var(--verde); display: grid; place-items: center; font-family: var(--mono); font-size: .76rem; font-weight: 500; color: var(--roxo); z-index: 1; }
+.proc .c { border: 1px solid transparent; border-radius: 8px; padding: 6px 12px 12px; display: grid; gap: 6px; cursor: pointer; text-align: left; background: none; width: 100%; }
+.proc .c:hover { background: var(--lateral); }
+.proc li.on .c { border-color: var(--roxo); background: var(--fundo); box-shadow: 0 1px 2px rgba(30, 30, 30, .05); }
+.proc li.on .bola { background: var(--roxo); color: #fff; border-color: var(--roxo); }
+.proc h3 { font-size: 1rem; font-weight: 700; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.proc p { color: var(--cinza); max-width: 80ch; }
+.proc dl { margin: 2px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr)); gap: 6px 18px; font-size: .84rem; }
+.proc dt { font-family: var(--mono); font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--cinza); }
+.proc dd { margin: 0; }
+.proc .detalhe { display: none; border-top: 1px solid var(--fio); padding-top: 10px; margin-top: 4px; gap: 6px; }
+.proc li.on .detalhe { display: grid; }
+
+/* Gerar */
+.gerar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 28px; align-items: start; }
+@media (max-width: 1100px) { .gerar { grid-template-columns: 1fr; } }
+.form { display: grid; gap: 22px; }
+.campos { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+.campo { display: grid; gap: 4px; }
+.campo label { font-size: .78rem; font-weight: 500; color: var(--cinza); }
+.campo input { padding: 9px 10px; border: 1px solid var(--fio); border-radius: 5px; background: var(--fundo); width: 100%; font-variant-numeric: tabular-nums; }
+.campo input:focus { outline: none; border-color: var(--roxo); box-shadow: 0 0 0 3px var(--lavanda); }
+.secao { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--fio); padding-bottom: 6px; margin-bottom: 10px; }
+.secao h3 { font-size: .98rem; font-weight: 700; }
+.marcar { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+.area-g { border: 1px solid var(--fio); border-radius: 6px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; transition: border-color .15s, box-shadow .15s; }
+.area-g.fora { background: var(--lateral); }
+.area-g.urg-1, .area-g.urg-2, .area-g.urg-3 { border-color: var(--ruim); box-shadow: inset 3px 0 0 var(--ruim); }
+.area-g.luz { border-color: var(--roxo); box-shadow: 0 0 0 3px var(--lavanda); }
+.area-g .t { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.area-g h4 { font-size: .92rem; font-weight: 700; }
+.area-g .nota { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.area-g.fora .nota { color: var(--cinza); font-weight: 400; }
+.area-g .tag-u { font-family: var(--mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ruim); }
+.ck { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start; font-size: .84rem; cursor: pointer; padding: 2px 0; }
+.area-g.fora .ck { color: var(--cinza); }
+.ck input { margin: 3px 0 0; accent-color: var(--roxo); width: 14px; height: 14px; }
+.area-g .pe { display: flex; justify-content: space-between; gap: 8px; font-size: .74rem; color: var(--cinza); border-top: 1px solid var(--fio); padding-top: 6px; margin-top: 2px; }
+.area-g .pe label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.area-g .pe input { accent-color: var(--roxo); }
+
+/* Resultado */
+.result { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 66px); border: 1px solid var(--fio); border-radius: 8px; overflow: hidden; }
+.result .rcab { background: var(--roxo); color: #fff; padding: 16px 18px; display: grid; gap: 4px; }
+.result .rcab .mono { color: var(--verde); }
+.result .rcab h3 { font-size: 1.1rem; font-weight: 700; }
+.result .rcab p { color: #d9cfe8; font-size: .82rem; }
+.result .rcorpo { padding: 16px 18px; display: grid; gap: 16px; }
+.geral { display: flex; align-items: center; gap: 14px; }
+.geral .v { font-size: 2.6rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+.geral .v small { font-size: .9rem; color: var(--cinza); }
+.barra-l { display: grid; grid-template-columns: minmax(0, 1fr) 90px 38px; gap: 8px; align-items: center; padding: 5px 4px; border-top: 1px solid var(--fio); font-size: .82rem; cursor: pointer; border-radius: 3px; width: 100%; background: none; border-left: 0; border-right: 0; border-bottom: 0; text-align: left; }
+.barra-l:hover { background: var(--lateral); }
+.barra-l .tr { height: 8px; background: var(--lateral); border-radius: 2px; overflow: hidden; }
+.barra-l .tr i { display: block; height: 100%; transition: width .25s; }
+.barra-l .v { text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+.urgs { display: grid; gap: 8px; margin-top: 6px; }
+.urgs button { display: grid; grid-template-columns: 22px 1fr auto; gap: 6px; align-items: baseline; text-align: left; padding: 9px 10px; border: 1px solid var(--fio); border-radius: 6px; background: var(--fundo); cursor: pointer; }
+.urgs button:hover { border-color: var(--ruim); }
+.urgs .i { font-weight: 700; color: var(--ruim); }
+.urgs .s { grid-column: 2 / -1; font-size: .78rem; color: var(--roxo); }
+.lista-r { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; font-size: .84rem; }
+.lista-r li { display: grid; grid-template-columns: 16px 1fr; gap: 4px; }
+.lista-r li::before { content: "→"; color: var(--verde-esc); }
+.plano-r { display: grid; gap: 10px; }
+.plano-r > div { border-left: 3px solid var(--roxo); padding-left: 10px; display: grid; gap: 4px; }
+.plano-r > div.g { border-left-color: var(--verde); }
+.plano-r b { font-size: .82rem; }
+.valor-r { background: var(--lavanda); border-radius: 6px; padding: 12px 14px; display: grid; gap: 2px; }
+.valor-r .v { font-size: 1.6rem; font-weight: 500; color: var(--roxo); font-variant-numeric: tabular-nums; }
+.valor-r small { color: var(--cinza); font-size: .78rem; }
+.acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 0; border-radius: 6px; padding: 10px 14px; font-weight: 700; cursor: pointer; background: var(--roxo); color: #fff; text-decoration: none; display: inline-block; }
+.btn:hover { background: var(--roxo-esc); }
+.btn.sec { background: var(--fundo); color: var(--roxo); box-shadow: inset 0 0 0 1px var(--fio); }
+.btn.sec:hover { background: var(--lateral); }
+.btn[disabled] { opacity: .55; cursor: default; }
+.msg { font-size: .8rem; color: var(--cinza); min-height: 1.2em; }
+.aviso { font-size: .8rem; color: var(--medio); background: var(--medio-bg); border-radius: 5px; padding: 8px 10px; }
+
+/* Lista de gerados */
+.tab { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.tab th { text-align: left; font-family: var(--mono); font-weight: 500; font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--cinza); padding: 0 12px 8px 0; border-bottom: 1px solid var(--fio); }
+.tab td { padding: 11px 12px 11px 0; border-bottom: 1px solid var(--fio); vertical-align: middle; }
+.tab td.n { font-variant-numeric: tabular-nums; font-weight: 700; }
+.tab tr.click { cursor: pointer; }
+.tab tr.click:hover td { background: var(--lateral); }
 .rolar { overflow-x: auto; }
+.vazio { border: 1px dashed var(--fio); border-radius: 8px; padding: 28px; text-align: center; color: var(--cinza); display: grid; gap: 8px; justify-items: center; }
 
-/* Botões */
-.acoes { display: flex; flex-wrap: wrap; gap: 10px; }
-.botao { display: inline-flex; align-items: center; gap: 8px; background: var(--roxo); color: var(--branco); text-decoration: none; font-weight: 700; font-size: .88rem; padding: 11px 18px; }
-.botao:hover { background: #3a1564; }
-.botao.linha { background: transparent; color: var(--roxo); box-shadow: inset 0 0 0 1px var(--roxo); }
-.selo { display: inline-block; background: var(--roxo); color: var(--branco); font-weight: 700; font-size: .7rem; padding: 3px 8px; letter-spacing: .02em; white-space: nowrap; }
-.selo.verde { background: var(--verde); color: var(--tinta); }
-.selo.cinza { background: var(--fio); color: var(--tinta); }
-
-/* Números grandes com fio verde (página 5) */
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
-@media (max-width: 760px) { .stats { grid-template-columns: 1fr; } }
-.stat { border-top: 2px solid var(--verde); padding-top: 22px; display: grid; gap: 10px; align-content: start; }
-.stat .v { font-size: clamp(3rem, 6vw, 4.6rem); font-weight: 500; line-height: 1; letter-spacing: -.02em; color: var(--roxo); font-variant-numeric: tabular-nums; }
-.stat p { font-size: .92rem; }
-.stat .fx { font-family: var(--mono); font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; }
-
-/* Páginas do modelo */
-.miniaturas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); gap: 12px; }
-.miniaturas figure { margin: 0; display: grid; gap: 6px; }
-.miniaturas img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; box-shadow: 0 1px 2px rgba(30, 30, 30, .08), 0 4px 12px rgba(30, 30, 30, .06); }
-.miniaturas figcaption { font-family: var(--mono); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cinza); }
-.capa-modelo { width: 100%; height: auto; display: block; box-shadow: 0 1px 2px rgba(30, 30, 30, .08), 0 8px 24px rgba(30, 30, 30, .08); }
-
-/* Simulador */
-.sim { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 44px); align-items: start; }
-@media (max-width: 980px) { .sim { grid-template-columns: 1fr; } }
-.grupo { font-family: var(--mono); font-size: .64rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); margin: 34px 0 12px; }
-.grupo:first-child { margin-top: 0; }
-.areas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 22px 22px; }
-.area { border-top: 2px solid var(--verde); padding-top: 12px; display: grid; gap: 8px; align-content: start; min-width: 0; }
-.area.fora { border-top-color: var(--fio); }
-.area-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.area h3 { font-size: 1rem; font-weight: 700; }
-.area .nota { font-size: 1.5rem; font-weight: 500; color: var(--roxo); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.area.fora .nota { color: var(--cinza); }
-.area .nota small { font-size: .75rem; font-weight: 400; color: var(--cinza); }
-.crit { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
-.crit label { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start; font-size: .84rem; color: var(--cinza); cursor: pointer; line-height: 1.45; padding: 2px 0; }
-.crit label:hover { color: var(--tinta); }
-input.qd { appearance: none; -webkit-appearance: none; width: 13px; height: 13px; margin: 3px 0 0; border: 1.5px solid var(--roxo); background: var(--branco); cursor: pointer; }
-input.qd:checked { background: var(--roxo); box-shadow: inset 0 0 0 2px var(--branco); }
-.area-pe { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-family: var(--mono); font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; color: var(--cinza); padding-top: 6px; }
-.area-pe label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; color: var(--roxo); }
-.area-pe input.qd { margin: 0; }
-.estado { font-family: var(--mono); font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; }
-.estado.ok { color: var(--verde-escuro); } .estado.disc { color: var(--medio); } .estado.adef { color: var(--cinza); }
-
-.boletim { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 70px); background: var(--roxo); color: var(--branco); padding: 26px 26px 24px; display: grid; gap: 18px; }
-.boletim .mono { color: var(--verde); }
-.boletim .geral { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-.boletim .geral .v { font-size: 3.4rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
-.boletim .geral .v small { font-size: 1rem; color: #cfc4e2; }
-.boletim .geral .f { font-weight: 700; }
-.boletim .qtd { font-size: .8rem; color: #cfc4e2; }
-.linhas { display: grid; }
-.linha { display: grid; grid-template-columns: minmax(0, 1fr) 84px 40px; gap: 10px; align-items: center; padding: 7px 0; border-top: 1px solid rgba(255, 255, 255, .16); font-size: .84rem; }
-.linha .tr { height: 8px; background: rgba(255, 255, 255, .14); }
-.linha .tr i { display: block; height: 100%; }
-.linha .v { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
-.urg { background: var(--branco); color: var(--tinta); padding: 16px 18px; display: grid; gap: 8px; }
-.urg .mono { color: var(--roxo); }
-.urg ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; counter-reset: u; font-size: .88rem; }
-.urg li { counter-increment: u; display: grid; grid-template-columns: 20px 1fr auto; gap: 6px; }
-.urg li::before { content: counter(u) "."; font-weight: 700; color: var(--roxo); }
-.urg li span:last-child { font-weight: 700; font-variant-numeric: tabular-nums; }
-.legenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .74rem; color: #cfc4e2; }
-.legenda span { display: inline-flex; align-items: center; gap: 6px; }
-.legenda i { width: 10px; height: 10px; display: inline-block; }
-
-/* Quanto vale */
-.valor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: clamp(24px, 3vw, 48px); align-items: stretch; }
-@media (max-width: 880px) { .valor { grid-template-columns: 1fr; } }
-.conta { border-top: 2px solid var(--roxo); border-bottom: 2px solid var(--roxo); }
-.conta .ln { display: grid; grid-template-columns: 28px minmax(0, 1fr) minmax(90px, 160px); gap: 12px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--fio); font-size: 1rem; }
-.conta .ln:last-child { border-bottom: 0; }
-.conta .op { font-weight: 700; color: var(--roxo); font-size: 1.15rem; }
-.conta .res { color: var(--cinza); }
-.conta .res .op { color: var(--cinza); font-weight: 400; }
-.conta input { font: 300 1.6rem var(--sans); color: var(--tinta); background: transparent; border: 0; border-bottom: 1px solid var(--fio); padding: 0 0 2px; width: 100%; text-align: right; font-variant-numeric: tabular-nums; }
-.conta input:focus { outline: none; border-bottom-color: var(--verde); }
-.conta .calc { font-size: 1.6rem; font-weight: 300; text-align: right; font-variant-numeric: tabular-nums; }
-.caixa { background: var(--roxo); color: var(--branco); padding: clamp(28px, 3vw, 44px); display: grid; gap: 14px; align-content: center; }
-.caixa .mono { color: var(--branco); }
-.caixa .v { font-size: clamp(2.6rem, 5vw, 3.8rem); font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
-.caixa p { color: #e4dcef; font-size: .92rem; }
-.nota-fonte { margin-top: 18px; font-size: .8rem; color: var(--cinza); }
-
-/* Rodapé */
-.rodape .in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-block: 30px 40px; }
-.rodape img { height: 34px; width: auto; display: block; }
-.url { font-family: var(--mono); font-size: .8rem; letter-spacing: .3em; padding: 6px 10px; box-shadow: inset 0 0 0 1px var(--fio); }
-.contato { display: flex; flex-wrap: wrap; gap: 14px 36px; }
-.contato div { display: grid; gap: 2px; }
-.contato .mono { font-size: .6rem; }
-.contato b { font-size: .9rem; }
-
+/* Visão geral */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+.card { border: 1px solid var(--fio); border-radius: 8px; padding: 16px; display: grid; gap: 8px; text-decoration: none; color: var(--tinta); align-content: start; }
+.card:hover { border-color: var(--roxo); }
+.card h3 { font-size: 1rem; font-weight: 700; }
+.card p { color: var(--cinza); font-size: .86rem; }
+.card .pe { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .76rem; color: var(--cinza); border-top: 1px solid var(--fio); padding-top: 8px; margin-top: 4px; }
+.card .pe span:last-child { color: var(--roxo); font-weight: 500; }
+.fluxo { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 900px) { .fluxo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 500px) { .fluxo { grid-template-columns: 1fr; } }
+.fluxo div { display: grid; gap: 4px; align-content: start; }
+.fluxo i { display: flex; align-items: center; margin-bottom: 6px; }
+.fluxo i::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--verde); flex: none; }
+.fluxo i::after { content: ""; flex: 1; height: 2px; background: var(--verde); }
+.fluxo b { font-weight: 700; }
+.fluxo p { color: var(--cinza); font-size: .84rem; }
+/* Matriz área × tipo */
+.matriz { border-collapse: collapse; font-size: .8rem; }
+.matriz th { font-weight: 500; padding: 6px 8px; text-align: center; color: var(--cinza); font-size: .74rem; vertical-align: bottom; }
+.matriz th.l { text-align: left; }
+.matriz td { border-top: 1px solid var(--fio); padding: 0; text-align: center; }
+.matriz td.l { text-align: left; padding: 6px 12px 6px 0; white-space: nowrap; }
+.matriz td a { display: block; padding: 6px 8px; text-decoration: none; }
+.matriz td a i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--roxo); }
+.matriz td a:hover { background: var(--lavanda); }
+.matriz tr:hover td.l { color: var(--roxo); }
+.hist { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.hist td { padding: 8px 12px 8px 0; border-top: 1px solid var(--fio); vertical-align: top; }
+.hist td:first-child { font-family: var(--mono); font-size: .72rem; color: var(--roxo); white-space: nowrap; width: 1%; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
-<header class="barra">
+<header class="topo">
   <div class="in">
     <a href="#inicio" aria-label="Início"><img src="assets/logo.jpg" alt="ATOM Agência de IA" width="285" height="105"></a>
-    <nav class="migalha" id="migalha" aria-label="Você está em"></nav>
+    <span class="app">Diagnósticos</span>
+    <nav aria-label="Principal">
+      <a href="#inicio" id="nav-inicio">Visão geral</a>
+      <a href="#completo-metodo" id="nav-tipos">Tipos</a>
+      <a href="#gerados" id="nav-gerados">Gerados</a>
+    </nav>
   </div>
 </header>
 
-<!-- ================= TELA INICIAL ================= -->
-<main id="v-inicio">
-  <section class="pag capa">
-    <div class="in">
-      <div class="txt">
-        <h1>Diagnósticos e propostas <b>com método.</b></h1>
-        <p class="sub">Cada modelo da Atom em um só lugar.<br>O que realmente muda o jogo em cada canal.</p>
-        <img class="logo" src="assets/logo.jpg" alt="ATOM Agência de IA" width="285" height="105">
-      </div>
-      <div class="arte"><img src="assets/capa-arte.jpg" alt="" width="1176" height="1080"></div>
-    </div>
-  </section>
-
-  <section class="pag">
-    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="duas">
-        <div class="lado">
-          <span class="mono">Diagnóstico</span>
-          <h2>Como olhamos <b>a empresa</b></h2>
-          <p>O método define o que medir e como dar nota. O Modelo Unificado é a apresentação que o cliente recebe.</p>
-          <ul class="pontos uma">
-            <li><b>Nenhuma nota sem dado</b><p>Toda página cita a fonte e a data da coleta.</p></li>
-            <li><b>Cinco critérios por área</b><p>Cada critério vale 2 pontos. A nota vai de 0 a 10.</p></li>
-            <li><b>Três urgências e um plano</b><p>As piores notas viram o plano de 90 dias e a proposta.</p></li>
-          </ul>
-        </div>
-        <div class="casos" id="q-diag"></div>
-      </div>
-      <p class="fecho" style="margin-top:44px">O diagnóstico é a porta de entrada. A proposta nasce dele.</p>
-    </div>
-    <span class="num">0 2</span>
-  </section>
-
-  <section class="pag">
-    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="titulo"><span class="mono">Proposta</span><h2>Como apresentamos <b>o trabalho</b></h2><p>Os dois modelos oficiais de proposta. Abertura padrão da Atom, capa com o logo do cliente e o preço no fim.</p></div>
-      <div class="casos" id="q-prop" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));max-width:1100px"></div>
-      <p class="fecho" style="margin-top:44px">Cada projeto nasce do zero, para a marca que vai usá-lo.</p>
-    </div>
-    <span class="num">0 3</span>
-  </section>
-
-  <section class="pag roxa">
-    <img class="lasca" src="assets/lasca-clara-sobre-roxo.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="titulo"><span class="mono">Apresentações por serviço</span><h2>Seis decks, <b>com e sem preço</b></h2><p>Cada um com os 12 pontos que decidem o resultado do canal.</p></div>
-      <div class="casos" id="q-serv"></div>
-    </div>
-    <span class="num">0 4</span>
-  </section>
-
-  <section class="pag">
-    <img class="lasca-base" src="assets/lasca-escura.jpg" alt="" width="435" height="175">
-    <div class="in">
-      <div class="titulo"><span class="mono">Feitos com estes modelos</span><h2>Últimos <b>trabalhos</b></h2></div>
-      <div class="rolar"><table class="tabela"><thead><tr><th>Tipo</th><th>Cliente</th><th>Peça</th><th></th></tr></thead><tbody id="trabalhos"></tbody></table></div>
-    </div>
-    <span class="num">0 5</span>
-  </section>
-</main>
-
-<!-- ================= FICHA DE MODELO ================= -->
-<main id="v-modelo" hidden>
-  <section class="pag">
-    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="duas">
-        <div class="lado">
-          <span class="mono" id="m-tag"></span>
-          <h2 id="m-titulo"></h2>
-          <p id="m-resumo"></p>
-          <div class="acoes" id="m-acoes"></div>
-        </div>
-        <div>
-          <span class="mono" style="display:block;margin-bottom:14px">Os 12 pontos que mudam o jogo</span>
-          <ol class="pontos" id="m-doze"></ol>
-        </div>
-      </div>
-      <p class="fecho" style="margin-top:40px">Em ordem de peso. Os três primeiros são os que mais custam venda quando faltam.</p>
-    </div>
-    <span class="num">0 1</span>
-  </section>
-
-  <section class="pag">
-    <img class="lasca-base" src="assets/lasca-escura.jpg" alt="" width="435" height="175">
-    <div class="in">
-      <div class="titulo"><span class="mono">O modelo</span><h2 id="m-titulo2"></h2></div>
-      <div class="duas" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
-        <div id="m-esq"></div>
-        <div class="lado">
-          <table class="tabela"><tbody id="m-fatos"></tbody></table>
-          <div id="m-pend-bloco"><span class="mono" style="display:block;margin:18px 0 6px">O que falta decidir</span><ul class="pontos uma" id="m-pend"></ul></div>
-        </div>
-      </div>
-    </div>
-    <span class="num">0 2</span>
-  </section>
-</main>
-
-<!-- ================= MÉTODO ================= -->
-<main id="v-metodo" hidden>
-  <section class="pag">
-    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="titulo"><span class="mono">Método em construção · v0.5</span><h1>Diagnóstico de <b>marketing e vendas</b></h1><p>Como a Atom olha uma empresa de fora para dentro, mede onde ela perde clientes e transforma isso em um plano. A régua é a mesma do Modelo Unificado; o método estende essa régua para vendas e gestão.</p></div>
-      <div class="passos">
-        <div class="passo"><div class="fio"></div><h3>Pré-diagnóstico</h3><p>Coleta de dados públicos: Google, mapa, avaliações, site, Instagram e respostas das IAs.</p><span class="mono">Antes da reunião</span></div>
-        <div class="passo"><div class="fio"></div><h3>Entrevista</h3><p>Conversa com o dono ou o gestor para medir o que não é público: processo, números e time.</p><span class="mono">Reunião</span></div>
-        <div class="passo"><div class="fio"></div><h3>Boletim</h3><p>Cada área recebe nota de 0 a 10 pelos cinco critérios. As três piores viram urgências.</p><span class="mono">Régua Atom</span></div>
-        <div class="passo"><div class="fio"></div><h3>Quanto vale</h3><p>Procura × contato × fechamento × ticket, arredondado a cada etapa.</p><span class="mono">Cálculo</span></div>
-        <div class="passo"><div class="fio"></div><h3>Plano</h3><p>Hoje e grátis, 90 dias para ser encontrado, 6 meses para ser escolhido.</p><span class="mono">Proposta</span></div>
-      </div>
-      <p class="fecho" style="margin-top:56px">Nenhuma nota sem dado. Toda página cita a fonte e a data da coleta.</p>
-    </div>
-    <span class="num">0 1</span>
-  </section>
-
-  <section class="pag">
-    <img class="lasca-base" src="assets/lasca-escura.jpg" alt="" width="435" height="175">
-    <div class="in">
-      <div class="duas">
-        <div class="lado"><span class="mono">Pontos de convergência</span><h2>Os 12 pontos que <b>mudam o jogo</b></h2><p>O que realmente decide o sucesso em marketing e vendas, em ordem de peso.</p></div>
-        <ol class="pontos" id="doze-metodo"></ol>
-      </div>
-    </div>
-    <span class="num">0 2</span>
-  </section>
-
-  <section class="pag">
-    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="titulo"><span class="mono">Régua Atom</span><h2>Cinco critérios por área, <b>dois pontos cada</b></h2></div>
-      <div class="stats">
-        <div class="stat"><span class="v">0–4</span><p><b>Perdendo cliente.</b> Até dois critérios atendidos. A empresa perde venda para o concorrente nesta área.</p><span class="fx" style="color:var(--ruim)">Vermelho no boletim</span></div>
-        <div class="stat"><span class="v">5–7</span><p><b>Pode melhorar.</b> Três critérios atendidos. Funciona, mas abaixo de quem disputa o mesmo cliente.</p><span class="fx" style="color:var(--medio)">Amarelo no boletim</span></div>
-        <div class="stat"><span class="v">8–10</span><p><b>Funciona.</b> Quatro ou cinco critérios atendidos. Está no nível dos líderes da cidade.</p><span class="fx" style="color:var(--bom)">Verde no boletim</span></div>
-      </div>
-      <p class="fecho" style="margin-top:48px">Nota geral é a média das áreas medidas. Área não medida fica fora da média.</p>
-    </div>
-    <span class="num">0 3</span>
-  </section>
-
-  <section class="pag">
-    <div class="in">
-      <div class="titulo"><span class="mono">Áreas e simulador</span><h2>O boletim <b>em ação</b></h2><p>Marque os critérios para ver o boletim mudar. O exemplo usa os mesmos dados fictícios do boletim do Modelo Unificado. As áreas de vendas e gestão são propostas: marque "na nota" para testá-las.</p></div>
-      <div class="sim">
-        <div id="areas"></div>
-        <aside class="boletim" aria-label="Boletim">
-          <span class="mono">O boletim</span>
-          <div class="geral"><span class="v" id="geral">0</span><span class="f" id="geral-f"></span></div>
-          <span class="qtd" id="geral-qtd"></span>
-          <div class="linhas" id="barras"></div>
-          <div class="legenda"><span><i style="background:#e5675f"></i>0–4</span><span><i style="background:#f0b44c"></i>5–7</span><span><i style="background:var(--verde)"></i>8–10</span></div>
-          <div class="urg"><span class="mono">As três urgências</span><ol id="urgencias"></ol></div>
-        </aside>
-      </div>
-    </div>
-    <span class="num">0 4</span>
-  </section>
-
-  <section class="pag">
-    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="titulo"><span class="mono">Quanto isso vale</span><h2>Essa procura vale <b id="titulo-valor">R$ 0</b> por mês</h2><p>Cada etapa é arredondada e o número arredondado segue para a próxima, para o valor do quadro bater com a conta.</p></div>
-      <div class="valor">
-        <div class="conta">
-          <div class="ln"><span class="op"></span><label for="procura">Buscas por mês na cidade</label><input id="procura" type="number" min="0" step="10" value="3090"></div>
-          <div class="ln"><span class="op">×</span><label for="contato">% que entra em contato</label><input id="contato" type="number" min="0" max="100" step="0.5" value="3"></div>
-          <div class="ln res"><span class="op">=</span><span>novos contatos por mês</span><span class="calc" id="r-contatos">0</span></div>
-          <div class="ln"><span class="op">×</span><label for="fecha">% que fecha</label><input id="fecha" type="number" min="0" max="100" step="1" value="25"></div>
-          <div class="ln res"><span class="op">=</span><span>novos clientes por mês</span><span class="calc" id="r-clientes">0</span></div>
-          <div class="ln"><span class="op">×</span><label for="ticket">Ticket médio (R$)</label><input id="ticket" type="number" min="0" step="50" value="3000"></div>
-        </div>
-        <div class="caixa">
-          <span class="mono">Por mês</span>
-          <span class="v" id="r-valor">R$ 0</span>
-          <p>em clientes que já estão procurando. Hoje, a maior parte vai para quem aparece primeiro.</p>
-          <p style="font-size:.82rem;color:#cfc4e2">É o tamanho da procura, não uma promessa de faturamento.</p>
-        </div>
-      </div>
-      <p class="nota-fonte">Procura: Semrush, buscas que citam a cidade · contato e fechamento: premissas conservadoras, ajustadas na reunião · ticket: informado pela empresa.</p>
-    </div>
-    <span class="num">0 5</span>
-  </section>
-
-  <section class="pag roxa">
-    <img class="lasca-base" src="assets/lasca-sobre-roxo.jpg" alt="" width="524" height="320">
-    <div class="in">
-      <div class="titulo"><span class="mono">O plano</span><h2>Três passos. <b>O primeiro custa zero.</b></h2><p>As ações saem dos critérios reprovados no boletim.</p></div>
-      <div class="passos" style="--cols:3">
-        <div class="passo"><div class="fio"></div><h3>Hoje · grátis</h3><p>Arrumar a casa.</p><ul><li><span>Corrigir telefone e horário no Google;</span></li><li><span>Responder as avaliações em aberto;</span></li><li><span>Pôr o WhatsApp na bio do Instagram.</span></li></ul></div>
-        <div class="passo"><div class="fio"></div><h3>Em 90 dias</h3><p>Ser encontrado.</p><ul><li><span>Disputar o mapa e a lista na busca principal;</span></li><li><span>Uma página para cada serviço e unidade;</span></li><li><span>Rotina para pedir avaliação a cada cliente.</span></li></ul></div>
-        <div class="passo"><div class="fio"></div><h3>Em 6 meses</h3><p>Ser escolhido.</p><ul><li><span>Aparecer nas respostas das IAs;</span></li><li><span>Responder no WhatsApp em minutos, com IA;</span></li><li><span>Relatório mensal com estes mesmos números.</span></li></ul></div>
-      </div>
-      <p class="fecho" style="margin-top:52px">Prazos são objetivos de cada fase, não promessa de posição.</p>
-    </div>
-    <span class="num">0 6</span>
-  </section>
-
-  <section class="pag">
-    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
-    <div class="in">
-      <div class="duas meio">
-        <div class="lado">
-          <span class="mono">Decisões em aberto</span>
-          <h2>O que <b>precisamos decidir</b></h2>
-          <ul class="pontos uma">
-            <li><b>Vendas e gestão entram no boletim?</b><p>Dependem da entrevista. Proposta: entram só no diagnóstico com reunião.</p></li>
-            <li><b>As áreas têm o mesmo peso?</b><p>Proposta: peso igual na versão 1, revisão depois dos primeiros 20 diagnósticos.</p></li>
-            <li><b>Mídia paga entra na prospecção?</b><p>Dá para ver anúncios ativos de fora, mas não o resultado deles.</p></li>
-            <li><b>Roteiro da entrevista</b><p>Duração, quem participa e as perguntas de cada critério de vendas e gestão.</p></li>
-            <li><b>Premissas por segmento</b><p>% de contato e % de fechamento para clínicas médicas, odontológicas e lojas de pneus.</p></li>
-            <li><b>Cliente oculto no WhatsApp</b><p>Quem faz o teste e onde registra o tempo de resposta.</p></li>
-          </ul>
-        </div>
-        <div class="lado">
-          <span class="mono">Histórico</span>
-          <h2>Alterações <b>no método</b></h2>
-          <table class="tabela"><tbody>
-            <tr><td class="rot">v0.5</td><td>Visual idêntico ao deck Atom 2026 · Agência de IA: capa, logo e lascas tirados do próprio PDF, cartões no formato "Cases de sucesso", listas de ponto verde e páginas numeradas.</td></tr>
-            <tr><td class="rot">v0.4</td><td>Os 12 pontos que mudam o jogo em cada modelo e ficha para os seis decks de serviço.</td></tr>
-            <tr><td class="rot">v0.3</td><td>Régua do Modelo Unificado: 5 critérios de 2 pontos por área. Central com os modelos reais.</td></tr>
-            <tr><td class="rot">v0.2</td><td>Tela inicial com os quadros dos modelos.</td></tr>
-            <tr><td class="rot">v0.1</td><td>Primeira versão: etapas, dimensões, régua, simulador e cálculo.</td></tr>
-          </tbody></table>
-        </div>
-      </div>
-    </div>
-    <span class="num">0 7</span>
-  </section>
-</main>
-
-<footer class="pag rodape">
-  <div class="in">
-    <img src="assets/logo.jpg" alt="ATOM Agência de IA" width="285" height="105">
-    <div class="contato">
-      <div><span class="mono">Fale com</span><b>Thiago Mota</b></div>
-      <div><span class="mono">E-mail</span><b>thiago@atomdigital.com.br</b></div>
-      <div><span class="mono">WhatsApp</span><b>(62) 98433-8982</b></div>
-    </div>
-    <span class="url">atomdigital.com.br</span>
-  </div>
-</footer>
+<div class="app-grid">
+  <aside class="lado" id="lado" aria-label="Tipos de diagnóstico"></aside>
+  <main>
+    <div class="miolo" id="tela"></div>
+  </main>
+</div>
 
 <script>
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const BIBLIOTECA = "https://claude.ai/artifact/XXJxzV21z3gymxyD7Z19pe";
-
-/* ---------- Método: áreas ---------- */
-const PILARES = [
-  { id: "mkt", nome: "<b>Marketing</b>", sub: "ser encontrado e escolhido" },
-  { id: "ven", nome: "<b>Vendas</b>", sub: "transformar o contato em cliente" },
-  { id: "ges", nome: "<b>Gestão</b>", sub: "saber o que funciona" }
-];
-const AREAS = [
-  { id: "rep", p: "mkt", nome: "Reputação da marca", st: "ok", fonte: "Semrush · Google", ex: 4,
-    c: ["1º na busca pelo nome", "Site é o 1º resultado, não um agregador", "Perfil do Google aparece na busca pelo nome", "Nota no Google 4,5 ou mais", "Nenhuma reclamação grave sem resposta"] },
-  { id: "bus", p: "mkt", nome: "Busca no Google", st: "ok", fonte: "Semrush", ex: 1,
+/* ======================= DADOS ======================= */
+// Critério iniciado por "!" = ação rápida (o próprio cliente resolve, sem custo).
+// sol = serviço da Atom que resolve a área.
+const AREAS = {
+  rep: { nome: "Reputação da marca", g: "mkt", st: "ok", coleta: "auto", fonte: "Semrush · Google", h: "90", sol: "SEO, GEO e AEO",
+    c: ["1º na busca pelo nome", "Site é o 1º resultado, não um agregador", "Perfil do Google aparece na busca pelo nome", "Nota no Google 4,5 ou mais", "!Nenhuma reclamação grave sem resposta"] },
+  bus: { nome: "Busca no Google", g: "mkt", st: "ok", coleta: "auto", fonte: "Semrush", h: "90", sol: "SEO, GEO e AEO",
     c: ["1ª página na busca principal", "Alguma busca de serviço no top 20", "Página própria para cada serviço", "Visitas crescendo em 12 meses", "Maioria das visitas de quem não buscou pelo nome"] },
-  { id: "map", p: "mkt", nome: "Google Maps", st: "ok", fonte: "Apify Maps", ex: 2,
-    c: ["Top 3 na busca principal", "Perfil verificado", "Telefone e horário certos", "50 fotos ou mais", "Categoria principal certa"] },
-  { id: "ava", p: "mkt", nome: "Avaliações", st: "ok", fonte: "Apify Maps", ex: 2,
-    c: ["Nota 4,5 ou mais", "Volume de pelo menos metade do líder", "Avaliação nova no último mês", "Responde 80% ou mais", "Nenhuma 1 estrela nos últimos 3 meses"] },
-  { id: "sit", p: "mkt", nome: "Site", st: "ok", fonte: "PageSpeed · rastreio", ex: 3,
-    c: ["Abre em até 3 s no celular", "Diz o que faz e onde na primeira tela", "WhatsApp sempre visível", "Telefone certo e clicável", "Saúde técnica 80/100 ou mais"] },
-  { id: "ins", p: "mkt", nome: "Instagram", st: "ok", fonte: "Apify Instagram", ex: 1,
-    c: ["Post nos últimos 7 dias", "8 posts ou mais no mês", "Reels no mês", "WhatsApp na bio", "Link na bio"] },
-  { id: "ia", p: "mkt", nome: "Busca com IA", st: "ok", fonte: "APIs OpenAI e Gemini · HTML", ex: 1,
-    c: ["Citado no ChatGPT", "Citado no Gemini", "Citado no Google Modo IA", "Site identifica empresa e unidades", "Mesmo nome, endereço e telefone em todo lugar"] },
-  { id: "mid", p: "mkt", nome: "Mídia paga", st: "disc", fonte: "Biblioteca de Anúncios · HTML", ex: 1, fora: true,
+  map: { nome: "Google Maps", g: "mkt", st: "ok", coleta: "auto", fonte: "Apify Maps", h: "90", sol: "SEO local",
+    c: ["Top 3 na busca principal", "!Perfil verificado", "!Telefone e horário certos", "50 fotos ou mais", "!Categoria principal certa"] },
+  ava: { nome: "Avaliações", g: "mkt", st: "ok", coleta: "auto", fonte: "Apify Maps", h: "90", sol: "Agentes de IA (pedido de avaliação)",
+    c: ["Nota 4,5 ou mais", "Volume de pelo menos metade do líder", "Avaliação nova no último mês", "!Responde 80% ou mais", "Nenhuma 1 estrela nos últimos 3 meses"] },
+  sit: { nome: "Site", g: "mkt", st: "ok", coleta: "auto", fonte: "PageSpeed · rastreio", h: "90", sol: "Sites e landing pages",
+    c: ["Abre em até 3 s no celular", "Diz o que faz e onde na primeira tela", "!WhatsApp sempre visível", "!Telefone certo e clicável", "Saúde técnica 80/100 ou mais"] },
+  ins: { nome: "Instagram", g: "mkt", st: "ok", coleta: "parcial", fonte: "Apify Instagram", h: "90", sol: "Estratégia e conteúdo",
+    c: ["Post nos últimos 7 dias", "8 posts ou mais no mês", "Reels no mês", "!WhatsApp na bio", "!Link na bio"] },
+  ia: { nome: "Busca com IA", g: "mkt", st: "ok", coleta: "parcial", fonte: "APIs OpenAI e Gemini · HTML", h: "6m", sol: "SEO, GEO e AEO",
+    c: ["Citado no ChatGPT", "Citado no Gemini", "Citado no Google Modo IA", "Site identifica empresa e unidades", "!Mesmo nome, endereço e telefone em todo lugar"] },
+  est: { nome: "Estrutura para SEO", g: "mkt", st: "disc", coleta: "auto", fonte: "Rastreio do site · Semrush", h: "90", sol: "SEO, GEO e AEO",
+    c: ["Uma página por serviço e por cidade", "Sem duas páginas disputando a mesma busca", "Título e descrição em todas as páginas", "Dados estruturados de empresa e serviços", "Sitemap enviado e páginas indexadas"] },
+  conv: { nome: "Conversão do site", g: "mkt", st: "disc", coleta: "parcial", fonte: "Navegação · HTML", h: "90", sol: "Sites e landing pages",
+    c: ["Uma ação principal repetida na página", "Formulário curto", "Prova social perto do botão", "Conversões medidas (WhatsApp e formulário)", "Página de obrigado com próximo passo"] },
+  loja: { nome: "Loja virtual", g: "mkt", st: "disc", coleta: "parcial", fonte: "Navegação · compra de teste", h: "90", sol: "Loja virtual Nuvemshop",
+    c: ["Frete calculado na página do produto", "Checkout com Pix e parcelamento", "Avaliações nos produtos", "Recuperação de carrinho abandonado", "Catálogo no Google Shopping e Instagram"] },
+  mid: { nome: "Mídia paga", g: "mkt", st: "disc", coleta: "parcial", fonte: "Biblioteca de Anúncios · HTML", h: "90", sol: "Tráfego pago",
     c: ["Anúncio ativo no Google", "Anúncio ativo na Meta", "Página de destino própria", "Tag de conversão instalada", "Anúncio fala do serviço e da cidade"] },
-  { id: "wha", p: "ven", nome: "WhatsApp", st: "ok", fonte: "Cliente oculto", ex: 1,
-    c: ["Respondeu em até 5 min", "Respondeu à pergunta feita", "Respondeu fora do horário", "Pediu o nome ou ofereceu agendar", "Mandou endereço ou link útil"] },
-  { id: "crm", p: "ven", nome: "Processo e CRM", st: "adef", fonte: "Entrevista", ex: 1, fora: true,
-    c: ["Todo contato registrado em CRM", "Etapas do funil definidas", "Follow-up em até 24 h", "Um responsável por lead", "Revisão semanal do funil"] },
-  { id: "fec", p: "ven", nome: "Proposta e fechamento", st: "adef", fonte: "Entrevista · CRM", ex: 2, fora: true,
-    c: ["Sabe a taxa de fechamento", "Proposta enviada em até 48 h", "Registra o motivo de perda", "Acompanha o tempo até fechar", "Tem apresentação padrão"] },
-  { id: "pos", p: "ven", nome: "Pós-venda", st: "adef", fonte: "Entrevista", ex: 1, fora: true,
-    c: ["Pede avaliação depois do atendimento", "Pede indicação", "Reativa clientes antigos", "Mede recompra", "Tem canal de contato pós-venda"] },
-  { id: "num", p: "ges", nome: "Números do negócio", st: "adef", fonte: "Entrevista", ex: 1, fora: true,
-    c: ["Sabe de onde vem cada cliente", "Conhece o ticket médio", "Conhece o custo por cliente", "Tem meta mensal de vendas", "Acompanha os números em painel"] }
-];
-
-const ESTADO_TXT = { ok: ["ok", "Definido"], disc: ["disc", "Em discussão"], adef: ["adef", "Proposta"] };
-const ORDEM = { ven: 0, ges: 1, mkt: 2 };
-const estado = Object.fromEntries(AREAS.map(a => [a.id, { marc: a.c.map((_, i) => i < a.ex), dentro: !a.fora }]));
-
-document.getElementById("areas").innerHTML = PILARES.map(p => `
-  <div class="grupo">${p.nome.replace(/<\/?b>/g, "")} · ${esc(p.sub)}</div>
-  <div class="areas">${AREAS.filter(a => a.p === p.id).map(a => `
-    <div class="area${a.fora ? " fora" : ""}" id="a-${a.id}">
-      <div class="area-top"><h3>${esc(a.nome)}</h3><span class="nota" id="n-${a.id}"></span></div>
-      <span class="estado ${ESTADO_TXT[a.st][0]}">${ESTADO_TXT[a.st][1]}</span>
-      <ul class="crit">${a.c.map((c, i) => `<li><label><input class="qd" type="checkbox" id="c-${a.id}-${i}"${i < a.ex ? " checked" : ""}><span>${esc(c)}</span></label></li>`).join("")}</ul>
-      <div class="area-pe"><span>${esc(a.fonte)}</span><label><input class="qd" type="checkbox" id="d-${a.id}"${a.fora ? "" : " checked"}>na nota</label></div>
-    </div>`).join("")}</div>`).join("");
-
-AREAS.forEach(a => {
-  a.c.forEach((_, i) => document.getElementById(`c-${a.id}-${i}`).addEventListener("change", e => { estado[a.id].marc[i] = e.target.checked; boletim(); }));
-  document.getElementById("d-" + a.id).addEventListener("change", e => { estado[a.id].dentro = e.target.checked; boletim(); });
-});
-const nota = id => estado[id].marc.filter(Boolean).length * 2;
-const faixa = n => n <= 4 ? ["Perdendo cliente", "#e5675f"] : n <= 7 ? ["Pode melhorar", "#f0b44c"] : ["Funciona", "#00c864"];
-
-function boletim() {
-  AREAS.forEach(a => {
-    document.getElementById("n-" + a.id).innerHTML = `${nota(a.id)}<small>/10</small>`;
-    document.getElementById("a-" + a.id).classList.toggle("fora", !estado[a.id].dentro);
-  });
-  const med = AREAS.filter(a => estado[a.id].dentro);
-  document.getElementById("barras").innerHTML = med.map(a => {
-    const n = nota(a.id);
-    return `<div class="linha"><span>${esc(a.nome)}</span><span class="tr"><i style="width:${n * 10}%;background:${faixa(n)[1]}"></i></span><span class="v">${n}/10</span></div>`;
-  }).join("");
-  const media = med.length ? Math.round(med.reduce((s, a) => s + nota(a.id), 0) / med.length * 10) / 10 : 0;
-  document.getElementById("geral").innerHTML = `${media.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}<small>/10</small>`;
-  document.getElementById("geral-f").textContent = faixa(media)[0];
-  document.getElementById("geral-qtd").textContent = `${med.length} de ${AREAS.length} áreas na nota`;
-  const urg = med.slice().sort((x, y) => nota(x.id) - nota(y.id) || ORDEM[x.p] - ORDEM[y.p]).slice(0, 3);
-  document.getElementById("urgencias").innerHTML = urg.map(a => `<li><span>${esc(a.nome)}</span><span>${nota(a.id)}/10</span></li>`).join("");
-}
-boletim();
-
-/* ---------- Quanto vale ---------- */
-const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-function valor() {
-  const g = id => Math.max(0, parseFloat(document.getElementById(id).value) || 0);
-  const contatos = Math.round(g("procura") * g("contato") / 100);
-  const clientes = Math.round(contatos * g("fecha") / 100);
-  const total = clientes * g("ticket");
-  document.getElementById("r-contatos").textContent = contatos.toLocaleString("pt-BR");
-  document.getElementById("r-clientes").textContent = clientes.toLocaleString("pt-BR");
-  document.getElementById("r-valor").textContent = brl(total);
-  document.getElementById("titulo-valor").textContent = brl(total);
-}
-["procura", "contato", "fecha", "ticket"].forEach(id => document.getElementById(id).addEventListener("input", valor));
-valor();
-
-/* ---------- Central: modelos ---------- */
-const pgs = (pasta, n, nomes) => Array.from({ length: n }, (_, i) => ({ src: `${pasta}/${String(i + 1).padStart(2, "0")}.jpg`, t: nomes[i] || `Página ${i + 1}` }));
-const MODELOS = [
-  { id: "metodo", g: "diag", largo: true, destaque: true, tag: "Método · em construção", nome: "Diagnóstico de marketing e vendas", canal: "marketing e vendas",
-    resumo: "O método por trás dos diagnósticos: cinco etapas, a régua de 5 critérios por área, o boletim, quanto vale e o plano em três passos.",
-    capa: { grande: "8 + 5", peq: "áreas definidas + propostas" }, st: "disc",
-    pontos: [
-      ["Velocidade de resposta ao lead", "Quem responde primeiro leva a maior parte das vendas. Minutos pesam mais que qualquer anúncio."],
-      ["Aparecer quando o cliente procura", "A procura que já existe no Google e no mapa é o cliente mais barato. Estar fora dela é perder venda todo dia."],
-      ["Prova social", "Nota e volume de avaliações decidem entre você e o concorrente ao lado no mapa."],
-      ["Oferta clara em segundos", "O que faz, para quem e onde, na primeira tela e na primeira mensagem."],
-      ["Caminho curto até o contato", "WhatsApp e telefone visíveis, a um clique. Cada passo a mais perde gente."],
-      ["Todo lead registrado", "O que não está no CRM não é cobrado, não é medido e não melhora."],
-      ["Follow-up com cadência", "A maioria das vendas não fecha no primeiro contato. Sem retorno programado, o lead esfria."],
-      ["Origem de cada cliente", "Saber de onde vem cada venda é o que permite cortar o que não vende e dobrar o que vende."],
-      ["Taxa de fechamento e motivo de perda", "Sem esses dois números, a empresa melhora o marketing quando o problema está na venda."],
-      ["Pós-venda que gera a próxima venda", "Pedir avaliação, indicação e recompra custa pouco e alimenta o topo do funil."],
-      ["Dados iguais em todo lugar", "Mesmo nome, endereço e telefone no site, no Google e nas redes. É a base para Google e IAs confiarem."],
-      ["Rotina de números", "Meta mensal e painel lido toda semana. O que é visto toda semana é corrigido a tempo."]
-    ] },
-  { id: "unificado", g: "diag", tag: "Modelo oficial · 36 páginas", nome: "Diagnóstico Digital · Modelo Unificado", canal: "presença digital do negócio local",
-    resumo: "Junta o Diagnóstico Geral e o SEO/GEO em uma apresentação: oito notas, três urgências, quanto vale e o plano.",
-    capa: { grande: "8 notas", peq: "3 urgências · 1 plano" }, st: "ok",
-    link: "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t", linkTxt: "Abrir o modelo",
-    estrutura: ["Páginas fixas do modelo Atom 2026, iguais em toda apresentação.", "Abertura, como ler os números, glossário, a frase-síntese e o boletim com as oito notas.", "Como o Google mostra a empresa: procura, posições, origem e evolução das visitas.", "Reputação, site e atendimento: mapa, concorrentes, avaliações, site e estrutura, Instagram, IA e WhatsApp.", "Quanto vale a procura, o plano, a proposta, indicadores, investimento e próximos passos.", "Fechamento e página final."],
-    fatos: [["Formato", "Slides 1920×1080, Roboto e IBM Plex Mono"], ["Régua", "5 critérios de 2 pontos por área; 0–4, 5–7, 8–10"], ["Origem", "Diagnóstico Geral (15 págs.) + SEO/GEO (27 págs.)"], ["Automação", "ATOM_14, disparado pelo Pipedrive"]],
-    pend: [["Áreas de vendas e gestão", "Decidir se as áreas propostas no método entram no boletim."], ["Visual", "O modelo usa o roxo #604485 do Atom 2026; os decks novos usam o roxo profundo e o verde. Alinhar."], ["Cliente oculto", "Quem faz o teste de WhatsApp e onde registra."]],
-    pontos: [
-      ["Top 3 do mapa na busca principal", "Para negócio local, o mapa aparece antes da lista. Fora do top 3, quase ninguém vê."],
-      ["1ª página na busca principal", "Com uma página própria para o serviço, não só a home."],
-      ["Nota 4,5 ou mais, com volume perto do líder", "Nota alta com poucas avaliações não convence. O volume pesa tanto quanto a nota."],
-      ["Responder as avaliações", "Principalmente as negativas. Quem lê a resposta decide pela empresa, não pela reclamação."],
-      ["Perfil do Google completo e certo", "Categoria principal, telefone, horário e fotos. Dado errado manda o cliente para o concorrente."],
-      ["Site rápido no celular", "Abre em até 3 segundos e diz o que faz e onde na primeira tela."],
-      ["WhatsApp visível em todo lugar", "No site, na bio, no perfil do Google. É por onde o cliente local quer falar."],
-      ["Responder no WhatsApp em minutos", "O teste de cliente oculto costuma ser a urgência que mais custa cliente."],
-      ["Ser citado pelas IAs", "ChatGPT, Gemini e Google Modo IA indicam quem tem dados estruturados e informações consistentes."],
-      ["Ser dono da busca pelo próprio nome", "Quem busca a marca tem de cair no site, não em um agregador ou no concorrente."],
-      ["Instagram com sinal de vida", "Post recente e link na bio mostram que a empresa está ativa."],
-      ["Mostrar a procura em reais", "O \"quanto vale\" transforma nota em decisão: é o que move o dono a agir."]
-    ] },
-  { id: "site", g: "prop", largo: true, destaque: true, tag: "Modelo definitivo · 16 páginas", nome: "Proposta de site", canal: "site",
-    resumo: "Modelo oficial para todas as propostas de site: abertura padrão, capa com o logo do cliente, o que inclui, projetos, vitrine, depoimentos, \"site sem visitas não vende\" e o preço. Exemplo: Labeza.",
-    img: "site/04.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
-    paginas: pgs("site", 16, ["Capa Atom", "Atom em números", "Marcas que confiam", "Capa do cliente"]),
-    fatos: [["Cliente exemplo", "Labeza"], ["Abertura", "Capa, Atom em números e marcas, iguais em toda proposta"], ["Versões", "PDF de exemplo na biblioteca"]],
-    pend: [["Ligação com o diagnóstico", "Quais achados do boletim entram na proposta e em que página."]],
-    pontos: [
-      ["Primeira tela que explica", "O que faz, para quem e onde, antes de qualquer rolagem."],
-      ["Uma ação principal, repetida", "WhatsApp ou orçamento, sempre à vista. Várias ações competindo confundem."],
-      ["Velocidade no celular", "Carregamento principal em até 2,5 s, a referência do Google para uma boa experiência."],
-      ["Feito para o celular primeiro", "É onde está a maior parte das visitas de quem procura serviço."],
-      ["Uma página por serviço e por cidade", "É o que permite aparecer em cada busca que vende, não só na busca pela marca."],
-      ["Prova real", "Cases, depoimentos, logos de clientes e fotos reais da empresa."],
-      ["Responder as dúvidas de quem compra", "Como funciona, prazo, faixa de preço, área atendida. Dúvida sem resposta vira saída."],
-      ["Estrutura técnica limpa", "Títulos, descrições, H1, sitemap e dados estruturados para Google e IAs entenderem."],
-      ["Conversão rastreada até a venda", "Cliques no WhatsApp e formulários medidos e ligados ao CRM."],
-      ["Lead cai direto no funil", "Integração com o CRM: nenhum contato se perde entre o site e o vendedor."],
-      ["Fácil de atualizar", "A equipe muda texto, foto e preço sem depender de ninguém."],
-      ["Visitas planejadas desde o dia 1", "Site sem visitas não vende: SEO de base e um plano de tráfego junto com a entrega."]
-    ] },
-  { id: "loja", g: "prop", tag: "Modelo · Nuvemshop · 17 páginas", nome: "Proposta de loja virtual", canal: "loja virtual",
-    resumo: "Loja na Nuvemshop: abertura padrão, capa do cliente, três páginas no estilo Nuvemshop, o que inclui, vitrine, depoimentos, criação por R$ 1.800 (3× R$ 600) e o plano recomendado.",
-    img: "loja/04.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
-    paginas: pgs("loja", 17, ["Capa Atom", "Atom em números", "Marcas que confiam", "Capa do cliente"]),
-    fatos: [["Cliente exemplo", "Labeza"], ["Criação", "R$ 1.800, em 3× R$ 600"], ["Mensalidade", "Plano da Nuvemshop, com recomendação"], ["Versões", "PDF com preço e sem preço"]],
-    pend: [],
-    pontos: [
-      ["Página de produto que vende", "Fotos boas, descrição que responde dúvidas, medidas e variações claras."],
-      ["Checkout curto", "Poucos passos, Pix e parcelamento. Cada campo a mais derruba a conversão."],
-      ["Frete claro e cedo", "Calculado na página do produto. Frete surpresa no fim é o maior motivo de abandono."],
-      ["Confiança", "Avaliações de produto, política de troca, CNPJ e contato visíveis."],
-      ["Velocidade no celular", "A maior parte das compras começa no celular."],
-      ["Catálogo fácil de navegar", "Categorias que fazem sentido para o cliente e uma busca interna que acha."],
-      ["Canais conectados", "Google Shopping, Instagram e Facebook e WhatsApp vendendo o mesmo catálogo."],
-      ["Recuperar carrinho abandonado", "Mensagem automática para quem parou no meio. Venda quase pronta."],
-      ["Estoque e preço sincronizados", "Vender o que não tem gera cancelamento e avaliação ruim."],
-      ["SEO de categoria e produto", "Para aparecer na busca sem pagar por cada clique."],
-      ["Anúncios por produto, com retorno medido", "Investimento acompanhado pelo retorno por real investido (ROAS)."],
-      ["Base própria e recompra", "E-mail e WhatsApp pós-compra e cupom de volta. Cliente que volta custa menos."]
-    ] },
-  { id: "inst", g: "serv", tag: "Institucional · 20 páginas", nome: "Atom 2026 · Agência de IA", canal: "máquina de vendas",
-    resumo: "Quem é a Atom, números, máquina de vendas, serviços, Nuvemshop, cases e contato.", img: "img/inst.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
-    fatos: [["Versões", "PDF com preço e sem preço"], ["Uso", "Abertura de reunião e envio a clientes"]], pend: [],
-    pontos: [
-      ["Atrair quem já procura", "SEO, GEO e anúncios colocam a marca na frente de quem compra."],
-      ["Converter a visita em contato", "Sites e landing pages feitos para vender, não só para existir."],
-      ["Qualificar em segundos", "Agentes de IA respondem e qualificam 24 horas por dia."],
-      ["Entregar o lead pronto ao vendedor", "Integrado ao CRM, com histórico e próximo passo."],
-      ["Medir até a venda", "O BI mostra o que gera venda e onde o funil precisa de ajuste."],
-      ["Cada ciclo ajusta o próximo", "Os dados de um mês decidem onde investir no seguinte."],
-      ["Tudo conectado", "Canais, CRM e painel falando entre si. Ferramenta solta não vira máquina."],
-      ["Reputação como ativo", "Avaliações e cases sustentam todos os outros canais."],
-      ["Presença nas IAs", "A próxima busca já acontece no ChatGPT e no Gemini."],
-      ["Processo comercial com cadência", "Follow-up programado: a máquina não depende da memória de ninguém."],
-      ["Decisão com dados", "Receita, margem e CAC à vista substituem o achismo."],
-      ["Prova antes da promessa", "Números, marcas atendidas e cases antes do preço."]
-    ] },
-  { id: "seo", g: "serv", tag: "Serviço · 16 páginas", nome: "SEO, GEO e AEO", canal: "busca orgânica e IAs",
-    resumo: "Topo do Google e presença nas respostas das IAs. Cases Tetracon, Siguimi, RCO e Griffe.", img: "img/seo.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
-    fatos: [["Versões", "PDF com preço e sem preço"], ["Cases", "Tetracon, Siguimi, RCO e Griffe"]], pend: [],
-    pontos: [
-      ["A página certa para cada busca que vende", "Atender a intenção de quem busca, não só repetir a palavra."],
-      ["Uma página forte por tema, sem canibalização", "Duas páginas disputando a mesma busca enfraquecem as duas."],
-      ["SEO local", "Perfil do Google bem cuidado e páginas por cidade e unidade."],
-      ["Saúde técnica", "Indexação, velocidade, celular e HTTPS. Sem isso, o conteúdo não aparece."],
-      ["Conteúdo útil e com experiência real", "Responde perguntas reais com conhecimento de quem faz. É o que o Google chama de E-E-A-T."],
-      ["Autoridade", "Links e menções de sites relevantes do setor e da região."],
-      ["Dados estruturados", "Empresa, negócio local, serviços e perguntas frequentes marcados para máquinas lerem."],
-      ["Entidade consistente na web", "Mesmo nome, endereço, telefone e descrição em todo lugar. É a base do GEO."],
-      ["Estar nas fontes que as IAs leem", "Portais, listas, avaliações e diretórios do setor."],
-      ["Respostas diretas (AEO)", "Pergunta clara e resposta curta no começo do texto, fácil de citar."],
-      ["Medir por buscas que vendem", "Leads e vendas de busca orgânica, não só volume de visitas."],
-      ["Constância", "SEO é composto: o trabalho de cada mês soma ao anterior."]
-    ] },
-  { id: "trafego", g: "serv", tag: "Serviço · 15 páginas", nome: "Tráfego pago", canal: "mídia paga",
-    resumo: "Google, Meta e LinkedIn Ads com IA em todas as contas e rastreamento até a venda.", img: "img/trafego.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
-    fatos: [["Versões", "PDF com preço e sem preço"], ["Plataformas", "Google Ads, Meta Ads e LinkedIn Ads"]], pend: [],
-    pontos: [
-      ["Rastreamento até a venda", "Otimizar para venda fechada, não para clique ou formulário."],
-      ["Oferta e página por campanha", "O anúncio promete, a página cumpre a mesma promessa."],
-      ["Dados de conversão corretos", "Os lances automáticos só são tão bons quanto os dados que recebem."],
-      ["Intenção no Google", "Palavras de quem quer comprar e uma lista firme de termos negativos."],
-      ["Criativo é a segmentação na Meta", "Volume e variação de criativos encontram o público certo."],
-      ["Atender rápido quem chega", "Lead pago que espera é dinheiro jogado fora."],
-      ["Remarketing", "Voltar a falar com quem já demonstrou interesse custa menos."],
-      ["Verba onde está a demanda", "Região, horário e sazonalidade de cada negócio."],
-      ["Estrutura simples", "Poucas campanhas com verba concentrada aprendem mais rápido."],
-      ["Métricas de negócio", "Custo por venda, CAC e retorno sobre investimento, não só CPC."],
-      ["Testes com hipótese", "Um teste por vez, com o que se quer aprender escrito antes."],
-      ["Relatório que liga verba a receita", "Toda semana, com a decisão que vem dele."]
-    ] },
-  { id: "sites", g: "serv", tag: "Serviço · 16 páginas", nome: "Sites, landing pages e lojas", canal: "páginas de conversão",
-    resumo: "Sites exclusivos, páginas de conversão e lojas na Nuvemshop.", img: "img/sites.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
-    fatos: [["Versões", "PDF com preço e sem preço"], ["Modelos ligados", "Proposta de site e proposta de loja virtual"]], pend: [],
-    pontos: [
-      ["Uma página, um objetivo", "Landing page sem menu e sem saídas para outros assuntos."],
-      ["Título que repete o anúncio", "Quem clicou precisa reconhecer na hora a promessa que viu."],
-      ["Ação acima da dobra e repetida", "O botão aparece sem rolar e volta a cada bloco."],
-      ["Formulário curto", "Só o que o vendedor precisa para o primeiro contato."],
-      ["Prova perto do botão", "Depoimento, nota ou logo de cliente onde a decisão acontece."],
-      ["Responder objeções", "Preço, prazo, garantia e área atendida antes que virem dúvida."],
-      ["Velocidade e celular", "Página lenta paga o clique e perde a visita."],
-      ["Design exclusivo da marca", "Template genérico transmite empresa genérica."],
-      ["Página de obrigado com próximo passo", "Agendar, chamar no WhatsApp ou ver um case."],
-      ["Pixel e conversões instalados", "Sem medir, não há como otimizar a mídia."],
-      ["Testes A/B", "Título, oferta e imagem testados com dados, não com opinião."],
-      ["SEO e GEO de base", "Para não depender só de anúncio para ter visita."]
-    ] },
-  { id: "agentes", g: "serv", tag: "Serviço · 15 páginas", nome: "Agentes de IA", canal: "atendimento e qualificação",
-    resumo: "Atendimento e qualificação 24h no WhatsApp, integrados ao CRM.", img: "img/agentes.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
-    fatos: [["Versões", "PDF com preço e sem preço"], ["Canal", "WhatsApp, integrado ao CRM"]], pend: [],
-    pontos: [
-      ["Resposta em segundos, 24 h", "Inclusive à noite e no fim de semana, quando o concorrente não responde."],
-      ["Base de conhecimento correta", "Serviços, preços, regras e área atendida, mantidos atualizados."],
-      ["Perguntas de qualificação certas", "Necessidade, prazo, orçamento e região, sem virar interrogatório."],
-      ["Passagem para humano no momento certo", "Com o resumo da conversa, para o vendedor não recomeçar."],
-      ["Cada conversa vira lead no CRM", "Com origem, etapa e próximo passo registrados."],
-      ["Agendar direto na agenda", "Reunião marcada na conversa, sem troca de mensagens."],
-      ["Tom de voz da marca", "Natural, curto e no jeito que a empresa fala."],
-      ["Follow-up automático", "Retomar quem parou de responder, no tempo certo."],
-      ["Limites claros", "Não inventa preço, não promete o que a empresa não faz."],
-      ["LGPD e regras do WhatsApp", "Consentimento, opção de sair e uso dentro das políticas do canal."],
-      ["Métricas de atendimento", "Tempo de resposta, taxa de qualificação, agendamentos e vendas."],
-      ["Revisão semanal das conversas", "O agente melhora com o que as conversas reais mostram."]
-    ] },
-  { id: "bi", g: "serv", tag: "Serviço · 15 páginas", nome: "BI em tempo real", canal: "gestão por dados",
-    resumo: "Painel com receita, margem, CAC, pipeline e insights da IA.", img: "img/bi.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
-    fatos: [["Versões", "PDF com preço e sem preço"], ["Indicadores", "Receita, margem, CAC, pipeline"]], pend: [],
-    pontos: [
-      ["Uma fonte da verdade", "CRM, financeiro e mídia integrados em um lugar só."],
-      ["Poucos indicadores que decidem", "Receita, margem, CAC, ticket e conversão. Painel com tudo não mostra nada."],
-      ["Origem de cada venda", "Qual canal trouxe cada cliente e quanto custou."],
-      ["Funil completo", "Do lead à oportunidade à venda, com a taxa de cada passagem."],
-      ["Atualização automática", "Sem planilha montada à mão no fim do mês."],
-      ["Meta contra realizado", "Visível todo dia, para corrigir o rumo dentro do mês."],
-      ["Margem por produto e cliente", "Vender mais do que dá prejuízo é crescer para trás."],
-      ["Caixa e previsão", "O que entra e sai nas próximas semanas."],
-      ["Alertas", "Aviso quando um número sai do padrão, antes de virar problema."],
-      ["Visão por papel", "Dono, comercial e marketing veem o que cada um decide."],
-      ["Rotina de leitura", "Reunião semanal com o painel aberto."],
-      ["Insight que vira ação", "A IA aponta o que fazer, não só o que aconteceu."]
-    ] }
-];
-const TRABALHOS = [
-  { nome: "Coalumaq", tipo: "Diagnóstico", det: "Diagnóstico Digital ATOM · out/2026", url: "https://claude.ai/artifact/1MfJSLV1C7u35KJMXyHZZA" },
-  { nome: "SIMEGO", tipo: "Diagnóstico + proposta", det: "Diagnóstico Digital e Proposta de Site", url: "https://claude.ai/artifact/LXJVD4Ho5iaxqy5BZBG9ub" },
-  { nome: "Togalt Group", tipo: "Diagnóstico", det: "Diagnóstico Digital ATOM", url: "https://claude.ai/artifact/9t86kTZS2Ve83SUqdrJyuT" },
-  { nome: "Manto Impermeabilizações", tipo: "Diagnóstico", det: "Diagnóstico Digital ATOM", url: "https://claude.ai/artifact/8oEoLhvvqTNCaQPVzu2agm" },
-  { nome: "Imobiliária Magalhães", tipo: "Proposta", det: "Proposta ATOM", url: "https://claude.ai/artifact/TGC7rja9iPvaFMaPVfoKjd" },
-  { nome: "Compressores Goiás", tipo: "Análise", det: "Análise de mercado · out/2026", url: "https://claude.ai/artifact/F9HLhqYNpmikuQLrX1yyxD" }
-];
-
-const BIG = {
-  metodo: ["13", "áreas, 8 definidas e 5 propostas"], unificado: ["8", "notas, 3 urgências e um plano"],
-  site: ["16", "páginas · exemplo Labeza"], loja: ["17", "páginas · criação R$ 1.800"]
+  med: { nome: "Medição da mídia", g: "ges", st: "adef", coleta: "manual", fonte: "Contas de anúncio · entrevista", h: "90", sol: "Tráfego pago + BI",
+    c: ["Conversões chegam até a venda (CRM)", "Custo por venda conhecido", "Remarketing ativo", "Relatório semanal com decisão", "Verba concentrada no que converte"] },
+  wha: { nome: "WhatsApp", g: "ven", st: "ok", coleta: "manual", fonte: "Cliente oculto", h: "6m", sol: "Agentes de IA",
+    c: ["Respondeu em até 5 min", "Respondeu à pergunta feita", "Respondeu fora do horário", "!Pediu o nome ou ofereceu agendar", "!Mandou endereço ou link útil"] },
+  crm: { nome: "Processo e CRM", g: "ven", st: "adef", coleta: "manual", fonte: "Entrevista", h: "90", sol: "Vendas e CRM",
+    c: ["Todo contato registrado em CRM", "Etapas do funil definidas", "Follow-up em até 24 h", "!Um responsável por lead", "Revisão semanal do funil"] },
+  fec: { nome: "Proposta e fechamento", g: "ven", st: "adef", coleta: "manual", fonte: "Entrevista · CRM", h: "90", sol: "Vendas e CRM",
+    c: ["Sabe a taxa de fechamento", "Proposta enviada em até 48 h", "!Registra o motivo de perda", "Acompanha o tempo até fechar", "Tem apresentação padrão"] },
+  pos: { nome: "Pós-venda", g: "ven", st: "adef", coleta: "manual", fonte: "Entrevista", h: "90", sol: "Agentes de IA",
+    c: ["!Pede avaliação depois do atendimento", "!Pede indicação", "Reativa clientes antigos", "Mede recompra", "Tem canal de contato pós-venda"] },
+  num: { nome: "Números do negócio", g: "ges", st: "adef", coleta: "manual", fonte: "Entrevista", h: "6m", sol: "BI em tempo real",
+    c: ["!Sabe de onde vem cada cliente", "Conhece o ticket médio", "Conhece o custo por cliente", "!Tem meta mensal de vendas", "Acompanha os números em painel"] }
 };
-const caso = m => `
-  <a class="caso" href="#${m.id}">
-    <div class="caso-cab"><span class="cat">${esc(m.tag)}</span><b>${esc(m.nome)}</b></div>
-    ${m.g === "diag" ? "" : `<img src="${m.img}" alt="" loading="lazy" width="640" height="360">`}
-    <div class="caso-corpo">
-      ${BIG[m.id] ? `<span class="big">${BIG[m.id][0]}</span><span class="leg">${esc(BIG[m.id][1])}</span>` : `<span class="leg">${esc(m.resumo)}</span>`}
-      <ul class="setas">${m.pontos.slice(0, 3).map(p => `<li><span>${esc(p[0])}</span></li>`).join("")}</ul>
-      <div class="caso-pe"><span>12 pontos</span><span>Abrir →</span></div>
-    </div>
-  </a>`;
-["diag", "prop", "serv"].forEach(g => document.getElementById("q-" + g).innerHTML = MODELOS.filter(m => m.g === g).map(caso).join(""));
-document.getElementById("trabalhos").innerHTML = TRABALHOS.map(t => `
-  <tr><td class="rot">${esc(t.tipo)}</td><td><a href="${t.url}" target="_blank" rel="noopener">${esc(t.nome)}</a></td><td class="cinza">${esc(t.det)}</td><td class="ir"><a href="${t.url}" target="_blank" rel="noopener">Abrir ↗</a></td></tr>`).join("");
+// Exemplo fictício (quantos critérios atendidos, na ordem) para abrir o gerador preenchido.
+const EXEMPLO = { rep: 4, bus: 1, map: 2, ava: 2, sit: 3, ins: 1, ia: 1, est: 2, conv: 2, loja: 3, mid: 1, med: 1, wha: 1, crm: 1, fec: 2, pos: 1, num: 1 };
 
-const doze = m => m.pontos.map(([t, d], i) => `<li><b><span class="n">${String(i + 1).padStart(2, "0")}</span>${esc(t)}</b><p>${esc(d)}</p></li>`).join("");
-document.getElementById("doze-metodo").innerHTML = doze(MODELOS[0]);
+const P = { // etapas reaproveitadas; "alimenta" = áreas que a etapa coleta
+  pedido: (extra) => ({ nome: "Pedido", modo: "manual", quem: "Comercial", ferr: "Pipedrive", tempo: "2 min", saida: "Pedido registrado no negócio", alimenta: [],
+    faz: "Abrir o negócio no Pipedrive com site, cidade e segmento" + (extra ? ", " + extra : "") + ". Marcar \"pedir diagnóstico\" = Sim." }),
+  publica: (areas) => ({ nome: "Coleta pública", modo: "auto", quem: "n8n (ATOM_14)", ferr: "Semrush · Apify · PageSpeed · OpenAI/Gemini", tempo: "10 min", saida: "Evidências com fonte e data", alimenta: areas,
+    faz: "Busca, posições e visitas; mapa, avaliações e Instagram; velocidade e estrutura do site; citações nas IAs." }),
+  oculto: { nome: "Cliente oculto", modo: "manual", quem: "Comercial", ferr: "WhatsApp", tempo: "1 dia", saida: "Tempo de resposta no Pipedrive", alimenta: ["wha"],
+    faz: "Mandar uma pergunta real pelo WhatsApp da empresa e de 3 concorrentes, em horário comercial e fora dele. Sem o teste, a área fica \"não medida\"." },
+  entrevista: (areas) => ({ nome: "Entrevista", modo: "manual", quem: "Consultor", ferr: "Roteiro de entrevista", tempo: "45 min", saida: "Critérios internos marcados", alimenta: areas,
+    faz: "Conversa com o dono ou o gestor: como o lead é registrado, quem responde, como a proposta é feita, o que acontece depois da venda e quais números são acompanhados." }),
+  pontua: { nome: "Pontuação", modo: "parcial", quem: "Automação + revisão", ferr: "Aba \"Gerar diagnóstico\"", tempo: "15 min", saida: "Notas, nota geral e 3 urgências", alimenta: "todas",
+    faz: "Marcar os 5 critérios de cada área. Cada critério vale 2 pontos. As três notas mais baixas viram urgências." },
+  valor: { nome: "Quanto vale", modo: "auto", quem: "Automação", ferr: "Semrush + premissas do segmento", tempo: "1 min", saida: "Valor mensal da procura", alimenta: [],
+    faz: "Buscas na cidade × % que entra em contato × % que fecha × ticket médio, arredondando a cada etapa." },
+  plano: { nome: "Plano", modo: "parcial", quem: "Automação + consultor", ferr: "Aba \"Gerar diagnóstico\"", tempo: "10 min", saida: "Hoje · 90 dias · 6 meses", alimenta: "todas",
+    faz: "Critérios reprovados de solução rápida entram em \"hoje, grátis\"; os das urgências em 90 dias; o resto em 6 meses." },
+  revisao: { nome: "Revisão e envio", modo: "manual", quem: "Thiago", ferr: "Drive · Pipedrive", tempo: "20 min", saida: "Diagnóstico aprovado e enviado", alimenta: [],
+    faz: "Conferir cada número com a fonte e a data. Nada é enviado ao cliente sem essa aprovação." }
+};
 
-function abrirModelo(m) {
-  document.getElementById("m-tag").textContent = m.tag;
-  document.getElementById("m-titulo").innerHTML = `O que decide o resultado em <b>${esc(m.canal)}</b>`;
-  document.getElementById("m-titulo2").innerHTML = `${esc(m.nome)} <b>por dentro</b>`;
-  document.getElementById("m-resumo").textContent = m.resumo;
-  document.getElementById("m-acoes").innerHTML = m.link ? `<a class="botao" href="${m.link}" target="_blank" rel="noopener">${esc(m.linkTxt)} ↗</a>` : "";
-  document.getElementById("m-doze").innerHTML = doze(m);
-  const esq = document.getElementById("m-esq");
-  if (m.paginas) {
-    esq.innerHTML = `<div class="miniaturas">${m.paginas.map((p, i) => `<figure><img src="${p.src}" alt="${esc(m.nome)}, página ${i + 1}" loading="lazy" width="640" height="360"><figcaption>${String(i + 1).padStart(2, "0")} · ${esc(p.t)}</figcaption></figure>`).join("")}</div>`;
-  } else if (m.estrutura) {
-    esq.innerHTML = `<ul class="pontos uma">${m.estrutura.map((t, i) => `<li><b><span class="n">${String(i + 1).padStart(2, "0")}</span>Seção ${i + 1}</b><p>${esc(t)}</p></li>`).join("")}</ul>`;
-  } else {
-    esq.innerHTML = `<img class="capa-modelo" src="${m.img}" alt="${esc(m.nome)}" width="640" height="360">`;
-  }
-  document.getElementById("m-fatos").innerHTML = m.fatos.map(([k, v]) => `<tr><td class="rot">${esc(k)}</td><td>${esc(v)}</td></tr>`).join("");
-  document.getElementById("m-pend-bloco").hidden = !m.pend.length;
-  document.getElementById("m-pend").innerHTML = m.pend.map(([t, d]) => `<li><b>${esc(t)}</b><p>${esc(d)}</p></li>`).join("");
+const TIPOS = [
+  { id: "completo", grupo: "Completo", nome: "Marketing e vendas", st: "disc",
+    desc: "O diagnóstico inteiro: presença digital, atendimento, processo comercial e números. Pede entrevista com o dono ou o gestor.",
+    publico: "Empresa que vai contratar mais de um serviço", entrega: "Relatório + reunião", prazo: "3 a 5 dias", valor: true,
+    areas: ["rep", "bus", "map", "ava", "sit", "ins", "ia", "wha", "crm", "fec", "pos", "num"],
+    processo: [P.pedido("e agendar a entrevista"), P.publica(["rep", "bus", "map", "ava", "sit", "ins", "ia"]), P.oculto, P.entrevista(["crm", "fec", "pos", "num"]), P.pontua, P.valor, P.plano, P.revisao],
+    pontos: [["Velocidade de resposta ao lead", "Quem responde primeiro leva a maior parte das vendas."], ["Aparecer quando o cliente procura", "A procura que já existe no Google e no mapa é o cliente mais barato."], ["Prova social", "Nota e volume de avaliações decidem entre você e o concorrente."], ["Oferta clara em segundos", "O que faz, para quem e onde, na primeira tela e na primeira mensagem."], ["Caminho curto até o contato", "WhatsApp e telefone visíveis, a um clique."], ["Todo lead registrado", "O que não está no CRM não é cobrado, medido nem melhorado."], ["Follow-up com cadência", "A maioria das vendas não fecha no primeiro contato."], ["Origem de cada cliente", "Permite cortar o que não vende e dobrar o que vende."], ["Taxa de fechamento e motivo de perda", "Sem eles, a empresa mexe no marketing quando o problema é a venda."], ["Pós-venda que gera a próxima venda", "Avaliação, indicação e recompra alimentam o topo do funil."], ["Dados iguais em todo lugar", "Nome, endereço e telefone consistentes: base para Google e IAs."], ["Rotina de números", "Meta mensal e painel lido toda semana."]] },
+
+  { id: "digital", grupo: "Prospecção", nome: "Diagnóstico Digital", st: "ok",
+    desc: "A presença digital do negócio local, vista de fora, sem depender do cliente. É o Modelo Unificado: 8 notas, 3 urgências, quanto vale e o plano.",
+    publico: "Prospecção de negócio local", entrega: "Slides (Modelo Unificado) em PDF", prazo: "1 dia", valor: true,
+    link: ["Abrir o Modelo Unificado", "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t"],
+    areas: ["rep", "bus", "map", "ava", "sit", "ins", "ia", "wha"],
+    processo: [P.pedido(), P.publica(["rep", "bus", "map", "ava", "sit", "ins", "ia"]), P.oculto, P.pontua, P.valor, P.plano,
+      { nome: "Montagem", modo: "auto", quem: "n8n", ferr: "Modelo Unificado · PDF.co · Drive", tempo: "5 min", saida: "PDF no Drive com link no negócio", alimenta: [], faz: "Preencher os slides do Modelo Unificado com os dados e gerar o PDF." },
+      P.revisao],
+    pontos: [["Top 3 do mapa na busca principal", "Para negócio local, o mapa aparece antes da lista."], ["1ª página na busca principal", "Com página própria para o serviço, não só a home."], ["Nota 4,5 ou mais, com volume perto do líder", "O volume pesa tanto quanto a nota."], ["Responder as avaliações", "Principalmente as negativas."], ["Perfil do Google completo e certo", "Categoria, telefone, horário e fotos."], ["Site rápido no celular", "Abre em até 3 s e diz o que faz e onde."], ["WhatsApp visível em todo lugar", "No site, na bio e no perfil do Google."], ["Responder no WhatsApp em minutos", "Costuma ser a urgência que mais custa cliente."], ["Ser citado pelas IAs", "Dados estruturados e informações consistentes."], ["Ser dono da busca pelo próprio nome", "Quem busca a marca tem de cair no site."], ["Instagram com sinal de vida", "Post recente e link na bio."], ["Mostrar a procura em reais", "O \"quanto vale\" transforma nota em decisão."]] },
+
+  { id: "seo", grupo: "Por canal", nome: "SEO, GEO e AEO", st: "ok",
+    desc: "Como o Google e as IAs encontram, entendem e indicam a empresa.", publico: "Empresa com site que depende de busca", entrega: "Relatório + plano de conteúdo", prazo: "2 dias", valor: true,
+    areas: ["bus", "est", "rep", "ia"],
+    processo: [P.pedido("com as 5 buscas principais do segmento"),
+      { nome: "Busca e posições", modo: "auto", quem: "n8n", ferr: "Semrush", tempo: "5 min", saida: "Posições, visitas e buscas que trazem tráfego", alimenta: ["bus", "rep"], faz: "Posição na busca principal e pela marca, 12 meses de visitas, buscas da cidade com volume." },
+      { nome: "Rastreio do site", modo: "auto", quem: "n8n", ferr: "Firecrawl · PageSpeed", tempo: "10 min", saida: "Páginas, títulos, dados estruturados", alimenta: ["est"], faz: "Contar páginas, achar canibalização, páginas sem título, descrição ou H1, e checar dados estruturados e llms.txt." },
+      { nome: "Citações nas IAs", modo: "parcial", quem: "n8n", ferr: "APIs OpenAI e Gemini com busca", tempo: "5 min", saida: "Quem as IAs indicam", alimenta: ["ia"], faz: "Perguntar como o cliente pergunta e guardar a resposta completa como evidência." },
+      P.pontua, P.valor, P.plano, P.revisao],
+    pontos: [["A página certa para cada busca que vende", "Atender a intenção de quem busca."], ["Uma página forte por tema, sem canibalização", "Duas páginas na mesma busca enfraquecem as duas."], ["SEO local", "Perfil do Google e páginas por cidade e unidade."], ["Saúde técnica", "Indexação, velocidade, celular e HTTPS."], ["Conteúdo útil e com experiência real", "Responde perguntas reais com conhecimento de quem faz."], ["Autoridade", "Links e menções de sites relevantes."], ["Dados estruturados", "Empresa, serviços e perguntas marcados para máquinas."], ["Entidade consistente na web", "Mesmo nome, endereço e descrição em todo lugar."], ["Estar nas fontes que as IAs leem", "Portais, listas, avaliações e diretórios."], ["Respostas diretas (AEO)", "Pergunta clara e resposta curta, fácil de citar."], ["Medir por buscas que vendem", "Leads e vendas, não só visitas."], ["Constância", "O trabalho de cada mês soma ao anterior."]] },
+
+  { id: "site", grupo: "Por canal", nome: "Site e conversão", st: "disc",
+    desc: "Se o site abre rápido, explica o que a empresa faz e transforma visita em contato.", publico: "Empresa com site próprio", entrega: "Relatório + proposta de site", prazo: "1 dia", valor: false,
+    areas: ["sit", "conv", "est"],
+    processo: [P.pedido(),
+      { nome: "Velocidade e técnica", modo: "auto", quem: "n8n", ferr: "PageSpeed · rastreio", tempo: "5 min", saida: "Tempo de carregamento e nota técnica", alimenta: ["sit", "est"], faz: "Medir o carregamento no celular e a saúde técnica das páginas principais." },
+      { nome: "Navegação como cliente", modo: "manual", quem: "Consultor", ferr: "Celular", tempo: "15 min", saida: "Prints e critérios de conversão", alimenta: ["conv", "sit"], faz: "Entrar pelo celular, procurar o serviço e tentar falar com a empresa. Anotar cada atrito." },
+      P.pontua, P.plano, P.revisao],
+    pontos: [["Primeira tela que explica", "O que faz, para quem e onde."], ["Uma ação principal, repetida", "WhatsApp ou orçamento sempre à vista."], ["Velocidade no celular", "Carregamento principal em até 2,5 s."], ["Feito para o celular primeiro", "É onde está a maior parte das visitas."], ["Uma página por serviço e por cidade", "Para aparecer em cada busca que vende."], ["Prova real", "Cases, depoimentos, logos e fotos reais."], ["Responder as dúvidas de quem compra", "Como funciona, prazo, faixa de preço."], ["Estrutura técnica limpa", "Títulos, descrições, H1 e dados estruturados."], ["Conversão rastreada até a venda", "Cliques e formulários ligados ao CRM."], ["Lead cai direto no funil", "Nenhum contato se perde no caminho."], ["Fácil de atualizar", "A equipe muda texto e foto sozinha."], ["Visitas planejadas desde o dia 1", "Site sem visitas não vende."]] },
+
+  { id: "loja", grupo: "Por canal", nome: "Loja virtual", st: "disc",
+    desc: "Se a loja converte visita em pedido e se está nos canais onde o cliente compra.", publico: "Varejo e marcas com e-commerce", entrega: "Relatório + proposta de loja", prazo: "1 dia", valor: false,
+    areas: ["loja", "sit", "conv", "mid"],
+    processo: [P.pedido("com a URL da loja"),
+      { nome: "Compra de teste", modo: "manual", quem: "Consultor", ferr: "Celular", tempo: "20 min", saida: "Prints de produto, frete e checkout", alimenta: ["loja", "sit", "conv"], faz: "Escolher um produto, calcular frete e ir até o pagamento, sem concluir." },
+      { nome: "Canais e anúncios", modo: "parcial", quem: "n8n + consultor", ferr: "Google Shopping · Biblioteca de Anúncios", tempo: "10 min", saida: "Onde a loja aparece", alimenta: ["mid", "loja"], faz: "Ver se o catálogo está no Google Shopping e no Instagram e se há anúncios ativos." },
+      P.pontua, P.plano, P.revisao],
+    pontos: [["Página de produto que vende", "Fotos boas e descrição que responde dúvidas."], ["Checkout curto", "Poucos passos, Pix e parcelamento."], ["Frete claro e cedo", "Frete surpresa no fim é o maior motivo de abandono."], ["Confiança", "Avaliações, troca, CNPJ e contato visíveis."], ["Velocidade no celular", "A maior parte das compras começa no celular."], ["Catálogo fácil de navegar", "Categorias claras e busca interna que acha."], ["Canais conectados", "Google Shopping, Instagram e WhatsApp."], ["Recuperar carrinho abandonado", "Venda quase pronta."], ["Estoque e preço sincronizados", "Evita cancelamento e avaliação ruim."], ["SEO de categoria e produto", "Aparecer sem pagar por clique."], ["Anúncios por produto com retorno medido", "Retorno por real investido."], ["Base própria e recompra", "Cliente que volta custa menos."]] },
+
+  { id: "trafego", grupo: "Por canal", nome: "Tráfego pago", st: "disc",
+    desc: "Se o dinheiro em anúncios vira venda e se dá para provar isso.", publico: "Empresa que já anuncia ou quer anunciar", entrega: "Relatório + plano de mídia", prazo: "2 dias", valor: false,
+    areas: ["mid", "med", "conv"],
+    processo: [P.pedido("e pedir acesso de leitura às contas de anúncio"),
+      { nome: "Anúncios ativos", modo: "parcial", quem: "Consultor", ferr: "Biblioteca de Anúncios · Semrush", tempo: "10 min", saida: "Anúncios e páginas de destino", alimenta: ["mid", "conv"], faz: "Listar anúncios ativos no Google e na Meta e para onde cada um leva." },
+      { nome: "Leitura das contas", modo: "manual", quem: "Gestor de mídia", ferr: "Google Ads · Meta Ads", tempo: "40 min", saida: "Custo por lead e por venda", alimenta: ["med"], faz: "Conferir conversões, estrutura de campanhas, termos e para onde vai a verba." },
+      P.pontua, P.plano, P.revisao],
+    pontos: [["Rastreamento até a venda", "Otimizar para venda, não para clique."], ["Oferta e página por campanha", "O anúncio promete, a página cumpre."], ["Dados de conversão corretos", "Os lances só são tão bons quanto os dados."], ["Intenção no Google", "Palavras de quem quer comprar e termos negativos."], ["Criativo é a segmentação na Meta", "Volume e variação de criativos."], ["Atender rápido quem chega", "Lead pago que espera é dinheiro perdido."], ["Remarketing", "Voltar a quem já demonstrou interesse."], ["Verba onde está a demanda", "Região, horário e sazonalidade."], ["Estrutura simples", "Poucas campanhas aprendem mais rápido."], ["Métricas de negócio", "Custo por venda, CAC e retorno."], ["Testes com hipótese", "Um teste por vez, com o objetivo escrito."], ["Relatório que liga verba a receita", "Toda semana, com a decisão que vem dele."]] },
+
+  { id: "comercial", grupo: "Vendas e gestão", nome: "Atendimento e vendas", st: "adef",
+    desc: "O que acontece depois que o cliente chama: velocidade, processo, fechamento e pós-venda.", publico: "Empresa com equipe comercial ou atendimento", entrega: "Relatório + proposta de agente de IA e CRM", prazo: "2 dias", valor: false,
+    areas: ["wha", "crm", "fec", "pos"],
+    processo: [P.pedido("e agendar a entrevista"), P.oculto, P.entrevista(["crm", "fec", "pos"]), P.pontua, P.plano, P.revisao],
+    pontos: [["Resposta em minutos", "O primeiro a responder leva a maior parte das vendas."], ["Todo contato registrado", "Sem CRM não há follow-up nem medição."], ["Qualificar antes de vender", "Necessidade, prazo, orçamento e região."], ["Follow-up com cadência", "A maioria fecha depois do primeiro contato."], ["Um responsável por lead", "Lead de todo mundo é lead de ninguém."], ["Proposta rápida e padrão", "Proposta que demora esfria a decisão."], ["Motivo de perda registrado", "Mostra o que corrigir no preço, na oferta ou no atendimento."], ["Agendamento na conversa", "Marcar a reunião sem troca de mensagens."], ["Atendimento fora do horário", "Agente de IA cobre noite e fim de semana."], ["Pós-venda com rotina", "Avaliação, indicação e recompra."], ["Revisão semanal do funil", "Corrige gargalos dentro do mês."], ["Metas por etapa", "Contatos, reuniões, propostas e vendas."]] },
+
+  { id: "gestao", grupo: "Vendas e gestão", nome: "Gestão e dados", st: "adef",
+    desc: "Se a empresa sabe de onde vêm as vendas, quanto custa cada cliente e onde o funil perde.", publico: "Empresa que investe em marketing sem saber o retorno", entrega: "Relatório + proposta de BI", prazo: "2 dias", valor: false,
+    areas: ["num", "med", "crm"],
+    processo: [P.pedido("e agendar a entrevista"), P.entrevista(["num", "med", "crm"]),
+      { nome: "Mapa de dados", modo: "manual", quem: "Consultor", ferr: "Planilha de fontes", tempo: "30 min", saida: "O que integra e o que falta", alimenta: ["num", "med"], faz: "Listar cada fonte (CRM, financeiro, mídia), se tem API e qual indicador ela alimenta." },
+      P.pontua, P.plano, P.revisao],
+    pontos: [["Uma fonte da verdade", "CRM, financeiro e mídia integrados."], ["Poucos indicadores que decidem", "Receita, margem, CAC, ticket e conversão."], ["Origem de cada venda", "Qual canal trouxe e quanto custou."], ["Funil completo", "Do lead à venda, com a taxa de cada passagem."], ["Atualização automática", "Sem planilha montada à mão."], ["Meta contra realizado", "Visível todo dia."], ["Margem por produto e cliente", "Vender o que dá prejuízo é crescer para trás."], ["Caixa e previsão", "O que entra e sai nas próximas semanas."], ["Alertas", "Aviso quando um número sai do padrão."], ["Visão por papel", "Cada um vê o que decide."], ["Rotina de leitura", "Reunião semanal com o painel aberto."], ["Insight que vira ação", "O que fazer, não só o que aconteceu."]] }
+];
+
+const MODO = { auto: ["auto", "Automático"], parcial: ["parcial", "Parcial"], manual: ["manual", "Manual"] };
+const ST = { ok: ["ok", "Definido"], disc: ["disc", "Em discussão"], adef: ["adef", "A definir"] };
+const GRUPO_AREA = { mkt: "Marketing", ven: "Vendas", ges: "Gestão" };
+const HORIZ = { "90": "Em 90 dias", "6m": "Em 6 meses" };
+const ORDEM = { ven: 0, ges: 1, mkt: 2 };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const txt = c => c.replace(/^!/, "");
+const rapido = c => c.startsWith("!");
+const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+const hoje = () => new Date().toISOString().slice(0, 10);
+const dataBR = d => d ? d.split("-").reverse().join("/") : "";
+const tiposComArea = a => TIPOS.filter(t => t.areas.includes(a));
+const etapasDaArea = (t, a) => t.processo.map((p, i) => ({ p, i })).filter(({ p }) => Array.isArray(p.alimenta) && p.alimenta.includes(a));
+const alimentadas = (t, p) => p.alimenta === "todas" ? t.areas : (p.alimenta || []).filter(a => t.areas.includes(a));
+
+/* ======================= ESTADO ======================= */
+let rascunho = null;            // diagnóstico em edição
+let gerados = [];               // vindos do banco
+let db = null, meuId = null, dbPronto = false;
+let areaSel = {}, passoSel = {}; // seleção por tipo (área no Método, etapa no Processo)
+let destaque = null;            // área a destacar ao abrir o gerador
+
+function novoRascunho(tipo, exemplo) {
+  const t = TIPOS.find(x => x.id === tipo);
+  const marc = {}, dentro = {};
+  t.areas.forEach(a => { marc[a] = AREAS[a].c.map((_, i) => exemplo ? i < (EXEMPLO[a] || 0) : false); dentro[a] = true; });
+  return { id: null, tipo, empresa: exemplo ? "Clínica Exemplo (fictícia)" : "", site: exemplo ? "clinicaexemplo.com.br" : "", cidade: exemplo ? "Goiânia/GO" : "",
+    segmento: exemplo ? "Odontologia" : "", data: hoje(), marc, dentro, valor: { procura: 3090, contato: 3, fecha: 25, ticket: 3000 }, exemplo: !!exemplo };
 }
 
+/* ======================= CÁLCULOS ======================= */
+const nota = (r, a) => r.marc[a].filter(Boolean).length * 2;
+const faixa = n => n <= 4 ? ["Perdendo cliente", "var(--ruim)", "r"] : n <= 7 ? ["Pode melhorar", "var(--medio)", "m"] : ["Funciona", "var(--bom)", "b"];
+function calcula(r) {
+  const t = TIPOS.find(x => x.id === r.tipo);
+  const med = t.areas.filter(a => r.dentro[a]);
+  const geral = med.length ? Math.round(med.reduce((s, a) => s + nota(r, a), 0) / med.length * 10) / 10 : 0;
+  const urg = med.slice().sort((x, y) => nota(r, x) - nota(r, y) || ORDEM[AREAS[x].g] - ORDEM[AREAS[y].g]).slice(0, 3);
+  const plano = { hoje: [], d90: [], m6: [] };
+  med.forEach(a => AREAS[a].c.forEach((c, i) => {
+    if (r.marc[a][i]) return;
+    const item = `${AREAS[a].nome}: ${txt(c).charAt(0).toLowerCase() + txt(c).slice(1)}`;
+    if (rapido(c)) plano.hoje.push(item);
+    else if (urg.includes(a) || AREAS[a].h === "90") plano.d90.push(item);
+    else plano.m6.push(item);
+  }));
+  const v = r.valor, contatos = Math.round(v.procura * v.contato / 100), clientes = Math.round(contatos * v.fecha / 100);
+  return { t, med, geral, urg, plano, contatos, clientes, total: clientes * v.ticket };
+}
+
+/* ======================= TELAS ======================= */
+function lateral(atual) {
+  const grupos = [...new Set(TIPOS.map(t => t.grupo))];
+  document.getElementById("lado").innerHTML = grupos.map(g => `<h4>${esc(g)}</h4>` + TIPOS.filter(t => t.grupo === g).map(t =>
+    `<a href="#${t.id}-metodo" class="${t.id === atual ? "on" : ""}"><b>${esc(t.nome)}</b><small>${t.areas.length} áreas · ${t.processo.length} etapas</small></a>`).join("")).join("");
+}
+const escolhaMovel = atual => `<div class="escolha"><label class="mono" for="sel-tipo" style="display:block;margin-bottom:4px">Tipo de diagnóstico</label><select id="sel-tipo">${atual ? "" : `<option value="">Escolha um tipo</option>`}${TIPOS.map(t => `<option value="${t.id}"${t.id === atual ? " selected" : ""}>${esc(t.grupo)} · ${esc(t.nome)}</option>`).join("")}</select></div>`;
+const regua = () => `<div class="regua"><div class="r"><b>0–4</b><span><strong>Perdendo cliente.</strong> Até 2 critérios atendidos.</span></div><div class="m"><b>5–7</b><span><strong>Pode melhorar.</strong> 3 critérios atendidos.</span></div><div class="b"><b>8–10</b><span><strong>Funciona.</strong> 4 ou 5 critérios atendidos.</span></div></div>`;
+
+function telaInicio() {
+  lateral(null);
+  const ids = Object.keys(AREAS);
+  return `
+  <div class="cab"><span class="mono">Visão geral</span><h1>Método e processo de <b>cada diagnóstico</b></h1>
+  <p>Escolha um tipo de diagnóstico para ver o que ele mede, como é feito passo a passo e gerar um diagnóstico para um cliente. Todos usam a mesma régua: 5 critérios por área, 2 pontos cada.</p></div>
+  ${escolhaMovel("")}
+  <div class="bloco"><h2>Como todo diagnóstico funciona</h2><p class="sub">Cinco momentos, em qualquer tipo.</p>
+    <div class="fluxo">
+      <div><i></i><b>Coleta</b><p>Dados públicos automáticos e, quando o tipo pede, cliente oculto e entrevista.</p></div>
+      <div><i></i><b>Pontuação</b><p>5 critérios por área, 2 pontos cada. Nota de 0 a 10.</p></div>
+      <div><i></i><b>Urgências</b><p>As três notas mais baixas que mais custam cliente.</p></div>
+      <div><i></i><b>Quanto vale</b><p>Procura × contato × fechamento × ticket.</p></div>
+      <div><i></i><b>Plano</b><p>Hoje e grátis, 90 dias e 6 meses. Daí sai a proposta.</p></div>
+    </div></div>
+  <div class="bloco"><h2>Tipos de diagnóstico</h2><p class="sub">${TIPOS.length} tipos. Os de prospecção usam só dados públicos; os de vendas e gestão pedem entrevista.</p>
+    <div class="cards">${TIPOS.map(t => `<a class="card" href="#${t.id}-metodo"><span class="mono">${esc(t.grupo)}</span><h3>${esc(t.nome)}</h3><p>${esc(t.desc)}</p>
+      <div class="pe"><span class="selo ${ST[t.st][0]}">${ST[t.st][1]}</span><span>${t.areas.length} áreas · ${t.processo.length} etapas →</span></div></a>`).join("")}</div></div>
+  <div class="bloco"><h2>Quais áreas cada diagnóstico mede</h2><p class="sub">Clique num ponto para abrir a área dentro daquele diagnóstico.</p>
+    <div class="rolar"><table class="matriz"><thead><tr><th class="l">Área</th>${TIPOS.map(t => `<th>${esc(t.nome)}</th>`).join("")}<th class="l">Quem resolve</th></tr></thead><tbody>
+    ${ids.map(a => `<tr><td class="l">${esc(AREAS[a].nome)}</td>${TIPOS.map(t => `<td>${t.areas.includes(a) ? `<a href="#${t.id}-metodo" data-area="${a}" data-tipo="${t.id}" aria-label="${esc(AREAS[a].nome)} em ${esc(t.nome)}"><i></i></a>` : ""}</td>`).join("")}<td class="l cinza">${esc(AREAS[a].sol)}</td></tr>`).join("")}
+    </tbody></table></div></div>
+  <div class="bloco"><h2>Régua Atom</h2><p class="sub">A mesma para todas as áreas de todos os tipos.</p>${regua()}</div>
+  <div class="bloco"><h2>Histórico do método</h2><table class="hist"><tbody>
+    <tr><td>v0.6</td><td>Vira aplicação web: tipos de diagnóstico com método, processo e gerador, tudo conectado por clique. Diagnósticos gerados ficam salvos.</td></tr>
+    <tr><td>v0.5</td><td>Visual da marca Atom a partir do deck Atom 2026 · Agência de IA.</td></tr>
+    <tr><td>v0.4</td><td>Os 12 pontos que mudam o jogo em cada canal.</td></tr>
+    <tr><td>v0.3</td><td>Régua do Modelo Unificado: 5 critérios de 2 pontos por área.</td></tr>
+    <tr><td>v0.1</td><td>Primeira versão do método.</td></tr></tbody></table></div>`;
+}
+
+function cabTipo(t, aba) {
+  return `${escolhaMovel(t.id)}
+  <div class="cab"><span class="mono">${esc(t.grupo)}</span><h1>Diagnóstico <b>${esc(t.nome)}</b></h1><p>${esc(t.desc)}</p>
+    <div class="fichas"><div><span class="mono">Situação</span><span class="selo ${ST[t.st][0]}">${ST[t.st][1]}</span></div><div><span class="mono">Para quem</span><b>${esc(t.publico)}</b></div><div><span class="mono">Entrega</span><b>${esc(t.entrega)}</b></div><div><span class="mono">Prazo</span><b>${esc(t.prazo)}</b></div>${t.link ? `<div><span class="mono">Modelo</span><a href="${t.link[1]}" target="_blank" rel="noopener" style="color:var(--roxo);font-weight:500">${esc(t.link[0])} ↗</a></div>` : ""}</div></div>
+  <nav class="abas" aria-label="Abas"><a href="#${t.id}-metodo" class="${aba === "metodo" ? "on" : ""}">Método<span>${t.areas.length} áreas</span></a><a href="#${t.id}-processo" class="${aba === "processo" ? "on" : ""}">Processo<span>${t.processo.length} etapas</span></a><a href="#${t.id}-gerar" class="${aba === "gerar" ? "on" : ""}">Gerar diagnóstico</a></nav>`;
+}
+
+function telaMetodo(t) {
+  if (!t.areas.includes(areaSel[t.id])) areaSel[t.id] = t.areas[0];
+  return cabTipo(t, "metodo") + `
+  <div class="bloco"><h2>O que medimos</h2><p class="sub">Clique numa área para ver os critérios, em que etapa ela é coletada, quem resolve na Atom e em que outros diagnósticos ela aparece.</p>
+    <div class="met">
+      <div class="areas-tab">${t.areas.map(id => { const a = AREAS[id]; return `<button type="button" class="area-m${id === areaSel[t.id] ? " on" : ""}" data-area="${id}"><div class="t"><h3>${esc(a.nome)}</h3><span class="selo ${MODO[a.coleta][0]}">${MODO[a.coleta][1]}</span></div>
+        <span class="mini">${esc(GRUPO_AREA[a.g])} · ${a.c.filter(rapido).length} rápidos · ${esc(a.sol)}</span></button>`; }).join("")}</div>
+      <aside class="painel" id="painel" aria-live="polite"></aside>
+    </div></div>
+  <div class="bloco"><h2>Régua</h2><p class="sub">Nota geral é a média das áreas medidas. Área não medida fica fora da média e aparece como "não medida".</p>${regua()}</div>
+  <div class="bloco"><h2>Os 12 pontos que mudam o jogo</h2><p class="sub">O que realmente decide o resultado em ${esc(t.nome.toLowerCase())}, em ordem de peso. Os três primeiros são os que mais custam venda quando faltam.</p>
+    <ol class="doze">${t.pontos.map(([a, b], i) => `<li><span class="n">${String(i + 1).padStart(2, "0")}</span><div><b>${esc(a)}</b><p>${esc(b)}</p></div></li>`).join("")}</ol></div>`;
+}
+function painelArea(t) {
+  const id = areaSel[t.id], a = AREAS[id];
+  const etapas = etapasDaArea(t, id), outros = tiposComArea(id).filter(x => x.id !== t.id);
+  document.getElementById("painel").innerHTML = `
+    <div class="pc"><span class="mono">${esc(GRUPO_AREA[a.g])} · ${ST[a.st][1]}</span><h3>${esc(a.nome)}</h3></div>
+    <div class="pb">
+      <div class="liga"><span class="mono">Os 5 critérios · 2 pontos cada</span><ol>${a.c.map(c => `<li><span>${esc(txt(c))}</span>${rapido(c) ? `<span class="rap">rápido</span>` : "<span></span>"}</li>`).join("")}</ol></div>
+      <div class="liga"><span class="mono">Coletada em</span><div class="chips">${etapas.length ? etapas.map(({ p, i }) => `<a class="chip etapa" data-n="${i + 1}" href="#${t.id}-processo" data-passo="${i}">${esc(p.nome)} · ${MODO[p.modo][1].toLowerCase()}</a>`).join("") : `<span class="cinza" style="font-size:.84rem">Etapa ainda não definida</span>`}</div><span class="cinza" style="font-size:.8rem">Fonte: ${esc(a.fonte)}</span></div>
+      <div class="liga"><span class="mono">Quem resolve na Atom</span><div class="chips"><span class="chip sol">${esc(a.sol)}</span></div><span class="cinza" style="font-size:.8rem">Critérios reprovados entram no plano: os rápidos em "hoje, grátis"; os outros ${HORIZ[a.h].toLowerCase()} (ou em 90 dias, se a área for urgência).</span></div>
+      <div class="liga"><span class="mono">Também aparece em</span><div class="chips">${outros.length ? outros.map(x => `<a class="chip" href="#${x.id}-metodo" data-area="${id}" data-tipo="${x.id}">${esc(x.nome)}</a>`).join("") : `<span class="cinza" style="font-size:.84rem">Só neste diagnóstico</span>`}</div></div>
+      <a class="btn sec" href="#${t.id}-gerar" data-destaque="${id}" style="justify-self:start">Pontuar esta área no gerador →</a>
+    </div>`;
+}
+
+function telaProcesso(t) {
+  const n = { auto: 0, parcial: 0, manual: 0 }; t.processo.forEach(p => n[p.modo]++);
+  const tot = t.processo.length;
+  if (passoSel[t.id] == null) passoSel[t.id] = 1;
+  return cabTipo(t, "processo") + `
+  <div class="bloco"><h2>Passo a passo</h2><p class="sub">${tot} etapas: ${n.auto} automáticas, ${n.parcial} parciais e ${n.manual} manuais. Clique numa etapa para ver as áreas que ela alimenta.</p>
+    <div class="resumo-proc" aria-hidden="true"><i style="flex:${n.auto};background:var(--roxo)"></i><i style="flex:${n.parcial};background:#d79a2b"></i><i style="flex:${n.manual};background:#cfcad6"></i></div>
+    <ol class="proc">${t.processo.map((p, i) => { const al = alimentadas(t, p); return `<li class="${i === passoSel[t.id] ? "on" : ""}" data-i="${i}"><span class="bola">${i + 1}</span><div class="c" role="button" tabindex="0" data-passo="${i}"><h3>${esc(p.nome)} <span class="selo ${MODO[p.modo][0]}">${MODO[p.modo][1]}</span></h3><p>${esc(p.faz)}</p>
+      <dl><div><dt>Quem faz</dt><dd>${esc(p.quem)}</dd></div><div><dt>Ferramenta</dt><dd>${esc(p.ferr)}</dd></div><div><dt>Tempo</dt><dd>${esc(p.tempo)}</dd></div><div><dt>Saída</dt><dd>${esc(p.saida)}</dd></div></dl>
+      <div class="detalhe"><span class="mono" style="color:var(--cinza)">${p.alimenta === "todas" ? "Usa todas as áreas" : "Alimenta estas áreas"}</span><div class="chips">${al.length ? al.map(a => `<a class="chip" href="#${t.id}-metodo" data-area="${a}" data-tipo="${t.id}">${esc(AREAS[a].nome)}</a>`).join("") : `<span class="cinza" style="font-size:.84rem">Nenhuma área: é uma etapa de preparação ou entrega.</span>`}</div></div></div></li>`; }).join("")}</ol></div>`;
+}
+
+function telaGerar(t) {
+  if (!rascunho || rascunho.tipo !== t.id) rascunho = novoRascunho(t.id, true);
+  const r = rascunho;
+  const campo = (id, rot, val, tipo = "text", extra = "") => `<div class="campo"><label for="f-${id}">${rot}</label><input id="f-${id}" type="${tipo}" value="${esc(val)}" ${extra}></div>`;
+  return cabTipo(t, "gerar") + `
+  <div class="gerar">
+    <div class="form">
+      ${r.exemplo ? `<p class="aviso">Exemplo com dados fictícios para mostrar como funciona. Use "Novo diagnóstico" para começar um de verdade.</p>` : ""}
+      <div><div class="secao"><h3>Empresa</h3><button class="btn sec" type="button" id="b-novo">Novo diagnóstico</button></div>
+        <div class="campos">${campo("empresa", "Empresa", r.empresa)}${campo("site", "Site", r.site)}${campo("cidade", "Cidade/UF", r.cidade)}${campo("segmento", "Segmento", r.segmento)}${campo("data", "Data da coleta", r.data, "date")}</div></div>
+      <div><div class="secao"><h3>Critérios</h3><span class="cinza" style="font-size:.8rem">Marque o que a empresa já cumpre. As urgências ficam com borda vermelha.</span></div>
+        <div class="marcar">${t.areas.map(id => { const a = AREAS[id]; return `<div class="area-g${r.dentro[id] ? "" : " fora"}" id="g-${id}"><div class="t"><h4>${esc(a.nome)}</h4><span class="nota" id="gn-${id}"></span></div><span class="tag-u" id="gu-${id}"></span>
+          ${a.c.map((c, i) => `<label class="ck"><input type="checkbox" data-a="${id}" data-i="${i}"${r.marc[id][i] ? " checked" : ""}><span>${esc(txt(c))}</span></label>`).join("")}
+          <div class="pe"><span>${esc(a.fonte)}</span><label><input type="checkbox" data-dentro="${id}"${r.dentro[id] ? " checked" : ""}> medida</label></div></div>`; }).join("")}</div></div>
+      ${t.valor ? `<div><div class="secao"><h3>Quanto vale</h3><span class="cinza" style="font-size:.8rem">Arredondado a cada etapa</span></div>
+        <div class="campos">${campo("procura", "Buscas por mês na cidade", r.valor.procura, "number", 'min="0" step="10"')}${campo("contato", "% que entra em contato", r.valor.contato, "number", 'min="0" max="100" step="0.5"')}${campo("fecha", "% que fecha", r.valor.fecha, "number", 'min="0" max="100" step="1"')}${campo("ticket", "Ticket médio (R$)", r.valor.ticket, "number", 'min="0" step="50"')}</div></div>` : ""}
+    </div>
+    <aside class="result" id="resultado" aria-live="polite"></aside>
+  </div>`;
+}
+
+function iluminar(id) {
+  const el = document.getElementById("g-" + id); if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  el.classList.add("luz"); setTimeout(() => el.classList.remove("luz"), 1600);
+}
+function resultado() {
+  const box = document.getElementById("resultado"); if (!box) return;
+  const r = rascunho, c = calcula(r), t = c.t;
+  t.areas.forEach(a => {
+    const el = document.getElementById("gn-" + a); if (el) el.textContent = r.dentro[a] ? `${nota(r, a)}/10` : "não medida";
+    const g = document.getElementById("g-" + a); if (!g) return;
+    g.classList.toggle("fora", !r.dentro[a]); g.classList.remove("urg-1", "urg-2", "urg-3");
+    const k = c.urg.indexOf(a); if (k >= 0) g.classList.add("urg-" + (k + 1));
+    document.getElementById("gu-" + a).textContent = k >= 0 ? `Urgência ${k + 1} · resolve: ${AREAS[a].sol}` : "";
+  });
+  const [fl, fc] = faixa(c.geral);
+  const lista = arr => arr.length ? `<ul class="lista-r">${arr.slice(0, 6).map(x => `<li><span>${esc(x)}</span></li>`).join("")}${arr.length > 6 ? `<li><span class="cinza">e mais ${arr.length - 6}</span></li>` : ""}</ul>` : `<p class="cinza" style="font-size:.82rem">Nada pendente.</p>`;
+  box.innerHTML = `
+    <div class="rcab"><span class="mono">Diagnóstico ${esc(t.nome)}</span><h3>${esc(r.empresa || "Empresa sem nome")}</h3><p>${esc([r.cidade, r.segmento, dataBR(r.data)].filter(Boolean).join(" · "))}</p></div>
+    <div class="rcorpo">
+      <div class="geral"><span class="v">${c.geral.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}<small>/10</small></span><div><b style="color:${fc}">${fl}</b><p class="cinza" style="font-size:.8rem">${c.med.length} de ${t.areas.length} áreas medidas · clique numa barra para ir até a área</p></div></div>
+      <div>${c.med.map(a => { const n = nota(r, a); return `<button type="button" class="barra-l" data-ir="${a}"><span>${esc(AREAS[a].nome)}</span><span class="tr"><i style="width:${n * 10}%;background:${faixa(n)[1]}"></i></span><span class="v">${n}/10</span></button>`; }).join("")}</div>
+      <div><span class="mono">As três urgências e quem resolve</span><div class="urgs">${c.urg.map((a, i) => `<button type="button" data-ir="${a}"><span class="i">${i + 1}.</span><b>${esc(AREAS[a].nome)}</b><span>${nota(r, a)}/10</span><span class="s">→ ${esc(AREAS[a].sol)}</span></button>`).join("")}</div></div>
+      ${t.valor ? `<div class="valor-r"><span class="mono">Quanto vale por mês</span><span class="v">${brl(c.total)}</span><small>${r.valor.procura.toLocaleString("pt-BR")} buscas × ${r.valor.contato}% = ${c.contatos} contatos × ${r.valor.fecha}% = ${c.clientes} clientes × ${brl(r.valor.ticket)}</small></div>` : ""}
+      <div class="plano-r"><span class="mono">Plano</span>
+        <div class="g"><b>Hoje · grátis</b>${lista(c.plano.hoje)}</div>
+        <div><b>Em 90 dias · ser encontrado</b>${lista(c.plano.d90)}</div>
+        <div><b>Em 6 meses · ser escolhido</b>${lista(c.plano.m6)}</div></div>
+      <div class="acoes">${db ? `<button class="btn" type="button" id="b-salvar">${r.id ? "Salvar alterações" : "Salvar diagnóstico"}</button>` : ""}<button class="btn sec" type="button" id="b-copiar">Copiar texto</button></div>
+      <p class="msg" id="msg">${db ? "" : "Para salvar, abra esta página logado no claude.ai. Copiar o texto funciona sempre."}</p>
+    </div>`;
+  box.querySelectorAll("[data-ir]").forEach(b => b.onclick = () => iluminar(b.dataset.ir));
+  document.getElementById("b-copiar").onclick = copiar;
+  if (db) document.getElementById("b-salvar").onclick = salvar;
+}
+
+function texto() {
+  const r = rascunho, c = calcula(r), t = c.t;
+  const L = [`DIAGNÓSTICO ${t.nome.toUpperCase()} · ATOM`, `${r.empresa}${r.site ? " · " + r.site : ""}`, [r.cidade, r.segmento, dataBR(r.data)].filter(Boolean).join(" · "), "",
+    `Nota geral: ${c.geral.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}/10 (${faixa(c.geral)[0]})`, ""];
+  c.med.forEach(a => L.push(`${AREAS[a].nome}: ${nota(r, a)}/10 · ${faixa(nota(r, a))[0]}`));
+  t.areas.filter(a => !r.dentro[a]).forEach(a => L.push(`${AREAS[a].nome}: não medida`));
+  L.push("", "As três urgências:"); c.urg.forEach((a, i) => L.push(`${i + 1}. ${AREAS[a].nome} (${nota(r, a)}/10) · resolve: ${AREAS[a].sol}`));
+  if (t.valor) L.push("", `Quanto vale: ${brl(c.total)} por mês (${r.valor.procura} buscas × ${r.valor.contato}% × ${r.valor.fecha}% × ${brl(r.valor.ticket)}). É o tamanho da procura, não promessa de faturamento.`);
+  L.push("", "Plano", "Hoje · grátis:"); c.plano.hoje.forEach(x => L.push("→ " + x));
+  L.push("Em 90 dias:"); c.plano.d90.forEach(x => L.push("→ " + x));
+  L.push("Em 6 meses:"); c.plano.m6.forEach(x => L.push("→ " + x));
+  return L.join("\n");
+}
+async function copiar() {
+  const m = document.getElementById("msg");
+  try { await navigator.clipboard.writeText(texto()); m.textContent = "Texto copiado."; }
+  catch (e) { m.textContent = "Não foi possível copiar automaticamente. Selecione e copie o texto abaixo."; m.insertAdjacentHTML("afterend", `<textarea readonly style="width:100%;height:160px;font:12px var(--mono)">${esc(texto())}</textarea>`); }
+}
+async function salvar() {
+  const r = rascunho, c = calcula(r), m = document.getElementById("msg"), b = document.getElementById("b-salvar");
+  if (!r.empresa.trim()) { m.textContent = "Preencha o nome da empresa antes de salvar."; document.getElementById("f-empresa")?.focus(); return; }
+  b.disabled = true; m.textContent = "Salvando…";
+  const doc = { tipo: r.tipo, empresa: r.empresa.trim(), site: r.site, cidade: r.cidade, segmento: r.segmento, data: r.data,
+    marc: r.marc, dentro: r.dentro, valor: r.valor, geral: c.geral, urgencias: c.urg, atualizadoEm: Date.now(), autor: meuId };
+  try {
+    if (r.id) await db.collection("diagnosticos").doc(r.id).set({ ...doc, criadoEm: r.criadoEm || Date.now() });
+    else { const ref = await db.collection("diagnosticos").add({ ...doc, criadoEm: doc.atualizadoEm }); r.id = ref.id; r.criadoEm = doc.atualizadoEm; }
+    r.exemplo = false; m.textContent = "Diagnóstico salvo. Ele aparece em Gerados.";
+  } catch (e) { m.textContent = e && e.code === "permission_denied" ? "Você não tem permissão para salvar nesta página." : "Não foi possível salvar agora. Tente de novo."; }
+  b.disabled = false; if (r.id) b.textContent = "Salvar alterações";
+}
+
+function telaGerados() {
+  lateral(null);
+  const corpo = !db ? `<div class="vazio"><b>Lista indisponível nesta visualização</b><span>Abra a página logado no claude.ai para ver e salvar diagnósticos.</span></div>`
+    : !dbPronto ? `<div class="vazio"><span>Carregando diagnósticos…</span></div>`
+    : !gerados.length ? `<div class="vazio"><b>Nenhum diagnóstico salvo ainda</b><span>Escolha um tipo, abra a aba "Gerar diagnóstico", preencha e clique em "Salvar diagnóstico".</span><a class="btn" href="#digital-gerar">Gerar o primeiro</a></div>`
+    : `<div class="rolar"><table class="tab"><thead><tr><th>Empresa</th><th>Tipo</th><th>Cidade</th><th>Nota</th><th>Urgência principal</th><th>Data</th></tr></thead><tbody>
+      ${gerados.map(g => { const t = TIPOS.find(x => x.id === g.tipo); const n = Number(g.geral) || 0; return `<tr class="click" data-id="${esc(g._id)}"><td><b>${esc(g.empresa)}</b></td><td>${esc(t ? t.nome : g.tipo)}</td><td>${esc(g.cidade)}</td><td class="n" style="color:${faixa(n)[1]}">${n.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}</td><td>${esc(AREAS[(g.urgencias || [])[0]]?.nome || "")}</td><td>${esc(dataBR(g.data))}</td></tr>`; }).join("")}
+      </tbody></table></div>`;
+  return `<div class="cab"><span class="mono">Gerados</span><h1>Diagnósticos <b>salvos</b></h1><p>Todos os diagnósticos gerados nesta página. Clique em um para abrir, revisar e salvar de novo.</p></div>${corpo}`;
+}
+
+/* ======================= ROTAS E EVENTOS ======================= */
 function rota() {
-  const id = (location.hash || "").slice(1);
-  const m = MODELOS.find(x => x.id === id);
-  const vista = !m ? "inicio" : m.id === "metodo" ? "metodo" : "modelo";
-  ["inicio", "metodo", "modelo"].forEach(v => document.getElementById("v-" + v).hidden = v !== vista);
-  if (vista === "modelo") abrirModelo(m);
-  document.getElementById("migalha").innerHTML = vista === "inicio"
-    ? `<span>Diagnósticos e propostas</span>`
-    : `<a href="#inicio">← Início</a><span>/</span><span>${esc(m.nome)}</span>`;
+  const h = (location.hash || "#inicio").slice(1);
+  const tela = document.getElementById("tela");
+  ["inicio", "tipos", "gerados"].forEach(n => document.getElementById("nav-" + n).classList.remove("on"));
+  let t = null;
+  if (h === "gerados") { document.getElementById("nav-gerados").classList.add("on"); tela.innerHTML = telaGerados(); ligarGerados(); }
+  else {
+    const [id, aba] = h.split("-");
+    t = TIPOS.find(x => x.id === id);
+    if (!t) { document.getElementById("nav-inicio").classList.add("on"); tela.innerHTML = telaInicio(); }
+    else {
+      document.getElementById("nav-tipos").classList.add("on"); lateral(t.id);
+      if (aba === "processo") { tela.innerHTML = telaProcesso(t); ligarProcesso(t); }
+      else if (aba === "gerar") { tela.innerHTML = telaGerar(t); ligarGerar(); resultado(); }
+      else { tela.innerHTML = telaMetodo(t); ligarMetodo(t); }
+    }
+  }
+  const sel = document.getElementById("sel-tipo");
+  if (sel) sel.onchange = () => { if (!sel.value) return; const aba = (location.hash.split("-")[1]) || "metodo"; location.hash = sel.value + "-" + aba; };
   window.scrollTo(0, 0);
+  if (destaque && t && h.endsWith("-gerar")) { const d = destaque; destaque = null; setTimeout(() => iluminar(d), 60); }
+}
+// Cliques que carregam seleção para a próxima tela (área, etapa, destaque).
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[data-area][data-tipo]"); if (a) areaSel[a.dataset.tipo] = a.dataset.area;
+  const p = e.target.closest("a[data-passo]"); if (p) { const id = (location.hash.slice(1).split("-")[0]); passoSel[id] = +p.dataset.passo; }
+  const d = e.target.closest("a[data-destaque]"); if (d) destaque = d.dataset.destaque;
+}, true);
+function ligarMetodo(t) {
+  document.querySelectorAll(".area-m").forEach(b => b.onclick = () => {
+    areaSel[t.id] = b.dataset.area;
+    document.querySelectorAll(".area-m").forEach(x => x.classList.toggle("on", x === b));
+    painelArea(t);
+    if (matchMedia("(max-width: 1060px)").matches) document.getElementById("painel").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  painelArea(t);
+}
+function ligarProcesso(t) {
+  const marcar = i => { passoSel[t.id] = i; document.querySelectorAll(".proc li").forEach(li => li.classList.toggle("on", +li.dataset.i === i)); };
+  document.querySelectorAll(".proc .c").forEach(c => {
+    c.onclick = e => { if (e.target.closest("a")) return; marcar(+c.dataset.passo); };
+    c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); marcar(+c.dataset.passo); } };
+  });
+  const on = document.querySelector(".proc li.on"); if (on && passoSel[t.id] > 1) on.scrollIntoView({ block: "center" });
+}
+function ligarGerar() {
+  const r = rascunho;
+  ["empresa", "site", "cidade", "segmento", "data"].forEach(k => document.getElementById("f-" + k).addEventListener("input", e => { r[k] = e.target.value; resultado(); }));
+  ["procura", "contato", "fecha", "ticket"].forEach(k => { const el = document.getElementById("f-" + k); if (el) el.addEventListener("input", e => { r.valor[k] = Math.max(0, parseFloat(e.target.value) || 0); resultado(); }); });
+  document.querySelectorAll("input[data-a]").forEach(el => el.addEventListener("change", e => { r.marc[el.dataset.a][+el.dataset.i] = e.target.checked; resultado(); }));
+  document.querySelectorAll("input[data-dentro]").forEach(el => el.addEventListener("change", e => { r.dentro[el.dataset.dentro] = e.target.checked; resultado(); }));
+  document.getElementById("b-novo").onclick = () => { rascunho = novoRascunho(r.tipo, false); rota(); };
+}
+function ligarGerados() {
+  document.querySelectorAll("tr[data-id]").forEach(tr => tr.onclick = () => {
+    const g = gerados.find(x => x._id === tr.dataset.id); if (!g || !TIPOS.find(x => x.id === g.tipo)) return;
+    const base = novoRascunho(g.tipo, false);
+    rascunho = { ...base, id: g._id, criadoEm: g.criadoEm, empresa: g.empresa || "", site: g.site || "", cidade: g.cidade || "", segmento: g.segmento || "", data: g.data || hoje(),
+      marc: { ...base.marc, ...JSON.parse(JSON.stringify(g.marc || {})) }, dentro: { ...base.dentro, ...(g.dentro || {}) }, valor: { ...base.valor, ...(g.valor || {}) } };
+    location.hash = g.tipo + "-gerar";
+  });
 }
 window.addEventListener("hashchange", rota);
 rota();
+
+/* ======================= BANCO (diagnósticos salvos) ======================= */
+(async () => {
+  try {
+    db = await window.claude?.use?.("db");
+    const user = await window.claude?.use?.("user");
+    if (user) meuId = await user.id().catch(() => null);
+  } catch (e) { db = null; }
+  if (!db) return;
+  db.collection("diagnosticos").orderBy("criadoEm", "desc").limit(500).onSnapshot(s => {
+    gerados = s.docs.map(d => ({ _id: d.id, ...d.data() })); dbPronto = true;
+    if (location.hash === "#gerados") rota();
+  }, () => { dbPronto = true; if (location.hash === "#gerados") rota(); });
+  if (location.hash.endsWith("-gerar")) resultado();
+})();
 </script>
