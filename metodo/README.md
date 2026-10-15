@@ -168,6 +168,7 @@ Todos os números são editáveis em "Metas e custos". "Salvar estas premissas p
 | Arquivo | O que é |
 |---|---|
 | `metodo-diagnostico.html` | A página: telas, regras, cálculos e integrações |
+| `motor.js` | As regras do método (nota, urgências, plano, quanto vale e proposta), as mesmas no n8n (`n8n/code/metodo_motor.js`, gerado por `npm run metodo:motor`) |
 | `dados.js` | O conteúdo do método: áreas, 12 pontos, diagnósticos, processo, ferramentas, consumo, Pipedrive, premissas |
 | `assets/` | Logo e grafismos da Atom |
 | `Metodo-Diagnostico-Atom.html` (no Drive) | Versão em arquivo único, abre sem internet. Sem conexões: não coleta nem envia ao Pipedrive |
@@ -178,6 +179,7 @@ Para abrir localmente com tudo funcionando (menos conectores): `npm run metodo` 
 
 | Data | Mudança |
 |---|---|
+| 15/10/2026 | Início do SaaS (fase 1): motor único `metodo/motor.js` usado pela página e pelo n8n; passo Proposta no Gerar (modo 2); plano em `docs/14_saas_propostas.md` |
 | 15/10/2026 | Capacidade de 12 reuniões por dia; metas de 6 meses ajustadas para caber nela: Site 262 (antes 1.000), SEO 24 (antes 90), Geral 31 (antes 120) |
 | 15/10/2026 | Removida a seção Casos: o método é novo e ainda não tem casos próprios. O Coalumaq fica só como modelo de formato da entrega do Total |
 | 15/10/2026 | Integração com o Pipedrive; receita e lucro com preços de Site e SEO; imposto de 16%; franquias reais (Semrush 2M, Apify Starter); Gerar em passos; Passo a passo em raias; Site com dados do Semrush e limites revistos |

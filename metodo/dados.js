@@ -294,7 +294,7 @@ const PLANEJAMENTO_PADRAO = {
   meses: 6, diasUteis: 22, semanasMes: 4.33,
   taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 12, cenario: "capacidade", reusoMercado: 20, parteMercadoSemrush: 70, semrushProspeccao: "todos",
   metas: { site: 262, seo: 24, geral: 31, atendimento: 0, completo: 0 }, // ajustadas em 15/10/2026 para caber em 12 reuniões por dia (antes: 1.000, 90 e 120)
-  precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 3.98, imposto: 16,
+  precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 3.98, imposto: 16, validadePropostaDias: 10,
   // preço de venda de cada oferta (o que o cliente paga à Atom); parcelas = meses em que o valor entra no caixa
   vendas: { site: { preco: 2300, parcelas: 1 }, seo: { preco: 12000, parcelas: 6 }, geral: { preco: 0, parcelas: 1 }, atendimento: { preco: 0, parcelas: 1 } },
   entrega: { site: 0, seo: 0, geral: 0, atendimento: 0 }, // custo para entregar cada venda (equipe, produção); a informar

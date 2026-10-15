@@ -8,7 +8,8 @@
     "test": "node --test tests/*.test.js",
     "build": "node n8n/build.js",
     "docs": "node scripts/gerar_docs.mjs",
-    "metodo": "npx --yes http-server metodo -p 8080 -o /metodo-diagnostico.html"
+    "metodo": "npx --yes http-server metodo -p 8080 -o /metodo-diagnostico.html",
+    "metodo:motor": "node scripts/gerar_motor_n8n.mjs"
   },
   "devDependencies": {
     "@n8n/workflow-sdk": "0.33.1",

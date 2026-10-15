@@ -393,6 +393,17 @@ table.t input { width: 100px; padding: 6px 8px; border: 1px solid var(--fio-fort
 @media (max-width: 900px) { .regra-pd { grid-template-columns: 1fr 1fr; } .regra-pd > div:nth-child(3) { border-left: 0; padding-left: 0; } }
 @media (max-width: 600px) { .regra-pd { grid-template-columns: 1fr; } .regra-pd > div + div { border-left: 0; padding-left: 0; border-top: 1px solid var(--fio); } }
 
+.prop { display: grid; gap: 34px; }
+.prop-cab { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; border-bottom: 2px solid var(--verde); padding-bottom: 18px; }
+.prop-total { display: grid; justify-items: end; gap: 4px; text-align: right; }
+@media (max-width: 760px) { .prop-cab { grid-template-columns: 1fr; } .prop-total { justify-items: start; text-align: left; } }
+.prop-oferta { border-top: 3px solid var(--roxo); background: var(--tom); padding: 18px 20px; display: grid; gap: 12px; }
+.prop-oferta + .prop-oferta { margin-top: 16px; }
+.po-cab { display: flex; justify-content: space-between; gap: 16px; align-items: start; flex-wrap: wrap; }
+.po-cab h3 { font-size: var(--fs-h4); margin-top: 4px; }
+.po-preco { display: grid; justify-items: end; gap: 2px; } .po-preco b { font-size: var(--fs-h3); color: var(--roxo); font-variant-numeric: tabular-nums; }
+.prop-passos { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: var(--fs-small); }
+
 /* Coleta Apify */
 .coleta { background: var(--tom); border-top: 3px solid var(--roxo); padding: 18px 20px; display: grid; gap: 14px; }
 .coleta .linha { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
@@ -445,6 +456,7 @@ footer .url { font-family: var(--mono); font-size: 12px; letter-spacing: .3em; p
 <footer><div class="in"><img src="assets/logo-atom.png" alt="ATOM Agência de IA" width="1280" height="360"><div class="contato"><div><span class="over">Fale com</span>Thiago Mota</div><div><span class="over">E-mail</span>thiago@atomdigital.com.br</div><div><span class="over">WhatsApp</span>(62) 98433-8982</div></div><span class="url">atomdigital.com.br</span></div></footer>
 
 <script src="dados.js"></script>
+<script src="motor.js"></script>
 <script>
 /* ======================= UTILIDADES ======================= */
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -1000,17 +1012,48 @@ function areasDe(r) {
 const opcionalEm = (r, a) => r.tipos.every(id => !tipo(id).areas.includes(a) || tipo(id).opcionais.includes(a));
 const nota = (r, a) => r.marc[a].filter(Boolean).length * 2;
 const faixa = n => n <= 4 ? ["Perdendo cliente", "var(--ruim)"] : n <= 7 ? ["Pode melhorar", "#e0a030"] : ["Funciona", "var(--verde)"];
-function calcula(r) {
-  const areas = areasDe(r), med = areas.filter(a => r.dentro[a]);
-  const media = l => l.length ? Math.round(l.reduce((s, a) => s + nota(r, a), 0) / l.length * 10) / 10 : 0;
-  const porTipo = r.tipos.map(id => ({ t: tipo(id), n: media(tipo(id).areas.filter(a => r.dentro[a])) }));
-  const urg = med.slice().sort((x, y) => nota(r, x) - nota(r, y) || ORDEM[AREAS[x].g] - ORDEM[AREAS[y].g]).slice(0, 3);
-  const plano = { hoje: [], d90: [], m6: [] };
-  med.forEach(a => AREAS[a].c.forEach((c, i) => { if (r.marc[a][i]) return; const it = `${AREAS[a].nome}: ${txt(c).charAt(0).toLowerCase() + txt(c).slice(1)}`; if (rapido(c)) plano.hoje.push(it); else if (urg.includes(a) || AREAS[a].h === "90") plano.d90.push(it); else plano.m6.push(it); }));
-  const v = r.valor, contatos = Math.round(v.procura * v.contato / 100), clientes = Math.round(contatos * v.fecha / 100);
+function calcula(r) { // regras do método vêm de motor.js (as mesmas do n8n)
+  const D = MOTOR.diagnostico(r);
+  const plano = { hoje: D.plano.hoje.map(x => x.texto), d90: D.plano.d90.map(x => x.texto), m6: D.plano.m6.map(x => x.texto) };
   const custo = custoConsumo(consumoUniao(r.tipos)), soma = r.tipos.reduce((s, id) => s + custoConsumo(consumoEfetivo(id)).total, 0);
   const virada = a => { for (const id of r.tipos) { const P = pontosDe(tipo(id)); const k = P.findIndex(p => p[6].includes(a)); if (k >= 0) return { t: tipo(id), i: k, p: P[k] }; } return null; };
-  return { areas, med, geral: media(med), porTipo, urg, plano, contatos, clientes, total: clientes * v.ticket, temValor: r.tipos.some(id => tipo(id).valor), custo, soma, virada };
+  return { areas: D.areas, med: D.med, geral: D.geral, porTipo: D.porTipo.map(x => ({ t: tipo(x.id), n: x.n })), urg: D.urg, plano, contatos: D.valor.contatos, clientes: D.valor.clientes, total: D.valor.total, temValor: D.temValor, custo, soma, virada, D };
+}
+const propostaDe = (r, c) => MOTOR.proposta(r, c.D, plan, r.data || hoje());
+function propostaHTML(r) {
+  const c = calcula(r), P = propostaDe(r, c), li = arr => `<ul class="setas">${arr.map(x => `<li><span>${x}</span></li>`).join("")}</ul>`;
+  return `<div class="prop">
+    ${P.pendencias.length ? `<ul class="alertas">${P.pendencias.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul>` : ""}
+    <div class="prop-cab"><div><span class="over">Proposta · ${dataBR(P.data)} · válida até ${dataBR(P.validade)}</span><h2>Proposta para <b>${esc(r.empresa || "a empresa")}</b></h2><p class="lead">${esc([r.cidade, r.segmento].filter(Boolean).join(" · "))}${r.deal ? ` · negócio #${r.deal.id} no Pipedrive` : ""}</p></div>
+      <div class="prop-total"><span class="cap">Investimento</span><span class="grande">${brl(P.total)}</span>${P.valorEmJogo ? `<span class="small suave">contra ${brl(P.valorEmJogo)} por mês de procura em jogo</span>` : ""}</div></div>
+    <div class="bloco-g"><h4>Por que agora: as três urgências do diagnóstico</h4><div class="colunas cartoes" style="--n:3">${P.porque.map((u, i) => `<div class="col"><span class="cap">${i + 1}ª urgência</span><b>${esc(u.nome)}</b><span class="grande" style="font-size:var(--fs-h3);color:${faixa(u.nota)[1]}">${u.nota}/10</span><span class="small suave">${esc(u.faixa)}</span></div>`).join("")}</div></div>
+    <div class="bloco-g"><h4>O que a Atom entrega</h4>${P.ofertas.map(o => `<div class="prop-oferta"><div class="po-cab"><div><span class="over">Diagnóstico ${esc(o.diagnostico)}</span><h3>${esc(o.nome)}</h3></div><div class="po-preco"><b>${o.preco ? brl(o.preco) : "preço a definir"}</b><span class="cap">${esc(o.condicao)}</span></div></div>
+      ${o.resolve.length ? `<p class="small"><b>Resolve:</b> ${o.resolve.map(x => `${esc(x.nome)} (${x.nota}/10) com ${esc(x.solucao)}`).join("; ")}.</p>` : ""}
+      ${o.entregas.length ? li(o.entregas.map(esc)) : ""}</div>`).join("")}</div>
+    <div class="bloco-g"><h4>Próximos passos</h4><ol class="prop-passos">${P.proximos.map(x => `<li>${esc(x)}</li>`).join("")}</ol></div>
+    <div class="acoes"><button class="btn" type="button" id="b-prop-copiar">Copiar proposta</button>${r.deal ? `<button class="btn sec" type="button" id="b-prop-pd"${mcp ? "" : " disabled"}>Registrar no Pipedrive (nota interna)</button>` : ""}</div>
+    <p class="msg" id="msg-prop">${P.pronta ? "Proposta montada pelas regras do método. Revise antes de enviar: nada vai ao cliente sem a sua aprovação." : "Complete as pendências acima antes de enviar."}</p>
+  </div>`;
+}
+function propostaTexto(r) {
+  const c = calcula(r), P = propostaDe(r, c);
+  const L = [`PROPOSTA ATOM · ${r.empresa || ""}`, `${dataBR(P.data)} · válida até ${dataBR(P.validade)}`, "", "Por que agora:"];
+  P.porque.forEach((u, i) => L.push(`${i + 1}. ${u.nome}: ${u.nota}/10 (${u.faixa})`));
+  L.push("", "O que a Atom entrega:");
+  P.ofertas.forEach(o => { L.push(`■ ${o.nome}: ${o.preco ? brl(o.preco) : "preço a definir"} (${o.condicao})`); o.resolve.forEach(x => L.push(`  Resolve ${x.nome} (${x.nota}/10) com ${x.solucao}`)); o.entregas.forEach(x => L.push("  → " + x)); });
+  L.push("", `Investimento total: ${brl(P.total)}`);
+  if (P.valorEmJogo) L.push(`Procura em jogo: ${brl(P.valorEmJogo)} por mês (tamanho da procura, não promessa de faturamento).`);
+  L.push("", "Próximos passos: " + P.proximos.join(" → "));
+  return L.join("\n");
+}
+async function registrarPropostaPD() {
+  const r = rascunho, m = document.getElementById("msg-prop"), b = document.getElementById("b-prop-pd");
+  if (!r.deal) return; b.disabled = true; m.textContent = "Registrando no Pipedrive…";
+  try {
+    await mcp.callTool(PIPE, "addNote", { deal_id: r.deal.id, content: "<p><b>Proposta (rascunho interno, não enviada ao cliente)</b></p><p>" + esc(propostaTexto(r)).replace(/\n/g, "<br>") + "</p>" }, { cache: false });
+    m.textContent = `Proposta registrada como nota no negócio #${r.deal.id}. Nada foi enviado ao cliente.`;
+  } catch (e) { m.textContent = "Não registrada: " + erroPipe(e); }
+  b.disabled = false;
 }
 function etapasG(r) {
   const areas = areasDe(r), C = coletasDe(r), c = calcula(r);
@@ -1020,6 +1063,7 @@ function etapasG(r) {
   E.push({ k: "criterios", rot: "Critérios", st: `${comEvid} de ${areas.length} com evidência`, ok: areas.length > 0 && comEvid === areas.length });
   if (c.temValor) E.push({ k: "valor", rot: "Quanto vale", st: brl(c.total) + " por mês", ok: !!(r.valor.procura && r.valor.ticket) });
   E.push({ k: "resultado", rot: "Resultado", st: `nota ${n1(c.geral)}/10`, ok: false });
+  const P = propostaDe(r, c); E.push({ k: "proposta", rot: "Proposta", st: P.pronta ? brl(P.total) : "falta preço", ok: false });
   return E;
 }
 function telaGerar() {
@@ -1042,6 +1086,7 @@ function telaGerar() {
           <ul class="lista-g">${areas.map(a => `<li><button type="button" id="g-${a}" data-g-area="${a}" class="${a === sel.gArea ? "on" : ""}"><span class="nm"><b>${esc(AREAS[a].nome)}</b><span class="u" id="gu-${a}"></span></span><span class="tr"><i id="gb-${a}"></i></span><span class="nota" id="gn-${a}"></span><span class="ev" id="ge-${a}" title="Evidência"></span></button></li>`).join("")}</ul></div>
         <div class="det-g" id="det-g"></div>
       </div>`;
+  else if (at.k === "proposta") corpo = propostaHTML(r);
   else if (at.k === "valor") corpo = `
       <div class="bloco-g"><h4>Quanto vale a procura</h4><p class="small suave">É o tamanho da procura que a empresa disputa, não promessa de faturamento. Arredondado a cada etapa.</p><div class="campos">${campo("procura", "Buscas por mês na cidade", r.valor.procura, "number", 'min="0" step="10"')}${campo("contato", "% que entra em contato", r.valor.contato, "number", 'min="0" max="100" step="0.5"')}${campo("fecha", "% que fecha", r.valor.fecha, "number", 'min="0" max="100" step="1"')}${campo("ticket", "Ticket médio (R$)", r.valor.ticket, "number", 'min="0" step="50"')}</div>
       <div class="conta-v" id="conta-v"></div></div>`;
@@ -1494,6 +1539,8 @@ function ligarGerar() {
   document.querySelectorAll("textarea[data-evid]").forEach(el => el.addEventListener("input", e => { r.evid[el.dataset.evid] = e.target.value; }));
   document.getElementById("b-novo").onclick = () => { rascunho = novoRascunho(r.tipos.length ? r.tipos : ["site"], false); sel.gPasso = "cliente"; rota(); };
   const ba = document.getElementById("b-apify"); if (ba) ba.onclick = coletarApify;
+  const bpc = document.getElementById("b-prop-copiar"); if (bpc) bpc.onclick = async () => { const m = document.getElementById("msg-prop"); try { await navigator.clipboard.writeText(propostaTexto(r)); m.textContent = "Proposta copiada."; } catch (e) { m.textContent = "Não foi possível copiar aqui."; } };
+  const bpp = document.getElementById("b-prop-pd"); if (bpp) bpp.onclick = registrarPropostaPD;
   const pb = document.getElementById("pd-buscar"); if (pb) { pb.onclick = buscarNegocios; document.getElementById("pd-busca").onkeydown = e => { if (e.key === "Enter") buscarNegocios(); }; }
   const pt = document.getElementById("pd-trocar"); if (pt) pt.onclick = () => { r.deal = null; rota(); };
   const MAPA_CAMPOS = { "ap-busca": "apBusca", "ap-cidade": "apCidade", "ap-n": "apN", "ap-site": "apSite", "ap-insta": "apInsta" };
