@@ -145,7 +145,7 @@ O botão "Enviar ao Pipedrive":
 
 ## 6. Receita e lucro
 
-- **Cenário padrão:** 18 reuniões por dia; 7% das abordagens viram reunião e 20% das reuniões viram venda.
+- **Cenário padrão:** 12 reuniões por dia (metas de 6 meses: 262 sites, 24 contratos de SEO e 31 setups Geral); 7% das abordagens viram reunião e 20% das reuniões viram venda.
 - **Como o caixa entra:** venda × preço, mês a mês. O SEO entra em 6 parcelas.
 - **O que é descontado:** imposto, taxas do Asaas, ferramentas e custo de entrega.
 - **Lucro do Diagnóstico Total por venda:** R$ 396 − R$ 63,36 de imposto − R$ 3,98 de taxas − cerca de R$ 12 de ferramentas = cerca de R$ 316.
@@ -178,6 +178,7 @@ Para abrir localmente com tudo funcionando (menos conectores): `npm run metodo` 
 
 | Data | Mudança |
 |---|---|
+| 15/10/2026 | Capacidade de 12 reuniões por dia; metas de 6 meses ajustadas para caber nela: Site 262 (antes 1.000), SEO 24 (antes 90), Geral 31 (antes 120) |
 | 15/10/2026 | Removida a seção Casos: o método é novo e ainda não tem casos próprios. O Coalumaq fica só como modelo de formato da entrega do Total |
 | 15/10/2026 | Integração com o Pipedrive; receita e lucro com preços de Site e SEO; imposto de 16%; franquias reais (Semrush 2M, Apify Starter); Gerar em passos; Passo a passo em raias; Site com dados do Semrush e limites revistos |
 | 14–15/10/2026 | Criação do método: 5 diagnósticos, 17 áreas, 12 pontos por diagnóstico, régua, custos por ferramenta, capacidade de 18 reuniões por dia, coleta no Apify, padrão Coalumaq no Total |

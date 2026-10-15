@@ -292,8 +292,8 @@ const CONTA_APIFY = { lido: "15/10/2026", ciclo: "02/10 a 01/11", usado: 2.85, l
 const TAXAS_ASAAS = { lido: "15/10/2026", boleto: 1.99, pix: 1.99, pixGratisMes: 100 }; // lido na conta Asaas (myAccount/fees)
 const PLANEJAMENTO_PADRAO = {
   meses: 6, diasUteis: 22, semanasMes: 4.33,
-  taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 18, cenario: "capacidade", reusoMercado: 20, parteMercadoSemrush: 70, semrushProspeccao: "todos",
-  metas: { site: 1000, seo: 90, geral: 120, atendimento: 0, completo: 0 },
+  taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 12, cenario: "capacidade", reusoMercado: 20, parteMercadoSemrush: 70, semrushProspeccao: "todos",
+  metas: { site: 262, seo: 24, geral: 31, atendimento: 0, completo: 0 }, // ajustadas em 15/10/2026 para caber em 12 reuniões por dia (antes: 1.000, 90 e 120)
   precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 3.98, imposto: 16,
   // preço de venda de cada oferta (o que o cliente paga à Atom); parcelas = meses em que o valor entra no caixa
   vendas: { site: { preco: 2300, parcelas: 1 }, seo: { preco: 12000, parcelas: 6 }, geral: { preco: 0, parcelas: 1 }, atendimento: { preco: 0, parcelas: 1 } },

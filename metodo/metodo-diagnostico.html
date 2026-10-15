@@ -514,7 +514,7 @@ function totais(linhas) {
   const tot = (k, f) => linhas.filter(l => !f || l.t.finalidade === f).reduce((s, l) => s + l[k], 0);
   return { linhas, vendasMes: tot("vendasMes", "prospeccao"), reunioes: tot("reunioes"), abordagens: tot("abordagens"), diags: tot("diags"), produto: linhas.find(l => l.t.finalidade === "produto") };
 }
-function capacidade() { // 18 reuniões por dia distribuídas na proporção das metas
+function capacidade() { // reuniões por dia distribuídas na proporção das metas
   const M = funilMeta(), cap = (Number(plan.reunioesDia) || 0) * plan.diasUteis;
   const fator = M.reunioes > 0 ? cap / M.reunioes : 0;
   const linhas = M.linhas.map(l => l.t.finalidade === "produto" ? l : { ...l, reunioes: l.reunioes * fator, abordagens: l.abordagens * fator, vendasMes: l.vendasMes * fator, diags: l.diags * fator, vendas6: l.vendasMes * fator * plan.meses });
