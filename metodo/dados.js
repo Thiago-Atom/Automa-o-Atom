@@ -133,6 +133,8 @@ const H = { // etapas de processo reaproveitadas; "alimenta" = áreas que a etap
     faz: "Critérios reprovados de solução rápida entram em \"hoje, grátis\"; os das urgências em 90 dias; o resto em 6 meses. As urgências definem o escopo da proposta." },
   montagem: { nome: "Montagem do PDF", modo: "auto", quem: "n8n", ferr: "PDF.co · Google Drive", tempo: "5 min", saida: "PDF no Drive com link no negócio", alimenta: [], usa: ["pdfco", "n8n"],
     faz: "Gerar o PDF do diagnóstico e anexar o link ao negócio no Pipedrive." },
+  texto: { nome: "Texto no Pipedrive", modo: "auto", quem: "n8n", ferr: "Pipedrive", tempo: "1 min", saida: "Raio-x como nota no negócio", alimenta: [], usa: ["n8n"],
+    faz: "Gravar o raio-x como texto na nota do negócio, sem gerar PDF. O PDF fica só para o Diagnóstico Total." },
   revisao: { nome: "Revisão e envio", modo: "manual", quem: "Thiago", ferr: "Drive · Pipedrive", tempo: "20 min", saida: "Diagnóstico aprovado e enviado", alimenta: [], usa: [],
     faz: "Conferir cada número com a fonte e a data. Nada vai para o cliente sem essa aprovação." }
 };
@@ -145,10 +147,10 @@ const TIPOS = [
     proposta: ["Proposta de site (modelo definitivo)", "https://claude.ai/artifact/XXJxzV21z3gymxyD7Z19pe"],
     areas: ["sit", "conv", "est", "loja"], opcionais: ["loja"],
     processo: [H.pedido(),
-      { nome: "Coleta técnica", modo: "auto", quem: "n8n", ferr: "PageSpeed · Firecrawl · Semrush", tempo: "10 min", saida: "Velocidade, páginas e estrutura", alimenta: ["sit", "est"], usa: ["pagespeed", "firecrawl", "semrush", "n8n"], faz: "Medir o carregamento no celular e no computador, rastrear até 10 páginas e ler a estrutura de busca." },
+      { nome: "Coleta técnica", modo: "auto", quem: "n8n", conectado: "a leitura do site já roda pelo botão \"Coletar no Apify\" na tela Gerar", ferr: "PageSpeed · Apify (crawler do site) · Semrush", tempo: "10 min", saida: "Velocidade, páginas e estrutura", alimenta: ["sit", "est"], usa: ["pagespeed", "apify", "semrush", "n8n"], faz: "Medir o carregamento no celular e no computador, rastrear até 10 páginas e ler a estrutura de busca." },
       { nome: "Navegação como cliente", modo: "manual", quem: "Consultor", ferr: "Celular", tempo: "20 min", saida: "Capturas e atritos", alimenta: ["conv", "sit", "loja"], usa: [], faz: "Entrar pelo celular, procurar o serviço principal e tentar falar com a empresa. Anotar cada atrito com captura." },
-      { nome: "Comparação com 3 concorrentes", modo: "parcial", quem: "Consultor", ferr: "Firecrawl · Claude", tempo: "20 min", saida: "Quadro comparativo", alimenta: ["sit", "conv"], usa: ["firecrawl", "claude"], faz: "Comparar promessa, prova, páginas de serviço e caminho até o contato com 3 sites do mesmo mercado." },
-      H.pontua, H.plano, H.montagem, H.revisao],
+      { nome: "Comparação com 3 concorrentes", modo: "parcial", quem: "Consultor", ferr: "Apify (crawler do site) · Claude", tempo: "20 min", saida: "Quadro comparativo", alimenta: ["sit", "conv"], usa: ["apify", "claude"], faz: "Comparar promessa, prova, páginas de serviço e caminho até o contato com 3 sites do mesmo mercado." },
+      H.pontua, H.plano, H.texto, H.revisao],
     escopo: ["Até 10 páginas representativas do site atual.", "Até 3 concorrentes e 20 buscas comerciais.", "Até 3 URLs testadas no celular e no computador.", "Sem site: analisar a presença atual e o que o novo site precisa resolver."],
     mostrar: ["O que já é forte na empresa e precisa aparecer melhor no site.", "De 3 a 5 oportunidades concretas, com captura, URL e efeito esperado.", "Comparação com referências do mesmo mercado.", "Mapa de páginas e caminho até o contato recomendados.", "Direção visual preliminar e escopo do novo site."],
     limites: ["Perda de conversão só vira número com dados de analytics.", "Design não é apresentado como causa isolada de vendas.", "A meta de 1.000 sites é da Atom, não promessa ao cliente."],
@@ -162,11 +164,11 @@ const TIPOS = [
     areas: ["bus", "est", "rep", "map", "ia", "mid", "med"], opcionais: ["med"],
     processo: [H.pedido("com as 5 buscas principais do segmento"),
       { nome: "Busca e posições", modo: "auto", quem: "n8n", ferr: "Semrush", tempo: "5 min", saida: "Posições, visitas e buscas com volume", alimenta: ["bus", "rep"], usa: ["semrush", "n8n"], faz: "Posição na busca principal e pela marca, 12 meses de visitas, até 200 termos agrupados por intenção e 5 concorrentes." },
-      { nome: "Mapa e avaliações", modo: "auto", quem: "Apify (botão em Gerar)", ferr: "Apify · Google Maps Scraper", conectado: "botão \"Coletar no Apify\" na tela Gerar preenche Google Maps e Avaliações", tempo: "5 min", saida: "Posição no mapa e reputação", alimenta: ["map", "rep"], usa: ["apify", "n8n"], faz: "Posição no mapa a partir do centro da cidade para as buscas principais e comparação de avaliações com os 3 primeiros." },
-      { nome: "Rastreio do site", modo: "auto", quem: "n8n", ferr: "Firecrawl · PageSpeed", tempo: "10 min", saida: "Páginas, canibalização e dados estruturados", alimenta: ["est"], usa: ["firecrawl", "pagespeed", "n8n"], faz: "Até 60 URLs: canibalização, páginas sem título, descrição ou H1, dados estruturados e llms.txt." },
+      { nome: "Mapa e avaliações", modo: "auto", quem: "Apify (botão em Gerar)", ferr: "Apify · Google Maps Scraper", conectado: "Google Maps, site e Instagram rodam pelo botão \"Coletar no Apify\" na tela Gerar", tempo: "5 min", saida: "Posição no mapa e reputação", alimenta: ["map", "rep"], usa: ["apify", "n8n"], faz: "Posição no mapa a partir do centro da cidade para as buscas principais e comparação de avaliações com os 3 primeiros." },
+      { nome: "Rastreio do site", modo: "auto", quem: "n8n", conectado: "a leitura do site já roda pelo botão \"Coletar no Apify\" na tela Gerar", ferr: "Apify (crawler do site) · PageSpeed", tempo: "10 min", saida: "Páginas, canibalização e dados estruturados", alimenta: ["est"], usa: ["apify", "pagespeed", "n8n"], faz: "Até 60 URLs: canibalização, páginas sem título, descrição ou H1, dados estruturados e llms.txt." },
       { nome: "Teste nas IAs", modo: "parcial", quem: "n8n", ferr: "OpenAI e Gemini com busca", tempo: "10 min", saida: "Placar de citações", alimenta: ["ia"], usa: ["openai", "gemini", "n8n"], faz: "10 perguntas × 2 IAs × 2 rodadas, com a resposta completa guardada como evidência." },
       { nome: "Leitura do Google Ads", modo: "parcial", quem: "Gestor de mídia", ferr: "Biblioteca de Anúncios · Semrush · conta (se autorizada)", tempo: "30 min", saida: "Anúncios, termos e páginas de destino", alimenta: ["mid", "med"], usa: ["semrush"], faz: "Anúncios ativos e para onde levam. Com acesso à conta: conversões, termos e distribuição da verba." },
-      H.pontua, H.valor, H.plano, H.montagem, H.revisao],
+      H.pontua, H.valor, H.plano, H.texto, H.revisao],
     escopo: ["Até 60 URLs e 200 termos agrupados por intenção.", "Até 5 concorrentes por mercado prioritário.", "IA: 10 perguntas × 2 ambientes × 2 rodadas.", "GSC, GA4, Ads e CRM quando autorizados; sem acesso, registrar a lacuna."],
     mostrar: ["Onde existe procura que dá dinheiro para a empresa.", "Quem ocupa esse espaço e quais lacunas a empresa pode tomar.", "Evidências de SEO e o placar das respostas de IA.", "O papel de SEO, GEO e Google Ads no plano.", "Prioridades, indicadores e escopo da operação proposta."],
     limites: ["Sem acesso à conta de Ads, a leitura é externa: CPC, CPA e retorno reais não são afirmados.", "Uma amostra de IA não garante citações futuras.", "Não prometemos posição nem prazo de posição."],
@@ -180,7 +182,7 @@ const TIPOS = [
     modelo: ["Modelo Unificado (referência)", "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t"],
     areas: ["rep", "bus", "map", "ava", "sit", "ins", "ia"], opcionais: ["ins"],
     processo: [H.pedido(),
-      { nome: "Coleta pública rasa", modo: "auto", quem: "n8n + Apify", ferr: "Semrush · Apify · PageSpeed", tempo: "3 min", saida: "Dados de busca, mapa, avaliações e site", alimenta: ["rep", "bus", "map", "ava", "sit", "ins"], usa: ["semrush", "apify", "pagespeed", "firecrawl", "n8n"], conectado: "a parte do Google Maps já roda pelo botão \"Coletar no Apify\" na tela Gerar", faz: "Busca principal e busca pela marca, top 10 do mapa, nota e volume de avaliações, velocidade da home e bio do Instagram. Sem rastreio completo do site." },
+      { nome: "Coleta pública rasa", modo: "auto", quem: "n8n + Apify", ferr: "Semrush · Apify · PageSpeed", tempo: "3 min", saida: "Dados de busca, mapa, avaliações e site", alimenta: ["rep", "bus", "map", "ava", "sit", "ins"], usa: ["semrush", "apify", "pagespeed", "n8n"], conectado: "Google Maps, site e Instagram já rodam pelo botão \"Coletar no Apify\" na tela Gerar", faz: "Busca principal e busca pela marca, top 10 do mapa, nota e volume de avaliações, velocidade da home e bio do Instagram. Sem rastreio completo do site." },
       { nome: "Teste rápido nas IAs", modo: "auto", quem: "n8n", ferr: "OpenAI e Gemini com busca", tempo: "1 min", saida: "Citada ou não, com a resposta guardada", alimenta: ["ia"], usa: ["openai", "gemini"], faz: "Uma pergunta de compra, uma vez em cada IA (3 buscas no total). Só diz se a empresa aparece." },
       { nome: "Pontuação e raio-x", modo: "auto", quem: "Claude Haiku", ferr: "Aba \"Gerar\"", tempo: "1 min", saida: "Notas, 3 urgências e o valor da procura", alimenta: "todas", usa: ["claude"], faz: "Notas pela régua, três urgências e o quanto vale, num texto curto. Modelo barato (Haiku) e contexto enxuto." },
       { nome: "Revisão rápida", modo: "manual", quem: "Comercial", ferr: "Pipedrive", tempo: "10 min", saida: "Raio-x aprovado para a abordagem", alimenta: [], usa: [], faz: "Conferir as três urgências e o número principal antes de usar na abordagem." }],
@@ -197,7 +199,7 @@ const TIPOS = [
     processo: [H.pedido("e agendar a entrevista"), H.oculto,
       { nome: "Leitura de conversas", modo: "parcial", quem: "Consultor + Claude", ferr: "Exportação do WhatsApp (autorizada)", tempo: "30 min", saida: "Padrões de atendimento e perda", alimenta: ["wha", "fec"], usa: ["claude"], faz: "Ler uma amostra de 30 conversas recentes: tempo de resposta, qualificação, próximo passo e motivo de perda." },
       { nome: "Entrevista", modo: "manual", quem: "Consultor", ferr: "Roteiro de entrevista", tempo: "45 min", saida: "Critérios de processo, fechamento e pós-venda", alimenta: ["crm", "fec", "pos"], usa: [], faz: "Como o lead é registrado, quem responde, como a proposta é feita e o que acontece depois da venda." },
-      H.pontua, H.plano, H.montagem, H.revisao],
+      H.pontua, H.plano, H.texto, H.revisao],
     escopo: ["Cliente oculto em 3 horários: comercial, noite e fim de semana.", "Amostra de 30 conversas recentes, com autorização.", "Entrevista de 45 minutos com quem atende e quem gere.", "Últimos 20 leads perdidos no CRM ou no WhatsApp."],
     mostrar: ["Tempo real de resposta e o que ele custa em vendas.", "Onde o lead esfria: qualificação, follow-up ou proposta.", "Conversas reais que mostram o problema.", "Como o agente de IA e o CRM resolvem cada gargalo."],
     limites: ["Sem conversas reais e sem CRM, o diagnóstico fica no cliente oculto e na entrevista.", "Conversas de clientes são dados pessoais: só com autorização e sem expor nomes."],
@@ -210,10 +212,10 @@ const TIPOS = [
     modelo: ["Modelo Unificado", "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t"],
     areas: ["rep", "bus", "map", "ava", "sit", "conv", "est", "ins", "ia", "mid", "med", "wha", "crm", "fec", "pos", "num"], opcionais: ["mid", "med"],
     processo: [H.pedido("e agendar a entrevista"),
-      { nome: "Coleta pública completa", modo: "auto", quem: "n8n + Apify", ferr: "Semrush · Apify · PageSpeed · Firecrawl", tempo: "15 min", saida: "Evidências com fonte e data", alimenta: ["rep", "bus", "map", "ava", "sit", "est", "ins"], usa: ["semrush", "apify", "pagespeed", "firecrawl", "n8n"], conectado: "a parte do Google Maps já roda pelo botão \"Coletar no Apify\" na tela Gerar", faz: "Até 200 termos e 5 concorrentes, top 30 do mapa com 300 avaliações, rastreio de 60 páginas, Instagram." },
+      { nome: "Coleta pública completa", modo: "auto", quem: "n8n + Apify", ferr: "Semrush · Apify · PageSpeed", tempo: "15 min", saida: "Evidências com fonte e data", alimenta: ["rep", "bus", "map", "ava", "sit", "est", "ins"], usa: ["semrush", "apify", "pagespeed", "n8n"], conectado: "Google Maps, site e Instagram já rodam pelo botão \"Coletar no Apify\" na tela Gerar", faz: "Até 200 termos e 5 concorrentes, top 30 do mapa com 300 avaliações, rastreio de 60 páginas, Instagram." },
       { nome: "Placar nas IAs", modo: "auto", quem: "n8n", ferr: "OpenAI e Gemini com busca", tempo: "15 min", saida: "Placar de citações por pergunta", alimenta: ["ia"], usa: ["openai", "gemini", "n8n"], faz: "10 perguntas × 2 IAs × 2 rodadas, como na Coalumaq: onde a empresa é lembrada, aparece pouco ou some." },
       H.oculto,
-      { nome: "Mídia e conversão", modo: "parcial", quem: "Gestor de mídia", ferr: "Biblioteca de Anúncios · contas", tempo: "40 min", saida: "Anúncios, páginas e medição", alimenta: ["mid", "med", "conv"], usa: ["firecrawl"], faz: "Anúncios ativos, páginas de destino, conversões e, com acesso, custo por venda." },
+      { nome: "Mídia e conversão", modo: "parcial", quem: "Gestor de mídia", ferr: "Biblioteca de Anúncios · contas", tempo: "40 min", saida: "Anúncios, páginas e medição", alimenta: ["mid", "med", "conv"], usa: ["apify"], faz: "Anúncios ativos, páginas de destino, conversões e, com acesso, custo por venda." },
       { nome: "Entrevista", modo: "manual", quem: "Consultor", ferr: "Roteiro de entrevista", tempo: "45 min", saida: "Critérios internos marcados", alimenta: ["crm", "fec", "pos", "num", "med"], usa: [], faz: "Com o dono ou o gestor: clientes prioritários, registro de leads, proposta, pós-venda e números acompanhados." },
       { nome: "Análise e texto", modo: "parcial", quem: "Claude Sonnet + consultor", ferr: "Aba \"Gerar\"", tempo: "1 h", saida: "Notas, urgências, quanto vale, plano em 3 frentes e placar hoje × meta", alimenta: "todas", usa: ["claude"], faz: "Pontuar com evidência, montar a narrativa no padrão Coalumaq e o placar que será repetido todo mês." },
       { nome: "Montagem da apresentação", modo: "auto", quem: "n8n", ferr: "Modelo Coalumaq · PDF.co · Drive", tempo: "10 min", saida: "Apresentação em PDF no Drive", alimenta: [], usa: ["pdfco", "n8n"], faz: "Gerar a apresentação e anexar ao negócio no Pipedrive." },
@@ -242,11 +244,11 @@ const CASOS = [
    uso[...] = consumo estimado por diagnóstico (hipótese de planejamento, validar no piloto).
    "pre" = pré-diagnóstico automático feito para cada empresa abordada. */
 const CONSUMO = { // por diagnóstico; hipóteses de planejamento a medir no piloto. Prospecção usa Haiku e amostras pequenas.
-  site:        { claude: { inH: 60, outH: 10 },  openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 0, avaliacoes: 0, perfis: 0 },    semrush: { unidades: 200 },  firecrawl: { paginas: 10 }, pdfco: { creditos: 20 }, n8n: { execucoes: 3 },  pagespeed: { testes: 3 } },
-  seo:         { claude: { inH: 120, outH: 20 }, openai: { tok: 20, busca: 6 },  gemini: { tok: 20, busca: 6 },  apify: { lugares: 20, avaliacoes: 0, perfis: 0 },   semrush: { unidades: 1000 }, firecrawl: { paginas: 20 }, pdfco: { creditos: 20 }, n8n: { execucoes: 5 },  pagespeed: { testes: 3 } },
-  geral:       { claude: { inH: 60, outH: 10 },  openai: { tok: 10, busca: 3 },  gemini: { tok: 10, busca: 3 },  apify: { lugares: 10, avaliacoes: 0, perfis: 1 },   semrush: { unidades: 300 },  firecrawl: { paginas: 5 },  pdfco: { creditos: 20 }, n8n: { execucoes: 3 },  pagespeed: { testes: 2 } },
-  atendimento: { claude: { inH: 40, outH: 8 },   openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 0, avaliacoes: 0, perfis: 0 },    semrush: { unidades: 0 },    firecrawl: { paginas: 0 },  pdfco: { creditos: 20 }, n8n: { execucoes: 2 },  pagespeed: { testes: 0 } },
-  completo:    { claude: { in: 400, out: 60 },   openai: { tok: 80, busca: 40 }, gemini: { tok: 80, busca: 40 }, apify: { lugares: 30, avaliacoes: 300, perfis: 10 }, semrush: { unidades: 3000 }, firecrawl: { paginas: 60 }, pdfco: { creditos: 40 }, n8n: { execucoes: 12 }, pagespeed: { testes: 10 } }
+  site:        { claude: { inH: 60, outH: 10 },  openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 0, avaliacoes: 0, perfis: 0, sites: 1 },    semrush: { unidades: 200 },  firecrawl: { paginas: 0 }, pdfco: { creditos: 0 }, n8n: { execucoes: 3 },  pagespeed: { testes: 3 } },
+  seo:         { claude: { inH: 120, outH: 20 }, openai: { tok: 20, busca: 6 },  gemini: { tok: 20, busca: 6 },  apify: { lugares: 20, avaliacoes: 0, perfis: 0, sites: 1 },   semrush: { unidades: 1000 }, firecrawl: { paginas: 0 }, pdfco: { creditos: 0 }, n8n: { execucoes: 5 },  pagespeed: { testes: 3 } },
+  geral:       { claude: { inH: 60, outH: 10 },  openai: { tok: 10, busca: 3 },  gemini: { tok: 10, busca: 3 },  apify: { lugares: 10, avaliacoes: 0, perfis: 1, sites: 1 },   semrush: { unidades: 300 },  firecrawl: { paginas: 0 },  pdfco: { creditos: 0 }, n8n: { execucoes: 3 },  pagespeed: { testes: 2 } },
+  atendimento: { claude: { inH: 40, outH: 8 },   openai: { tok: 0, busca: 0 },   gemini: { tok: 0, busca: 0 },   apify: { lugares: 0, avaliacoes: 0, perfis: 0, sites: 0 },    semrush: { unidades: 0 },    firecrawl: { paginas: 0 },  pdfco: { creditos: 0 }, n8n: { execucoes: 2 },  pagespeed: { testes: 0 } },
+  completo:    { claude: { in: 400, out: 60 },   openai: { tok: 80, busca: 40 }, gemini: { tok: 80, busca: 40 }, apify: { lugares: 30, avaliacoes: 300, perfis: 10, sites: 6 }, semrush: { unidades: 3000 }, firecrawl: { paginas: 0 }, pdfco: { creditos: 40 }, n8n: { execucoes: 12 }, pagespeed: { testes: 10 } }
 };
 // PRECOS e PLANOS são preenchidos a partir da pesquisa de tarifas (fonte e data em cada linha).
 const LIDO = "15/10/2026";
@@ -263,13 +265,13 @@ const FERRAMENTAS = [
   { id: "gemini", nome: "Gemini", plano: "API · Gemini 3.8 Flash + busca do Google", moeda: "USD", mensal: 0, modo: "uso", papel: "Teste de citações: o que o Gemini e o Google respondem",
     itens: [{ id: "tok", rot: "mil tokens (média entrada/saída)", preco: 0.00135, nota: "US$ 0,75 / 3,75 por milhão; média 80/20" }, { id: "busca", rot: "consultas com busca", preco: 0.014, franquia: 5000, nota: "5.000 grátis/mês, depois US$ 14 por 1.000" }],
     fonte: "ai.google.dev/gemini-api/docs/pricing", conf: "média", obs: "Preço promocional: dobra em 01/01/2027." },
-  { id: "apify", nome: "Apify", plano: "Starter (US$ 19/mês em crédito)", moeda: "USD", mensal: 19, modo: "credito", papel: "Mapa, avaliações e Instagram",
-    itens: [{ id: "lugares", rot: "lugares do mapa", preco: 0.003, nota: "US$ 3 por 1.000 (nível Bronze)" }, { id: "avaliacoes", rot: "avaliações", preco: 0.00045, nota: "US$ 0,45 por 1.000" }, { id: "perfis", rot: "perfis do Instagram", preco: 0.0023, nota: "US$ 2,30 por 1.000" }],
+  { id: "apify", nome: "Apify", plano: "Starter (US$ 19/mês em crédito)", moeda: "USD", mensal: 19, modo: "credito", papel: "Google Maps, avaliações, Instagram e leitura do site",
+    itens: [{ id: "lugares", rot: "lugares do mapa", preco: 0.003, nota: "US$ 3 por 1.000 (nível Bronze)" }, { id: "avaliacoes", rot: "avaliações", preco: 0.00045, nota: "US$ 0,45 por 1.000" }, { id: "perfis", rot: "perfis do Instagram", preco: 0.0023, nota: "US$ 2,30 por 1.000" }, { id: "sites", rot: "leituras de site (até 10 páginas)", preco: 0.001, nota: "Website Content Crawler: grátis, paga só processamento (cerca de US$ 0,001)" }],
     fonte: "apify.com/pricing e páginas dos Actors", conf: "alta", obs: "A mensalidade vira crédito de uso. Starter tem teto de US$ 100 de uso; acima, plano Scale (US$ 199)." },
   { id: "semrush", nome: "Semrush", plano: "Pro (50 mil unidades MCP/mês)", moeda: "USD", mensal: 139.95, modo: "franquia", papel: "Buscas, posições, visitas, concorrentes e anúncios",
     itens: [{ id: "unidades", rot: "unidades de API", preco: null, franquia: 50000, nota: "50.000 incluídas no Pro; preço extra não confirmado" }],
     fonte: "semrush.com/kb/1618-mcp", conf: "média", obs: "Guru US$ 249,95; Business US$ 499,95, mas no Business a API exige pacote de unidades à parte." },
-  { id: "firecrawl", nome: "Firecrawl", plano: "Standard (100 mil páginas/mês)", moeda: "USD", mensal: 99, modo: "franquia", papel: "Leitura das páginas do site e dos concorrentes",
+  { id: "firecrawl", nome: "Firecrawl", plano: "Não usado (substituído pelo crawler da Apify)", moeda: "USD", mensal: 0, modo: "franquia", papel: "Leitura das páginas do site e dos concorrentes",
     itens: [{ id: "paginas", rot: "páginas", preco: 0.00099, franquia: 100000, nota: "1 crédito por página; excedente estimado pelo plano" }],
     fonte: "firecrawl.dev/pricing", conf: "média", obs: "Hobby: US$ 19 por 5.000 páginas. Créditos não acumulam." },
   { id: "pdfco", nome: "PDF.co", plano: "Basic (16.500 créditos/mês)", moeda: "USD", mensal: 8.99, modo: "franquia", papel: "Gera o PDF do diagnóstico",
@@ -286,7 +288,7 @@ const FERRAMENTAS = [
 
 const PLANEJAMENTO_PADRAO = {
   meses: 6, diasUteis: 22, semanasMes: 4.33,
-  taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 18, cenario: "capacidade",
+  taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 18, cenario: "capacidade", reusoMercado: 20, parteMercadoSemrush: 70,
   metas: { site: 1000, seo: 90, geral: 120, atendimento: 0, completo: 0 },
   precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 0,
   cambio: 5.00, reserva: 20

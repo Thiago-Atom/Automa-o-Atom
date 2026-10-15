@@ -270,6 +270,9 @@ table.t input { width: 100px; padding: 6px 8px; border: 1px solid var(--fio-fort
 .coleta .estado-msg { font-size: var(--fs-small); }
 .coleta .estado-msg.erro { color: var(--ruim); }
 .coleta .estado-msg.ok { color: var(--verde-texto); }
+.paineis-c { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.painel-c { background: var(--fundo); border-top: 3px solid var(--verde); box-shadow: var(--sombra); padding: 14px 16px; display: grid; gap: 6px; }
+.painel-c .dl div { padding: 6px 0; }
 .conectado { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--verde-texto); }
 
 /* Casos */
@@ -347,9 +350,17 @@ function custoConsumo(cons) { // custo variável (sem franquias), em BRL, por fe
   });
   return { linhas, total: linhas.reduce((s, l) => s + l.brl, 0) };
 }
+function consumoEfetivo(id) { // prospecção: a parte de mercado do Semrush (segmento + cidade) é consultada uma vez e reaproveitada
+  const c = JSON.parse(JSON.stringify(CONSUMO[id] || {}));
+  if (tipo(id)?.finalidade === "prospeccao" && c.semrush && plan.reusoMercado > 1) {
+    const parte = Math.min(100, Math.max(0, plan.parteMercadoSemrush)) / 100;
+    c.semrush.unidades = c.semrush.unidades * ((1 - parte) + parte / plan.reusoMercado);
+  }
+  return c;
+}
 function consumoUniao(ids) { // coleta compartilhada: maior consumo de cada item entre os diagnósticos escolhidos
   const out = {};
-  ids.forEach(id => { const c = CONSUMO[id]; for (const f in c) for (const u in c[f]) { out[f] = out[f] || {}; out[f][u] = Math.max(out[f][u] || 0, c[f][u]); } });
+  ids.forEach(id => { const c = consumoEfetivo(id); for (const f in c) for (const u in c[f]) { out[f] = out[f] || {}; out[f][u] = Math.max(out[f][u] || 0, c[f][u]); } });
   return out;
 }
 function funilMeta() {
@@ -383,7 +394,7 @@ function custoMensal() {
   const F = funil();
   const uso = {}; // uso[f][item] no mês
   const soma = (cons, k) => { for (const f in cons) for (const u in cons[f]) { uso[f] = uso[f] || {}; uso[f][u] = (uso[f][u] || 0) + cons[f][u] * k; } };
-  F.linhas.forEach(l => soma(CONSUMO[l.t.id], l.diags));
+  F.linhas.forEach(l => soma(consumoEfetivo(l.t.id), l.diags));
   const alertas = [];
   const linhas = FERRAMENTAS.map(f => {
     const m = mensalDe(f); let variavel = 0, semPreco = false;
@@ -458,7 +469,7 @@ function telaInicio() {
 
   <section class="secao"><div class="cab"><span class="over">Histórico</span><h2>Alterações <b>no método</b></h2></div>
     <table class="t"><tbody>
-      <tr><td class="num" style="width:70px"><b>v0.8</b></td><td>Quatro diagnósticos de prospecção baratos (Haiku, amostras pequenas; Geral raso) e o Diagnóstico Total como produto (2× R$ 198, teto de custo R$ 50, margem e caixa). Custo real registrado por diagnóstico. Apify conectado ao processo: o gerador coleta o Google Maps e preenche os critérios de mapa e avaliações com evidência.</td></tr>
+      <tr><td class="num" style="width:70px"><b>v0.8</b></td><td>Apify coleta Google Maps, site (Website Content Crawler, no lugar do Firecrawl) e Instagram de uma vez. Semrush de mercado reaproveitado por segmento e cidade; prospecção sem PDF. Quatro diagnósticos de prospecção baratos (Haiku, amostras pequenas; Geral raso) e o Diagnóstico Total como produto (2× R$ 198, teto de custo R$ 50, margem e caixa). Custo real registrado por diagnóstico. Apify conectado ao processo: o gerador coleta o Google Maps e preenche os critérios de mapa e avaliações com evidência.</td></tr>
       <tr><td class="num"><b>v0.7</b></td><td>Quatro diagnósticos (Site, SEO, Geral, Atendimento) que se somam por cliente. Os 12 pontos refeitos com filtro de caixa e posição. Metas, funil e custos por ferramenta. Casos de referência. Tipografia Inter e layout mais limpo.</td></tr>
       <tr><td class="num"><b>v0.6</b></td><td>Aplicação web com método, processo e gerador, conectados por clique.</td></tr>
       <tr><td class="num"><b>v0.4</b></td><td>Os 12 pontos que mudam o jogo em cada canal.</td></tr>
@@ -527,7 +538,7 @@ function telaProcesso(t) {
 }
 
 function telaEscopo(t) {
-  const c = custoConsumo(CONSUMO[t.id]);
+  const c = custoConsumo(consumoEfetivo(t.id));
   return cabTipo(t, "escopo") + `
   <div class="tres">
     <div class="r"><span class="over">Escopo e amostra</span><h4>Até onde vamos</h4><ul class="setas">${t.escopo.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></div>
@@ -537,7 +548,7 @@ function telaEscopo(t) {
   <div class="secao"><div class="cab-linha"><div class="cab"><span class="over">Custo de produção</span><h2>Quanto custa um diagnóstico <b>${esc(t.nome)}</b></h2><p class="lead">Custo variável das ferramentas por diagnóstico, sem mensalidades e sem trabalho da equipe. Consumo estimado, a validar no piloto.</p></div>
     <div><span class="cap">Por diagnóstico</span><div class="grande">${brl(c.total, 2)}</div></div></div>
     <div class="rolar"><table class="t"><thead><tr><th>Ferramenta</th><th>O que faz aqui</th><th>Consumo por diagnóstico</th><th class="r">Custo</th></tr></thead><tbody>
-    ${c.linhas.map(l => { const cons = CONSUMO[t.id][l.f.id] || {}; const desc = l.f.itens.filter(it => cons[it.id]).map(it => `${n0(cons[it.id])} ${it.rot}`).join(" · "); return `<tr><td><b>${esc(l.f.nome)}</b></td><td class="suave">${esc(l.f.papel)}</td><td>${desc || `<span class="suave">não usa</span>`}</td><td class="r num">${l.faltando ? `<span class="alerta">na franquia</span>` : brl(l.brl, 2)}</td></tr>`; }).join("")}
+    ${c.linhas.map(l => { const cons = consumoEfetivo(t.id)[l.f.id] || {}; const desc = l.f.itens.filter(it => cons[it.id]).map(it => `${n0(cons[it.id])} ${it.rot}`).join(" · "); return `<tr><td><b>${esc(l.f.nome)}</b></td><td class="suave">${esc(l.f.papel)}</td><td>${desc || `<span class="suave">não usa</span>`}</td><td class="r num">${l.faltando ? `<span class="alerta">na franquia</span>` : brl(l.brl, 2)}</td></tr>`; }).join("")}
     <tr class="total"><td colspan="3">Total variável por diagnóstico</td><td class="r num">${brl(c.total, 2)}</td></tr></tbody></table></div>
     <p class="cap" style="margin-top:12px">${t.finalidade === "produto" ? `Teto de custo do produto: ${brl(plan.tetoProduto)}. Com a reserva de ${plan.reserva}%, este diagnóstico custa ${brl(c.total * (1 + plan.reserva / 100), 2)}${c.total * (1 + plan.reserva / 100) > plan.tetoProduto ? " — ACIMA do teto" : " — dentro do teto"}. ` : "Diagnóstico de prospecção: feito em cada empresa abordada, por isso precisa ser barato. "}Mensalidades e franquias (Semrush, n8n, Firecrawl, PDF.co) estão em Metas e custos. "Na franquia" = incluído no plano até o limite.</p>
     <div class="acoes" style="margin-top:20px"><a class="btn" href="#gerar" data-gerar="${t.id}">Gerar um diagnóstico ${esc(t.nome)}</a><a class="btn sec" href="${t.proposta[1]}" target="_blank" rel="noopener">${esc(t.proposta[0])} ↗</a>${t.modelo ? `<a class="btn sec" href="${t.modelo[1]}" target="_blank" rel="noopener">${esc(t.modelo[0])} ↗</a>` : ""}</div></div>` + fimTipo();
@@ -545,7 +556,7 @@ function telaEscopo(t) {
 
 /* ---------- Metas e custos ---------- */
 function custoDoRascunho(r) {
-  const est = custoConsumo(consumoUniao(r.tipos)).total, real = r.coleta && r.coleta.custoUSD ? emBRL(r.coleta.custoUSD, "USD") : 0;
+  const est = custoConsumo(consumoUniao(r.tipos)).total, real = emBRL(custoColetas(r), "USD");
   return { est, real };
 }
 function realHTML() {
@@ -635,6 +646,8 @@ function telaCustos() {
       <div class="campo"><label>Câmbio R$ por US$</label>${inp("cambio", plan.cambio, "0.01")}</div>
       <div class="campo"><label>Câmbio R$ por €</label>${inp("cambioEUR", plan.cambioEUR, "0.01")}</div>
       <div class="campo"><label>Reserva para novas tentativas (%)</label>${inp("reserva", plan.reserva)}</div>
+      <div class="campo"><label>Empresas por segmento e cidade</label>${inp("reusoMercado", plan.reusoMercado)}</div>
+      <div class="campo"><label>% do Semrush que é de mercado</label>${inp("parteMercadoSemrush", plan.parteMercadoSemrush)}</div>
     </div>
     <div class="rolar"><table class="t"><thead><tr><th>Ferramenta</th><th>Plano</th><th class="r">Mensalidade</th><th>Consumo no mês</th><th class="r">Mês</th><th class="r">Semana</th><th class="r">Dia útil</th><th>Fonte</th></tr></thead><tbody>
     ${C.linhas.map(l => `<tr><td><b>${esc(l.f.nome)}</b><br><span class="cap">${esc(l.f.papel)}</span></td><td class="small">${esc(l.f.plano)}<br><span class="cap">${l.f.modo === "credito" ? "mensalidade vira crédito de uso" : l.f.modo === "franquia" ? "mensalidade + excedente" : "por uso"}</span></td>
@@ -644,13 +657,13 @@ function telaCustos() {
       <td class="cap">${esc(l.f.fonte)}<br>confiança ${esc(l.f.conf)} · ${LIDO}${l.f.obs ? `<br>${esc(l.f.obs)}` : ""}</td></tr>`).join("")}
     <tr><td colspan="4">Reserva para novas tentativas (${plan.reserva}%)</td><td class="r num">${brl(C.reserva)}</td><td class="r num">${brl(C.reserva / plan.semanasMes)}</td><td class="r num">${brl(C.reserva / plan.diasUteis)}</td><td></td></tr>
     <tr class="total"><td colspan="4">Total</td><td class="r num">${brl(C.total)}</td><td class="r num">${brl(C.semana)}</td><td class="r num">${brl(C.dia)}</td><td></td></tr></tbody></table></div>
-    <p class="cap" style="margin-top:12px">Não inclui trabalho da equipe, impostos, produção do site nem verba de mídia do cliente. Consumo por diagnóstico em "Escopo, limites e custo" de cada diagnóstico. Nenhuma API é chamada por esta página.</p>
+    <p class="cap" style="margin-top:12px">Na prospecção, a parte de mercado do Semrush (procura do segmento na cidade) é consultada uma vez e dividida pelas empresas do mesmo segmento e cidade. A prospecção não gera PDF: o raio-x vai como texto para o Pipedrive. Não inclui trabalho da equipe, impostos, produção do site nem verba de mídia do cliente. Consumo por diagnóstico em "Escopo, limites e custo" de cada diagnóstico. Nenhuma API é chamada por esta página.</p>
     <div class="acoes" style="margin-top:20px"><button class="btn" type="button" id="b-plan-salvar"${db ? "" : " disabled"}>Salvar estas premissas para a equipe</button><button class="btn sec" type="button" id="b-plan-reset">Voltar ao cenário inicial</button><span class="msg" id="msg-plan">${db ? (planDoc ? "Premissas carregadas da equipe." : "") : "Para salvar, abra a página logado no claude.ai."}</span></div></section>
 
   <section class="secao"><div class="cab"><span class="over">Consumo por diagnóstico</span><h2>Quanto cada diagnóstico usa <b>de cada ferramenta</b></h2><p class="lead">Estimativas de planejamento para validar no piloto.</p></div>
     <div class="rolar"><table class="t"><thead><tr><th>Ferramenta · unidade</th>${TIPOS.map(t => `<th class="r">${esc(t.nome)}</th>`).join("")}</tr></thead><tbody>
-    ${FERRAMENTAS.flatMap(f => f.itens.map(it => `<tr><td><b>${esc(f.nome)}</b> · ${esc(it.rot)}</td>${TIPOS.map(t => `<td class="r num">${n0(CONSUMO[t.id][f.id]?.[it.id] || 0)}</td>`).join("")}</tr>`)).join("")}
-    <tr class="total"><td>Custo variável por diagnóstico</td>${TIPOS.map(t => `<td class="r num">${brl(custoConsumo(CONSUMO[t.id]).total, 2)}</td>`).join("")}</tr></tbody></table></div></section>`;
+    ${FERRAMENTAS.flatMap(f => f.itens.map(it => `<tr><td><b>${esc(f.nome)}</b> · ${esc(it.rot)}</td>${TIPOS.map(t => `<td class="r num">${n0(consumoEfetivo(t.id)[f.id]?.[it.id] || 0)}</td>`).join("")}</tr>`)).join("")}
+    <tr class="total"><td>Custo variável por diagnóstico</td>${TIPOS.map(t => `<td class="r num">${brl(custoConsumo(consumoEfetivo(t.id)).total, 2)}</td>`).join("")}</tr></tbody></table></div></section>`;
 }
 
 /* ---------- Casos ---------- */
@@ -683,7 +696,7 @@ function calcula(r) {
   const plano = { hoje: [], d90: [], m6: [] };
   med.forEach(a => AREAS[a].c.forEach((c, i) => { if (r.marc[a][i]) return; const it = `${AREAS[a].nome}: ${txt(c).charAt(0).toLowerCase() + txt(c).slice(1)}`; if (rapido(c)) plano.hoje.push(it); else if (urg.includes(a) || AREAS[a].h === "90") plano.d90.push(it); else plano.m6.push(it); }));
   const v = r.valor, contatos = Math.round(v.procura * v.contato / 100), clientes = Math.round(contatos * v.fecha / 100);
-  const custo = custoConsumo(consumoUniao(r.tipos)), soma = r.tipos.reduce((s, id) => s + custoConsumo(CONSUMO[id]).total, 0);
+  const custo = custoConsumo(consumoUniao(r.tipos)), soma = r.tipos.reduce((s, id) => s + custoConsumo(consumoEfetivo(id)).total, 0);
   const virada = a => { for (const id of r.tipos) { const P = pontosDe(tipo(id)); const k = P.findIndex(p => p[6].includes(a)); if (k >= 0) return { t: tipo(id), i: k, p: P[k] }; } return null; };
   return { areas, med, geral: media(med), porTipo, urg, plano, contatos, clientes, total: clientes * v.ticket, temValor: r.tipos.some(id => tipo(id).valor), custo, soma, virada };
 }
@@ -725,7 +738,7 @@ function resultado() {
     <div class="bl"><span class="over">As três urgências</span><ol class="urgs">${c.urg.map((a, i) => { const v = c.virada(a); return `<li><button type="button" data-ir="${a}"><span class="i">${i + 1}</span><b>${esc(AREAS[a].nome)}</b><span>${nota(r, a)}/10</span><span class="s">Resolve: <strong>${esc(AREAS[a].sol)}</strong>${v ? `<br>Vira o jogo: ${esc(v.p[0])}` : ""}</span></button></li>`; }).join("")}</ol></div>
     ${c.temValor ? `<div class="bl"><span class="over">Quanto vale por mês</span><span class="grande" style="font-size:var(--fs-h2)">${brl(c.total)}</span><span class="cap">${n0(r.valor.procura)} buscas × ${r.valor.contato}% = ${n0(c.contatos)} contatos × ${r.valor.fecha}% = ${n0(c.clientes)} clientes × ${brl(r.valor.ticket)}</span></div>` : ""}
     <div class="bl plano"><span class="over">Plano</span><div class="g"><b>Hoje · grátis</b>${lista(c.plano.hoje)}</div><div><b>Em 90 dias · ser encontrado</b>${lista(c.plano.d90)}</div><div><b>Em 6 meses · ser escolhido</b>${lista(c.plano.m6)}</div></div>
-    <div class="bl"><span class="over">Custo de produção deste diagnóstico</span><span class="grande" style="font-size:var(--fs-h3)">${brl(c.custo.total, 2)}</span><span class="cap">${r.tipos.length > 1 ? `Somados à parte custariam ${brl(c.soma, 2)}; a coleta compartilhada economiza ${brl(c.soma - c.custo.total, 2)}. ` : ""}Só ferramentas, sem mensalidades nem equipe.${r.coleta && r.coleta.custoUSD ? ` Custo real já registrado nesta coleta do Apify: ${brl(emBRL(r.coleta.custoUSD, "USD"), 2)}.` : ""}</span>${r.tipos.includes("completo") ? (() => { const tot = c.custo.total * (1 + plan.reserva / 100); return `<span class="small" style="color:${tot > plan.tetoProduto ? "var(--ruim)" : "var(--verde-texto)"};font-weight:700">Com reserva: ${brl(tot, 2)} · teto do Diagnóstico Total ${brl(plan.tetoProduto)} · ${tot > plan.tetoProduto ? "acima do teto" : "dentro do teto"}</span>`; })() : ""}</div>
+    <div class="bl"><span class="over">Custo de produção deste diagnóstico</span><span class="grande" style="font-size:var(--fs-h3)">${brl(c.custo.total, 2)}</span><span class="cap">${r.tipos.length > 1 ? `Somados à parte custariam ${brl(c.soma, 2)}; a coleta compartilhada economiza ${brl(c.soma - c.custo.total, 2)}. ` : ""}Só ferramentas, sem mensalidades nem equipe.${custoColetas(r) ? ` Custo real das coletas do Apify: ${brl(emBRL(custoColetas(r), "USD"), 2)}.` : ""}</span>${r.tipos.includes("completo") ? (() => { const tot = c.custo.total * (1 + plan.reserva / 100); return `<span class="small" style="color:${tot > plan.tetoProduto ? "var(--ruim)" : "var(--verde-texto)"};font-weight:700">Com reserva: ${brl(tot, 2)} · teto do Diagnóstico Total ${brl(plan.tetoProduto)} · ${tot > plan.tetoProduto ? "acima do teto" : "dentro do teto"}</span>`; })() : ""}</div>
     <div class="bl"><span class="over">Propostas indicadas</span><div class="ligas">${r.tipos.map(id => `<a href="${tipo(id).proposta[1]}" target="_blank" rel="noopener">${esc(tipo(id).proposta[0])}</a>`).join("")}</div></div>
     <div class="acoes">${db ? `<button class="btn" type="button" id="b-salvar">${r.id ? "Salvar alterações" : "Salvar diagnóstico"}</button>` : ""}<button class="btn sec" type="button" id="b-copiar">Copiar texto</button></div>
     <p class="msg" id="msg">${db ? "" : "Para salvar, abra a página logado no claude.ai. Copiar funciona sempre."}</p>`;
@@ -756,7 +769,7 @@ async function salvar() {
   if (!r.empresa.trim()) { m.textContent = "Preencha o nome da empresa antes de salvar."; document.getElementById("f-empresa")?.focus(); return; }
   if (!r.tipos.length) { m.textContent = "Escolha pelo menos um diagnóstico."; return; }
   b.disabled = true; m.textContent = "Salvando…";
-  const doc = { tipos: r.tipos, empresa: r.empresa.trim(), site: r.site, cidade: r.cidade, segmento: r.segmento, data: r.data, marc: r.marc, dentro: r.dentro, evid: r.evid, valor: r.valor, coleta: r.coleta || null, custoEstimado: custoDoRascunho(r).est, custoReal: custoDoRascunho(r).real, geral: c.geral, urgencias: c.urg, atualizadoEm: Date.now(), autor: meuId };
+  const doc = { tipos: r.tipos, empresa: r.empresa.trim(), site: r.site, cidade: r.cidade, segmento: r.segmento, data: r.data, marc: r.marc, dentro: r.dentro, evid: r.evid, valor: r.valor, coletas: coletasDe(r), custoEstimado: custoDoRascunho(r).est, custoReal: custoDoRascunho(r).real, geral: c.geral, urgencias: c.urg, atualizadoEm: Date.now(), autor: meuId };
   try {
     if (r.id) await db.collection("diagnosticos").doc(r.id).set({ ...doc, criadoEm: r.criadoEm || Date.now() });
     else { const ref = await db.collection("diagnosticos").add({ ...doc, criadoEm: doc.atualizadoEm }); r.id = ref.id; r.criadoEm = doc.atualizadoEm; }
@@ -766,44 +779,128 @@ async function salvar() {
 }
 
 
-/* ---------- Coleta automática: Apify (Google Maps) ---------- */
-const APIFY = "https_mcp_apify_com", ACTOR = "compass/crawler-google-places";
-const CAMPOS_MAPA = "rank,title,totalScore,reviewsCount,categoryName,imagesCount,claimThisBusiness,phone,website,url";
+/* ---------- Coleta automática: Apify (Google Maps, site e Instagram) ---------- */
+const APIFY = "https_mcp_apify_com";
+const ACT = { mapa: "compass/crawler-google-places", site: "apify/website-content-crawler", insta: "apify/instagram-profile-scraper" };
+const CU_USD = 0.20; // preço do compute unit no plano Starter
 let mcp = null, coletando = false;
 const normal = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 const dominio = u => String(u || "").toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split(/[/?#]/)[0];
+const urlSite = s => { s = String(s || "").trim(); if (!s) return ""; return /^https?:\/\//i.test(s) ? s : "https://" + s; };
+const arroba = s => String(s || "").trim().replace(/^@/, "").replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").split(/[/?#]/)[0];
+const diasDesde = iso => iso ? Math.floor((Date.now() - new Date(iso).getTime()) / 864e5) : null;
+const coletasDe = r => { r.coletas = r.coletas || {}; if (r.coleta && !r.coletas.mapa) { r.coletas.mapa = r.coleta; } delete r.coleta; return r.coletas; };
+const custoColetas = r => Object.values(coletasDe(r)).reduce((s, c) => s + (c?.custoUSD || 0), 0);
+
 function acharEmpresa(r, itens) {
   const d = dominio(r.site), nome = normal(r.empresa).replace(/\b(ltda|me|eireli|sa)\b/g, "").trim();
   let i = d ? itens.findIndex(x => dominio(x.website) && dominio(x.website) === d) : -1;
   if (i < 0 && nome.length > 2) i = itens.findIndex(x => normal(x.title).includes(nome) || nome.includes(normal(x.title)));
   return i;
 }
-function coletaHTML(r, areas) {
-  if (!areas.includes("map") && !areas.includes("ava")) return "";
-  const c = r.coleta;
-  const tabela = c && c.itens && c.itens.length ? `<div class="rolar"><table class="t"><thead><tr><th class="r">Pos.</th><th>Empresa no mapa</th><th class="r">Nota</th><th class="r">Avaliações</th><th class="r">Fotos</th><th>Perfil</th><th></th></tr></thead><tbody>
-    ${c.itens.map((x, i) => `<tr class="${i === c.alvo ? "alvo" : ""}"><td class="r num">${i + 1}º</td><td>${esc(x.title)}<br><span class="cap">${esc(x.categoryName || "")}</span></td><td class="r num">${x.totalScore != null ? n1(x.totalScore) : "—"}</td><td class="r num">${x.reviewsCount != null ? n0(x.reviewsCount) : "—"}</td><td class="r num">${x.imagesCount != null ? n0(x.imagesCount) : "—"}</td><td class="small">${x.claimThisBusiness ? "não reivindicado" : "reivindicado"}</td><td>${i === c.alvo ? `<span class="conectado">é a empresa</span>` : `<button type="button" class="btn sec" data-alvo="${i}" style="padding:6px 10px">É esta</button>`}</td></tr>`).join("")}</tbody></table></div>
-    <p class="cap">${esc(c.fonte)} · busca "${esc(c.busca)}" em ${esc(c.cidade)} · ${dataBR(c.data)} · ${c.itens.length} lugares · custo aproximado ${brl(emBRL(c.custoUSD, "USD"), 2)}${c.alvo < 0 ? " · a empresa não apareceu na lista: ela está fora destes resultados" : ""}</p>` : "";
-  return `<div class="bloco-g"><h4>Coleta automática · Apify</h4>
-    <div class="coleta"><p class="small">Busca a empresa e os concorrentes no Google Maps e preenche sozinho os critérios de <b>Google Maps</b> e <b>Avaliações</b> que dá para provar com dado: posição no top 3, perfil reivindicado, 50 fotos ou mais, nota 4,5 ou mais e volume perto do líder. Os outros ficam para conferência humana.</p>
-      <div class="linha"><div class="campo"><label for="ap-busca">Busca principal</label><input id="ap-busca" value="${esc(r.apBusca ?? (r.segmento || ""))}" placeholder="ex.: dentista"></div><div class="campo"><label for="ap-cidade">Cidade</label><input id="ap-cidade" value="${esc(r.apCidade ?? (r.cidade || "").split("/")[0])}" placeholder="ex.: Goiânia"></div><div class="campo n"><label for="ap-n">Lugares</label><input id="ap-n" type="number" min="3" max="50" value="${r.apN ?? 20}"></div>
-        <button class="btn" type="button" id="b-apify"${mcp ? "" : " disabled"}>Coletar no Apify</button></div>
-      <p class="estado-msg" id="ap-msg">${mcp ? `Custo: cerca de ${brl(emBRL((r.apN ?? 20) * 0.003, "USD"), 2)} por coleta (US$ 3 por 1.000 lugares). A primeira vez, o claude.ai pede para você permitir o Apify nesta página.` : "Conector indisponível nesta visualização. Abra a página logado no claude.ai com o conector Apify adicionado."}</p>
-      ${tabela}</div></div>`;
+async function rodar(actor, input, callOptions, msgEl, rotulo) {
+  let run = (await mcp.callTool(APIFY, "call-actor", { actor, input, callOptions, waitSecs: 45 }, { cache: false })).payload;
+  for (let k = 0; k < 4 && run && !["SUCCEEDED", "FAILED", "ABORTED", "TIMED-OUT"].includes(run.status); k++) {
+    if (msgEl) msgEl.textContent = `${rotulo}: ainda coletando…`;
+    run = (await mcp.callTool(APIFY, "get-actor-run", { runId: run.runId, waitSecs: 40 }, { cache: false })).payload;
+  }
+  if (!run || run.status !== "SUCCEEDED") throw { code: "run", message: `${rotulo}: a coleta terminou com status ${run?.status || "desconhecido"}.` };
+  return run;
 }
-function aplicarColeta(r) {
-  const c = r.coleta; if (!c || c.alvo < 0) return;
-  const it = c.itens[c.alvo], pos = c.alvo + 1, top3 = c.itens.slice(0, 3);
-  const maxAv = Math.max(0, ...top3.map(x => x.reviewsCount || 0)), lider = top3.find(x => (x.reviewsCount || 0) === maxAv) || top3[0];
-  const fonte = `Apify · Google Maps, busca "${c.busca}" em ${c.cidade}, ${dataBR(c.data)}`;
-  if (r.marc.map) {
-    r.marc.map[0] = pos <= 3; r.marc.map[1] = it.claimThisBusiness === false; r.marc.map[3] = (it.imagesCount || 0) >= 50; r.dentro.map = true;
-    r.evid.map = `${fonte}: ${pos}º de ${c.itens.length}; perfil ${it.claimThisBusiness ? "não reivindicado" : "reivindicado"}; ${it.imagesCount ?? 0} fotos; categoria "${it.categoryName || "—"}"; telefone ${it.phone || "não informado"}. Conferir horário e se a categoria é a certa.`;
+const itensDe = async (run, fields, limit, offset = 0) => (await mcp.callTool(APIFY, "get-dataset-items", { datasetId: run.storages?.datasets?.default?.id, fields, limit, offset }, { cache: false })).payload?.items || [];
+
+async function coletarMapa(r, busca, cidade, n, msgEl) {
+  const run = await rodar(ACT.mapa, { searchStringsArray: [busca], locationQuery: `${cidade}, Brasil`, maxCrawledPlacesPerSearch: n, language: "pt-BR" }, { maxItems: n }, msgEl, "Google Maps");
+  const itens = (await itensDe(run, "rank,title,totalScore,reviewsCount,categoryName,imagesCount,claimThisBusiness,phone,website,url", n)).filter(x => x && x.title).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
+  const c = { fonte: "Apify · Google Maps Scraper", busca, cidade, data: hoje(), itens, alvo: -1, custoUSD: itens.length * 0.003, runId: run.runId };
+  c.alvo = acharEmpresa(r, itens);
+  return c;
+}
+async function coletarSite(r, url, msgEl) {
+  const run = await rodar(ACT.site, { startUrls: [{ url }], maxCrawlPages: 10, maxCrawlDepth: 1, crawlerType: "cheerio", saveMarkdown: false, saveHtml: true, removeCookieWarnings: true }, { memory: 1024, timeout: 180 }, msgEl, "Site");
+  const pags = await itensDe(run, "url,metadata.title,metadata.description,metadata.jsonLd,crawl.depth", 10);
+  const home = (await itensDe(run, "url,html", 1))[0] || {};
+  const html = String(home.html || ""), low = html.toLowerCase();
+  const tipos = [...new Set(pags.flatMap(p => (JSON.stringify(p["metadata.jsonLd"] || "").match(/"@type":"([A-Za-z]+)"/g) || []).map(m => m.slice(9, -1))))];
+  const texto = normal(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ")).slice(0, 4000);
+  const h1 = ((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const insta = ((html.match(/instagram\.com\/([A-Za-z0-9_.]{2,30})/i) || [])[1] || "").replace(/^(p|reel|explore|accounts)$/i, "");
+  const cidade = normal(r.cidade.split("/")[0] || r.apCidade || "");
+  const seg = normal(r.segmento || r.apBusca || "").split(" ")[0] || "";
+  return {
+    fonte: "Apify · Website Content Crawler", url, data: hoje(), runId: run.runId, custoUSD: (run.stats?.computeUnits || 0) * CU_USD,
+    paginas: pags.length, semDescricao: pags.filter(p => !p["metadata.description"]).length, semTitulo: pags.filter(p => !p["metadata.title"]).length,
+    titulo: pags[0]?.["metadata.title"] || "", h1, tipos,
+    whatsapp: /wa\.me\/|api\.whatsapp\.com|whatsapp:\/\//.test(low), tel: /href=["']tel:/.test(low),
+    ga4: /gtag\/js\?id=g-|googletagmanager\.com\/gtag/.test(low), gtm: /googletagmanager\.com\/gtm\.js|gtm-[a-z0-9]{4,}/.test(low), pixel: /connect\.facebook\.net|fbq\(/.test(low),
+    cms: /wp-content|wp-includes/.test(low) ? "WordPress" : /wix\.com|wixstatic/.test(low) ? "Wix" : /cdn\.shopify/.test(low) ? "Shopify" : /nuvemshop|lojanuvem/.test(low) ? "Nuvemshop" : "",
+    citaCidade: cidade ? texto.includes(cidade) : null, citaSegmento: seg ? texto.includes(seg) : null, instagram: insta
+  };
+}
+async function coletarInsta(user, msgEl) {
+  const run = await rodar(ACT.insta, { usernames: [user] }, {}, msgEl, "Instagram");
+  const p = (await itensDe(run, "username,biography,externalUrl,followersCount,postsCount,isBusinessAccount,businessCategoryName,private,latestPosts", 1))[0];
+  if (!p || p.error || !p.username) throw { code: "run", message: `Instagram: perfil @${user} não encontrado ou privado.` };
+  const posts = (p.latestPosts || []).filter(x => !x.isPinned).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const em30 = posts.filter(x => diasDesde(x.timestamp) <= 30);
+  const eng = posts.length && p.followersCount ? posts.slice(0, 12).reduce((s, x) => s + (x.likesCount || 0) + (x.commentsCount || 0), 0) / Math.min(12, posts.length) / p.followersCount * 100 : null;
+  const bio = `${p.biography || ""} ${p.externalUrl || ""}`.toLowerCase();
+  return { fonte: "Apify · Instagram Profile Scraper", usuario: p.username, data: hoje(), runId: run.runId, custoUSD: 0.0023,
+    seguidores: p.followersCount, posts: p.postsCount, comercial: p.isBusinessAccount, categoria: p.businessCategoryName, privado: p.private,
+    ultimoDias: posts[0] ? diasDesde(posts[0].timestamp) : null, mes: em30.length, reelsMes: em30.filter(x => x.productType === "clips" || x.type === "Video").length,
+    engajamento: eng, link: !!p.externalUrl, whatsappBio: /wa\.me|whatsapp|api\.whatsapp/.test(bio), bio: p.biography || "" };
+}
+
+function aplicarColetas(r) {
+  const C = coletasDe(r), areas = areasDe(r), tem = a => areas.includes(a);
+  const m = C.mapa;
+  if (m && m.alvo >= 0) {
+    const it = m.itens[m.alvo], pos = m.alvo + 1, top3 = m.itens.slice(0, 3);
+    const maxAv = Math.max(0, ...top3.map(x => x.reviewsCount || 0)), lider = top3.find(x => (x.reviewsCount || 0) === maxAv) || top3[0];
+    const f = `Apify · Google Maps, busca "${m.busca}" em ${m.cidade}, ${dataBR(m.data)}`;
+    if (tem("map")) { r.marc.map[0] = pos <= 3; r.marc.map[1] = it.claimThisBusiness === false; r.marc.map[3] = (it.imagesCount || 0) >= 50; r.dentro.map = true;
+      r.evid.map = `${f}: ${pos}º de ${m.itens.length}; perfil ${it.claimThisBusiness ? "não reivindicado" : "reivindicado"}; ${it.imagesCount ?? 0} fotos; categoria "${it.categoryName || "—"}"; telefone ${it.phone || "não informado"}. Conferir horário e categoria.`; }
+    if (tem("ava")) { r.marc.ava[0] = (it.totalScore || 0) >= 4.5; r.marc.ava[1] = maxAv ? (it.reviewsCount || 0) >= maxAv / 2 : false; r.dentro.ava = true;
+      r.evid.ava = `${f}: nota ${it.totalScore ?? "—"} com ${it.reviewsCount ?? 0} avaliações. Maior volume do top 3: ${lider ? `${lider.title}, ${lider.totalScore ?? "—"} com ${lider.reviewsCount ?? 0}` : "—"}.`; }
   }
-  if (r.marc.ava) {
-    r.marc.ava[0] = (it.totalScore || 0) >= 4.5; r.marc.ava[1] = maxAv ? (it.reviewsCount || 0) >= maxAv / 2 : false; r.dentro.ava = true;
-    r.evid.ava = `${fonte}: nota ${it.totalScore ?? "—"} com ${it.reviewsCount ?? 0} avaliações. Maior volume do top 3: ${lider ? `${lider.title}, ${lider.totalScore ?? "—"} com ${lider.reviewsCount ?? 0}` : "—"}. Recência, respostas e notas 1 estrela pedem a coleta das avaliações.`;
+  const s = C.site;
+  if (s) {
+    const f = `Apify · leitura de ${s.paginas} páginas de ${dominio(s.url)}, ${dataBR(s.data)}`;
+    if (tem("sit")) { r.marc.sit[1] = !!(s.citaCidade && s.citaSegmento); r.marc.sit[2] = s.whatsapp; r.marc.sit[3] = s.tel; r.dentro.sit = true;
+      r.evid.sit = `${f}: título "${s.titulo || "—"}"; H1 "${s.h1 || "sem H1"}"; ${s.citaSegmento ? "cita" : "não cita"} o segmento e ${s.citaCidade ? "cita" : "não cita"} a cidade; WhatsApp ${s.whatsapp ? "com link" : "sem link"}; telefone ${s.tel ? "clicável" : "não clicável"}. Velocidade: medir no PageSpeed.`; }
+    if (tem("est")) { r.marc.est[2] = s.paginas > 0 && s.semDescricao === 0 && s.semTitulo === 0; r.marc.est[3] = s.tipos.some(x => /LocalBusiness|Organization|Dentist|MedicalBusiness|Store|ProfessionalService|Service/.test(x)); r.dentro.est = true;
+      r.evid.est = `${f}: ${s.semDescricao} de ${s.paginas} páginas sem descrição; dados estruturados: ${s.tipos.length ? s.tipos.join(", ") : "nenhum"}.`; }
+    if (tem("conv")) { r.marc.conv[3] = s.ga4 || s.gtm; r.dentro.conv = true;
+      r.evid.conv = `${f}: ${[s.ga4 && "GA4", s.gtm && "Tag Manager", s.pixel && "Meta Pixel"].filter(Boolean).join(", ") || "nenhuma tag de medição"} instalado(s). Conferir se as conversões estão configuradas.`; }
   }
+  const g = C.insta;
+  if (g && tem("ins")) {
+    r.marc.ins[0] = g.ultimoDias != null && g.ultimoDias <= 7; r.marc.ins[1] = g.mes >= 8; r.marc.ins[2] = g.reelsMes > 0; r.marc.ins[3] = g.whatsappBio; r.marc.ins[4] = g.link; r.dentro.ins = true;
+    r.evid.ins = `Apify · Instagram @${g.usuario}, ${dataBR(g.data)}: ${n0(g.seguidores || 0)} seguidores; último post há ${g.ultimoDias ?? "—"} dias; ${g.mes} posts e ${g.reelsMes} Reels em 30 dias; engajamento médio ${g.engajamento != null ? n1(g.engajamento) + "%" : "—"}; ${g.link ? "tem link na bio" : "sem link na bio"}${g.whatsappBio ? " e WhatsApp" : ""}.`;
+  }
+}
+
+function coletaHTML(r, areas) {
+  const usaMapa = areas.includes("map") || areas.includes("ava"), usaSite = ["sit", "est", "conv"].some(a => areas.includes(a)), usaInsta = areas.includes("ins");
+  if (!usaMapa && !usaSite && !usaInsta) return "";
+  const C = coletasDe(r), m = C.mapa, s = C.site, g = C.insta;
+  const custoEst = (usaMapa ? (r.apN ?? 20) * 0.003 : 0) + (usaSite ? 0.002 : 0) + (usaInsta ? 0.0023 : 0);
+  const sim = v => v ? `<b style="color:var(--verde-texto)">sim</b>` : `<b style="color:var(--ruim)">não</b>`;
+  const linha = (k, v) => `<div><dt>${k}</dt><dd>${v}</dd></div>`;
+  const pMapa = m && m.itens?.length ? `<div class="rolar"><table class="t"><thead><tr><th class="r">Pos.</th><th>Empresa no mapa</th><th class="r">Nota</th><th class="r">Avaliações</th><th class="r">Fotos</th><th>Perfil</th><th></th></tr></thead><tbody>
+    ${m.itens.map((x, i) => `<tr class="${i === m.alvo ? "alvo" : ""}"><td class="r num">${i + 1}º</td><td>${esc(x.title)}<br><span class="cap">${esc(x.categoryName || "")}</span></td><td class="r num">${x.totalScore != null ? n1(x.totalScore) : "—"}</td><td class="r num">${x.reviewsCount != null ? n0(x.reviewsCount) : "—"}</td><td class="r num">${x.imagesCount != null ? n0(x.imagesCount) : "—"}</td><td class="small">${x.claimThisBusiness ? "não reivindicado" : "reivindicado"}</td><td>${i === m.alvo ? `<span class="conectado">é a empresa</span>` : `<button type="button" class="btn sec" data-alvo="${i}" style="padding:6px 10px">É esta</button>`}</td></tr>`).join("")}</tbody></table></div>
+    <p class="cap">Google Maps · "${esc(m.busca)}" em ${esc(m.cidade)} · ${dataBR(m.data)} · ${m.itens.length} lugares · custo ${brl(emBRL(m.custoUSD, "USD"), 2)}${m.alvo < 0 ? " · a empresa não está nesta lista" : ""}</p>` : "";
+  const pSite = s ? `<div class="painel-c"><span class="over">Site · ${esc(dominio(s.url))}</span><dl class="dl">${linha("Páginas lidas", s.paginas)}${linha("Título da home", esc(s.titulo || "—"))}${linha("H1 da home", esc(s.h1 || "sem H1"))}${linha("Cita o segmento / a cidade", `${sim(s.citaSegmento)} / ${sim(s.citaCidade)}`)}${linha("Link de WhatsApp", sim(s.whatsapp))}${linha("Telefone clicável", sim(s.tel))}${linha("Páginas sem descrição", `${s.semDescricao} de ${s.paginas}`)}${linha("Dados estruturados", esc(s.tipos.join(", ") || "nenhum"))}${linha("Medição", [s.ga4 && "GA4", s.gtm && "Tag Manager", s.pixel && "Meta Pixel"].filter(Boolean).join(", ") || `<b style="color:var(--ruim)">nenhuma</b>`)}${linha("Plataforma", esc(s.cms || "não identificada"))}</dl><p class="cap">${dataBR(s.data)} · custo ${brl(emBRL(s.custoUSD, "USD"), 3)}</p></div>` : "";
+  const pInsta = g ? `<div class="painel-c"><span class="over">Instagram · @${esc(g.usuario)}</span><dl class="dl">${linha("Seguidores", n0(g.seguidores || 0))}${linha("Último post", g.ultimoDias != null ? `há ${g.ultimoDias} dias` : "—")}${linha("Posts em 30 dias", g.mes)}${linha("Reels em 30 dias", g.reelsMes)}${linha("Engajamento médio", g.engajamento != null ? n1(g.engajamento) + "%" : "—")}${linha("Link na bio", sim(g.link))}${linha("WhatsApp na bio", sim(g.whatsappBio))}${linha("Conta comercial", sim(g.comercial))}</dl><p class="cap">${dataBR(g.data)} · custo ${brl(emBRL(g.custoUSD, "USD"), 3)}</p></div>` : "";
+  return `<div class="bloco-g"><h4>Coleta automática · Apify</h4>
+    <div class="coleta"><p class="small">Uma coleta lê o que importa em ${[usaMapa && "Google Maps", usaSite && "site", usaInsta && "Instagram"].filter(Boolean).join(", ")} e preenche sozinha os critérios que dá para provar com dado, com fonte e data na evidência. O resto fica para conferência humana.</p>
+      <div class="linha">${usaMapa ? `<div class="campo"><label for="ap-busca">Busca principal</label><input id="ap-busca" value="${esc(r.apBusca ?? (r.segmento || ""))}" placeholder="ex.: dentista"></div><div class="campo"><label for="ap-cidade">Cidade</label><input id="ap-cidade" value="${esc(r.apCidade ?? (r.cidade || "").split("/")[0])}" placeholder="ex.: Goiânia"></div><div class="campo n"><label for="ap-n">Lugares</label><input id="ap-n" type="number" min="3" max="50" value="${r.apN ?? 20}"></div>` : ""}
+        ${usaSite ? `<div class="campo"><label for="ap-site">Site</label><input id="ap-site" value="${esc(r.apSite ?? r.site ?? "")}" placeholder="empresa.com.br"></div>` : ""}
+        ${usaInsta ? `<div class="campo"><label for="ap-insta">Instagram</label><input id="ap-insta" value="${esc(r.apInsta ?? "")}" placeholder="@empresa (ou vem do site)"></div>` : ""}
+        <button class="btn" type="button" id="b-apify"${mcp ? "" : " disabled"}>Coletar no Apify</button></div>
+      <p class="estado-msg" id="ap-msg">${mcp ? `Custo estimado desta coleta: ${brl(emBRL(custoEst, "USD"), 2)}. Na primeira vez, o claude.ai pede para você permitir o Apify nesta página.` : "Conector indisponível nesta visualização. Abra a página logado no claude.ai com o conector Apify adicionado."}</p>
+      ${pMapa}${pSite || pInsta ? `<div class="paineis-c">${pSite}${pInsta}</div>` : ""}
+      ${custoColetas(r) ? `<p class="cap"><b>Custo real das coletas deste diagnóstico: ${brl(emBRL(custoColetas(r), "USD"), 2)}</b></p>` : ""}</div></div>`;
 }
 const ERRO_MCP = {
   server_not_connected: "O conector Apify não está adicionado na sua conta. Adicione em claude.ai → Configurações → Conectores e tente de novo.",
@@ -814,35 +911,27 @@ const ERRO_MCP = {
   blocked_by_policy: "A política da organização bloqueia o Apify nesta página.",
   not_granted: "Esta visualização não tem acesso a conectores.", capability_disabled: "Esta visualização não tem acesso a conectores."
 };
+const textoErro = e => ERRO_MCP[e?.code] || (e?.code === "tool_error" ? `O Apify recusou: ${e.message}` : e?.code === "run" ? e.message : e?.retryable ? "O Apify não respondeu agora. Tente de novo em instantes." : `Não foi possível coletar (${e?.code || "erro"}).`);
 async function coletarApify() {
   if (coletando || !mcp) return;
-  const r = rascunho, msg = document.getElementById("ap-msg"), b = document.getElementById("b-apify");
-  const busca = document.getElementById("ap-busca").value.trim(), cidade = document.getElementById("ap-cidade").value.trim();
-  const n = Math.min(50, Math.max(3, parseInt(document.getElementById("ap-n").value, 10) || 20));
-  r.apBusca = busca; r.apCidade = cidade; r.apN = n;
-  if (!busca || !cidade) { msg.className = "estado-msg erro"; msg.textContent = "Preencha a busca principal e a cidade."; return; }
-  coletando = true; b.disabled = true; msg.className = "estado-msg"; msg.textContent = "Coletando no Google Maps pelo Apify. Leva de 15 a 60 segundos…";
+  const r = rascunho, msg = document.getElementById("ap-msg"), b = document.getElementById("b-apify"), C = coletasDe(r), areas = areasDe(r);
+  const val = id => document.getElementById(id)?.value?.trim() ?? "";
+  r.apBusca = val("ap-busca"); r.apCidade = val("ap-cidade"); r.apN = Math.min(50, Math.max(3, parseInt(val("ap-n"), 10) || 20)); r.apSite = val("ap-site"); r.apInsta = val("ap-insta");
+  const usaMapa = areas.includes("map") || areas.includes("ava"), usaSite = ["sit", "est", "conv"].some(a => areas.includes(a)), usaInsta = areas.includes("ins");
+  coletando = true; b.disabled = true; msg.className = "estado-msg";
+  const feitos = [], erros = [];
+  const etapa = async (rotulo, fn) => { msg.textContent = `${rotulo}: coletando…`; try { await fn(); feitos.push(rotulo); } catch (e) { erros.push(`${rotulo}: ${textoErro(e)}`); if (["server_not_connected", "needs_reauth", "not_in_manifest", "approval_required", "blocked_by_policy", "not_granted", "capability_disabled", "selection_required"].includes(e?.code)) throw e; } };
   try {
-    let run = (await mcp.callTool(APIFY, "call-actor", { actor: ACTOR, input: { searchStringsArray: [busca], locationQuery: `${cidade}, Brasil`, maxCrawledPlacesPerSearch: n, language: "pt-BR" }, callOptions: { maxItems: n }, waitSecs: 45 }, { cache: false })).payload;
-    for (let k = 0; k < 4 && run && !["SUCCEEDED", "FAILED", "ABORTED", "TIMED-OUT"].includes(run.status); k++) {
-      msg.textContent = "Ainda coletando…";
-      run = (await mcp.callTool(APIFY, "get-actor-run", { runId: run.runId, waitSecs: 40 }, { cache: false })).payload;
-    }
-    if (!run || run.status !== "SUCCEEDED") throw { code: "run", message: `A coleta terminou com status ${run?.status || "desconhecido"}.` };
-    const ds = run.storages?.datasets?.default?.id;
-    const dados = (await mcp.callTool(APIFY, "get-dataset-items", { datasetId: ds, fields: CAMPOS_MAPA, limit: n }, { cache: false })).payload;
-    const itens = (dados?.items || []).filter(x => x && x.title).sort((a, b2) => (a.rank ?? 999) - (b2.rank ?? 999));
-    r.coleta = { fonte: "Apify · compass/crawler-google-places", busca, cidade, data: hoje(), itens, alvo: -1, custoUSD: itens.length * 0.003, runId: run.runId };
-    r.coleta.alvo = acharEmpresa(r, itens);
-    aplicarColeta(r);
-    rota(); const m2 = document.getElementById("ap-msg");
-    m2.className = "estado-msg ok"; m2.textContent = itens.length ? (r.coleta.alvo >= 0 ? `Coleta concluída: ${itens.length} lugares. A empresa está em ${r.coleta.alvo + 1}º. Critérios de Google Maps e Avaliações preenchidos com a evidência.` : `Coleta concluída: ${itens.length} lugares, mas a empresa não foi reconhecida. Se ela estiver na lista, clique em "É esta".`) : "A busca não retornou lugares. Tente uma busca mais simples.";
-    document.getElementById("b-apify")?.scrollIntoView({ block: "center" });
-  } catch (e) {
-    msg.className = "estado-msg erro";
-    msg.textContent = ERRO_MCP[e?.code] || (e?.code === "tool_error" ? `O Apify recusou a coleta: ${e.message}` : e?.code === "run" ? e.message : e?.retryable ? "O Apify não respondeu agora. Tente de novo em instantes." : `Não foi possível coletar (${e?.code || "erro"}).`);
-  }
-  coletando = false; const b2 = document.getElementById("b-apify"); if (b2) b2.disabled = !mcp;
+    if (usaMapa) { if (!r.apBusca || !r.apCidade) erros.push("Google Maps: preencha a busca principal e a cidade."); else await etapa("Google Maps", async () => { C.mapa = await coletarMapa(r, r.apBusca, r.apCidade, r.apN, msg); }); }
+    if (usaSite) { const u = urlSite(r.apSite || r.site); if (!u) erros.push("Site: informe o endereço do site."); else await etapa("Site", async () => { C.site = await coletarSite(r, u, msg); if (!r.apInsta && C.site.instagram) r.apInsta = C.site.instagram; }); }
+    if (usaInsta) { const u = arroba(r.apInsta); if (!u) erros.push("Instagram: informe o @ (ou colete o site primeiro, que costuma trazer o link)."); else await etapa("Instagram", async () => { C.insta = await coletarInsta(u, msg); }); }
+  } catch (e) { /* erro de acesso: para tudo e mostra o motivo */ }
+  aplicarColetas(r);
+  coletando = false;
+  const y = scrollY; rota(); scrollTo(0, y);
+  const m2 = document.getElementById("ap-msg");
+  m2.className = "estado-msg " + (erros.length ? "erro" : "ok");
+  m2.textContent = (feitos.length ? `Coletado: ${feitos.join(", ")}. Critérios preenchidos com a evidência. ` : "") + erros.join(" ");
 }
 
 /* ---------- Gerados ---------- */
@@ -920,8 +1009,9 @@ function ligarGerar() {
   document.querySelectorAll("textarea[data-evid]").forEach(el => el.addEventListener("input", e => { r.evid[el.dataset.evid] = e.target.value; }));
   document.getElementById("b-novo").onclick = () => { rascunho = novoRascunho(r.tipos.length ? r.tipos : ["site"], false); rota(); };
   const ba = document.getElementById("b-apify"); if (ba) ba.onclick = coletarApify;
-  ["ap-busca", "ap-cidade", "ap-n"].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener("input", () => { r[{ "ap-busca": "apBusca", "ap-cidade": "apCidade", "ap-n": "apN" }[id]] = el.value; }); });
-  document.querySelectorAll("[data-alvo]").forEach(bt => bt.onclick = () => { r.coleta.alvo = +bt.dataset.alvo; aplicarColeta(r); const y = scrollY; rota(); scrollTo(0, y); });
+  const MAPA_CAMPOS = { "ap-busca": "apBusca", "ap-cidade": "apCidade", "ap-n": "apN", "ap-site": "apSite", "ap-insta": "apInsta" };
+  Object.keys(MAPA_CAMPOS).forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener("input", () => { r[MAPA_CAMPOS[id]] = el.value; }); });
+  document.querySelectorAll("[data-alvo]").forEach(bt => bt.onclick = () => { coletasDe(r).mapa.alvo = +bt.dataset.alvo; aplicarColetas(r); const y = scrollY; rota(); scrollTo(0, y); });
 }
 function ligarGerados() {
   document.querySelectorAll("tr[data-id]").forEach(tr => tr.onclick = () => {
@@ -929,7 +1019,7 @@ function ligarGerados() {
     const ts = (g.tipos || (g.tipo ? [g.tipo] : [])).filter(id => tipo(id)); if (!ts.length) return;
     const base = novoRascunho(ts, false);
     rascunho = { ...base, id: g._id, criadoEm: g.criadoEm, empresa: g.empresa || "", site: g.site || "", cidade: g.cidade || "", segmento: g.segmento || "", data: g.data || hoje(),
-      marc: { ...base.marc, ...JSON.parse(JSON.stringify(g.marc || {})) }, dentro: { ...base.dentro, ...(g.dentro || {}) }, evid: { ...base.evid, ...(g.evid || {}) }, valor: { ...base.valor, ...(g.valor || {}) }, coleta: g.coleta || null };
+      marc: { ...base.marc, ...JSON.parse(JSON.stringify(g.marc || {})) }, dentro: { ...base.dentro, ...(g.dentro || {}) }, evid: { ...base.evid, ...(g.evid || {}) }, valor: { ...base.valor, ...(g.valor || {}) }, coletas: g.coletas || (g.coleta ? { mapa: g.coleta } : {}) };
     location.hash = "gerar";
   });
 }
