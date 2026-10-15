@@ -1,0 +1,162 @@
+{
+  "workflow": {
+    "id": "nJvY4JNhmjfloJmt",
+    "name": "ATOM_00_Inspecionar_Campos",
+    "active": false,
+    "isArchived": false,
+    "versionId": "a9f91102-96a7-4b14-bef7-71cffa3b7a71",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 4,
+    "createdAt": "2026-09-28T20:36:58.589Z",
+    "updatedAt": "2026-09-28T20:36:58.589Z",
+    "settings": {
+      "timezone": "America/Sao_Paulo",
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Somente leitura: lista campos personalizados do Pipedrive com prefixo \"ATOM ·\" (negócio, organização, pessoa) para mapear em atom_config.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Executar": {
+        "main": [
+          [
+            {
+              "node": "Entidades",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Entidades": {
+        "main": [
+          [
+            {
+              "node": "Ler campos (GET)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler campos (GET)": {
+        "main": [
+          [
+            {
+              "node": "Filtrar campos ATOM",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "0ebc39dc-fc93-4f25-8ad9-adec68ec396c",
+        "name": "Executar",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "139496ed-d004-4163-9fba-652ffcbc4942",
+        "name": "Entidades",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return ['deal', 'organization', 'person'].map((entidade) => ({ json: { entidade } }));"
+        }
+      },
+      {
+        "id": "dfd8c79d-a72f-46d4-935b-d14ecdc9cf26",
+        "name": "Ler campos (GET)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "={{ 'https://api.pipedrive.com/v1/' + $json.entidade + 'Fields' }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "limit",
+                "value": "500"
+              }
+            ]
+          },
+          "options": {
+            "timeout": 20000
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "83718557-d366-4ae6-a458-150280a9ac8a",
+        "name": "Filtrar campos ATOM",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const ents = $('Entidades').all().map((i) => i.json.entidade);\nconst out = [];\n$input.all().forEach((it, idx) => {\n  for (const f of (it.json.data || [])) {\n    if (/^ATOM\\s*[·\\.\\-]/i.test(String(f.name || ''))) out.push({ json: { entidade: ents[idx], nome: f.name, key: f.key, tipo: f.field_type } });\n  }\n});\nreturn out.length ? out : [{ json: { vazio: true } }];"
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

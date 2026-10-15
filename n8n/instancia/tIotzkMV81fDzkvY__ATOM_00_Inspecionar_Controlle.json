@@ -1,0 +1,169 @@
+{
+  "workflow": {
+    "id": "tIotzkMV81fDzkvY",
+    "name": "ATOM_00_Inspecionar_Controlle",
+    "active": false,
+    "isArchived": false,
+    "versionId": "e64e67bb-63ac-40a2-9af9-0e8100fd6b85",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 4,
+    "createdAt": "2026-09-29T01:10:39.914Z",
+    "updatedAt": "2026-09-29T01:15:53.491Z",
+    "settings": {
+      "timezone": "America/Sao_Paulo",
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Somente leitura: confere a credencial ATOM Controlle e lista contas, categorias de entrada, centros de custo e tags (ID e nome) para montar CONTROLLE_MAPEAMENTO.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Executar inspeção": {
+        "main": [
+          [
+            {
+              "node": "Consultas (somente leitura)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consultas (somente leitura)": {
+        "main": [
+          [
+            {
+              "node": "Controlle — GET",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Controlle — GET": {
+        "main": [
+          [
+            {
+              "node": "Resumo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "c20c6cf8-e42d-435c-bdd5-91c52d399d0e",
+        "name": "Executar inspeção",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom/inspecionar-controlle",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "46c8294c-99aa-4fb9-82c8-7b1a15417f3c"
+      },
+      {
+        "id": "0f4c0507-2867-4a49-af0a-e083c77fc3ec",
+        "name": "Consultas (somente leitura)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00c.js#consultas. Edite a fonte no repositório, não este nó.\nconst hoje = new Date().toISOString().slice(0, 10);\nconst ini = hoje.slice(0, 8) + '01';\nreturn [\n  { nome: 'contas', caminho: '/account/v1/accounts', query: { status: 1 } },\n  { nome: 'categorias_entrada', caminho: '/plan-account/v1/planAccountsEntities', query: { movement: 1 } },\n  { nome: 'centros_de_custo', caminho: '/cost-center/v1/costCenters/', query: {} },\n  { nome: 'tags', caminho: '/tag/v1/tags', query: {} },\n  { nome: 'lancamentos_mes_atual', caminho: '/transaction/v1/transactions/list', query: { start_date: ini, end_date: hoje, page: 1, orderBy: 'dt_due', orderByCardinality: 'DESC', filter: 'ATOM' } },\n].map((json) => ({ json }));"
+        }
+      },
+      {
+        "id": "f25180f8-08e6-4708-ac9c-81858fafb050",
+        "name": "Controlle — GET",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api-v1.controlle.com{{ $json.caminho }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "sendQuery": true,
+          "specifyQuery": "json",
+          "jsonQuery": "={{ JSON.stringify($json.query) }}",
+          "options": {
+            "timeout": 20000,
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true
+              }
+            }
+          }
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "ZaF4T8y8q0NLTHL6",
+            "name": "ATOM Controlle (Bearer)"
+          }
+        }
+      },
+      {
+        "id": "82a248f7-b7fa-45be-ac95-0d67157814e1",
+        "name": "Resumo",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00c.js#resumo. Edite a fonte no repositório, não este nó.\n// Só IDs, nomes e a estrutura: nada de valores financeiros nem dados de clientes.\nconst pedidos = $('Consultas (somente leitura)').all().map((i) => i.json);\nconst nomeDe = (o) => o.ds_account || o.ds_plan_account || o.description || o.ds_cost_center || o.ds_tag || o.name || o.ds_transaction || '';\nconst listas = (v, prof = 0, acc = []) => {\n  if (prof > 4 || v === null || typeof v !== 'object') return acc;\n  if (Array.isArray(v)) { acc.push(v); v.forEach((x) => listas(x, prof + 1, acc)); } else Object.values(v).forEach((x) => listas(x, prof + 1, acc));\n  return acc;\n};\nreturn $input.all().map((it, i) => {\n  const r = it.json || {};\n  const p = pedidos[i] || {};\n  const ls = listas(r.body);\n  const maior = ls.sort((a, b) => b.length - a.length)[0] || [];\n  const estrutura = r.body && typeof r.body === 'object' && !Array.isArray(r.body) ? Object.keys(r.body).slice(0, 15) : (Array.isArray(r.body) ? ['<lista>'] : [typeof r.body]);\n  const itens = p.nome === 'lancamentos_mes_atual'\n    ? maior.slice(0, 3).map((o) => ({ chaves: o && typeof o === 'object' ? Object.keys(o).slice(0, 25) : [] }))\n    : maior.slice(0, 200).map((o) => ({ id: o && (o.id || o.id_accounts || o.id_plan_accounts_entities || o.id_cost_centers || o.id_tags), nome: o && typeof o === 'object' ? nomeDe(o) : '', nivel: o && o.level }));\n  const erro = r.statusCode >= 400 ? String(JSON.stringify(r.body || '')).slice(0, 200) : '';\n  return { json: { nome: p.nome, status: r.statusCode, estrutura, total: maior.length, itens, erro } };\n});"
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Executar inspeção\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom/inspecionar-controlle\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom/inspecionar-controlle\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond immediately with the message \"Workflow got started.\"\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }."
+}

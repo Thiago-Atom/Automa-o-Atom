@@ -1,0 +1,948 @@
+{
+  "workflow": {
+    "id": "UXbDXEHovLuZBp0Q",
+    "name": "ATOM · Auditoria SEO — 1. Coleta",
+    "active": false,
+    "isArchived": false,
+    "versionId": "06858dc5-21d4-4541-a2f8-f7646de59db6",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 23,
+    "createdAt": "2026-10-01T00:27:08.477Z",
+    "updatedAt": "2026-10-01T00:57:25.749Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "timezone": "America/Sao_Paulo",
+      "executionTimeout": 300,
+      "callerPolicy": "workflowsFromSameOwner"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Dias 1, 11 e 21 às 6h, 1 cliente por execução: Semrush, Search Console e status das páginas; dispara Trends e AI Overviews na Apify em segundo plano e grava em atom_auditoria_fila.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Chamado pelo orquestrador": {
+        "main": [
+          [
+            {
+              "node": "Preparar cliente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar cliente": {
+        "main": [
+          [
+            {
+              "node": "GSC · Listar propriedades",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Testar com 1 cliente": {
+        "main": [
+          [
+            {
+              "node": "Cliente de teste",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cliente de teste": {
+        "main": [
+          [
+            {
+              "node": "Preparar cliente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GSC · Listar propriedades": {
+        "main": [
+          [
+            {
+              "node": "Resolver propriedade GSC",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resolver propriedade GSC": {
+        "main": [
+          [
+            {
+              "node": "Última auditoria",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Última auditoria": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Site Audit",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Semrush · Site Audit": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Campanhas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Semrush · Campanhas": {
+        "main": [
+          [
+            {
+              "node": "Escolher campanha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Escolher campanha": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Visão de posições",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Semrush · Visão de posições": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Posições",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Semrush · Posições": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Backlinks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Semrush · Backlinks": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Novos domínios",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Semrush · Novos domínios": {
+        "main": [
+          [
+            {
+              "node": "Consultas GSC",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consultas GSC": {
+        "main": [
+          [
+            {
+              "node": "GSC · Search Analytics",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GSC · Search Analytics": {
+        "main": [
+          [
+            {
+              "node": "URLs e temas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "URLs e temas": {
+        "main": [
+          [
+            {
+              "node": "Checar status das páginas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Checar status das páginas": {
+        "main": [
+          [
+            {
+              "node": "Apify · iniciar Trends",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Apify · iniciar Trends": {
+        "main": [
+          [
+            {
+              "node": "Apify · iniciar AI Overviews",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Apify · iniciar AI Overviews": {
+        "main": [
+          [
+            {
+              "node": "Pacote da coleta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pacote da coleta": {
+        "main": [
+          [
+            {
+              "node": "Gravar na fila",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "ce7dc01b-b3de-4e54-b82a-ae1a6eb6c6f6",
+        "name": "Chamado pelo orquestrador",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "workflowInputs",
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "projectId",
+                "type": "string"
+              },
+              {
+                "name": "nome",
+                "type": "string"
+              },
+              {
+                "name": "dominio",
+                "type": "string"
+              },
+              {
+                "name": "inicioExecucao",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "30546e24-436d-4d80-95df-0ef37fa648b8",
+        "name": "Preparar cliente",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const e = $input.first().json || {};\nconst limpa = (u) => String(u || '').replace(/^sc-domain:/, '').replace(/^https?:\\/\\//, '').replace(/^www\\./, '').replace(/\\/$/, '').toLowerCase();\nconst dominio = limpa(e.dominio || e.url);\nconst dia = 864e5;\nconst fmt = (d) => d.toISOString().slice(0, 10);\nconst ymd = (d) => fmt(d).replace(/-/g, '');\n// GSC tem ~3 dias de atraso: 28 dias terminando 3 dias atrás vs. os 28 dias anteriores\nconst fimAtual = new Date(Date.now() - 3 * dia);\nconst iniAtual = new Date(fimAtual.getTime() - 27 * dia);\nconst fimAnt = new Date(iniAtual.getTime() - dia);\nconst iniAnt = new Date(fimAnt.getTime() - 27 * dia);\nreturn [{ json: {\n  projectId: String(e.projectId || ''),\n  nome: e.nome || dominio,\n  dominio: dominio,\n  inicioExecucao: e.inicioExecucao || new Date().toISOString(),\n  periodos: { atual: [fmt(iniAtual), fmt(fimAtual)], anterior: [fmt(iniAnt), fmt(fimAnt)] },\n  // Position Tracking: variação dos últimos 10 dias (o intervalo entre auditorias)\n  semrush: { mask: '*.' + dominio + '/*', date_begin: ymd(new Date(Date.now() - 10 * dia)), date_end: ymd(new Date()) },\n  limitePosicoes: 25\n} }];"
+        }
+      },
+      {
+        "id": "ccddfe06-3745-4b68-89b1-328207546be9",
+        "name": "Testar com 1 cliente",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          240
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "dbeb47bc-56a2-48b7-b58e-4ebcffd33936",
+        "name": "Cliente de teste",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          240
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Troque o projectId/dominio para testar outro cliente (IDs dos projetos no Semrush)\nreturn [{ json: { projectId: '31394636', nome: 'atomdigital.com.br', dominio: 'atomdigital.com.br' } }];"
+        }
+      },
+      {
+        "id": "de3b7966-09c2-4d40-b3e6-b724aa7a04b8",
+        "name": "GSC · Listar propriedades",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          672,
+          112
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://www.googleapis.com/webmasters/v3/sites",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleOAuth2Api",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "5f253a27-ff2d-448a-9923-8e53129a2e42",
+        "name": "Resolver propriedade GSC",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const C = $('Preparar cliente').first().json;\nconst r = $input.first().json || {};\nconst limpa = (u) => String(u || '').replace(/^sc-domain:/, '').replace(/^https?:\\/\\//, '').replace(/^www\\./, '').replace(/\\/$/, '').toLowerCase();\nconst sites = (r.siteEntry || []).map((s) => s.siteUrl);\nconst cands = sites.filter((u) => limpa(u) === C.dominio);\nconst siteUrl = cands.find((u) => u.indexOf('sc-domain:') === 0) || cands[0] || '';\nlet gscErro = '';\nif (!siteUrl) {\n  if (r.error) gscErro = 'Search Console indisponível: ' + String(r.error.message || r.error).slice(0, 200);\n  else if (sites.length) gscErro = 'Domínio sem propriedade no Search Console da conta conectada';\n  else gscErro = 'Search Console sem propriedades acessíveis (credencial ausente ou sem permissão)';\n}\nreturn [{ json: Object.assign({}, C, { siteUrl: siteUrl, gscErro: gscErro }) }];"
+        }
+      },
+      {
+        "id": "11740d2a-f7ea-435d-9f23-43537fd492a0",
+        "name": "Última auditoria",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          112
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "lSUzsZSMIWc8D57p",
+            "cachedResultName": "atom_auditoria_historico"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "dominio",
+                "condition": "eq",
+                "keyValue": "={{ $json.dominio }}"
+              }
+            ]
+          },
+          "returnAll": false,
+          "limit": 1,
+          "orderBy": true,
+          "orderByColumn": "data_auditoria",
+          "orderByDirection": "DESC"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "9e82395f-2672-44e5-afd7-37e39078775e",
+        "name": "Semrush · Site Audit",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          112
+        ],
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "={{ JSON.stringify({ report: \"info\", params: { id: Number($(\"Resolver propriedade GSC\").first().json.projectId) } }) }}",
+          "options": {
+            "timeout": 90000
+          }
+        },
+        "executeOnce": true,
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      },
+      {
+        "id": "63e6fd18-d011-40fb-938d-59de63823b08",
+        "name": "Semrush · Campanhas",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          112
+        ],
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "={{ JSON.stringify({ report: \"campaigns\", params: { project_id: Number($(\"Resolver propriedade GSC\").first().json.projectId) } }) }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "executeOnce": true,
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      },
+      {
+        "id": "38628398-a9d8-481e-b7a4-5bce8cc3ff71",
+        "name": "Escolher campanha",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1792,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const mcp = (j) => { if (!j) return null; if (j.error) return { erro: String(j.error.message || j.error) }; let x = j.result !== undefined ? j.result : j; if (x && x.isError) return { erro: JSON.stringify(x.content || x).slice(0, 300) }; if (x && x.structuredContent !== undefined) x = x.structuredContent; else if (x && Array.isArray(x.content)) { const p = x.content.map((c) => c.text); x = p.length === 1 ? p[0] : p.map((t) => (typeof t === 'string' ? t : JSON.stringify(t))).join(''); } if (x && typeof x === 'object' && !Array.isArray(x) && x.data !== undefined && Object.keys(x).every((k) => k === 'data' || k === 'metadata')) x = x.data; if (typeof x === 'string') { try { return JSON.parse(x); } catch (e) { return { texto: x }; } } return x; };\n// Campanha principal de Position Tracking por projeto (a conexão MCP do n8n não lista campanhas).\n// Ao criar um projeto novo no Semrush, acrescente aqui: projectId: ['id_da_campanha', 'descrição'].\nconst CAMPANHAS = {\n  '31394636': ['31394636_5554196', 'Goiânia · desktop · 27 palavras'],\n  '30516314': ['30516314_5222154', 'Goiânia · desktop · 6 palavras'],\n  '29905946': ['29905946_4945997', 'Brasil · desktop · 3 palavras'],\n  '29831318': ['29831318_4889635', 'Goiás · desktop · 5 palavras'],\n  '29372431': ['29372431_4802018', 'Goiânia · desktop · 19 palavras'],\n  '29107152': ['29107152_4604395', 'Brasil · desktop · 59 palavras'],\n  '28773211': ['28773211_4386935', 'Goiás · celular · 11 palavras'],\n  '25378867': ['25378867_3136635', 'Estado de SP · desktop · 9 palavras'],\n  '25019330': ['25019330_3057792', 'Goiânia · celular · 14 palavras'],\n  '23588201': ['23588201_2772274', 'Goiás · celular · 19 palavras'],\n  '22730198': ['22730198_2643820', 'Goiás · desktop · 16 palavras'],\n  '20222710': ['20222710_2211172', 'Brasil · desktop · 12 palavras'],\n  '7195489': ['7195489', 'Goiás · celular · 64 palavras'],\n  '3602776': ['3602776', 'Brasil · desktop · 20 palavras']\n};\nconst C = $('Resolver propriedade GSC').first().json;\nconst r = mcp($input.first().json) || {};\nconst camps = (r.campaigns || r.targets || []).slice().sort((a, b) => (b.keywords_count || 0) - (a.keywords_count || 0));\nconst c = camps[0];\nconst fixa = CAMPANHAS[String(C.projectId)];\nlet campaign_id = '';\nlet campanha = 'Projeto sem campanha mapeada: acrescente o ID em CAMPANHAS no nó Escolher campanha';\nif (c && c.id) { campaign_id = c.id; campanha = ((c.location && c.location.name) || '') + ' · ' + c.device + ' · ' + c.keywords_count + ' palavras'; }\nelse if (fixa) { campaign_id = fixa[0]; campanha = fixa[1]; }\nreturn [{ json: { campaign_id: campaign_id, campanha: campanha, erro: r.erro || '' } }];"
+        }
+      },
+      {
+        "id": "649a186a-a74b-4823-848c-a0bf7ce19876",
+        "name": "Semrush · Visão de posições",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          2016,
+          112
+        ],
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "={{ JSON.stringify({ report: \"tracking_overview_organic\", params: { campaign_id: $(\"Escolher campanha\").first().json.campaign_id, url: $(\"Resolver propriedade GSC\").first().json.semrush.mask, date_begin: Number($(\"Resolver propriedade GSC\").first().json.semrush.date_begin), date_end: Number($(\"Resolver propriedade GSC\").first().json.semrush.date_end) } }) }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "executeOnce": true,
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      },
+      {
+        "id": "ab72f54c-f89e-4c63-9652-5fc37b3a8eb8",
+        "name": "Semrush · Posições",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          2240,
+          112
+        ],
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "={{ JSON.stringify({ report: \"tracking_position_organic\", params: { campaign_id: $(\"Escolher campanha\").first().json.campaign_id, url: $(\"Resolver propriedade GSC\").first().json.semrush.mask, date_begin: Number($(\"Resolver propriedade GSC\").first().json.semrush.date_begin), date_end: Number($(\"Resolver propriedade GSC\").first().json.semrush.date_end), display_limit: $(\"Resolver propriedade GSC\").first().json.limitePosicoes, display_sort: \"nq_desc\" } }) }}",
+          "options": {
+            "timeout": 90000
+          }
+        },
+        "executeOnce": true,
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      },
+      {
+        "id": "00518409-228c-45d6-bd52-251fed2fb09e",
+        "name": "Semrush · Backlinks",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          2464,
+          112
+        ],
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "={{ JSON.stringify({ report: \"backlinks_overview\", params: { target: $(\"Resolver propriedade GSC\").first().json.dominio, target_type: \"root_domain\" } }) }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "executeOnce": true,
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      },
+      {
+        "id": "47db5876-c3e6-4dad-a2c1-46e2adf0d502",
+        "name": "Semrush · Novos domínios",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          2688,
+          112
+        ],
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "={{ JSON.stringify({ report: \"backlinks_refdomains\", params: { target: $(\"Resolver propriedade GSC\").first().json.dominio, target_type: \"root_domain\", display_sort: \"first_seen_desc\", display_limit: 10 } }) }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "executeOnce": true,
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      },
+      {
+        "id": "cd98bc10-4c64-443c-b223-7285037de450",
+        "name": "Consultas GSC",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2912,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const C = $('Resolver propriedade GSC').first().json;\nconst site = C.siteUrl || 'sem-propriedade';\nconst out = [];\n[['atual', C.periodos.atual], ['anterior', C.periodos.anterior]].forEach((p) => {\n  [['total', [], 1], ['query', ['query'], 250], ['page', ['page'], 100]].forEach((d) => {\n    out.push({ json: { siteUrl: site, periodo: p[0], dimensao: d[0], body: { startDate: p[1][0], endDate: p[1][1], dimensions: d[1], rowLimit: d[2] } } });\n  });\n});\nreturn out;"
+        }
+      },
+      {
+        "id": "2b0e5934-4a87-4f8b-b068-0d9f4ef86b3c",
+        "name": "GSC · Search Analytics",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          3136,
+          112
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "=https://www.googleapis.com/webmasters/v3/sites/{{ encodeURIComponent($json.siteUrl) }}/searchAnalytics/query",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleOAuth2Api",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "5d07a4c8-0bc6-457e-937d-8bd12808a3ed",
+        "name": "URLs e temas",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3360,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const mcp = (j) => { if (!j) return null; if (j.error) return { erro: String(j.error.message || j.error) }; let x = j.result !== undefined ? j.result : j; if (x && x.isError) return { erro: JSON.stringify(x.content || x).slice(0, 300) }; if (x && x.structuredContent !== undefined) x = x.structuredContent; else if (x && Array.isArray(x.content)) { const p = x.content.map((c) => c.text); x = p.length === 1 ? p[0] : p.map((t) => (typeof t === 'string' ? t : JSON.stringify(t))).join(''); } if (x && typeof x === 'object' && !Array.isArray(x) && x.data !== undefined && Object.keys(x).every((k) => k === 'data' || k === 'metadata')) x = x.data; if (typeof x === 'string') { try { return JSON.parse(x); } catch (e) { return { texto: x }; } } return x; };\nconst C = $('Resolver propriedade GSC').first().json;\nconst reqs = $('Consultas GSC').all();\nconst res = $input.all();\nconst gsc = { siteUrl: C.siteUrl, erro: C.gscErro || '', periodos: C.periodos };\nconst conj = {};\nres.forEach((r, i) => {\n  const q = (reqs[i] || reqs[0]).json;\n  const j = r.json || {};\n  const chave = q.dimensao + '_' + q.periodo;\n  if (j.error) {\n    if (!gsc.erro) gsc.erro = 'Search Console: ' + String(j.error.message || j.error).slice(0, 200);\n    conj[chave] = [];\n    return;\n  }\n  conj[chave] = (j.rows || []).map((x) => ({ k: x.keys ? x.keys[0] : 'total', cliques: x.clicks, impressoes: x.impressions, ctr: Math.round(x.ctr * 1000) / 10, posicao: Math.round(x.position * 10) / 10 }));\n});\nconst tot = (p) => (conj['total_' + p] || [])[0] || null;\ngsc.totais = { atual: tot('atual'), anterior: tot('anterior') };\nconst comparar = (dim) => {\n  const ant = {};\n  (conj[dim + '_anterior'] || []).forEach((x) => { ant[x.k] = x; });\n  const vistos = {};\n  const lin = (conj[dim + '_atual'] || []).map((x) => {\n    vistos[x.k] = 1;\n    const a = ant[x.k] || { cliques: 0, impressoes: 0, posicao: null };\n    return { k: x.k, cliques: x.cliques, cliques_ant: a.cliques, dif_cliques: x.cliques - a.cliques, impressoes: x.impressoes, impressoes_ant: a.impressoes, posicao: x.posicao, posicao_ant: a.posicao, ctr: x.ctr };\n  });\n  Object.keys(ant).forEach((k) => { if (!vistos[k]) lin.push({ k: k, cliques: 0, cliques_ant: ant[k].cliques, dif_cliques: -ant[k].cliques, impressoes: 0, impressoes_ant: ant[k].impressoes, posicao: null, posicao_ant: ant[k].posicao, ctr: 0 }); });\n  return lin;\n};\nconst ord = (arr, f, n) => arr.slice().sort(f).slice(0, n);\nconst q = comparar('query');\nconst pg = comparar('page');\ngsc.top_consultas = ord(q, (a, b) => b.cliques - a.cliques, 20);\ngsc.consultas_em_queda = ord(q.filter((x) => x.dif_cliques < 0), (a, b) => a.dif_cliques - b.dif_cliques, 10);\ngsc.consultas_em_alta = ord(q.filter((x) => x.dif_cliques > 0), (a, b) => b.dif_cliques - a.dif_cliques, 10);\ngsc.oportunidades_ctr = ord(q.filter((x) => x.impressoes >= 100 && x.posicao && x.posicao <= 10 && x.ctr < 2), (a, b) => b.impressoes - a.impressoes, 10);\ngsc.quase_primeira_pagina = ord(q.filter((x) => x.posicao && x.posicao > 10 && x.posicao <= 20), (a, b) => b.impressoes - a.impressoes, 10);\ngsc.top_paginas = ord(pg, (a, b) => b.cliques - a.cliques, 15);\ngsc.paginas_em_queda = ord(pg.filter((x) => x.dif_cliques < 0), (a, b) => a.dif_cliques - b.dif_cliques, 10);\n\n// Temas para Trends e AI Overviews: consultas reais (não-marca) com mais impressões; sem GSC, usa as palavras monitoradas no Semrush\nconst semAcento = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');\nconst marca = semAcento(C.dominio.split('.')[0]).replace(/[^a-z0-9]/g, '');\nconst ehMarca = (t) => {\n  const s = semAcento(t).replace(/[^a-z0-9]/g, '');\n  const w = semAcento(t).split(' ')[0];\n  return (s.length >= 4 && (marca.indexOf(s) >= 0 || s.indexOf(marca) >= 0)) || (w.length >= 4 && marca.indexOf(w) === 0);\n};\nlet temas = (conj.query_atual || []).filter((x) => x.k.split(' ').length >= 2 && !ehMarca(x.k)).sort((a, b) => b.impressoes - a.impressoes).map((x) => x.k);\nif (temas.length < 3) {\n  const pos = mcp($('Semrush · Posições').first().json) || {};\n  const linhas = pos.data ? Object.values(pos.data) : [];\n  temas = temas.concat(linhas.sort((a, b) => (Number(b.Nq) || 0) - (Number(a.Nq) || 0)).map((r) => r.Ph).filter((t) => t && !ehMarca(t)));\n}\ntemas = temas.filter((t, i) => temas.indexOf(t) === i).slice(0, 3);\n\nlet urls = (conj.page_atual || []).slice().sort((a, b) => b.cliques - a.cliques).slice(0, 10).map((x) => x.k).filter((u) => /^https?:/.test(u));\nif (!urls.length) urls = ['https://' + C.dominio + '/'];\nreturn urls.map((u, i) => ({ json: i === 0 ? { url: u, gsc: gsc, temas: temas } : { url: u } }));"
+        }
+      },
+      {
+        "id": "acebe898-dab7-4b77-b934-de5e0c40e58f",
+        "name": "Checar status das páginas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          3584,
+          112
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "={{ $json.url }}",
+          "options": {
+            "redirect": {
+              "redirect": {
+                "followRedirects": false
+              }
+            },
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "text"
+              }
+            },
+            "timeout": 10000
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "027f21e6-aafd-4dba-88a4-b3d3b36e8a18",
+        "name": "Sticky Note b247d68a",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          0,
+          480
+        ],
+        "parameters": {
+          "content": "## ATOM · Auditoria SEO — 1. Coleta\nRoda nos dias 1, 11 e 21 às 6h (chamado pelo orquestrador), 1 cliente por execução. Teste com **Testar com 1 cliente**.\n\nBusca Semrush (Site Audit, posições dos últimos 10 dias, backlinks), Search Console (28d vs. 28d anteriores) e o status das 10 páginas com mais cliques; dispara Google Trends e AI Overviews na Apify em segundo plano e grava tudo em **atom_auditoria_fila**.\n\nÀs 6h40 a etapa **2. Análise** lê a fila, junta os resultados da Apify, gera o Google Doc e os cards.\n\n**Credenciais a conectar:** Google Search Console (OAuth2, escopo webmasters.readonly) nos 2 nós GSC e Apify (token) nos 2 nós Apify.",
+          "color": 5,
+          "width": 620,
+          "height": 340
+        }
+      },
+      {
+        "id": "3d063a4c-d491-4dc6-b5aa-743f7c5022fc",
+        "name": "Apify · iniciar Trends",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          3808,
+          112
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.apify.com/v2/acts/apify~google-trends-scraper/runs",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpTemplatedCustomAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ searchTerms: ($(\"URLs e temas\").first().json.temas || []).slice(0, 2), geo: \"BR\", timeRange: \"today 3-m\", viewedFrom: \"br\", skipDebugScreen: true }) }}",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "onError": "continueRegularOutput",
+        "executeOnce": true
+      },
+      {
+        "id": "b0d2cca3-3e6c-4000-8658-775288cec24d",
+        "name": "Apify · iniciar AI Overviews",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          4032,
+          112
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.apify.com/v2/acts/apify~google-ai-overviews-scraper/runs",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpTemplatedCustomAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ queries: ($(\"URLs e temas\").first().json.temas || []).slice(0, 3).join(\"\\n\") }) }}",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "onError": "continueRegularOutput",
+        "executeOnce": true
+      },
+      {
+        "id": "5134c47a-1179-4526-b227-b6496001d125",
+        "name": "Pacote da coleta",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          4256,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const mcp = (j) => { if (!j) return null; if (j.error) return { erro: String(j.error.message || j.error) }; let x = j.result !== undefined ? j.result : j; if (x && x.isError) return { erro: JSON.stringify(x.content || x).slice(0, 300) }; if (x && x.structuredContent !== undefined) x = x.structuredContent; else if (x && Array.isArray(x.content)) { const p = x.content.map((c) => c.text); x = p.length === 1 ? p[0] : p.map((t) => (typeof t === 'string' ? t : JSON.stringify(t))).join(''); } if (x && typeof x === 'object' && !Array.isArray(x) && x.data !== undefined && Object.keys(x).every((k) => k === 'data' || k === 'metadata')) x = x.data; if (typeof x === 'string') { try { return JSON.parse(x); } catch (e) { return { texto: x }; } } return x; };\nconst csv = (r) => {\n  if (Array.isArray(r)) return r;\n  const t = (r && r.texto) || '';\n  const ls = String(t).trim().split(/\\r?\\n/).filter(Boolean);\n  if (ls.length < 2) return [];\n  const h = ls[0].split(';');\n  return ls.slice(1).map((l) => { const v = l.split(';'); const o = {}; h.forEach((k, i) => { o[k] = v[i] !== undefined && v[i] !== '' && !isNaN(Number(v[i])) ? Number(v[i]) : v[i]; }); return o; });\n};\nconst TIT = { 1: '5xx errors', 2: '4xx errors', 3: 'Title tag ausente', 4: 'Bloqueadas para rastreamento', 6: 'Title duplicado', 7: 'Conteúdo duplicado', 8: 'Links internos quebrados', 9: 'Páginas não rastreadas', 10: 'Problema de DNS', 12: 'Links externos quebrados', 13: 'Imagens internas quebradas', 14: 'Imagens externas quebradas', 15: 'Meta descriptions duplicadas', 16: 'robots.txt inválido', 17: 'sitemap.xml inválido', 18: 'Páginas incorretas no sitemap', 19: 'Problema www', 20: 'Viewport ausente', 21: 'HTML muito grande', 26: 'Páginas não seguras (HTTP)', 27: 'Certificado expirando', 30: 'Conteúdo misto', 31: 'Links para HTTP', 33: 'Cadeias/loops de redirecionamento', 38: 'Canonical quebrado', 39: 'Múltiplos canonicals', 41: 'JS/CSS internos quebrados', 44: 'Links malformados', 45: 'Dados estruturados com erro', 101: 'Title curto', 102: 'Title longo', 103: 'H1 ausente', 104: 'Múltiplos H1', 105: 'H1 igual ao title', 106: 'Meta description ausente', 108: 'Excesso de links na página', 109: 'Redirecionamentos temporários', 110: 'Imagens sem ALT', 111: 'Páginas lentas', 112: 'Pouco texto em relação ao HTML', 113: 'URLs com muitos parâmetros', 114: 'Idioma não declarado', 117: 'Pouco conteúdo (word count)', 122: 'Underscore na URL', 123: 'Nofollow em links internos', 124: 'Sitemap fora do robots.txt', 125: 'Sitemap não encontrado', 129: 'Páginas sem compressão', 130: 'Recursos internos bloqueados', 131: 'JS/CSS sem compressão', 132: 'JS/CSS sem cache', 133: 'JS/CSS muito pesados', 134: 'Muitos arquivos JS/CSS', 135: 'JS/CSS não minificados', 136: 'URLs muito longas', 137: 'llms.txt não encontrado', 201: 'URLs muito longas', 202: 'Nofollow em links externos', 203: 'robots.txt não encontrado', 205: 'Sem HSTS', 207: 'Páginas órfãs no sitemap', 209: 'Noindex por X-Robots-Tag', 212: 'Profundidade de rastreamento > 3 cliques', 213: 'Páginas com 1 só link interno', 214: 'Redirecionamentos permanentes', 215: 'Recursos formatados como link de página', 216: 'Links sem texto âncora', 217: 'Âncoras não descritivas', 218: 'Recursos externos com 403', 219: 'llms.txt com erro de formato', 220: 'Conteúdo excessivo', 221: 'Conteúdo desatualizado', 222: 'Pouco HTML semântico', 223: 'Conteúdo não otimizado' };\n\nconst C = $('Resolver propriedade GSC').first().json;\nconst histRaw = $('Última auditoria').first().json || {};\nconst hist = histRaw.dominio ? histRaw : null;\nconst fontesIndisponiveis = [];\n\n// Site Audit\nconst sa = mcp($('Semrush · Site Audit').first().json) || {};\nlet auditoria = {};\nif (sa.erro || !sa.id) { fontesIndisponiveis.push('Semrush Site Audit: ' + (sa.erro || 'sem dados')); auditoria = { erro: sa.erro || 'sem dados' }; }\nelse {\n  const ERR = [1, 2, 3, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 33, 38, 39, 40, 41, 42, 43, 44, 45, 46, 111];\n  const NOTA = [4, 104, 137, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223];\n  const tipoDe = (id) => (ERR.indexOf(id) >= 0 ? 'erro' : (NOTA.indexOf(id) >= 0 ? 'nota' : 'aviso'));\n  const ordemT = { erro: 0, aviso: 1, nota: 2 };\n  const defs = sa.defects || {};\n  const pc = sa.pages_crawled || 0;\n  auditoria = {\n    paginas_rastreadas: pc, limite_paginas: sa.pages_limit,\n    paginas_com_problemas: sa.haveIssues, paginas_com_problemas_pct: pc ? Math.round(1000 * (sa.haveIssues || 0) / pc) / 10 : null,\n    paginas_quebradas: sa.broken, paginas_bloqueadas: sa.blocked, paginas_redirecionadas: sa.redirected,\n    erros: sa.errors, avisos: sa.warnings, notas: sa.notices,\n    variacao_erros: sa.errors_delta, variacao_avisos: sa.warnings_delta, variacao_notas: sa.notices_delta,\n    data_ultimo_rastreamento: sa.last_audit ? new Date(sa.last_audit).toISOString().slice(0, 10) : null,\n    profundidade: sa.depths || null,\n    problemas: Object.keys(defs).map((k) => ({ tipo: tipoDe(Number(k)), problema: TIT[k] || ('Problema Semrush #' + k), ocorrencias: defs[k] })).filter((p) => p.ocorrencias > 0).sort((x, y) => ordemT[x.tipo] - ordemT[y.tipo] || y.ocorrencias - x.ocorrencias).slice(0, 25)\n  };\n}\n\n// Position Tracking\nconst camp = $('Escolher campanha').first().json;\nconst ov = mcp($('Semrush · Visão de posições').first().json) || {};\nconst pos = mcp($('Semrush · Posições').first().json) || {};\nconst pv = (o) => (o && typeof o === 'object') ? Object.values(o)[0] : o;\nconst ultima = (o) => (o && typeof o === 'object') ? Object.keys(o).sort().pop() : null;\nlet resumoPosicoes = null;\nif (ov.erro || ov.total === undefined) fontesIndisponiveis.push('Semrush Position Tracking: ' + (ov.erro || camp.erro || camp.campanha));\nelse resumoPosicoes = { campanha: camp.campanha, palavras_monitoradas: ov.total, visibilidade: ov.visibility, variacao_visibilidade: ov.differenceVisibility, top3: ov.top3, top10: ov.top10, top100: ov.top100, melhoraram: ov.top100_improved, pioraram: ov.top100_declined, entraram_top100: ov.top100_entered, sairam_top100: ov.top100_left, sairam_top3: ov.top3_left, sairam_top10: ov.top10_left, serps_com_ai_overview: pos.Sfc && pos.Sfc.aio ? pos.Sfc.aio.Ex : null };\nconst palavras = (pos.data ? Object.values(pos.data) : []).map((r) => {\n  const sf = r.Sf ? (r.Sf[ultima(r.Sf)] || []) : [];\n  const lt = r.Lt ? (pv(r.Lt[ultima(r.Lt)]) || []) : [];\n  return { palavra: r.Ph, volume: Number(r.Nq) || 0, posicao_inicio: pv(r.Be), posicao_fim: pv(r.Fi), variacao: pv(r.Diff), url: r.Lu ? pv(r.Lu[ultima(r.Lu)]) : '', serp_tem_ai_overview: sf.indexOf('aio') >= 0, site_no_ai_overview: lt.indexOf('aio') >= 0 };\n});\n\n// Backlinks\nconst blR = mcp($('Semrush · Backlinks').first().json) || {};\nconst b = csv(blR)[0] || {};\nlet backlinksInfo = null;\nif (blR.erro || b.score === undefined) fontesIndisponiveis.push('Semrush Backlinks: ' + (blR.erro || 'sem dados'));\nelse backlinksInfo = { authority_score: b.score, dominios_referencia: b.domains_num, backlinks: b.total, follow: b.follows_num, nofollow: b.nofollows_num, ips: b.ips_num };\nconst rd = csv(mcp($('Semrush · Novos domínios').first().json) || {});\nconst limite30 = Date.now() / 1000 - 30 * 86400;\nconst novosDominios = rd.slice(0, 10).map((d) => ({ dominio: d.domain, authority: d.domain_ascore !== undefined ? d.domain_ascore : d.domain_score, backlinks: d.backlinks_num, visto_primeira_vez: d.first_seen ? new Date(d.first_seen * 1000).toISOString().slice(0, 10) : '', ultimos_30_dias: d.first_seen ? d.first_seen >= limite30 : null }));\n\n// Search Console\nconst ut = $('URLs e temas').first().json;\nconst gsc = Object.assign({}, ut.gsc || {});\nif (gsc.erro) fontesIndisponiveis.push(gsc.erro);\n\n// Status das páginas com mais tráfego\nconst urlsIt = $('URLs e temas').all();\nconst statusPaginas = $('Checar status das páginas').all().map((r, i) => {\n  const j = r.json || {};\n  const h = j.headers || {};\n  return { url: urlsIt[i] ? urlsIt[i].json.url : '', status: j.statusCode || null, destino: h.location || '', erro: j.error ? String(j.error.message || j.error).slice(0, 150) : '' };\n});\n\n// Métricas e comparação com a auditoria anterior\nconst tAt = (gsc.totais && gsc.totais.atual) || null;\nconst tAn = (gsc.totais && gsc.totais.anterior) || null;\nconst nz = (v) => (v === undefined ? null : v);\nconst metricas = {\n  paginas_com_problemas_pct: nz(auditoria.paginas_com_problemas_pct), erros: nz(auditoria.erros), avisos: nz(auditoria.avisos),\n  authority_score: backlinksInfo ? backlinksInfo.authority_score : null, dominios_referencia: backlinksInfo ? backlinksInfo.dominios_referencia : null, backlinks: backlinksInfo ? backlinksInfo.backlinks : null,\n  gsc_cliques: tAt ? tAt.cliques : null, gsc_impressoes: tAt ? tAt.impressoes : null, gsc_posicao_media: tAt ? tAt.posicao : null,\n  kw_top3: resumoPosicoes ? resumoPosicoes.top3 : null, kw_top10: resumoPosicoes ? resumoPosicoes.top10 : null, visibilidade: resumoPosicoes ? resumoPosicoes.visibilidade : null\n};\nconst comparativo = {};\nObject.keys(metricas).forEach((k) => {\n  const a = hist && hist[k] !== undefined ? hist[k] : null;\n  comparativo[k] = { atual: metricas[k], auditoria_anterior: a, variacao: (metricas[k] !== null && a !== null) ? Math.round((metricas[k] - a) * 100) / 100 : null };\n});\n\n// Alertas automáticos (regras fixas, independentes da IA)\nconst alertasAuto = [];\nstatusPaginas.forEach((p) => {\n  const path = p.url.replace(/^https?:\\/\\/[^\\/]+/, '') || '/';\n  if (!p.status || p.status >= 400) alertasAuto.push({ nivel: 'CRITICO', area: 'Páginas', titulo: 'Página com tráfego fora do ar (' + (p.status || 'sem resposta') + '): ' + path, evidencia: 'Status ' + (p.status || p.erro) + ' em ' + p.url, acao: 'Restaurar a página ou criar redirecionamento 301 para a URL equivalente e atualizar links internos' });\n  else if (p.status >= 300 && p.status < 400) alertasAuto.push({ nivel: 'MEDIO', area: 'Páginas', titulo: 'Página com tráfego redirecionando (' + p.status + '): ' + path, evidencia: p.url + ' → ' + (p.destino || '?'), acao: 'Confirmar se o redirecionamento é intencional e apontar links internos e sitemap para a URL final' });\n});\nif (tAt && tAn && tAn.cliques >= 20 && tAt.cliques < tAn.cliques * 0.7) alertasAuto.push({ nivel: 'CRITICO', area: 'Search Console', titulo: 'Queda de ' + Math.round((1 - tAt.cliques / tAn.cliques) * 100) + '% nos cliques orgânicos', evidencia: tAn.cliques + ' → ' + tAt.cliques + ' cliques (28 dias vs. 28 anteriores)', acao: 'Investigar as páginas e consultas em queda listadas na auditoria' });\nif (hist && metricas.paginas_com_problemas_pct !== null && hist.paginas_com_problemas_pct !== null && hist.paginas_com_problemas_pct !== undefined && metricas.paginas_com_problemas_pct - hist.paginas_com_problemas_pct >= 10) alertasAuto.push({ nivel: 'ALTO', area: 'Técnico', titulo: 'Páginas com problemas subiram ' + Math.round(metricas.paginas_com_problemas_pct - hist.paginas_com_problemas_pct) + ' pontos percentuais', evidencia: hist.paginas_com_problemas_pct + '% → ' + metricas.paginas_com_problemas_pct + '%', acao: 'Revisar os problemas novos do Site Audit' });\nif (auditoria.variacao_erros > 0 && auditoria.erros > 0) alertasAuto.push({ nivel: 'ALTO', area: 'Técnico', titulo: auditoria.variacao_erros + ' erros técnicos novos no Site Audit', evidencia: 'Total de erros: ' + auditoria.erros, acao: 'Corrigir os erros novos do Site Audit' });\nif (hist && metricas.authority_score !== null && hist.authority_score !== null && hist.authority_score - metricas.authority_score >= 3) alertasAuto.push({ nivel: 'ALTO', area: 'Backlinks', titulo: 'Authority Score caiu ' + (hist.authority_score - metricas.authority_score) + ' pontos', evidencia: hist.authority_score + ' → ' + metricas.authority_score, acao: 'Verificar domínios de referência perdidos' });\nif (resumoPosicoes && resumoPosicoes.sairam_top3 > 0) alertasAuto.push({ nivel: 'ALTO', area: 'Posições', titulo: resumoPosicoes.sairam_top3 + ' palavra(s) saíram do top 3', evidencia: 'Campanha ' + camp.campanha, acao: 'Revisar as páginas dessas palavras e a concorrência na SERP' });\n\nlet anterior = null;\nif (hist) { let al = []; try { al = (JSON.parse(hist.alertas_json || '{}').alertas || []).map((a) => a.nivel + ': ' + a.titulo); } catch (e) {} anterior = { data: hist.data_auditoria, alertas: al.slice(0, 15), doc: hist.doc_url || '' }; }\n\nconst tr = $('Apify · iniciar Trends').first().json || {};\nconst ai = $('Apify · iniciar AI Overviews').first().json || {};\nconst runId = (r) => (r && r.data && r.data.id) || '';\nconst motivo = (r) => String((r.error && (r.error.message || r.error)) || 'sem resposta').slice(0, 150);\nif (!runId(tr)) fontesIndisponiveis.push('Google Trends (Apify) não iniciou: ' + motivo(tr));\nif (!runId(ai)) fontesIndisponiveis.push('AI Overviews (Apify) não iniciou: ' + motivo(ai));\nconst dataBR = new Date(C.inicioExecucao).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });\nconst pacote = { nome: C.nome, dominio: C.dominio, inicioExecucao: C.inicioExecucao, dataBR: dataBR, periodos: C.periodos, campanha: camp.campanha, temAnterior: !!hist, anterior: anterior, comparativo: comparativo, metricas: metricas, alertasAuto: alertasAuto, fontesIndisponiveis: fontesIndisponiveis, auditoria: auditoria, gsc: gsc, resumoPosicoes: resumoPosicoes, palavras: palavras, backlinksInfo: backlinksInfo, novosDominios: novosDominios, statusPaginas: statusPaginas, temas: ut.temas || [] };\nreturn [{ json: { dominio: C.dominio, nome: C.nome, data_auditoria: C.inicioExecucao, pacote_json: JSON.stringify(pacote), trends_run: runId(tr), aio_run: runId(ai), status: 'COLETADO' } }];"
+        }
+      },
+      {
+        "id": "b2b5a2c8-437c-4c72-bd97-0d5248c4230c",
+        "name": "Gravar na fila",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4480,
+          112
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "S38n80Hch6oZuzT0",
+            "cachedResultName": "atom_auditoria_fila"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "dominio": "={{ $json.dominio }}",
+              "nome": "={{ $json.nome }}",
+              "data_auditoria": "={{ $json.data_auditoria }}",
+              "pacote_json": "={{ $json.pacote_json }}",
+              "trends_run": "={{ $json.trends_run }}",
+              "aio_run": "={{ $json.aio_run }}",
+              "status": "COLETADO"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "dominio",
+                "displayName": "dominio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data_auditoria",
+                "displayName": "data_auditoria",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "pacote_json",
+                "displayName": "pacote_json",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "trends_run",
+                "displayName": "trends_run",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "aio_run",
+                "displayName": "aio_run",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        }
+      }
+    ],
+    "nodeGroups": [
+      {
+        "id": "e40959b5-0149-4fcf-833c-6cb1b7aa3ec8",
+        "name": "Semrush",
+        "nodeNames": [
+          "Semrush · Site Audit",
+          "Semrush · Campanhas",
+          "Escolher campanha",
+          "Semrush · Visão de posições",
+          "Semrush · Posições",
+          "Semrush · Backlinks",
+          "Semrush · Novos domínios"
+        ],
+        "description": "Site Audit, Position Tracking (últimos 10 dias) e backlinks via Semrush MCP"
+      },
+      {
+        "id": "08aaea9a-b20d-420e-b4b8-1f7d87954d52",
+        "name": "Search Console e páginas",
+        "nodeNames": [
+          "Consultas GSC",
+          "GSC · Search Analytics",
+          "URLs e temas",
+          "Checar status das páginas"
+        ],
+        "description": "GSC 28d vs. 28d anteriores, escolhe os temas e testa o status das 10 páginas com mais cliques"
+      },
+      {
+        "id": "6406506a-faa9-44ff-ba46-a587d42eb756",
+        "name": "Preparação",
+        "nodeNames": [
+          "Preparar cliente",
+          "GSC · Listar propriedades",
+          "Resolver propriedade GSC",
+          "Última auditoria"
+        ],
+        "description": "Normaliza o cliente, acha a propriedade no Search Console e lê a auditoria anterior para comparar"
+      },
+      {
+        "id": "3d43de94-b7eb-4bce-ae82-9e4f35fa47e2",
+        "name": "Apify e fila",
+        "nodeNames": [
+          "Apify · iniciar Trends",
+          "Apify · iniciar AI Overviews",
+          "Pacote da coleta",
+          "Gravar na fila"
+        ],
+        "description": "Dispara Trends e AI Overviews em segundo plano e grava a coleta na fila para a análise das 6h40"
+      }
+    ],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

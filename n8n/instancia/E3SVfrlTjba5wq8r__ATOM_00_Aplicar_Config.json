@@ -1,0 +1,228 @@
+{
+  "workflow": {
+    "id": "E3SVfrlTjba5wq8r",
+    "name": "ATOM_00_Aplicar_Config",
+    "active": false,
+    "isArchived": false,
+    "versionId": "cd96462f-a318-44e1-bb97-5c074e55e6ce",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 4,
+    "createdAt": "2026-09-28T17:44:58.082Z",
+    "updatedAt": "2026-09-29T00:34:34.173Z",
+    "settings": {
+      "timezone": "America/Sao_Paulo",
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Grava parâmetros em atom_config por upsert de chave; recusa valores que pareçam segredos. Uso manual/sub-workflow.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Entrada": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Validar e mesclar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validar e mesclar": {
+        "main": [
+          [
+            {
+              "node": "Gravar em atom_config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "5a84b74e-7cb6-4fa0-8479-591f2b11b9b1",
+        "name": "Entrada",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "passthrough"
+        }
+      },
+      {
+        "id": "b98a58d2-915d-43b2-a21c-4838336a0955",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "159d06b5-bf3c-405c-ba98-565960d819ec",
+        "name": "Validar e mesclar",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf00.js#preparar. Edite a fonte no repositório, não este nó.\n// Ajuste manual 2026-09-29: identificadores em MAIÚSCULAS_COM_UNDERLINE (ex.: CONTRATO_ASSINADO_E_PAGAMENTO_INICIAL) não são segredos. Replicar na fonte.\nconst existentes = {};\nfor (const i of $('Ler configuração').all()) if (i.json && i.json.chave) existentes[i.json.chave] = i.json;\nconst pedido = $('Entrada').first().json.linhas || [];\nconst STATUS = ['CONFIGURADO', 'PROPOSTO', 'PENDENTE', 'OBSOLETO'];\n// IDs de arquivo/pasta do Google Drive são longos, mas não são segredos: aceitos só nestas chaves.\nconst chaveIdDrive = (k) => /^(CONTRATO_MODELO_[A-Z0-9_]+|GDRIVE_[A-Z0-9_]+_ID)$/.test(k);\n// Heurística contra segredos: tokens longos sem espaço, prefixos típicos de chave ou \"Bearer\".\nconst pareceSegredo = (v) => /^(sk-|pk_|ghp_|xox|U2FsdGVk|\\$aact_)/i.test(v) || /bearer\\s/i.test(v) ||\n  (/^[A-Za-z0-9+/=_-]{32,}$/.test(v) && !/^[a-f0-9]{40}$/i.test(v) && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v) && !/^[A-Z][A-Z0-9]*(_[A-Z0-9]+)+$/.test(v)); // hash de campo, UUID e IDENTIFICADOR_EM_MAIUSCULAS são permitidos\nconst out = [];\nfor (const l of pedido) {\n  const chave = String(l.chave || '').trim();\n  const valor = l.valor === null || l.valor === undefined ? '' : String(l.valor).trim();\n  const status = String(l.status || '').trim().toUpperCase();\n  if (!/^[A-Z][A-Z0-9_]{1,62}$/.test(chave)) throw new Error('Chave inválida: ' + chave);\n  if (!STATUS.includes(status)) throw new Error('Status inválido em ' + chave + ': ' + status);\n  const idDrive = chaveIdDrive(chave) && /^[A-Za-z0-9_-]{20,80}$/.test(valor);\n  if (!idDrive && pareceSegredo(valor)) throw new Error('Valor de ' + chave + ' parece um segredo. Segredos vão em Credentials do n8n.');\n  const atual = existentes[chave] || {};\n  out.push({ json: { row: { chave, valor, status,\n    descricao: l.descricao !== undefined ? String(l.descricao) : String(atual.descricao || ''),\n    usado_por: l.usado_por !== undefined ? String(l.usado_por) : String(atual.usado_por || '') } } });\n}\nreturn out;\n"
+        }
+      },
+      {
+        "id": "458eb9e0-7a6e-4560-b17f-223a5b1b7c66",
+        "name": "Gravar em atom_config",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "chave",
+                "condition": "eq",
+                "keyValue": "={{ $json.row.chave }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "chave": "={{ $json.row.chave }}",
+              "valor": "={{ $json.row.valor }}",
+              "status": "={{ $json.row.status }}",
+              "descricao": "={{ $json.row.descricao }}",
+              "usado_por": "={{ $json.row.usado_por }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "chave",
+                "displayName": "chave",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "valor",
+                "displayName": "valor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "descricao",
+                "displayName": "descricao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "usado_por",
+                "displayName": "usado_por",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow's trigger(s) are not supported for direct execution through MCP: Entrada. Only Schedule, Webhook, Form, and Chat triggers can be executed directly through MCP, so this workflow cannot be executed through MCP. Its trigger(s) still run normally when the workflow is active."
+}

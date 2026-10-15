@@ -1,0 +1,364 @@
+{
+  "workflow": {
+    "id": "bahB7EoBceKsWXai",
+    "name": "ATOM2_W13_Painel_Indicadores",
+    "active": true,
+    "isArchived": false,
+    "versionId": "adce0051-0da0-4651-a111-792b8e3635f7",
+    "activeVersionId": "adce0051-0da0-4651-a111-792b8e3635f7",
+    "triggerCount": 1,
+    "nodeCount": 10,
+    "createdAt": "2026-10-09T21:54:30.000Z",
+    "updatedAt": "2026-10-09T22:52:14.904Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · W13: painel de indicadores do funil (protegido por QA_TOKEN), só com números registrados; teste fora.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Painel (GET)": {
+        "main": [
+          [
+            {
+              "node": "Ler config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler config": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas": {
+        "main": [
+          [
+            {
+              "node": "Ler auditorias",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler auditorias": {
+        "main": [
+          [
+            {
+              "node": "Ler mensagens",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler mensagens": {
+        "main": [
+          [
+            {
+              "node": "Ler propostas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler propostas": {
+        "main": [
+          [
+            {
+              "node": "Ler eventos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler eventos": {
+        "main": [
+          [
+            {
+              "node": "Montar painel",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar painel": {
+        "main": [
+          [
+            {
+              "node": "Responder",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "bc46ae34-9bff-4759-929d-bc0332e03454",
+        "name": "Painel (GET)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom2-painel",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "3d65f51e-b508-497c-9093-d96918460d1d"
+      },
+      {
+        "id": "42ce5bdb-7601-4366-a7d8-e6159482a56b",
+        "name": "Ler config",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "07219b86-9771-459a-85b2-0f83cac3f0f9",
+        "name": "Ler empresas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4d250832-2824-44d8-94ef-7c4f26a658e5",
+        "name": "Ler auditorias",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FG4MXu7WwL1DDoys",
+            "cachedResultName": "atom2_auditorias"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "6595b1b8-4933-42b4-b2cf-d13e28b0fc33",
+        "name": "Ler mensagens",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "XU5IdQgGNqhpBRxM",
+            "cachedResultName": "atom2_mensagens"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "7a4319dc-c9ff-436b-8327-cf7a2a93547a",
+        "name": "Ler propostas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "6ec0aa9f-d65c-422a-921b-a45c8f043ade",
+        "name": "Ler eventos",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "053fe46d-a4ff-4fdf-a11a-88520ae18ce5",
+        "name": "Montar painel",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1540,
+          200
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W13 · Painel de indicadores do funil (GET /webhook/atom2-painel?k=QA_TOKEN).\n// Só conta o que está registrado nas tabelas atom2_* (nada estimado). Registros de teste (c_teste_*) ficam fora dos números.\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst brl = (v) => 'R$ ' + Number(v || 0).toFixed(2).replace('.', ',').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.');\nconst pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 + '%' : '—');\nconst real = (x) => x && x.company_id && !String(x.company_id).startsWith('c_teste_');\nconst ETAPAS = [['F1', 'Importada'], ['F2', 'Diagnóstico N1'], ['F3', 'QA aprovado'], ['F4', 'No CRM'], ['F5', 'Em cadência'], ['F6', 'Respondeu'], ['F7', 'Qualificado'], ['F8', 'Diagnóstico N2 / reunião'], ['F9', 'Proposta'], ['F10', 'Negociação'], ['F11', 'Encerrado (ganho ou perdido)']];\nconst conta = (lista, chave) => lista.reduce((m, x) => { const k = x[chave] || '—'; m[k] = (m[k] || 0) + 1; return m; }, {});\n\nfunction indicadores(empresas, auditorias, mensagens, propostas, eventos) {\n  const E = (empresas || []).filter(real), A = (auditorias || []).filter(real), M = (mensagens || []).filter(real), P = (propostas || []).filter(real), V = (eventos || []).filter(real);\n  const saida = M.filter((m) => m.direcao === 'saida'), entrada = M.filter((m) => m.direcao === 'entrada');\n  const abordadas = new Set(saida.filter((m) => m.passo === 'D1' && ['simulada', 'pronta_envio', 'enviada'].includes(m.status)).map((m) => m.company_id));\n  const responderam = new Set(entrada.map((m) => m.company_id));\n  const aceitas = P.filter((p) => p.status === 'aceita');\n  return {\n    empresas: E.length, outbound: E.filter((e) => e.fluxo !== 'receptivo').length, receptivo: E.filter((e) => e.fluxo === 'receptivo').length,\n    porEtapa: conta(E.filter((e) => e.fluxo !== 'receptivo'), 'funil_etapa'), receptivoPorEtapa: conta(E.filter((e) => e.fluxo === 'receptivo'), 'funil_etapa'),\n    optOut: E.filter((e) => e.opt_out === true || String(e.opt_out) === 'true').length,\n    qa: conta(A, 'qa_status'), faixas: conta(A.filter((a) => a.faixa && a.status !== 'falha'), 'faixa'),\n    saidaPorStatus: conta(saida, 'status'), saidaPorPasso: conta(saida, 'passo'), intencoes: conta(entrada, 'intencao'),\n    abordadas: abordadas.size, responderam: [...responderam].filter((c) => abordadas.has(c)).length,\n    propostas: P.length, aceitas: aceitas.length, valorAceito: aceitas.reduce((s, p) => s + Number(p.valor_total || 0), 0), valorProposto: P.reduce((s, p) => s + Number(p.valor_total || 0), 0),\n    diagnosticosAbertos: V.filter((v) => v.tipo === 'DIAGNOSTICO_ABERTO').length, falhasCrm: V.filter((v) => v.tipo === 'CRM_FALHA').length,\n    bloqueadas: saida.filter((m) => m.status === 'bloqueada').length\n  };\n}\n\nfunction tabela(titulo, mapa, rotulos) {\n  const linhas = (rotulos || Object.keys(mapa).sort().map((k) => [k, k])).filter(([k]) => mapa[k]).map(([k, r]) => `<tr><td>${esc(r)}</td><td class=\"n\">${mapa[k]}</td></tr>`).join('');\n  return `<section class=\"card\"><h2>${esc(titulo)}</h2>${linhas ? `<table>${linhas}</table>` : '<p class=\"mut\">Sem registros.</p>'}</section>`;\n}\nfunction painelHtml(ind, modo, agoraISO) {\n  const kpi = (r, v, d) => `<div class=\"kpi\"><div class=\"v\">${v}</div><div class=\"r\">${esc(r)}</div>${d ? `<div class=\"d\">${esc(d)}</div>` : ''}</div>`;\n  const corpo = `<h1>Funil comercial · ATOM</h1><p class=\"sub\">Atualizado em ${esc(new Date(agoraISO || Date.now()).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }))} · modo ${esc(modo)} · registros de teste não entram nos números.</p>\n<div class=\"kpis\">${kpi('Empresas na base', ind.empresas, ind.outbound + ' ativas · ' + ind.receptivo + ' receptivas')}${kpi('Abordadas (D1)', ind.abordadas)}${kpi('Responderam', ind.responderam, 'taxa ' + pct(ind.responderam, ind.abordadas))}${kpi('Propostas', ind.propostas, brl(ind.valorProposto))}${kpi('Aceitas', ind.aceitas, brl(ind.valorAceito) + ' · ' + pct(ind.aceitas, ind.propostas))}${kpi('Opt-out', ind.optOut)}</div>\n<div class=\"grid\">\n${tabela('Prospecção ativa por etapa', ind.porEtapa, ETAPAS)}\n${tabela('Receptivo por etapa', ind.receptivoPorEtapa)}\n${tabela('QA dos diagnósticos', ind.qa)}\n${tabela('Faixa do score N1', ind.faixas)}\n${tabela('Mensagens de saída por status', ind.saidaPorStatus)}\n${tabela('Mensagens de saída por passo', ind.saidaPorPasso)}\n${tabela('Respostas por intenção', ind.intencoes)}\n<section class=\"card\"><h2>Alertas</h2><table><tr><td>Mensagens bloqueadas (trava de preço/termos/canal)</td><td class=\"n\">${ind.bloqueadas}</td></tr><tr><td>Falhas no Pipedrive</td><td class=\"n\">${ind.falhasCrm}</td></tr><tr><td>Diagnósticos abertos pelo lead</td><td class=\"n\">${ind.diagnosticosAbertos}</td></tr></table></section>\n</div>`;\n  return `<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>Funil comercial · ATOM</title>\n<style>:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--mut:#5d6677;--bd:#e3e6ec;--pri:#2f5bd3}\n@media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--tx:#e8ebf1;--mut:#9aa3b2;--bd:#2c3340;--pri:#7c9cff}}\n*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}main{max-width:1100px;margin:0 auto;padding:28px 16px 56px}\nh1{font-size:24px;margin:0 0 4px}h2{font-size:15px;margin:0 0 8px}.sub,.mut{color:var(--mut)}.sub{margin:0 0 18px}\n.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 16px}.kpi{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px}.kpi .v{font-size:26px;font-weight:700;color:var(--pri)}.kpi .r{font-weight:600}.kpi .d{font-size:13px;color:var(--mut)}\n.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px}\ntable{width:100%;border-collapse:collapse}td{padding:4px 0;border-bottom:1px solid var(--bd)}td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}</style></head><body><main>${corpo}</main></body></html>`;\n}\n\n\nconst cfg = $('Ler config').all().map((i) => i.json);\nconst tok = (cfg.find((r) => r && r.chave === 'QA_TOKEN') || {}).valor;\nconst k = String((($('Painel (GET)').first().json.query) || {}).k || '');\nif (!tok || k !== String(tok)) return [{ json: { status: 403, html: '<!doctype html><meta charset=\"utf-8\"><title>Acesso negado</title><p>Acesso negado.</p>' } }];\nconst modos = cfg.filter((r) => r && r.chave === 'MODO_EXECUCAO').map((r) => String(r.valor).toUpperCase());\nconst modo = modos.length && modos.every((m) => m === 'PRODUCAO') ? 'PRODUCAO' : 'SIMULACAO';\nconst ind = indicadores($('Ler empresas').all().map((i) => i.json), $('Ler auditorias').all().map((i) => i.json), $('Ler mensagens').all().map((i) => i.json), $('Ler propostas').all().map((i) => i.json), $('Ler eventos').all().map((i) => i.json));\nreturn [{ json: { status: 200, html: painelHtml(ind, modo, new Date().toISOString()) } }];"
+        }
+      },
+      {
+        "id": "f27b2188-3c0a-4cc3-b069-b57e2903dd96",
+        "name": "Responder",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1760,
+          200
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseCode": "={{ $json.status }}",
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "5b326467-9e7c-455c-8db8-143536918a4e",
+        "name": "Sticky Note 61ae073c",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -40
+        ],
+        "parameters": {
+          "content": "## ATOM2_W13 · Painel de indicadores\nGET /webhook/atom2-painel?k=QA_TOKEN → base, abordadas, respostas, intenções, propostas, aceites, bloqueios e falhas. Só números registrados nas tabelas atom2_*; registros c_teste_* ficam fora.\nFonte: n8n/code/w13_painel.js · testes: n8n/tests/run_w13.js",
+          "color": 4,
+          "width": 560,
+          "height": 160
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Painel (GET)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-painel\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-painel\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }."
+}

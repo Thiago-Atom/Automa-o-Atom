@@ -1,0 +1,3905 @@
+{
+  "workflow": {
+    "id": "LSf8X0ufNXEY8mDY",
+    "name": "ATOM_05_Autentique",
+    "active": true,
+    "isArchived": false,
+    "versionId": "ebb645a9-a3a8-4fb7-879d-ee8037a360de",
+    "activeVersionId": "ebb645a9-a3a8-4fb7-879d-ee8037a360de",
+    "triggerCount": 1,
+    "nodeCount": 77,
+    "createdAt": "2026-09-28T22:14:24.702Z",
+    "updatedAt": "2026-10-01T00:08:32.385Z",
+    "settings": {
+      "timezone": "America/Sao_Paulo",
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": true,
+      "errorWorkflow": "vd4MLxMjp8SlGgRh"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Contrato: modelo Google Docs preenchido com o snapshot aprovado, PDF e assinatura na Autentique (cliente e Atom). Desativado.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Entrada": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Ação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ação": {
+        "main": [
+          [
+            {
+              "node": "Snapshot",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Documentos do negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Snapshot": {
+        "main": [
+          [
+            {
+              "node": "Vínculos do contrato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Vínculos do contrato": {
+        "main": [
+          [
+            {
+              "node": "Planejar contrato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Planejar contrato": {
+        "main": [
+          [
+            {
+              "node": "Executar?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Executar?": {
+        "main": [
+          [
+            {
+              "node": "Copiar modelo?",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Registrar bloqueio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Copiar modelo?": {
+        "main": [
+          [
+            {
+              "node": "Google Drive — copiar modelo",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Cópia do modelo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive — copiar modelo": {
+        "main": [
+          [
+            {
+              "node": "Guardar cópia",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Guardar cópia": {
+        "main": [
+          [
+            {
+              "node": "Registrar cópia",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar cópia": {
+        "main": [
+          [
+            {
+              "node": "Cópia do modelo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cópia do modelo": {
+        "main": [
+          [
+            {
+              "node": "Google Docs — preencher",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar bloqueio": {
+        "main": [
+          [
+            {
+              "node": "Salvar ação bloqueada",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Salvar ação bloqueada": {
+        "main": [
+          [
+            {
+              "node": "Salvar contrato aguardando configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Documentos do negócio": {
+        "main": [
+          [
+            {
+              "node": "Resolver documento (consulta)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resolver documento (consulta)": {
+        "main": [
+          [
+            {
+              "node": "Documento a consultar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Documento a consultar": {
+        "main": [
+          [
+            {
+              "node": "Autentique — consultar documento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Docs — preencher": {
+        "main": [
+          [
+            {
+              "node": "Google Docs — conferir",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Docs — conferir": {
+        "main": [
+          [
+            {
+              "node": "Conferir preenchimento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Conferir preenchimento": {
+        "main": [
+          [
+            {
+              "node": "Preenchimento completo?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preenchimento completo?": {
+        "main": [
+          [
+            {
+              "node": "Autentique — documentos recentes",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Registrar bloqueio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Autentique — documentos recentes": {
+        "main": [
+          [
+            {
+              "node": "Decidir criação",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Decidir criação": {
+        "main": [
+          [
+            {
+              "node": "Criar documento?",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar documento?": {
+        "main": [
+          [
+            {
+              "node": "Google Drive — exportar PDF",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Documento do contrato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive — exportar PDF": {
+        "main": [
+          [
+            {
+              "node": "Preparar arquivo",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar arquivo": {
+        "main": [
+          [
+            {
+              "node": "Autentique — criar documento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Autentique — criar documento": {
+        "main": [
+          [
+            {
+              "node": "Documento do contrato",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Documento do contrato": {
+        "main": [
+          [
+            {
+              "node": "Registrar documento e signatários",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Capturar erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar documento e signatários": {
+        "main": [
+          [
+            {
+              "node": "Contrato enviado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Contrato enviado": {
+        "main": [
+          [
+            {
+              "node": "Atualizar vínculo da cópia",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar vínculo da cópia": {
+        "main": [
+          [
+            {
+              "node": "Snapshot enviado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Snapshot enviado": {
+        "main": [
+          [
+            {
+              "node": "Salvar contrato enviado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Salvar contrato enviado": {
+        "main": [
+          [
+            {
+              "node": "Registrar ação concluída",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar ação concluída": {
+        "main": [
+          [
+            {
+              "node": "Campos do contrato (envio)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos do contrato (envio)": {
+        "main": [
+          [
+            {
+              "node": "Atualizar negócio (envio)?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar negócio (envio)?": {
+        "main": [
+          [
+            {
+              "node": "Atualizar negócio (contrato enviado)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Cobrar junto com o contrato?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar negócio (contrato enviado)": {
+        "main": [
+          [
+            {
+              "node": "Cobrar junto com o contrato?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cobrar junto com o contrato?": {
+        "main": [
+          [
+            {
+              "node": "Pedido de cobrança (junto)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pedido de cobrança (junto)": {
+        "main": [
+          [
+            {
+              "node": "ATOM_06 — cobranças (junto com contrato)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Capturar erro": {
+        "main": [
+          [
+            {
+              "node": "Ação anterior",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ação anterior": {
+        "main": [
+          [
+            {
+              "node": "Falha na criação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Falha na criação": {
+        "main": [
+          [
+            {
+              "node": "Registrar falha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar falha": {
+        "main": [
+          [
+            {
+              "node": "Alerta de falha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alerta de falha": {
+        "main": [
+          [
+            {
+              "node": "ATOM_11 — alerta Autentique",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook Autentique": {
+        "main": [
+          [
+            {
+              "node": "Calcular HMAC",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Calcular HMAC": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração (webhook)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração (webhook)": {
+        "main": [
+          [
+            {
+              "node": "Validar evento Autentique",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validar evento Autentique": {
+        "main": [
+          [
+            {
+              "node": "Evento Autentique já recebido?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Evento Autentique já recebido?": {
+        "main": [
+          [
+            {
+              "node": "Deduplicar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Deduplicar evento": {
+        "main": [
+          [
+            {
+              "node": "Registrar evento Autentique",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar evento Autentique": {
+        "main": [
+          [
+            {
+              "node": "Evento válido?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Evento válido?": {
+        "main": [
+          [
+            {
+              "node": "Documentos Autentique",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Documentos Autentique": {
+        "main": [
+          [
+            {
+              "node": "Resolver documento (webhook)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resolver documento (webhook)": {
+        "main": [
+          [
+            {
+              "node": "Documento a consultar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Autentique — consultar documento": {
+        "main": [
+          [
+            {
+              "node": "Signatários do documento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Signatários do documento": {
+        "main": [
+          [
+            {
+              "node": "Consolidar contrato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consolidar contrato": {
+        "main": [
+          [
+            {
+              "node": "Gravar situação?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gravar situação?": {
+        "main": [
+          [
+            {
+              "node": "Atualizar vínculo do documento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Alertar situação do contrato?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar vínculo do documento": {
+        "main": [
+          [
+            {
+              "node": "Salvar situação do contrato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Salvar situação do contrato": {
+        "main": [
+          [
+            {
+              "node": "Campos do contrato (situação)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos do contrato (situação)": {
+        "main": [
+          [
+            {
+              "node": "Atualizar negócio (situação)?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar negócio (situação)?": {
+        "main": [
+          [
+            {
+              "node": "Atualizar negócio (situação do contrato)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Assinado por todos?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar negócio (situação do contrato)": {
+        "main": [
+          [
+            {
+              "node": "Assinado por todos?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Assinado por todos?": {
+        "main": [
+          [
+            {
+              "node": "Snapshot assinado",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Alertar situação do contrato?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alertar situação do contrato?": {
+        "main": [
+          [
+            {
+              "node": "Alerta do contrato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Snapshot assinado": {
+        "main": [
+          [
+            {
+              "node": "Cobrar após assinaturas?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cobrar após assinaturas?": {
+        "main": [
+          [
+            {
+              "node": "Pedido de cobrança (após assinaturas)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Pedido de reavaliação da liberação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pedido de cobrança (após assinaturas)": {
+        "main": [
+          [
+            {
+              "node": "ATOM_06 — cobranças (após assinaturas)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ATOM_06 — cobranças (após assinaturas)": {
+        "main": [
+          [
+            {
+              "node": "Pedido de reavaliação da liberação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pedido de reavaliação da liberação": {
+        "main": [
+          [
+            {
+              "node": "ATOM_08 — reavaliar liberação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alerta do contrato": {
+        "main": [
+          [
+            {
+              "node": "ATOM_11 — alerta contrato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "5d0bab59-328a-46bd-8b91-64ff45a16930",
+        "name": "Entrada",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          1120,
+          608
+        ],
+        "parameters": {
+          "inputSource": "passthrough"
+        }
+      },
+      {
+        "id": "713bdc5c-09f5-434f-805a-631cafa61375",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          608
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "dbb0ed59-69bc-4dfe-9c00-e3e064f17c86",
+        "name": "Ação",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1568,
+          608
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "criar",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ ['CRIAR_CONTRATO', 'CRIAR_ENVELOPE'].includes($('Entrada').first().json.acao) }}",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      },
+                      "rightValue": ""
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "consultar",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Entrada').first().json.acao }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "CONSULTAR"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "586e6a80-2735-4f4e-8182-8fb6f856a264",
+        "name": "Snapshot",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1792,
+          608
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "xEk09M9Zn7SCVz1n",
+            "cachedResultName": "atom_snapshots"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ String($('Entrada').first().json.deal_id) }}"
+              },
+              {
+                "keyName": "versao",
+                "condition": "eq",
+                "keyValue": "={{ Number($('Entrada').first().json.versao) }}"
+              }
+            ]
+          },
+          "limit": 1
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4ac80681-8c22-4fd2-a27f-1e8ed254084b",
+        "name": "Vínculos do contrato",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2016,
+          608
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ String($('Entrada').first().json.deal_id) }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "6b222f6e-2dd2-4a2d-b3e8-43208697bc8a",
+        "name": "Planejar contrato",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2240,
+          1232
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#planejar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction safeJsonParse(str, fallback) {\n  if (typeof str !== \"string\" || str === \"\") return fallback;\n  try {\n    return JSON.parse(str);\n  } catch (e) {\n    return fallback;\n  }\n}\nfunction toNumber(v) {\n  if (v === null || v === void 0 || v === \"\") return null;\n  if (typeof v === \"number\") return Number.isFinite(v) ? v : null;\n  if (typeof v === \"object\" && v !== null && \"value\" in v) return toNumber(v.value);\n  let s = String(v).trim().replace(/[R$\\s]/g, \"\");\n  if (/,\\d{1,2}$/.test(s)) s = s.replace(/\\./g, \"\").replace(\",\", \".\");\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction faltando(cfg, chaves) {\n  return (chaves || []).filter((k) => !configurado(cfg, k));\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\nfunction lista(cfg, chave) {\n  const v = valor(cfg, chave, \"\");\n  return v ? v.split(\",\").map((s) => s.trim()).filter(Boolean) : [];\n}\nfunction modo(cfg) {\n  const m = valor(cfg, \"MODO_EXECUCAO\", \"SIMULACAO\").toUpperCase();\n  return [\"SIMULACAO\", \"SANDBOX\", \"PRODUCAO\"].includes(m) ? m : \"SIMULACAO\";\n}\nfunction portao(cfg, chavesNecessarias, opts) {\n  const o = opts || {};\n  const m = modo(cfg);\n  const chaves = (chavesNecessarias || []).concat(m === \"PRODUCAO\" ? o.somenteProducao || [] : []);\n  const falta = faltando(cfg, chaves);\n  let motivo = falta.length ? \"CONFIGURACAO_PENDENTE: \" + falta.join(\", \") : m === \"SIMULACAO\" ? \"MODO_SIMULACAO\" : \"\";\n  if (!motivo && m === \"SANDBOX\" && o.dealId !== void 0) {\n    const permitidos = lista(cfg, \"SANDBOX_DEAL_IDS\");\n    if (!permitidos.includes(String(o.dealId))) motivo = \"SANDBOX_SOMENTE_NEGOCIOS_DE_TESTE (negócio \" + o.dealId + \" fora de SANDBOX_DEAL_IDS)\";\n  }\n  return { liberado: !motivo, modo: m, faltando: falta, motivo };\n}\n\n// lib/autentique.js\nvar RAIZES = [\"empresa\", \"comercial\", \"financeiro\", \"contatos\", \"deal_id\", \"org_id\", \"versao\"];\nvar FORMATOS = [\"texto\", \"moeda\", \"numero\", \"inteiro\", \"data\", \"cnpj\", \"cep\", \"endereco\", \"sim_nao\"];\nfunction codigoModelo(modelo) {\n  return String(modelo || \"\").toUpperCase().normalize(\"NFD\").replace(/[̀-ͯ]/g, \"\").replace(/[^A-Z0-9]+/g, \"_\").replace(/^_+|_+$/g, \"\");\n}\nfunction ler(obj, caminho) {\n  return String(caminho).split(\".\").reduce((a, k) => a !== null && a !== void 0 && a[k] !== void 0 ? a[k] : void 0, obj);\n}\nfunction milhar(inteiro) {\n  return String(inteiro).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n}\nfunction formatar(valor2, formato) {\n  if (valor2 === void 0 || valor2 === null || valor2 === \"\") return \"\";\n  switch (formato || \"texto\") {\n    case \"moeda\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const neg = n < 0;\n      const c = Math.round(Math.abs(n) * 100);\n      return (neg ? \"-\" : \"\") + \"R$ \" + milhar(Math.floor(c / 100)) + \",\" + String(c % 100).padStart(2, \"0\");\n    }\n    case \"numero\": {\n      const n = toNumber(valor2);\n      if (n === null || Number.isNaN(n)) return \"\";\n      const c = Math.round(Math.abs(n) * 100);\n      const dec = c % 100;\n      return (n < 0 ? \"-\" : \"\") + milhar(Math.floor(c / 100)) + (dec ? \",\" + String(dec).padStart(2, \"0\") : \"\");\n    }\n    case \"inteiro\": {\n      const n = toNumber(valor2);\n      return n === null || Number.isNaN(n) || !Number.isInteger(n) ? \"\" : String(n);\n    }\n    case \"data\": {\n      const m = /^(\\d{4})-(\\d{2})-(\\d{2})/.exec(String(valor2));\n      return m ? m[3] + \"/\" + m[2] + \"/\" + m[1] : \"\";\n    }\n    case \"cnpj\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 14 ? d.replace(/^(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})$/, \"$1.$2.$3/$4-$5\") : \"\";\n    }\n    case \"cep\": {\n      const d = String(valor2).replace(/\\D/g, \"\");\n      return d.length === 8 ? d.slice(0, 5) + \"-\" + d.slice(5) : \"\";\n    }\n    case \"endereco\": {\n      if (typeof valor2 !== \"object\") return \"\";\n      const e = valor2;\n      if (!e.logradouro || !e.cidade || !e.uf) return \"\";\n      const linha1 = [e.logradouro, e.numero].filter(Boolean).join(\", \") + (e.complemento ? \" - \" + e.complemento : \"\");\n      const cep = formatar(e.cep, \"cep\");\n      return [linha1, e.bairro, e.cidade + \"/\" + e.uf].filter(Boolean).join(\", \") + (cep ? \", CEP \" + cep : \"\");\n    }\n    case \"sim_nao\":\n      return valor2 === true ? \"Sim\" : valor2 === false ? \"Não\" : \"\";\n    default:\n      return typeof valor2 === \"object\" ? \"\" : String(valor2).trim();\n  }\n}\nfunction montarSubstituicoes(dados, mapa) {\n  const substituicoes = {};\n  const semValor = [];\n  const invalidos = [];\n  if (!mapa || typeof mapa !== \"object\" || Array.isArray(mapa) || !Object.keys(mapa).length) {\n    return { substituicoes, semValor, invalidos: [\"MAPA_VAZIO_OU_INVALIDO\"] };\n  }\n  for (const [variavel, def] of Object.entries(mapa)) {\n    const campo = typeof def === \"string\" ? def : def && def.campo;\n    const formato = typeof def === \"object\" && def && def.formato ? def.formato : \"texto\";\n    if (!/^[A-Z][A-Z0-9_]{0,60}$/.test(variavel)) {\n      invalidos.push(variavel + \": nome inválido (use MAIUSCULAS_E_SUBLINHADO)\");\n      continue;\n    }\n    if (!campo || !RAIZES.includes(String(campo).split(\".\")[0])) {\n      invalidos.push(variavel + \": campo fora do snapshot aprovado\");\n      continue;\n    }\n    if (!FORMATOS.includes(formato)) {\n      invalidos.push(variavel + \": formato desconhecido \" + formato);\n      continue;\n    }\n    const v = formatar(ler(dados, campo), formato);\n    if (v === \"\") semValor.push(variavel);\n    else substituicoes[\"{{\" + variavel + \"}}\"] = v;\n  }\n  return { substituicoes, semValor, invalidos };\n}\nfunction requisicoesDocs(substituicoes) {\n  return Object.entries(substituicoes).map(([marca, valor2]) => ({\n    replaceAllText: { containsText: { text: marca, matchCase: true }, replaceText: valor2 }\n  }));\n}\nfunction nomeDocumento(dealId, versao, razaoSocial) {\n  return (\"ATOM-D\" + dealId + \"-V\" + versao + \" — Contrato\" + (razaoSocial ? \" — \" + razaoSocial : \"\")).slice(0, 200);\n}\nvar MUTATION_CRIAR = \"mutation CreateDocumentMutation($document: DocumentInput!, $signers: [SignerInput!]!, $file: Upload!) { createDocument(sandbox: %SANDBOX%, document: $document, signers: $signers, file: $file) { id name created_at signatures { public_id name email action { name } link { short_link } } } }\";\nfunction operacoesCriacao({ nome, emails, sandbox }) {\n  return JSON.stringify({\n    query: MUTATION_CRIAR.replace(\"%SANDBOX%\", sandbox ? \"true\" : \"false\"),\n    variables: { document: { name: nome }, signers: emails.map((email) => ({ email, action: \"SIGN\" })), file: null }\n  });\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction consultaRecentes(limite) {\n  return { query: \"query { documents(limit: \" + Math.max(1, Math.min(60, Number(limite) || 30)) + \", page: 1) { data { id name created_at signatures { public_id name email action { name } link { short_link } } } } }\" };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").all());\n  const e = $(\"Entrada\").first().json;\n  const versao = Number(e.versao);\n  const snap = $(\"Snapshot\").all().map((i) => i.json).find((r) => r && r.deal_id);\n  const vincs = $(\"Vínculos do contrato\").all().map((i) => i.json).filter((r) => r && r.id_externo && Number(r.snapshot_versao) === versao);\n  const reqId = \"autentique:contrato:\" + e.deal_id + \":v\" + versao;\n  const base = { request_id: reqId, deal_id: String(e.deal_id), versao };\n  const bloquear = (motivo) => [{ json: Object.assign(base, { executar: false, fim: false, bloqueado: true, motivo }) }];\n  if (!snap || ![\"ATIVO\", \"ENVIADO\"].includes(snap.status)) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"SNAPSHOT_INEXISTENTE_OU_INATIVO\" }) }];\n  if (vincs.some((v) => v.sistema === \"AUTENTIQUE\" && v.tipo === \"DOCUMENTO\")) return [{ json: Object.assign(base, { executar: false, fim: true, motivo: \"CONTRATO_JA_ENVIADO\" }) }];\n  const d = safeJsonParse(snap.dados, {});\n  const cod = codigoModelo(d.comercial && d.comercial.modelo_contrato);\n  if (!cod) return bloquear(\"MODELO_DE_CONTRATO_AUSENTE_NO_SNAPSHOT\");\n  const chaveModelo = \"CONTRATO_MODELO_\" + cod;\n  const chaveMapa = \"CONTRATO_MAPA_\" + cod;\n  const modo2 = modo(cfg);\n  const exigidas = [\"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"GDRIVE_PASTA_CONTRATOS_ID\", chaveModelo, chaveMapa];\n  const gate = portao(cfg, exigidas, { somenteProducao: [\"AUTENTIQUE_VALIDADO_SANDBOX\"], dealId: String(e.deal_id) });\n  if (!gate.liberado) return bloquear(gate.motivo);\n  const mapa = safeJsonParse(valor(cfg, chaveMapa, \"\"), null);\n  const s = montarSubstituicoes(d, mapa);\n  if (s.invalidos.length) return bloquear(chaveMapa + \" inválido: \" + s.invalidos.join(\"; \"));\n  if (s.semValor.length) return bloquear(\"Variáveis do modelo sem valor no snapshot: \" + s.semValor.join(\", \"));\n  const emailCliente = normalizeEmail(d.contatos && d.contatos.email_assinatura);\n  const emailAtom = normalizeEmail(valor(cfg, \"AUTENTIQUE_SIGNATARIO_ATOM_EMAIL\", \"\"));\n  if (!emailCliente || !emailAtom) return bloquear(\"E-MAIL_DE_SIGNATARIO_AUSENTE\");\n  if (emailCliente === emailAtom) return bloquear(\"E-MAILS_DO_CLIENTE_E_DA_ATOM_IGUAIS\");\n  const copia = vincs.find((v) => v.sistema === \"GDOCS\" && v.tipo === \"DOCUMENTO_GOOGLE\");\n  const nome = nomeDocumento(e.deal_id, versao, d.empresa && d.empresa.razao_social);\n  const sandbox = modo2 !== \"PRODUCAO\";\n  return [{ json: Object.assign(base, {\n    executar: true,\n    fim: false,\n    org_id: String(d.org_id || \"\"),\n    modelo: cod,\n    nome,\n    sandbox,\n    etapas: { copiar: !copia },\n    ids: { copia: copia ? copia.id_externo : \"\" },\n    modelo_id: valor(cfg, chaveModelo, \"\"),\n    corpo_copia: { name: nome, parents: [valor(cfg, \"GDRIVE_PASTA_CONTRATOS_ID\", \"\")] },\n    corpo_docs: { requests: requisicoesDocs(s.substituicoes) },\n    substituicoes: s.substituicoes,\n    consulta_recentes: consultaRecentes(30),\n    operations: operacoesCriacao({ nome, emails: [emailCliente, emailAtom], sandbox }),\n    mapa_arquivo: MAPA_ARQUIVO,\n    signatarios: [{ papel: \"CLIENTE\", email: emailCliente }, { papel: \"ATOM\", email: emailAtom }],\n    disparo_cobranca: valor(cfg, \"COBRANCA_DISPARO\", \"\")\n  }) }];\n})();\nreturn __resultado;"
+        }
+      },
+      {
+        "id": "a7f75569-369b-4ee3-a372-595043a651e8",
+        "name": "Executar?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          2464,
+          1232
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.executar }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "f0a69925-b950-4e01-99ca-526b089cee70",
+        "name": "Copiar modelo?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          2688,
+          1152
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $('Planejar contrato').first().json.etapas.copiar }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "367db500-42b9-48bd-9fec-5b1ffdaefc20",
+        "name": "Google Drive — copiar modelo",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          2912,
+          1088
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "=https://www.googleapis.com/drive/v3/files/{{ encodeURIComponent($('Planejar contrato').first().json.modelo_id) }}/copy?supportsAllDrives=true",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleDriveOAuth2Api",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($('Planejar contrato').first().json.corpo_copia) }}",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "JslN0GAFUISauTt6",
+            "name": "ATOM Google Drive"
+          }
+        }
+      },
+      {
+        "id": "ae9d8ce9-e833-4415-a95f-22871dc0cccd",
+        "name": "Guardar cópia",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3136,
+          1008
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#guardar_copia. Edite a fonte no repositório, não este nó.\n// Guarda o ID da cópia do modelo logo após criá-la: uma retentativa reaproveita a mesma cópia.\nconst p = $('Planejar contrato').first().json;\nconst r = $input.first().json;\nconst id = r && r.id ? String(r.id) : '';\nif (!id) throw new Error('Google Drive não retornou o id da cópia do modelo');\nreturn [{ json: { id, row: { sistema: 'GDOCS', tipo: 'DOCUMENTO_GOOGLE', id_externo: id, deal_id: p.deal_id, org_id: p.org_id, snapshot_versao: p.versao,\n  papel: '', status: 'CRIADO', link: '', referencia: p.request_id, atualizado_em: new Date().toISOString() } } }];"
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "id": "2bed5fae-d327-4a40-ac57-865825676726",
+        "name": "Registrar cópia",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3360,
+          944
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "sistema": "={{ $('Guardar cópia').first().json.row.sistema }}",
+              "tipo": "={{ $('Guardar cópia').first().json.row.tipo }}",
+              "id_externo": "={{ $('Guardar cópia').first().json.row.id_externo }}",
+              "deal_id": "={{ $('Guardar cópia').first().json.row.deal_id }}",
+              "org_id": "={{ $('Guardar cópia').first().json.row.org_id }}",
+              "snapshot_versao": "={{ $('Guardar cópia').first().json.row.snapshot_versao }}",
+              "papel": "={{ $('Guardar cópia').first().json.row.papel }}",
+              "status": "={{ $('Guardar cópia').first().json.row.status }}",
+              "link": "={{ $('Guardar cópia').first().json.row.link }}",
+              "referencia": "={{ $('Guardar cópia').first().json.row.referencia }}",
+              "atualizado_em": "={{ $('Guardar cópia').first().json.row.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "sistema",
+                "displayName": "sistema",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tipo",
+                "displayName": "tipo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id_externo",
+                "displayName": "id_externo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "org_id",
+                "displayName": "org_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "snapshot_versao",
+                "displayName": "snapshot_versao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "papel",
+                "displayName": "papel",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "link",
+                "displayName": "link",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "referencia",
+                "displayName": "referencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "acdf5a90-e646-4d0e-b3b9-f2504535718c",
+        "name": "Cópia do modelo",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3584,
+          944
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#copia_atual. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar contrato').first().json;\nconst id = $('Guardar cópia').isExecuted ? $('Guardar cópia').first().json.id : p.ids.copia;\nreturn [{ json: { copia_id: id, copia_nova: $('Guardar cópia').isExecuted } }];"
+        }
+      },
+      {
+        "id": "847fddb6-d2fc-4f2d-90c9-cfe32b71b09e",
+        "name": "Registrar bloqueio",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          4704,
+          1296
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#bloqueio. Edite a fonte no repositório, não este nó.\n// Recebe o item do planejamento (configuração pendente) ou da conferência do preenchimento (modelo incompatível).\nconst p = $('Planejar contrato').first().json;\nconst x = $input.first().json;\nif (p.fim) return []; // já enviado ou snapshot inativo: nada a fazer\nconst motivo = String(x.motivo || p.motivo || '').slice(0, 480);\nconst agora = new Date().toISOString();\nreturn [{ json: {\n  acao: { request_id: p.request_id, sistema: 'AUTENTIQUE', acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, status: 'BLOQUEADO_CONFIG',\n    tentativas: 0, proxima_tentativa: null, ultimo_erro: motivo,\n    payload: JSON.stringify({ acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, versao: p.versao }), resultado: '', criado_em: agora, atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'AGUARDANDO_CONFIGURACAO', ultimo_evento_em: agora },\n} }];"
+        }
+      },
+      {
+        "id": "83fb51ef-3de6-4e18-b40e-f8b07850bd35",
+        "name": "Salvar ação bloqueada",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4928,
+          1296
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "g4eyHC7N33XttLZH",
+            "cachedResultName": "atom_acoes"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "request_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.acao.request_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "request_id": "={{ $json.acao.request_id }}",
+              "sistema": "={{ $json.acao.sistema }}",
+              "acao": "={{ $json.acao.acao }}",
+              "deal_id": "={{ $json.acao.deal_id }}",
+              "status": "={{ $json.acao.status }}",
+              "tentativas": "={{ $json.acao.tentativas }}",
+              "proxima_tentativa": "={{ $json.acao.proxima_tentativa }}",
+              "ultimo_erro": "={{ $json.acao.ultimo_erro }}",
+              "payload": "={{ $json.acao.payload }}",
+              "resultado": "={{ $json.acao.resultado }}",
+              "criado_em": "={{ $json.acao.criado_em }}",
+              "atualizado_em": "={{ $json.acao.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "request_id",
+                "displayName": "request_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "sistema",
+                "displayName": "sistema",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "acao",
+                "displayName": "acao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tentativas",
+                "displayName": "tentativas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "proxima_tentativa",
+                "displayName": "proxima_tentativa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_erro",
+                "displayName": "ultimo_erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "payload",
+                "displayName": "payload",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "resultado",
+                "displayName": "resultado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "criado_em",
+                "displayName": "criado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "af0e2ce9-e86b-48bc-a0c5-9d910689a0a5",
+        "name": "Salvar contrato aguardando configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          5152,
+          1296
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "4JWPJuuhMrWIhad4",
+            "cachedResultName": "atom_negocios"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Registrar bloqueio').first().json.negocio.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "deal_id": "={{ $('Registrar bloqueio').first().json.negocio.deal_id }}",
+              "contrato_status": "={{ $('Registrar bloqueio').first().json.negocio.contrato_status }}",
+              "ultimo_evento_em": "={{ $('Registrar bloqueio').first().json.negocio.ultimo_evento_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "contrato_status",
+                "displayName": "contrato_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_evento_em",
+                "displayName": "ultimo_evento_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "c5907306-ec1b-467e-a2e0-c929d47fc666",
+        "name": "Documentos do negócio",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1792,
+          800
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "sistema",
+                "condition": "eq",
+                "keyValue": "={{ \"AUTENTIQUE\" }}"
+              },
+              {
+                "keyName": "tipo",
+                "condition": "eq",
+                "keyValue": "={{ \"DOCUMENTO\" }}"
+              },
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ String($('Entrada').first().json.deal_id) }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "d1a793fe-79df-4200-9830-bd08121dc744",
+        "name": "Resolver documento (consulta)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          800
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#resolver_consulta. Edite a fonte no repositório, não este nó.\n// Ação CONSULTAR (reconciliação/manual): relê o documento vinculado à versão informada (ou à mais recente).\nconst e = $('Entrada').first().json;\nconst docs = $input.all().map((i) => i.json).filter((r) => r && r.sistema === 'AUTENTIQUE' && r.tipo === 'DOCUMENTO' && r.id_externo);\nconst alvo = e.versao ? docs.filter((r) => Number(r.snapshot_versao) === Number(e.versao)) : docs;\nalvo.sort((a, b) => Number(b.snapshot_versao) - Number(a.snapshot_versao));\nif (!alvo.length) return [];\nreturn [{ json: { deal_id: String(alvo[0].deal_id), versao: Number(alvo[0].snapshot_versao), documento: alvo[0].id_externo, link: alvo[0].link || '', origem: 'CONSULTA' } }];"
+        }
+      },
+      {
+        "id": "63fcfb7c-bbd5-4506-b0e1-774de2633d49",
+        "name": "Documento a consultar",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2240,
+          192
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{ json: $input.first().json }];"
+        }
+      },
+      {
+        "id": "d0777272-525b-4271-8471-16807f154637",
+        "name": "Google Docs — preencher",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          3808,
+          944
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "=https://docs.googleapis.com/v1/documents/{{ encodeURIComponent($json.copia_id) }}:batchUpdate",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleDriveOAuth2Api",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($('Planejar contrato').first().json.corpo_docs) }}",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "JslN0GAFUISauTt6",
+            "name": "ATOM Google Drive"
+          }
+        }
+      },
+      {
+        "id": "d0999c25-a573-456b-90c5-55c4c2ee954d",
+        "name": "Google Docs — conferir",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          4032,
+          864
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://docs.googleapis.com/v1/documents/{{ encodeURIComponent($('Cópia do modelo').first().json.copia_id) }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleDriveOAuth2Api",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "JslN0GAFUISauTt6",
+            "name": "ATOM Google Drive"
+          }
+        }
+      },
+      {
+        "id": "f5f24128-33d6-4e25-a108-64873f750dff",
+        "name": "Conferir preenchimento",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          4256,
+          800
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#validar_preenchimento + lib/{util,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/autentique.js\nfunction naoEncontradas(respostaBatch, substituicoes) {\n  const marcas = Object.keys(substituicoes);\n  const replies = respostaBatch && respostaBatch.replies || [];\n  return marcas.filter((m, i) => !(replies[i] && replies[i].replaceAllText && Number(replies[i].replaceAllText.occurrencesChanged) > 0));\n}\nfunction marcasRestantes(documentoGoogle) {\n  const texto = JSON.stringify(documentoGoogle || {});\n  return uniq((texto.match(/\\{\\{\\s*[A-Za-z0-9_.]+\\s*\\}\\}/g) || []).map((s) => s.replace(/\\s+/g, \"\")));\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  const c = $(\"Cópia do modelo\").first().json;\n  const lote = $(\"Google Docs — preencher\").first().json || {};\n  const doc = $input.first().json || {};\n  const restantes = marcasRestantes(doc);\n  const ausentes = c.copia_nova ? naoEncontradas(lote, p.substituicoes) : [];\n  const problemas = [];\n  if (restantes.length) problemas.push(\"marcas sem valor no documento: \" + restantes.join(\", \"));\n  if (ausentes.length) problemas.push(\"variáveis do mapa ausentes no modelo: \" + ausentes.join(\", \"));\n  return [{ json: {\n    ok: problemas.length === 0,\n    copia_id: c.copia_id,\n    motivo: problemas.length ? \"MODELO_INCOMPATIVEL (CONTRATO_MODELO_\" + p.modelo + \"): \" + problemas.join(\"; \") : \"\"\n  } }];\n})();\nreturn __resultado;"
+        }
+      },
+      {
+        "id": "bc04ce7a-a6f0-4936-93db-9515570c73b4",
+        "name": "Preenchimento completo?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          4480,
+          800
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "dc7be360-17ff-4df5-a21a-ffaa5aae0e58",
+        "name": "Autentique — documentos recentes",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          4704,
+          704
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.autentique.com.br/v2/graphql",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($('Planejar contrato').first().json.consulta_recentes) }}",
+          "options": {
+            "timeout": 30000
+          }
+        },
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "kFPvebybYXfSuXtH",
+            "name": "ATOM Autentique (Bearer)"
+          }
+        }
+      },
+      {
+        "id": "44db03ce-5e11-45fc-a72e-fbf2177fe82a",
+        "name": "Decidir criação",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          4928,
+          624
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#decidir_criacao + lib/{util,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/autentique.js\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction erroGraphql(resp) {\n  if (!resp || typeof resp !== \"object\") return \"RESPOSTA_VAZIA\";\n  if (Array.isArray(resp.errors) && resp.errors.length) {\n    return errorSummary(resp.errors.map((e) => e && e.message || JSON.stringify(e)).join(\"; \"));\n  }\n  return \"\";\n}\nfunction procurarPorNome(respRecentes, nome) {\n  const lista = (((respRecentes || {}).data || {}).documents || {}).data || [];\n  return lista.find((d) => d && d.name === nome) || null;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  const r = $input.first().json;\n  const erro = erroGraphql(r);\n  if (erro) throw new Error(\"Autentique (consulta de documentos recentes): \" + erro);\n  const existente = procurarPorNome(r, p.nome);\n  return [{ json: { criar: !existente, existente } }];\n})();\nreturn __resultado;"
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "id": "46f04c9a-0bcc-4796-b591-4228cb839949",
+        "name": "Criar documento?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          5152,
+          608
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.criar }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "edee6984-7c91-4ddb-8ca6-8e96e0b6e62d",
+        "name": "Google Drive — exportar PDF",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          5376,
+          576
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://www.googleapis.com/drive/v3/files/{{ encodeURIComponent($('Cópia do modelo').first().json.copia_id) }}/export?mimeType=application%2Fpdf",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleDriveOAuth2Api",
+          "options": {
+            "timeout": 60000,
+            "response": {
+              "response": {
+                "responseFormat": "file",
+                "outputPropertyName": "data"
+              }
+            }
+          }
+        },
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "JslN0GAFUISauTt6",
+            "name": "ATOM Google Drive"
+          }
+        }
+      },
+      {
+        "id": "63ea7e22-79bd-496d-80f1-103340869e5a",
+        "name": "Preparar arquivo",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          5600,
+          512
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#preparar_arquivo. Edite a fonte no repositório, não este nó.\n// Nome e tipo do PDF exportado (o conteúdo binário segue inalterado).\nconst p = $('Planejar contrato').first().json;\nconst item = $input.first();\nif (!item.binary || !item.binary.data) throw new Error('Exportação do PDF não retornou arquivo');\nitem.binary.data.fileName = p.nome.replace(/[^\\w\\- .]+/g, '').slice(0, 120) + '.pdf';\nitem.binary.data.mimeType = 'application/pdf';\nitem.json = { arquivo: item.binary.data.fileName };\nreturn [item];"
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "id": "654a805c-27a5-4990-952e-1b3f58092e8e",
+        "name": "Autentique — criar documento",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          5824,
+          432
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.autentique.com.br/v2/graphql",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "parameterType": "formData",
+                "name": "operations",
+                "value": "={{ $('Planejar contrato').first().json.operations }}"
+              },
+              {
+                "parameterType": "formData",
+                "name": "map",
+                "value": "={{ $('Planejar contrato').first().json.mapa_arquivo }}"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "notes": "Envia os convites de assinatura por e-mail ao cliente e à Atom. sandbox=true fora de PRODUCAO.",
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "kFPvebybYXfSuXtH",
+            "name": "ATOM Autentique (Bearer)"
+          }
+        }
+      },
+      {
+        "id": "d538c755-c7e9-4cfd-834d-3dd5835bf061",
+        "name": "Documento do contrato",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          6048,
+          368
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#documento + lib/{util,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction normalizeEmail(email) {\n  if (typeof email !== \"string\") return \"\";\n  const e = email.trim().toLowerCase();\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e) ? e : \"\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/autentique.js\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction erroGraphql(resp) {\n  if (!resp || typeof resp !== \"object\") return \"RESPOSTA_VAZIA\";\n  if (Array.isArray(resp.errors) && resp.errors.length) {\n    return errorSummary(resp.errors.map((e) => e && e.message || JSON.stringify(e)).join(\"; \"));\n  }\n  return \"\";\n}\nfunction signatariosDoDocumento(doc, exigidos) {\n  const sigs = doc && doc.signatures || [];\n  const achados = [];\n  const faltando = [];\n  for (const x of exigidos) {\n    const email = normalizeEmail(x.email);\n    const s = sigs.find((g) => g && normalizeEmail(g.email) === email);\n    if (!s || !s.public_id) faltando.push(x.papel);\n    else achados.push({ papel: x.papel, email, public_id: String(s.public_id), link: s.link && s.link.short_link || \"\" });\n  }\n  return { achados, faltando };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  let doc;\n  if ($(\"Autentique — criar documento\").isExecuted) {\n    const r = $input.first().json;\n    const erro = erroGraphql(r);\n    if (erro) throw new Error(\"Autentique recusou a criação: \" + erro);\n    doc = r && r.data && r.data.createDocument;\n  } else {\n    doc = $(\"Decidir criação\").first().json.existente;\n  }\n  if (!doc || !doc.id) throw new Error(\"Autentique não retornou o id do documento\");\n  const loc = signatariosDoDocumento(doc, p.signatarios);\n  if (loc.faltando.length) throw new Error(\"Documento \" + doc.id + \" sem signatário(s): \" + loc.faltando.join(\", \") + \" — conferir na Autentique antes de reprocessar\");\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const linha = (tipo, id, papel, link) => ({\n    sistema: \"AUTENTIQUE\",\n    tipo,\n    id_externo: id,\n    deal_id: p.deal_id,\n    org_id: p.org_id,\n    snapshot_versao: p.versao,\n    papel,\n    status: \"ENVIADO\",\n    link,\n    referencia: p.request_id,\n    atualizado_em: agora\n  });\n  const cliente = loc.achados.find((a) => a.papel === \"CLIENTE\");\n  return [linha(\"DOCUMENTO\", String(doc.id), \"\", cliente.link)].concat(loc.achados.map((a) => linha(\"SIGNATARIO\", a.public_id, a.papel, a.link))).map((row) => ({ json: { row, documento_id: String(doc.id), reaproveitado: !$(\"Autentique — criar documento\").isExecuted } }));\n})();\nreturn __resultado;"
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "id": "081869ee-d597-4f7c-8071-03a1529b7bbe",
+        "name": "Registrar documento e signatários",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6272,
+          320
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "sistema": "={{ $json.row.sistema }}",
+              "tipo": "={{ $json.row.tipo }}",
+              "id_externo": "={{ $json.row.id_externo }}",
+              "deal_id": "={{ $json.row.deal_id }}",
+              "org_id": "={{ $json.row.org_id }}",
+              "snapshot_versao": "={{ $json.row.snapshot_versao }}",
+              "papel": "={{ $json.row.papel }}",
+              "status": "={{ $json.row.status }}",
+              "link": "={{ $json.row.link }}",
+              "referencia": "={{ $json.row.referencia }}",
+              "atualizado_em": "={{ $json.row.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "sistema",
+                "displayName": "sistema",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tipo",
+                "displayName": "tipo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id_externo",
+                "displayName": "id_externo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "org_id",
+                "displayName": "org_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "snapshot_versao",
+                "displayName": "snapshot_versao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "papel",
+                "displayName": "papel",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "link",
+                "displayName": "link",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "referencia",
+                "displayName": "referencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "3c105778-4d4b-48e2-a521-540b21869514",
+        "name": "Contrato enviado",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          6496,
+          320
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#enviado. Edite a fonte no repositório, não este nó.\nconst p = $('Planejar contrato').first().json;\nconst docs = $('Documento do contrato').all().map((i) => i.json);\nconst doc = docs.find((x) => x.row.tipo === 'DOCUMENTO');\nconst agora = new Date().toISOString();\nreturn [{ json: {\n  deal_id: p.deal_id, versao: p.versao, documento_id: doc.documento_id, link: doc.row.link, status_contrato: 'ENVIADO',\n  copia: { status: 'CONVERTIDO_EM_PDF', atualizado_em: agora },\n  negocio: { deal_id: p.deal_id, contrato_status: 'ENVIADO', ultimo_evento_em: agora },\n  acao: { request_id: p.request_id, sistema: 'AUTENTIQUE', acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, status: 'CONCLUIDO', tentativas: 0,\n    proxima_tentativa: null, ultimo_erro: '', payload: JSON.stringify({ acao: 'CRIAR_CONTRATO', deal_id: p.deal_id, versao: p.versao }),\n    resultado: JSON.stringify({ documento: doc.documento_id, sandbox: p.sandbox, reaproveitado: doc.reaproveitado }), criado_em: agora, atualizado_em: agora },\n  cobrar_agora: p.disparo_cobranca === 'JUNTO_COM_CONTRATO',\n  cobranca: { acao: 'CRIAR_COBRANCAS', deal_id: p.deal_id, versao: p.versao, origem: 'CONTRATO_ENVIADO' },\n} }];"
+        }
+      },
+      {
+        "id": "661e0fb8-2189-43ce-b558-152008407538",
+        "name": "Atualizar vínculo da cópia",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6720,
+          320
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "sistema",
+                "condition": "eq",
+                "keyValue": "={{ \"GDOCS\" }}"
+              },
+              {
+                "keyName": "id_externo",
+                "condition": "eq",
+                "keyValue": "={{ $('Cópia do modelo').first().json.copia_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "={{ $('Contrato enviado').first().json.copia.status }}",
+              "atualizado_em": "={{ $('Contrato enviado').first().json.copia.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f0b994a3-5baf-4f4e-b6a4-200de7cc4c59",
+        "name": "Snapshot enviado",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6944,
+          320
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "xEk09M9Zn7SCVz1n",
+            "cachedResultName": "atom_snapshots"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Contrato enviado').first().json.deal_id }}"
+              },
+              {
+                "keyName": "versao",
+                "condition": "eq",
+                "keyValue": "={{ $('Contrato enviado').first().json.versao }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "ENVIADO"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "461d1734-54da-4a04-a014-b6e80cf0fb18",
+        "name": "Salvar contrato enviado",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7168,
+          320
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "4JWPJuuhMrWIhad4",
+            "cachedResultName": "atom_negocios"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Contrato enviado').first().json.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "deal_id": "={{ $('Contrato enviado').first().json.negocio.deal_id }}",
+              "contrato_status": "={{ $('Contrato enviado').first().json.negocio.contrato_status }}",
+              "ultimo_evento_em": "={{ $('Contrato enviado').first().json.negocio.ultimo_evento_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "contrato_status",
+                "displayName": "contrato_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_evento_em",
+                "displayName": "ultimo_evento_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "1595c061-e08b-4ba5-8325-b07aa0bdf8d5",
+        "name": "Registrar ação concluída",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7392,
+          320
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "g4eyHC7N33XttLZH",
+            "cachedResultName": "atom_acoes"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "request_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Contrato enviado').first().json.acao.request_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "request_id": "={{ $('Contrato enviado').first().json.acao.request_id }}",
+              "sistema": "={{ $('Contrato enviado').first().json.acao.sistema }}",
+              "acao": "={{ $('Contrato enviado').first().json.acao.acao }}",
+              "deal_id": "={{ $('Contrato enviado').first().json.acao.deal_id }}",
+              "status": "={{ $('Contrato enviado').first().json.acao.status }}",
+              "tentativas": "={{ $('Contrato enviado').first().json.acao.tentativas }}",
+              "proxima_tentativa": "={{ $('Contrato enviado').first().json.acao.proxima_tentativa }}",
+              "ultimo_erro": "={{ $('Contrato enviado').first().json.acao.ultimo_erro }}",
+              "payload": "={{ $('Contrato enviado').first().json.acao.payload }}",
+              "resultado": "={{ $('Contrato enviado').first().json.acao.resultado }}",
+              "criado_em": "={{ $('Contrato enviado').first().json.acao.criado_em }}",
+              "atualizado_em": "={{ $('Contrato enviado').first().json.acao.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "request_id",
+                "displayName": "request_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "sistema",
+                "displayName": "sistema",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "acao",
+                "displayName": "acao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tentativas",
+                "displayName": "tentativas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "proxima_tentativa",
+                "displayName": "proxima_tentativa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_erro",
+                "displayName": "ultimo_erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "payload",
+                "displayName": "payload",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "resultado",
+                "displayName": "resultado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "criado_em",
+                "displayName": "criado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "7af2868f-1453-441c-873d-4c4303ea3169",
+        "name": "Campos do contrato (envio)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          7616,
+          320
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : $(\"Contrato enviado\").first().json;\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.documento_id) valores.PD_DEAL_CONTRATO_ID = x.documento_id;\n  if (x.link) valores.PD_DEAL_CONTRATO_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
+        }
+      },
+      {
+        "id": "cc74b1b2-6742-4c2a-97cb-51705cc8d325",
+        "name": "Atualizar negócio (envio)?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          7840,
+          320
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.atualizar }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "8860d812-496a-4662-bf1d-97dff774e401",
+        "name": "Atualizar negócio (contrato enviado)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          8064,
+          240
+        ],
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.corpo) }}",
+          "options": {
+            "timeout": 20000
+          }
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "f8184e43-228e-439f-8caa-59dd0feefb16",
+        "name": "Cobrar junto com o contrato?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          8288,
+          320
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $('Contrato enviado').first().json.cobrar_agora }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "935fd495-3edd-41b0-aeb6-c6aedaf7e015",
+        "name": "Pedido de cobrança (junto)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          8512,
+          320
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{ json: $('Contrato enviado').first().json.cobranca }];"
+        }
+      },
+      {
+        "id": "29bcdf98-b49b-44f5-a2e3-0b3e715df6fb",
+        "name": "ATOM_06 — cobranças (junto com contrato)",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          8736,
+          320
+        ],
+        "parameters": {
+          "mode": "once",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "={{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_06' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "151f8177-2398-4acd-afc9-24070f00cee0",
+        "name": "Capturar erro",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          6272,
+          992
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#capturar_erro. Edite a fonte no repositório, não este nó.\n// Guarda a etapa e o erro antes da consulta da ação anterior (que substitui o item).\nconst r = $input.first().json || {};\nconst etapa = typeof $prevNode !== 'undefined' && $prevNode.name ? $prevNode.name : 'etapa';\nconst bruto = r.error && typeof r.error === 'object' ? (r.error.message || r.error.description || JSON.stringify(r.error)) : (r.error || r.message || 'HTTP ' + (r.statusCode || '?'));\nreturn [{ json: { etapa, erro: String(bruto) } }];"
+        }
+      },
+      {
+        "id": "81b4059b-dde6-4fbb-b48d-b70399d67f6a",
+        "name": "Ação anterior",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6496,
+          992
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "g4eyHC7N33XttLZH",
+            "cachedResultName": "atom_acoes"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "request_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Planejar contrato').first().json.request_id }}"
+              }
+            ]
+          },
+          "limit": 1
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "7e88082e-8f41-4514-a488-4700432c242f",
+        "name": "Falha na criação",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          6720,
+          992
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#falha + lib/{util}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction backoffMinutes(attempt, maxMinutes) {\n  const m = Math.pow(2, Math.max(0, attempt));\n  return Math.min(m, maxMinutes || 720);\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const p = $(\"Planejar contrato\").first().json;\n  const c = $(\"Capturar erro\").first().json;\n  const anterior = $(\"Ação anterior\").all().map((i) => i.json).find((a) => a && a.request_id) || {};\n  const tentativas = Number(anterior.tentativas || 0) + 1;\n  const etapa = c.etapa;\n  const msg = errorSummary(c.erro).slice(0, 300);\n  const agora = /* @__PURE__ */ new Date();\n  return [{ json: {\n    acao: {\n      request_id: p.request_id,\n      sistema: \"AUTENTIQUE\",\n      acao: \"CRIAR_CONTRATO\",\n      deal_id: p.deal_id,\n      status: \"FALHA\",\n      tentativas,\n      proxima_tentativa: new Date(agora.getTime() + backoffMinutes(tentativas, 720) * 6e4).toISOString(),\n      ultimo_erro: etapa + \": \" + msg,\n      payload: JSON.stringify({ acao: \"CRIAR_CONTRATO\", deal_id: p.deal_id, versao: p.versao }),\n      resultado: \"\",\n      criado_em: anterior.criado_em || agora.toISOString(),\n      atualizado_em: agora.toISOString()\n    },\n    alerta: {\n      tipo: \"AUTENTIQUE_FALHA\",\n      severidade: \"ALTA\",\n      workflow: \"ATOM_05_Autentique\",\n      deal_id: p.deal_id,\n      mensagem: 'Falha em \"' + etapa + '\" (' + msg + \"), tentativa \" + tentativas + \". A retentativa reaproveita a cópia e procura o documento pelo nome antes de criar outro.\"\n    }\n  } }];\n})();\nreturn __resultado;"
+        }
+      },
+      {
+        "id": "e3cba088-8e98-42d9-9a1e-925fe9c85285",
+        "name": "Registrar falha",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6944,
+          992
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "g4eyHC7N33XttLZH",
+            "cachedResultName": "atom_acoes"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "request_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.acao.request_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "request_id": "={{ $json.acao.request_id }}",
+              "sistema": "={{ $json.acao.sistema }}",
+              "acao": "={{ $json.acao.acao }}",
+              "deal_id": "={{ $json.acao.deal_id }}",
+              "status": "={{ $json.acao.status }}",
+              "tentativas": "={{ $json.acao.tentativas }}",
+              "proxima_tentativa": "={{ $json.acao.proxima_tentativa }}",
+              "ultimo_erro": "={{ $json.acao.ultimo_erro }}",
+              "payload": "={{ $json.acao.payload }}",
+              "resultado": "={{ $json.acao.resultado }}",
+              "criado_em": "={{ $json.acao.criado_em }}",
+              "atualizado_em": "={{ $json.acao.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "request_id",
+                "displayName": "request_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "sistema",
+                "displayName": "sistema",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "acao",
+                "displayName": "acao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tentativas",
+                "displayName": "tentativas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "proxima_tentativa",
+                "displayName": "proxima_tentativa",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_erro",
+                "displayName": "ultimo_erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "payload",
+                "displayName": "payload",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "resultado",
+                "displayName": "resultado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "criado_em",
+                "displayName": "criado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "5b8ebb14-4f06-4ae0-bbe6-f74970db14c7",
+        "name": "Alerta de falha",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          7168,
+          992
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{ json: $('Falha na criação').first().json.alerta }];"
+        }
+      },
+      {
+        "id": "050f6cd2-c571-4b52-a7f8-e4f48851dd6d",
+        "name": "ATOM_11 — alerta Autentique",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          7392,
+          992
+        ],
+        "parameters": {
+          "mode": "once",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "={{ ($('Ler configuração').all().map(i => i.json).find(r => r.chave === 'WF_ATOM_11' && r.status === 'CONFIGURADO') || {}).valor || '' }}"
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "2bff2fa5-388d-4870-b9ac-2a7c1b8cc2df",
+        "name": "Webhook Autentique",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          96
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atom/autentique",
+          "responseMode": "onReceived",
+          "options": {
+            "rawBody": true
+          }
+        },
+        "webhookId": "d7e32bc7-3550-4aa7-822d-580522ed9fc3"
+      },
+      {
+        "id": "562e6eab-6904-4765-af37-d0432a52c503",
+        "name": "Calcular HMAC",
+        "type": "n8n-nodes-base.crypto",
+        "typeVersion": 2,
+        "position": [
+          224,
+          96
+        ],
+        "parameters": {
+          "action": "hmac",
+          "type": "SHA256",
+          "binaryData": true,
+          "binaryPropertyName": "data",
+          "dataPropertyName": "hmac_calculado",
+          "encoding": "hex"
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "crypto": {
+            "id": "YVA8556dfw4c4Q6M",
+            "name": "ATOM HMAC Autentique (webhook secret)"
+          }
+        }
+      },
+      {
+        "id": "eacd7cd4-33e7-4eaa-a738-7966e2029df0",
+        "name": "Ler configuração (webhook)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          96
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "7eba8bfe-a2f3-48ad-b17e-ba6b32238696",
+        "name": "Validar evento Autentique",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          96
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#webhook_validar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction fnv32(str, seed) {\n  let h = seed >>> 0;\n  for (let i = 0; i < str.length; i++) {\n    h ^= str.charCodeAt(i);\n    h = Math.imul(h, 16777619) >>> 0;\n  }\n  return h.toString(16).padStart(8, \"0\");\n}\nfunction fingerprint(value) {\n  const s = typeof value === \"string\" ? value : stableStringify(value);\n  return fnv32(s, 2166136261) + fnv32(s, 560337771);\n}\nfunction stableStringify(value) {\n  if (value === null || typeof value !== \"object\") return JSON.stringify(value === void 0 ? null : value);\n  if (Array.isArray(value)) return \"[\" + value.map(stableStringify).join(\",\") + \"]\";\n  const keys = Object.keys(value).filter((k) => value[k] !== void 0).sort();\n  return \"{\" + keys.map((k) => JSON.stringify(k) + \":\" + stableStringify(value[k])).join(\",\") + \"}\";\n}\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction uniq(arr) {\n  return Array.from(new Set(arr));\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/autentique.js\nfunction ler(obj, caminho) {\n  return String(caminho).split(\".\").reduce((a, k) => a !== null && a !== void 0 && a[k] !== void 0 ? a[k] : void 0, obj);\n}\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction idsCandidatos(body) {\n  const caminhos = [\n    \"document.id\",\n    \"documento.id\",\n    \"data.document.id\",\n    \"event.data.document.id\",\n    \"event.data.id\",\n    \"data.object.document.id\",\n    \"data.object.id\",\n    \"object.document.id\",\n    \"object.id\",\n    \"data.id\",\n    \"document_id\",\n    \"id\"\n  ];\n  const out = [];\n  for (const c of caminhos) {\n    const v = ler(body || {}, c);\n    if ((typeof v === \"string\" || typeof v === \"number\") && /^[A-Za-z0-9_-]{8,128}$/.test(String(v))) out.push(String(v));\n  }\n  return uniq(out);\n}\nfunction tipoEvento(body) {\n  for (const c of [\"type\", \"event.type\", \"event\", \"data.type\", \"name\"]) {\n    const v = ler(body || {}, c);\n    if (typeof v === \"string\" && v) return v.slice(0, 80);\n  }\n  return \"\";\n}\nfunction hmacConfere(recebido, calculado) {\n  const a = String(recebido || \"\").replace(/^sha256=/i, \"\").trim().toLowerCase();\n  const b = String(calculado || \"\").trim().toLowerCase();\n  let igual = a.length === b.length && b.length > 0;\n  for (let i = 0; i < Math.max(a.length, b.length); i++) igual = igual && a.charCodeAt(i) === b.charCodeAt(i);\n  return igual;\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração (webhook)\").all());\n  const w = $(\"Webhook Autentique\").first().json;\n  const calc = ($(\"Calcular HMAC\").first().json || {}).hmac_calculado || \"\";\n  const nomeCab = valor(cfg, \"AUTENTIQUE_HMAC_CABECALHO\", \"\").toLowerCase();\n  const conferir = !!nomeCab;\n  const assinaturaOk = conferir ? hmacConfere((w.headers || {})[nomeCab], calc) : true;\n  const b = w.body || {};\n  const ids = idsCandidatos(b);\n  const tipo = tipoEvento(b);\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const chave = \"autentique:\" + (ids[0] || \"?\") + \":\" + (tipo || \"?\") + \":\" + fingerprint(b);\n  return [{ json: {\n    valido: assinaturaOk && ids.length > 0,\n    ids,\n    tipo,\n    hmac_conferido: conferir,\n    row: {\n      event_key: chave,\n      origem: \"autentique\",\n      tipo: tipo || \"?\",\n      entidade_id: ids[0] || \"\",\n      deal_id: \"\",\n      status: !assinaturaOk ? \"ASSINATURA_INVALIDA\" : ids.length ? conferir ? \"RECEBIDO\" : \"RECEBIDO_SEM_HMAC\" : \"INVALIDO\",\n      tentativas: 0,\n      ultimo_erro: assinaturaOk ? \"\" : \"HMAC não confere\",\n      resumo: truncate(tipo + \" | documento=\" + (ids[0] || \"?\"), 300),\n      evento_em: agora,\n      recebido_em: agora,\n      processado_em: null\n    }\n  } }];\n})();\nreturn __resultado;"
+        }
+      },
+      {
+        "id": "2124b8f2-ecb9-42fc-a395-210a3e872490",
+        "name": "Evento Autentique já recebido?",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          96
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "nzO3BvmxmGXY6hZT",
+            "cachedResultName": "atom_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_key",
+                "condition": "eq",
+                "keyValue": "={{ $json.row.event_key }}"
+              }
+            ]
+          },
+          "limit": 1
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "bf750e17-4ccd-4b3f-85d7-622ee9616138",
+        "name": "Deduplicar evento",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          96
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#webhook_dedup. Edite a fonte no repositório, não este nó.\nconst v = $('Validar evento Autentique').first().json;\nconst existe = $('Evento Autentique já recebido?').all().some((i) => i.json && i.json.event_key);\nreturn existe ? [] : [{ json: v }];"
+        }
+      },
+      {
+        "id": "b81ef07d-53e5-4f14-ac48-1f976d555da9",
+        "name": "Registrar evento Autentique",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          96
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "nzO3BvmxmGXY6hZT",
+            "cachedResultName": "atom_eventos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "event_key": "={{ $json.row.event_key }}",
+              "origem": "={{ $json.row.origem }}",
+              "tipo": "={{ $json.row.tipo }}",
+              "entidade_id": "={{ $json.row.entidade_id }}",
+              "deal_id": "={{ $json.row.deal_id }}",
+              "status": "={{ $json.row.status }}",
+              "tentativas": "={{ $json.row.tentativas }}",
+              "ultimo_erro": "={{ $json.row.ultimo_erro }}",
+              "resumo": "={{ $json.row.resumo }}",
+              "evento_em": "={{ $json.row.evento_em }}",
+              "recebido_em": "={{ $json.row.recebido_em }}",
+              "processado_em": "={{ $json.row.processado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "event_key",
+                "displayName": "event_key",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "origem",
+                "displayName": "origem",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tipo",
+                "displayName": "tipo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "entidade_id",
+                "displayName": "entidade_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tentativas",
+                "displayName": "tentativas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_erro",
+                "displayName": "ultimo_erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "resumo",
+                "displayName": "resumo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "evento_em",
+                "displayName": "evento_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "recebido_em",
+                "displayName": "recebido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "processado_em",
+                "displayName": "processado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "5aa9ad28-5c3e-4004-9bee-83c23e67bbeb",
+        "name": "Evento válido?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1568,
+          96
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $('Validar evento Autentique').first().json.valido }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "f70216ed-15db-4879-9063-d17ccf51b958",
+        "name": "Documentos Autentique",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1792,
+          96
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "sistema",
+                "condition": "eq",
+                "keyValue": "={{ \"AUTENTIQUE\" }}"
+              },
+              {
+                "keyName": "tipo",
+                "condition": "eq",
+                "keyValue": "={{ \"DOCUMENTO\" }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "5a76e838-a10b-4889-b232-edc0a14f1bab",
+        "name": "Resolver documento (webhook)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          96
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#resolver_webhook. Edite a fonte no repositório, não este nó.\n// Só documentos criados por este fluxo (vínculo existente) são considerados.\nconst v = $('Validar evento Autentique').first().json;\nconst docs = $input.all().map((i) => i.json).filter((r) => r && r.tipo === 'DOCUMENTO' && r.id_externo);\nconst doc = docs.find((r) => v.ids.includes(String(r.id_externo)));\nif (!doc) return [];\nreturn [{ json: { deal_id: String(doc.deal_id), versao: Number(doc.snapshot_versao), documento: doc.id_externo, link: doc.link || '', origem: 'WEBHOOK:' + v.tipo } }];"
+        }
+      },
+      {
+        "id": "b2d77531-e2ac-4187-8453-e2e781e51be8",
+        "name": "Autentique — consultar documento",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          2464,
+          192
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.autentique.com.br/v2/graphql",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ query: 'query { document(id: \"' + String($json.documento).replace(/[^A-Za-z0-9_-]/g, '') + '\") { id name files { original signed } signatures { public_id email action { name } signed { created_at } rejected { created_at reason } } } }' }) }}",
+          "options": {
+            "timeout": 20000,
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 3000,
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "kFPvebybYXfSuXtH",
+            "name": "ATOM Autentique (Bearer)"
+          }
+        }
+      },
+      {
+        "id": "677c9606-0bc6-44d7-9cd3-ac0b821cc811",
+        "name": "Signatários do documento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2688,
+          192
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "sistema",
+                "condition": "eq",
+                "keyValue": "={{ \"AUTENTIQUE\" }}"
+              },
+              {
+                "keyName": "tipo",
+                "condition": "eq",
+                "keyValue": "={{ \"SIGNATARIO\" }}"
+              },
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Documento a consultar').first().json.deal_id }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "c35bab2a-ac57-4ded-8f68-bcf1f040f2c4",
+        "name": "Consolidar contrato",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2912,
+          192
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#consolidar + lib/{util,config,autentique}. Edite a fonte no repositório, não este nó.\n// lib/util.js\nfunction truncate(str, max) {\n  if (typeof str !== \"string\") return str;\n  return str.length > max ? str.slice(0, max) + \"…[truncado]\" : str;\n}\nfunction errorSummary(err) {\n  if (!err) return \"\";\n  const msg = typeof err === \"string\" ? err : err.message || JSON.stringify(err);\n  return truncate(String(msg).replace(/(api_token|access_token|token|key|secret|password)=([^&\\s\"]+)/gi, \"$1=***\").replace(/(authorization|x-api-key|access_token|api[-_]?key)\"?\\s*[:=]\\s*\"?(?:(?:bearer|basic|token)\\s+)?[^\",\\s}]+/gi, \"$1: ***\").replace(/\\b(bearer|basic)\\s+[A-Za-z0-9._~+\\/=-]{6,}/gi, \"$1 ***\"), 500);\n}\n\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/autentique.js\nvar MAPA_ARQUIVO = JSON.stringify({ file: [\"variables.file\"] });\nfunction erroGraphql(resp) {\n  if (!resp || typeof resp !== \"object\") return \"RESPOSTA_VAZIA\";\n  if (Array.isArray(resp.errors) && resp.errors.length) {\n    return errorSummary(resp.errors.map((e) => e && e.message || JSON.stringify(e)).join(\"; \"));\n  }\n  return \"\";\n}\nfunction statusDocumento(doc, exigidos) {\n  if (!doc || !doc.id) return { status: \"FALHA\", motivo: \"DOCUMENTO_NAO_ENCONTRADO\", faltam: [], assinaram: [] };\n  if (!exigidos || !exigidos.length) return { status: \"FALHA\", motivo: \"SEM_SIGNATARIOS_REGISTRADOS\", faltam: [], assinaram: [] };\n  const sigs = doc.signatures || [];\n  const assinaram = [];\n  const faltam = [];\n  let recusou = \"\";\n  for (const x of exigidos) {\n    const s = sigs.find((g) => g && String(g.public_id) === String(x.public_id));\n    if (!s) return { status: \"FALHA\", motivo: \"SIGNATARIO_REMOVIDO_DO_DOCUMENTO: \" + x.papel, faltam: [x.papel], assinaram };\n    if (s.rejected) recusou = recusou || x.papel;\n    if (s.signed) assinaram.push(x.papel);\n    else faltam.push(x.papel);\n  }\n  if (recusou) return { status: \"RECUSADO\", recusou, faltam, assinaram };\n  if (!faltam.length) return { status: \"ASSINADO_TODOS\", faltam, assinaram };\n  if (assinaram.length) return { status: \"PARCIALMENTE_ASSINADO\", faltam, assinaram };\n  return { status: \"PENDENTE\", faltam, assinaram };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Documento a consultar\").first().json;\n  const r = $(\"Autentique — consultar documento\").first().json || {};\n  const erro = erroGraphql(r);\n  const doc = r.data && r.data.document;\n  const sigs = $(\"Signatários do documento\").all().map((i) => i.json).filter((s) => s && s.sistema === \"AUTENTIQUE\" && s.tipo === \"SIGNATARIO\" && Number(s.snapshot_versao) === x.versao).map((s) => ({ papel: s.papel, public_id: s.id_externo }));\n  const st = erro ? { status: \"FALHA\", motivo: \"CONSULTA: \" + erro, faltam: [] } : statusDocumento(doc, sigs);\n  const agora = (/* @__PURE__ */ new Date()).toISOString();\n  const concluido = st.status === \"ASSINADO_TODOS\";\n  const alertar = [\"RECUSADO\", \"FALHA\"].includes(st.status);\n  return [{ json: {\n    deal_id: x.deal_id,\n    versao: x.versao,\n    status_contrato: st.status,\n    documento_id: x.documento,\n    link: x.link,\n    concluido,\n    // Falha de consulta não sobrescreve a situação gravada: só alerta.\n    gravar: st.status !== \"FALHA\",\n    vinculo: { status: st.status, atualizado_em: agora },\n    negocio: { deal_id: x.deal_id, contrato_status: st.status, contrato_concluido_em: concluido ? agora : null, ultimo_evento_em: agora },\n    cobrar_agora: concluido && valor(cfg, \"COBRANCA_DISPARO\", \"\") === \"APOS_ASSINATURAS\",\n    cobranca: { acao: \"CRIAR_COBRANCAS\", deal_id: x.deal_id, versao: x.versao, origem: \"ASSINATURAS_CONCLUIDAS\" },\n    liberacao: { acao: \"REAVALIAR_LIBERACAO\", deal_id: x.deal_id },\n    alertar,\n    alerta: {\n      tipo: \"CONTRATO_\" + st.status,\n      severidade: \"ALTA\",\n      workflow: \"ATOM_05_Autentique\",\n      deal_id: x.deal_id,\n      mensagem: \"Contrato (documento Autentique \" + x.documento + \") ficou \" + st.status + (st.recusou ? \" — recusado por: \" + st.recusou : \"\") + (st.motivo ? \" (\" + st.motivo + \")\" : \"\") + \". Verifique na Autentique.\"\n    }\n  } }];\n})();\nreturn __resultado;"
+        }
+      },
+      {
+        "id": "98651ada-d295-4116-b288-4ec4383a6d16",
+        "name": "Gravar situação?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          3136,
+          192
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.gravar }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "41a2f190-81e2-477e-8c47-0cd829e89886",
+        "name": "Atualizar vínculo do documento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3360,
+          128
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "jNlKdIaPXcS7cEhF",
+            "cachedResultName": "atom_vinculos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "sistema",
+                "condition": "eq",
+                "keyValue": "={{ \"AUTENTIQUE\" }}"
+              },
+              {
+                "keyName": "tipo",
+                "condition": "eq",
+                "keyValue": "={{ \"DOCUMENTO\" }}"
+              },
+              {
+                "keyName": "id_externo",
+                "condition": "eq",
+                "keyValue": "={{ $('Consolidar contrato').first().json.documento_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "={{ $('Consolidar contrato').first().json.vinculo.status }}",
+              "atualizado_em": "={{ $('Consolidar contrato').first().json.vinculo.atualizado_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "atualizado_em",
+                "displayName": "atualizado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "653486e3-e82a-4c7e-8a5f-32194de2ae49",
+        "name": "Salvar situação do contrato",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3584,
+          128
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "4JWPJuuhMrWIhad4",
+            "cachedResultName": "atom_negocios"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Consolidar contrato').first().json.negocio.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "deal_id": "={{ $('Consolidar contrato').first().json.negocio.deal_id }}",
+              "contrato_status": "={{ $('Consolidar contrato').first().json.negocio.contrato_status }}",
+              "contrato_concluido_em": "={{ $('Consolidar contrato').first().json.negocio.contrato_concluido_em }}",
+              "ultimo_evento_em": "={{ $('Consolidar contrato').first().json.negocio.ultimo_evento_em }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "contrato_status",
+                "displayName": "contrato_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "contrato_concluido_em",
+                "displayName": "contrato_concluido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_evento_em",
+                "displayName": "ultimo_evento_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "2c6e833b-85e6-4a2f-af93-0c1d139add99",
+        "name": "Campos do contrato (situação)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3808,
+          128
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Gerado por n8n/build.js a partir de n8n/code/wf05a.js#campos_contrato + lib/{config,pipedrive}. Edite a fonte no repositório, não este nó.\n// lib/config.js\nfunction montar(rows) {\n  const cfg = {};\n  for (const r of rows || []) {\n    const row = r && r.json ? r.json : r;\n    if (!row || !row.chave) continue;\n    cfg[String(row.chave).trim()] = {\n      valor: row.valor === null || row.valor === void 0 ? \"\" : String(row.valor).trim(),\n      status: String(row.status || \"\").trim().toUpperCase()\n    };\n  }\n  return cfg;\n}\nfunction configurado(cfg, chave) {\n  const c = cfg && cfg[chave];\n  if (!c) return false;\n  if (c.status !== \"CONFIGURADO\") return false;\n  if (c.valor === \"\" || /^PENDENTE/i.test(c.valor)) return false;\n  return true;\n}\nfunction valor(cfg, chave, padrao) {\n  return configurado(cfg, chave) ? cfg[chave].valor : padrao;\n}\n\n// lib/pipedrive.js\nfunction idCampo(cfg, chaveConfig) {\n  return valor(cfg, chaveConfig, \"\");\n}\nfunction corpoAtualizacao(cfg, valores) {\n  const corpo = {};\n  const custom = {};\n  const semMapeamento = [];\n  for (const [chaveCfg, valor2] of Object.entries(valores)) {\n    const id = idCampo(cfg, chaveCfg);\n    if (!id) {\n      semMapeamento.push(chaveCfg);\n      continue;\n    }\n    if (id.startsWith(\"nativo:\")) corpo[id.slice(7)] = valor2;\n    else custom[id] = valor2;\n  }\n  if (Object.keys(custom).length) corpo.custom_fields = custom;\n  return { corpo, semMapeamento, vazio: Object.keys(corpo).length === 0 };\n}\n\n// <stdin>\nvar __resultado = (function() {\n  const cfg = montar($(\"Ler configuração\").isExecuted ? $(\"Ler configuração\").all() : $(\"Ler configuração (webhook)\").all());\n  const x = $(\"Consolidar contrato\").isExecuted ? $(\"Consolidar contrato\").first().json : $(\"Contrato enviado\").first().json;\n  const valores = { PD_DEAL_CONTRATO_STATUS: x.status_contrato };\n  if (x.documento_id) valores.PD_DEAL_CONTRATO_ID = x.documento_id;\n  if (x.link) valores.PD_DEAL_CONTRATO_LINK = x.link;\n  const at = corpoAtualizacao(cfg, valores);\n  return [{ json: { deal_id: x.deal_id, corpo: at.corpo, atualizar: !at.vazio } }];\n})();\nreturn __resultado;"
+        }
+      },
+      {
+        "id": "9b1ffa58-0665-42d3-a181-735fba3b1db0",
+        "name": "Atualizar negócio (situação)?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          4032,
+          128
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.atualizar }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "c5e914d6-e281-45db-9ba8-2e6fdb717235",
+        "name": "Atualizar negócio (situação do contrato)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          4256,
+          80
+        ],
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.corpo) }}",
+          "options": {
+            "timeout": 20000
+          }
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "77cbde40-bc13-47df-a2fb-00c171c44012",
+        "name": "Assinado por todos?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          4480,
+          128
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $('Consolidar contrato').first().json.concluido }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "a7cc3775-19fc-4173-bb95-5215a37b0f21",
+        "name": "Alertar situação do contrato?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          4704,
+          368
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $('Consolidar contrato').first().json.alertar }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "0e86115c-41b0-4da2-82f3-e6035e12374d",
+        "name": "Snapshot assinado",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4704,
+          80
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "xEk09M9Zn7SCVz1n",
+            "cachedResultName": "atom_snapshots"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Consolidar contrato').first().json.deal_id }}"
+              },
+              {
+                "keyName": "versao",
+                "condition": "eq",
+                "keyValue": "={{ $('Consolidar contrato').first().json.versao }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "ASSINADO"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "9e2b24d7-6d66-459b-a8f7-5288095db1fa",
+        "name": "Cobrar após assinaturas?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          4928,
+          80
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $('Consolidar contrato').first().json.cobrar_agora }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "43f7a382-38ea-48e7-83c2-fedb0ab3a110",
+        "name": "Pedido de cobrança (após assinaturas)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          5152,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{ json: $('Consolidar contrato').first().json.cobranca }];"
+        }
+      },
+      {
+        "id": "1a2a5d9b-7ef2-4437-b308-b60d279e8eb1",
+        "name": "ATOM_06 — cobranças (após assinaturas)",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          5376,
+          0
+        ],
+        "parameters": {
+          "mode": "once",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "={{ ($('Ler configuração').isExecuted ? $('Ler configuração') : $('Ler configuração (webhook)')).all().map(i => i.json).find(r => r.chave === 'WF_ATOM_06' && r.status === 'CONFIGURADO')?.valor || '' }}"
+          },
+          "options": {
+            "waitForSubWorkflow": true
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "4ce238ae-e1e8-49ba-b3eb-1f162eca6ca4",
+        "name": "Pedido de reavaliação da liberação",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          5600,
+          80
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{ json: $('Consolidar contrato').first().json.liberacao }];"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "bafe1009-ab94-4ed1-9b90-9fb06e045c47",
+        "name": "Alerta do contrato",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          4928,
+          368
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{ json: $('Consolidar contrato').first().json.alerta }];"
+        }
+      },
+      {
+        "id": "09cecee5-5b21-47fb-b8c0-725f791e8982",
+        "name": "ATOM_11 — alerta contrato",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          5152,
+          368
+        ],
+        "parameters": {
+          "mode": "once",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "={{ ($('Ler configuração').isExecuted ? $('Ler configuração') : $('Ler configuração (webhook)')).all().map(i => i.json).find(r => r.chave === 'WF_ATOM_11' && r.status === 'CONFIGURADO')?.valor || '' }}"
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "02c99b27-9cfe-4146-90e7-1690b3b04d78",
+        "name": "ATOM_08 — reavaliar liberação",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          5824,
+          80
+        ],
+        "parameters": {
+          "mode": "once",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "={{ ($('Ler configuração').isExecuted ? $('Ler configuração') : $('Ler configuração (webhook)')).all().map(i => i.json).find(r => r.chave === 'WF_ATOM_08' && r.status === 'CONFIGURADO')?.valor || '' }}"
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "e3e74c22-7959-478c-b315-16730d11967d",
+        "name": "Sticky Note cc4f7b58",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          4304,
+          1296
+        ],
+        "parameters": {
+          "content": "## ATOM_05 — Autentique\n- Modelo no **Google Docs** (`CONTRATO_MODELO_<COD>` = ID do documento; `CONTRATO_MAPA_<COD>` = variáveis `{{VAR}}` → campos do snapshot aprovado). Cópia na pasta `GDRIVE_PASTA_CONTRATOS_ID`, preenchimento, conferência (nenhuma `{{...}}` restante), PDF.\n- Documento na Autentique com signatários **cliente** (e-mail de assinatura confirmado) e **Atom** (`AUTENTIQUE_SIGNATARIO_ATOM_EMAIL`); convites por e-mail da própria Autentique. `sandbox: true` fora de PRODUCAO.\n- Retentativa segura: reaproveita a cópia e procura o documento pelo nome antes de criar outro.\n- Situação sempre relida por `document(id)` (webhook `/atom/autentique` ou ação `CONSULTAR`). HMAC conferido quando `AUTENTIQUE_HMAC_CABECALHO` estiver configurado.\n- Em PRODUCAO exige `AUTENTIQUE_VALIDADO_SANDBOX`.",
+          "color": 3
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Webhook Autentique\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom/autentique\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom/autentique\n\t\t\t\t\t - HTTP Method: POST\n\t\t\t\t\t - Response Mode: Webhook is configured to respond immediately with the message \"Workflow got started.\"\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }."
+}

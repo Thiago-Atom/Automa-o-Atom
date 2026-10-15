@@ -1,0 +1,279 @@
+{
+  "workflow": {
+    "id": "FXfKbjEUIvKu9uQv",
+    "name": "ATOM_00_Teste_Conexoes",
+    "active": false,
+    "isArchived": false,
+    "versionId": "97e03588-a9d1-4f3a-b0a4-6e97b31a4971",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 7,
+    "createdAt": "2026-09-26T19:28:19.034Z",
+    "updatedAt": "2026-09-29T01:02:14.094Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Teste só de leitura das conexões: Asaas sandbox, Autentique, Anthropic e Controlle (categorias, contas, centros de custo).",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Testar conexão": {
+        "main": [
+          [
+            {
+              "node": "Asaas - Listar clientes",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Autentique - Quem sou eu",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Anthropic - Modelos",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Controlle - Categorias",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Controlle - Contas",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Controlle - Centros de custo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "b067ba1c-ed7b-4972-b732-cc1a184a2c6c",
+        "name": "Testar conexão",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "f99dd45b-1395-4317-a7f6-d5aa64a77e39",
+        "name": "Asaas - Listar clientes",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api-sandbox.asaas.com/v3/customers",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "sendQuery": true,
+          "specifyQuery": "keypair",
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "limit",
+                "value": "5"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "specifyHeaders": "keypair",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "User-Agent",
+                "value": "ATOM-n8n"
+              }
+            ]
+          }
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "zu4vjIknL2gItzNf",
+            "name": "ATOM Asaas (access_token)"
+          }
+        }
+      },
+      {
+        "id": "ec628a7e-9261-4c3d-b0c9-a0dc814038f9",
+        "name": "Autentique - Quem sou eu",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          224,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.autentique.com.br/v2/graphql",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "{\"query\":\"query { me { id name email } }\"}",
+          "options": {}
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "kFPvebybYXfSuXtH",
+            "name": "ATOM Autentique (Bearer)"
+          }
+        }
+      },
+      {
+        "id": "9bca7775-a930-4312-8bd6-b797defc643f",
+        "name": "Anthropic - Modelos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          224,
+          400
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.anthropic.com/v1/models?limit=50",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "anthropicApi",
+          "sendHeaders": true,
+          "specifyHeaders": "keypair",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "anthropicApi": {
+            "id": "IJjMZNhuyrB21L8T",
+            "name": "ATOM Anthropic (Claude)"
+          }
+        }
+      },
+      {
+        "id": "90ce66db-dd1a-45ae-b84a-3017c494289a",
+        "name": "Controlle - Categorias",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          224,
+          600
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api-v1.controlle.com/plan-account/v1/planAccountsEntities/",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "options": {}
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "ZaF4T8y8q0NLTHL6",
+            "name": "ATOM Controlle (Bearer)"
+          }
+        }
+      },
+      {
+        "id": "adcdf5b6-f257-4588-947f-df0c1a2aa2b0",
+        "name": "Controlle - Contas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          224,
+          800
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api-v1.controlle.com/account/v1/accounts/",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "options": {}
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "ZaF4T8y8q0NLTHL6",
+            "name": "ATOM Controlle (Bearer)"
+          }
+        }
+      },
+      {
+        "id": "634fab84-4e29-4c36-a580-9aa230de5707",
+        "name": "Controlle - Centros de custo",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          224,
+          1000
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api-v1.controlle.com/cost-center/v1/costCenters/",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpCustomAuth",
+          "options": {}
+        },
+        "onError": "continueRegularOutput",
+        "credentials": {
+          "httpCustomAuth": {
+            "id": "ZaF4T8y8q0NLTHL6",
+            "name": "ATOM Controlle (Bearer)"
+          }
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

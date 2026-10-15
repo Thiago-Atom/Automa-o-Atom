@@ -1,0 +1,406 @@
+{
+  "workflow": {
+    "id": "Ua3IQC4rxr63lCmP",
+    "name": "ATOM · Auditoria SEO 10 dias — orquestrador",
+    "active": false,
+    "isArchived": false,
+    "versionId": "a6ef2b8a-d1c8-44f1-b245-ad20bc671d22",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 9,
+    "createdAt": "2026-10-01T00:32:58.720Z",
+    "updatedAt": "2026-10-01T00:36:14.223Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "timezone": "America/Sao_Paulo",
+      "executionTimeout": 300
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Dias 1, 11 e 21: às 6h dispara a coleta de todos os projetos de SEO do Semrush (um por execução) e às 6h40 dispara a análise de cada coleta pendente.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Dias 1, 11 e 21 · 6h — coleta": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Projetos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Semrush · Projetos": {
+        "main": [
+          [
+            {
+              "node": "Um item por projeto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rodar coleta agora": {
+        "main": [
+          [
+            {
+              "node": "Semrush · Projetos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Um item por projeto": {
+        "main": [
+          [
+            {
+              "node": "Disparar coleta por cliente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Dias 1, 11 e 21 · 6h40 — análise": {
+        "main": [
+          [
+            {
+              "node": "Coletas pendentes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Coletas pendentes": {
+        "main": [
+          [
+            {
+              "node": "Disparar análise por cliente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "1d08698f-6c04-4592-9071-93aef2feb1f8",
+        "name": "Dias 1, 11 e 21 · 6h — coleta",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 6 1,11,21 * *"
+              }
+            ]
+          },
+          "misfirePolicy": "coalesce"
+        }
+      },
+      {
+        "id": "4fb85bab-7f08-48f6-8066-7d33dbffe5e8",
+        "name": "Semrush · Projetos",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          256,
+          96
+        ],
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "{\"report\":\"list_projects\",\"params\":{}}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      },
+      {
+        "id": "13082c86-129e-488e-9e78-fa9e5f41a096",
+        "name": "Rodar coleta agora",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          192
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "68797fcf-38cf-454b-9c7e-95b1b1aea63c",
+        "name": "Um item por projeto",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          512,
+          96
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Todos os projetos do Semrush com Site Audit ou Position Tracking entram na auditoria (novos projetos entram sozinhos)\nconst j = $input.first().json || {};\nlet x = j.result !== undefined ? j.result : j;\nif (x && x.structuredContent !== undefined) x = x.structuredContent;\nelse if (x && Array.isArray(x.content)) { const p = x.content.map((c) => c.text); x = p.length === 1 ? p[0] : p.join(''); }\nif (x && typeof x === 'object' && !Array.isArray(x) && x.data !== undefined) x = x.data;\nif (typeof x === 'string') { try { x = JSON.parse(x); } catch (e) { x = []; } }\nlet lista = Array.isArray(x) ? x : ((x && (x.projects || x.result)) || []);\nconst inicio = new Date().toISOString();\nreturn lista\n  .filter((p) => p && p.url && (p.tools || []).some((t) => t.tool === 'siteaudit' || t.tool === 'tracking'))\n  .map((p) => ({ json: { projectId: String(p.project_id), nome: p.project_name, dominio: p.url, inicioExecucao: inicio } }));"
+        }
+      },
+      {
+        "id": "3ebfa200-aa5c-4a1f-b17e-ce2b4c4f135d",
+        "name": "Disparar coleta por cliente",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.4,
+        "position": [
+          768,
+          96
+        ],
+        "parameters": {
+          "mode": "each",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "UXbDXEHovLuZBp0Q",
+            "cachedResultName": "ATOM · Auditoria SEO — 1. Coleta"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "projectId": "={{ $json.projectId }}",
+              "nome": "={{ $json.nome }}",
+              "dominio": "={{ $json.dominio }}",
+              "inicioExecucao": "={{ $json.inicioExecucao }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "projectId",
+                "displayName": "projectId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "nome",
+                "displayName": "nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "dominio",
+                "displayName": "dominio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "inicioExecucao",
+                "displayName": "inicioExecucao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              }
+            ],
+            "attemptToConvertTypes": false
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        }
+      },
+      {
+        "id": "eebd39bf-6fbb-4ba2-ac04-07d84029bb62",
+        "name": "Dias 1, 11 e 21 · 6h40 — análise",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          0,
+          432
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "40 6 1,11,21 * *"
+              }
+            ]
+          },
+          "misfirePolicy": "coalesce"
+        }
+      },
+      {
+        "id": "fe429594-17bd-4f5a-9822-6fd7efb949b1",
+        "name": "Coletas pendentes",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          256,
+          528
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "S38n80Hch6oZuzT0",
+            "cachedResultName": "atom_auditoria_fila"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "COLETADO"
+              },
+              {
+                "keyName": "data_auditoria",
+                "condition": "gte",
+                "keyValue": "={{ $now.minus(3, \"days\").toISO() }}"
+              }
+            ]
+          },
+          "returnAll": true
+        }
+      },
+      {
+        "id": "e9bd7be2-2d46-4400-bc88-65af503970e0",
+        "name": "Disparar análise por cliente",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.4,
+        "position": [
+          512,
+          528
+        ],
+        "parameters": {
+          "mode": "each",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ekIzG0Ku5YVkJDNS",
+            "cachedResultName": "ATOM · Auditoria SEO — 2. Análise"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "filaId": "={{ $json.id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "filaId",
+                "displayName": "filaId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              }
+            ],
+            "attemptToConvertTypes": false
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        }
+      },
+      {
+        "id": "20ad966a-ed98-48ab-a194-1d9fba61b46d",
+        "name": "Sticky Note bf756f9d",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          960,
+          96
+        ],
+        "parameters": {
+          "content": "## ATOM · Auditoria SEO 10 dias — orquestrador\n**6h dos dias 1, 11 e 21:** lista os projetos do Semrush e dispara a **1. Coleta** de cada cliente (uma execução por cliente, por causa do limite de 5 min do n8n Cloud).\n\n**6h40:** dispara a **2. Análise** para cada coleta pendente em atom_auditoria_fila (Claude → Google Doc → histórico → cards 🔴 no Trello).\n\nPara rodar fora da agenda: **Rodar coleta agora**, espere uns 10 minutos e **Rodar análise agora**.",
+          "color": 5,
+          "width": 460,
+          "height": 300
+        }
+      }
+    ],
+    "nodeGroups": [
+      {
+        "id": "941022bc-9f86-42e4-9fb0-430d2513cc09",
+        "name": "Coleta",
+        "nodeNames": [
+          "Semrush · Projetos",
+          "Um item por projeto",
+          "Disparar coleta por cliente"
+        ],
+        "description": "Lista os projetos do Semrush e dispara a coleta de cada cliente"
+      },
+      {
+        "id": "2298161d-51cc-413c-8076-78dcc841902a",
+        "name": "Análise",
+        "nodeNames": [
+          "Coletas pendentes",
+          "Disparar análise por cliente"
+        ],
+        "description": "Dispara a análise para cada coleta pendente da fila"
+      }
+    ],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nSchedule trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Dias 1, 11 e 21 · 6h — coleta\n\t\t\t\t</trigger 1>\n\n\n\t\t\t\t<trigger 2>\n\t\t\t\t\t - Node name: Dias 1, 11 e 21 · 6h40 — análise\n\t\t\t\t</trigger 2>\n\nScheduled workflows do not take inputs. To execute a specific schedule trigger, pass triggerNodeName only: { triggerNodeName: \"<node name>\" }."
+}

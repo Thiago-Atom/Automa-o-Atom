@@ -1,0 +1,1975 @@
+{
+  "workflow": {
+    "id": "gOiPTpoBGR2Fk0Go",
+    "name": "ATOM2_W10_Proposta",
+    "active": true,
+    "isArchived": false,
+    "versionId": "4d830235-f0b4-4384-9270-5373e67680c1",
+    "activeVersionId": "4d830235-f0b4-4384-9270-5373e67680c1",
+    "triggerCount": 4,
+    "nodeCount": 54,
+    "createdAt": "2026-10-09T21:51:25.105Z",
+    "updatedAt": "2026-10-09T22:50:48.167Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · W10: proposta (único ponto com preço): painel do Thiago, página privada versionada, Pipedrive → Proposta + link (libera preço), aceite pela página → ganho.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Painel (GET)": {
+        "main": [
+          [
+            {
+              "node": "Ler config (painel)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler config (painel)": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas (painel)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas (painel)": {
+        "main": [
+          [
+            {
+              "node": "Ler propostas (painel)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler propostas (painel)": {
+        "main": [
+          [
+            {
+              "node": "Montar painel",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar painel": {
+        "main": [
+          [
+            {
+              "node": "Responder painel",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Salvar (POST)": {
+        "main": [
+          [
+            {
+              "node": "Ler config (salvar)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler config (salvar)": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas (salvar)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas (salvar)": {
+        "main": [
+          [
+            {
+              "node": "Ler propostas (salvar)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler propostas (salvar)": {
+        "main": [
+          [
+            {
+              "node": "Criar proposta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar proposta": {
+        "main": [
+          [
+            {
+              "node": "Válida?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Válida?": {
+        "main": [
+          [
+            {
+              "node": "Planos Pipedrive",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Responder erro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Planos Pipedrive": {
+        "main": [
+          [
+            {
+              "node": "Aplicar no Pipedrive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aplicar no Pipedrive": {
+        "main": [
+          [
+            {
+              "node": "Registros proposta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registros proposta": {
+        "main": [
+          [
+            {
+              "node": "Responder ok",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Responder ok": {
+        "main": [
+          [
+            {
+              "node": "Destino (salvar)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Destino (salvar)": {
+        "main": [
+          [
+            {
+              "node": "Linha proposta",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha empresa",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha evento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha cadência",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha proposta": {
+        "main": [
+          [
+            {
+              "node": "Gravar proposta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha empresa": {
+        "main": [
+          [
+            {
+              "node": "Atualizar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha mensagem": {
+        "main": [
+          [
+            {
+              "node": "Gravar mensagem",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha evento": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Proposta (GET)": {
+        "main": [
+          [
+            {
+              "node": "Ler propostas (ver)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler propostas (ver)": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas (ver)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar proposta": {
+        "main": [
+          [
+            {
+              "node": "Responder proposta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Responder proposta": {
+        "main": [
+          [
+            {
+              "node": "Contar visita",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Contar visita": {
+        "main": [
+          [
+            {
+              "node": "Atualizar visitas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aceite (POST)": {
+        "main": [
+          [
+            {
+              "node": "Ler config (aceite)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler config (aceite)": {
+        "main": [
+          [
+            {
+              "node": "Ler propostas (aceite)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler propostas (aceite)": {
+        "main": [
+          [
+            {
+              "node": "Ler empresas (aceite)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas (aceite)": {
+        "main": [
+          [
+            {
+              "node": "Registrar aceite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar aceite": {
+        "main": [
+          [
+            {
+              "node": "Responder aceite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Responder aceite": {
+        "main": [
+          [
+            {
+              "node": "Aceite novo?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aceite novo?": {
+        "main": [
+          [
+            {
+              "node": "Planos aceite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Planos aceite": {
+        "main": [
+          [
+            {
+              "node": "Ganho no Pipedrive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ganho no Pipedrive": {
+        "main": [
+          [
+            {
+              "node": "Registros aceite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registros aceite": {
+        "main": [
+          [
+            {
+              "node": "Destino (aceite)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Destino (aceite)": {
+        "main": [
+          [
+            {
+              "node": "Linha proposta aceita",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha empresa ganha",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha evento aceite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha proposta aceita": {
+        "main": [
+          [
+            {
+              "node": "Atualizar proposta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha empresa ganha": {
+        "main": [
+          [
+            {
+              "node": "Atualizar empresa (ganho)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha evento aceite": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento aceite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha cadência": {
+        "main": [
+          [
+            {
+              "node": "Gravar cadência (acompanhamento)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler empresas (ver)": {
+        "main": [
+          [
+            {
+              "node": "Ler config (ver)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler config (ver)": {
+        "main": [
+          [
+            {
+              "node": "Montar proposta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "ec7e0edd-1c6c-46cc-81a2-4b377759e600",
+        "name": "Painel (GET)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom2-proposta",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "78a31426-ab81-412a-943d-693f92185685"
+      },
+      {
+        "id": "1c1406d4-9d25-41f7-a5bb-cd399341d48e",
+        "name": "Ler config (painel)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "645b51ba-94cb-4fb2-92c1-62afc7065b3b",
+        "name": "Ler empresas (painel)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "0ed107fd-aeac-44aa-9d0c-0a69a488f970",
+        "name": "Ler propostas (painel)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4e893b91-6bf0-4dc3-bbfa-470dada61a66",
+        "name": "Montar painel",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W10 (trecho de n8n/code/w10_proposta.js)\n// ATOM2_W10 · Proposta (Fluxo do Funil v1.0 §5; scripts \"Acompanhamento/Encerramento da proposta\", \"Cliente aceitou\").\n// ÚNICO ponto onde preço aparece: o Thiago informa serviço, escopo, valor, condições e prazo no painel (nunca inventamos números).\n// Cada envio cria uma versão nova (P-<deal>-v<n>) com página privada (token, noindex, validade). Ao registrar:\n//   Pipedrive → etapa Proposta, valor do negócio, \"ATOM · Link da proposta\" (= proposta enviada: libera preço no W08), proposal_id;\n//   empresa → F9; rascunho da mensagem de envio para o Thiago mandar (não sai sozinho).\n// Aceite pela página (botão com confirmação) → proposta aceita, negócio GANHO (= aceite, F11) → pós-venda (contrato/cobrança).\nconst API = 'https://api.pipedrive.com/v1';\nconst SERVICOS = ['Site', 'Marketing com IA', 'Agente de IA', 'Clínica completa'];\nconst VALIDADE_DIAS_PADRAO = 15;\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst brl = (v) => 'R$ ' + Number(v).toFixed(2).replace('.', ',').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.');\nconst dataBR = (iso) => { const d = String(iso || '').slice(0, 10).split('-'); return d.length === 3 ? d[2] + '/' + d[1] + '/' + d[0] : ''; };\nfunction novoToken() {\n  try { if (typeof crypto !== 'undefined' && crypto.getRandomValues) { const a = new Uint8Array(16); crypto.getRandomValues(a); return Array.from(a, (b) => b.toString(16).padStart(2, '0')).join(''); } } catch (e) { /* segue */ }\n  let s = '';\n  while (s.length < 32) s += Math.floor(Math.random() * 16).toString(16);\n  return s;\n}\nconst cfgMapa = (rows) => Object.fromEntries((rows || []).filter((r) => r && r.chave).map((r) => [r.chave, String(r.valor ?? '')]));\n// Valor digitado no padrão brasileiro: \"3.500,00\", \"3500\", \"3500.5\".\nfunction valorNum(v) {\n  const s = String(v ?? '').replace(/[R$\\s]/g, '');\n  if (!s) return NaN;\n  if (/,\\d{1,2}$/.test(s)) return Number(s.replace(/\\./g, '').replace(',', '.')); // 3.500,00\n  if (/^\\d{1,3}(\\.\\d{3})+$/.test(s)) return Number(s.replace(/\\./g, ''));        // 12.000 (milhar, não decimal)\n  return /^\\d+$/.test(s) ? Number(s) : NaN;                                       // 3500; \"3.50\"/\"3500.5\" são ambíguos (use vírgula)\n}\n// Negócios que podem receber proposta: no Pipedrive, sem opt-out, já respondidos/qualificados (F6–F10) ou receptivos em atendimento.\nfunction elegiveis(empresas, propostas) {\n  return (empresas || []).filter((e) => e && e.pipedrive_deal_id && !(e.opt_out === true || String(e.opt_out) === 'true') && ['F6', 'F7', 'F8', 'F9', 'F10', 'IN_ATENDIMENTO', 'IN_QUALIFICADO', 'IN_REUNIAO', 'IN_PROPOSTA', 'IN_NEGOCIACAO'].includes(e.funil_etapa))\n    .map((e) => ({ empresa: e, versoes: (propostas || []).filter((p) => p && String(p.deal_id) === String(e.pipedrive_deal_id)).length }));\n}\nfunction validar(b) {\n  const erros = [];\n  const valor = valorNum(b.valor);\n  if (!SERVICOS.includes(b.servico)) erros.push('serviço inválido');\n  if (!String(b.escopo || '').trim() || String(b.escopo).length > 4000) erros.push('escopo vazio ou longo demais');\n  if (!(valor > 0) || valor > 1000000) erros.push('valor inválido');\n  if (!String(b.condicoes || '').trim()) erros.push('informe as condições de pagamento');\n  if (!String(b.prazo || '').trim()) erros.push('informe o prazo');\n  const dias = Number(b.validade_dias || VALIDADE_DIAS_PADRAO);\n  if (!(dias >= 1 && dias <= 90)) erros.push('validade entre 1 e 90 dias');\n  return { ok: !erros.length, erros, valor, dias };\n}\nfunction pagina(titulo, corpo, extra) {\n  return `<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow,noarchive\"><meta name=\"referrer\" content=\"no-referrer\"><title>${esc(titulo)}</title>\n<style>\n:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--mut:#5d6677;--bd:#e3e6ec;--pri:#2f5bd3;--ok:#1f7a4d;--no:#b42318}\n@media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--tx:#e8ebf1;--mut:#9aa3b2;--bd:#2c3340;--pri:#7c9cff}}\n*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}\nmain{max-width:760px;margin:0 auto;padding:32px 16px 64px}h1{font-size:26px;line-height:1.25;margin:0 0 8px}h2{font-size:18px;margin:0 0 8px}.sub,.mut{color:var(--mut)}\n.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;margin:0 0 14px}.valor{font-size:28px;font-weight:700}\nlabel{display:block;font-size:14px;color:var(--mut);margin:10px 0 0}input,select,textarea{width:100%;margin-top:4px;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}\nbutton{font:inherit;border:0;border-radius:8px;padding:10px 18px;cursor:pointer;color:#fff;background:var(--ok);margin-top:14px}button:disabled{opacity:.5}\n.status{font-size:14px;color:var(--mut);margin-left:8px}.botao{display:inline-block;background:#1f7a4d;color:#fff;border-radius:8px;padding:10px 18px;text-decoration:none;font-weight:600}.escopo{white-space:pre-wrap}footer{margin-top:28px;font-size:13px;color:var(--mut)}\n</style></head><body><main>${corpo}</main>${extra || ''}</body></html>`;\n}\n// Painel do Thiago (protegido pelo QA_TOKEN).\nfunction painel(k, empresas, propostas) {\n  const lista = elegiveis(empresas, propostas);\n  const opcoes = lista.map((x) => `<option value=\"${esc(x.empresa.pipedrive_deal_id)}\">${esc(x.empresa.nome)} · negócio ${esc(x.empresa.pipedrive_deal_id)} · ${esc(x.empresa.funil_etapa)}${x.versoes ? ' · já tem ' + x.versoes + ' versão(ões)' : ''}</option>`).join('');\n  const corpo = `<h1>Nova proposta</h1><p class=\"sub\">Só aqui entra preço. Registrar move o negócio para Proposta, grava o link no Pipedrive e deixa a mensagem pronta numa nota (você envia).</p>\n${lista.length ? `<form class=\"card\" id=\"f\"><label>Negócio<select name=\"deal_id\" required>${opcoes}</select></label>\n<label>Serviço<select name=\"servico\" required>${SERVICOS.map((s) => `<option>${esc(s)}</option>`).join('')}</select></label>\n<label>Escopo (o que está incluído)<textarea name=\"escopo\" rows=\"6\" required maxlength=\"4000\"></textarea></label>\n<label>Valor total (R$)<input name=\"valor\" required inputmode=\"decimal\" placeholder=\"ex.: 3.500,00\"></label>\n<label>Condições de pagamento<input name=\"condicoes\" required maxlength=\"300\" placeholder=\"ex.: 50% na assinatura e 50% na entrega\"></label>\n<label>Prazo de entrega<input name=\"prazo\" required maxlength=\"120\"></label>\n<label>Validade (dias)<input name=\"validade_dias\" type=\"number\" min=\"1\" max=\"90\" value=\"${VALIDADE_DIAS_PADRAO}\"></label>\n<button type=\"submit\">Registrar proposta</button><span class=\"status\" role=\"status\"></span></form>` : '<p class=\"card\">Nenhum negócio elegível agora (precisa ter respondido e estar no Pipedrive).</p>'}`;\n  const js = `<script>const K=${JSON.stringify(k)};const f=document.getElementById('f');if(f)f.addEventListener('submit',async(ev)=>{ev.preventDefault();const b=f.querySelector('button'),st=f.querySelector('.status');b.disabled=true;st.textContent='Salvando…';\ntry{const r=await fetch(location.pathname+'-salvar?k='+encodeURIComponent(K),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(f)))});const j=await r.json();if(!r.ok||!j.ok)throw new Error(j.erro||'erro '+r.status);st.innerHTML='Registrada: <a href=\"'+j.link+'\" target=\"_blank\" rel=\"noopener\">'+j.proposal_id+'</a> ('+j.valor+')';}\ncatch(e){st.textContent='Não salvo: '+e.message;b.disabled=false;}});</script>`;\n  return pagina('Nova proposta', corpo, js);\n}\nconst tok = ($('Ler config (painel)').all().map((i) => i.json).find((r) => r && r.chave === 'QA_TOKEN') || {}).valor;\nconst k = String(($('Painel (GET)').first().json.query || {}).k || '');\nconst autorizado = !!tok && k === String(tok);\nif (!autorizado) return [{ json: { status: 403, html: '<!doctype html><meta charset=\"utf-8\"><title>Acesso negado</title><p>Acesso negado.</p>' } }];\nreturn [{ json: { status: 200, html: painel(k, $('Ler empresas (painel)').all().map((i) => i.json), $('Ler propostas (painel)').all().map((i) => i.json)) } }];"
+        }
+      },
+      {
+        "id": "f117855e-f88e-4b76-9372-908bf7bd4d0e",
+        "name": "Responder painel",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseCode": "={{ $json.status }}",
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "7bad7984-4a00-4991-9b1d-564ba596e642",
+        "name": "Salvar (POST)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          300
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atom2-proposta-salvar",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "7b5b8b34-d852-45c0-9907-bf8ebc7d581d"
+      },
+      {
+        "id": "d1bbc91d-a548-4dee-81da-0990a074d73e",
+        "name": "Ler config (salvar)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "9f0b2387-13e6-442b-82d1-a26c9512ccb0",
+        "name": "Ler empresas (salvar)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "80f45b68-aaaa-4074-abdd-bd57fc1a5660",
+        "name": "Ler propostas (salvar)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "cf2cb9f8-3828-4442-ba95-b2a9b3442445",
+        "name": "Criar proposta",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W10 (trecho de n8n/code/w10_proposta.js)\n// ATOM2_W10 · Proposta (Fluxo do Funil v1.0 §5; scripts \"Acompanhamento/Encerramento da proposta\", \"Cliente aceitou\").\n// ÚNICO ponto onde preço aparece: o Thiago informa serviço, escopo, valor, condições e prazo no painel (nunca inventamos números).\n// Cada envio cria uma versão nova (P-<deal>-v<n>) com página privada (token, noindex, validade). Ao registrar:\n//   Pipedrive → etapa Proposta, valor do negócio, \"ATOM · Link da proposta\" (= proposta enviada: libera preço no W08), proposal_id;\n//   empresa → F9; rascunho da mensagem de envio para o Thiago mandar (não sai sozinho).\n// Aceite pela página (botão com confirmação) → proposta aceita, negócio GANHO (= aceite, F11) → pós-venda (contrato/cobrança).\nconst API = 'https://api.pipedrive.com/v1';\nconst SERVICOS = ['Site', 'Marketing com IA', 'Agente de IA', 'Clínica completa'];\nconst VALIDADE_DIAS_PADRAO = 15;\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst brl = (v) => 'R$ ' + Number(v).toFixed(2).replace('.', ',').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.');\nconst dataBR = (iso) => { const d = String(iso || '').slice(0, 10).split('-'); return d.length === 3 ? d[2] + '/' + d[1] + '/' + d[0] : ''; };\nfunction novoToken() {\n  try { if (typeof crypto !== 'undefined' && crypto.getRandomValues) { const a = new Uint8Array(16); crypto.getRandomValues(a); return Array.from(a, (b) => b.toString(16).padStart(2, '0')).join(''); } } catch (e) { /* segue */ }\n  let s = '';\n  while (s.length < 32) s += Math.floor(Math.random() * 16).toString(16);\n  return s;\n}\n// Dias úteis (mesma regra do W07) para agendar o acompanhamento da proposta.\nconst FERIADOS = ['2026-01-01', '2026-02-16', '2026-02-17', '2026-04-03', '2026-04-21', '2026-05-01', '2026-06-04', '2026-09-07', '2026-10-12', '2026-11-02', '2026-11-15', '2026-11-20', '2026-12-25',\n  '2027-01-01', '2027-02-08', '2027-02-09', '2027-03-26', '2027-04-21', '2027-05-01', '2027-05-27', '2027-09-07', '2027-10-12', '2027-11-02', '2027-11-15', '2027-11-20', '2027-12-25'];\nfunction somarDiasUteis(agora, n) {\n  const util = (dia) => { const w = new Date(dia + 'T12:00:00Z').getUTCDay(); return w !== 0 && w !== 6 && !FERIADOS.includes(dia); };\n  let dia = new Date(new Date(agora).getTime() - 3 * 3600 * 1000).toISOString().slice(0, 10), c = 0;\n  while (c < n) { const d = new Date(dia + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); dia = d.toISOString().slice(0, 10); if (util(dia)) c++; }\n  return dia + 'T12:00:00.000Z';\n}\nconst cfgMapa = (rows) => Object.fromEntries((rows || []).filter((r) => r && r.chave).map((r) => [r.chave, String(r.valor ?? '')]));\n// Valor digitado no padrão brasileiro: \"3.500,00\", \"3500\", \"3500.5\".\nfunction valorNum(v) {\n  const s = String(v ?? '').replace(/[R$\\s]/g, '');\n  if (!s) return NaN;\n  if (/,\\d{1,2}$/.test(s)) return Number(s.replace(/\\./g, '').replace(',', '.')); // 3.500,00\n  if (/^\\d{1,3}(\\.\\d{3})+$/.test(s)) return Number(s.replace(/\\./g, ''));        // 12.000 (milhar, não decimal)\n  return /^\\d+$/.test(s) ? Number(s) : NaN;                                       // 3500; \"3.50\"/\"3500.5\" são ambíguos (use vírgula)\n}\n// Negócios que podem receber proposta: no Pipedrive, sem opt-out, já respondidos/qualificados (F6–F10) ou receptivos em atendimento.\nfunction elegiveis(empresas, propostas) {\n  return (empresas || []).filter((e) => e && e.pipedrive_deal_id && !(e.opt_out === true || String(e.opt_out) === 'true') && ['F6', 'F7', 'F8', 'F9', 'F10', 'IN_ATENDIMENTO', 'IN_QUALIFICADO', 'IN_REUNIAO', 'IN_PROPOSTA', 'IN_NEGOCIACAO'].includes(e.funil_etapa))\n    .map((e) => ({ empresa: e, versoes: (propostas || []).filter((p) => p && String(p.deal_id) === String(e.pipedrive_deal_id)).length }));\n}\nfunction validar(b) {\n  const erros = [];\n  const valor = valorNum(b.valor);\n  if (!SERVICOS.includes(b.servico)) erros.push('serviço inválido');\n  if (!String(b.escopo || '').trim() || String(b.escopo).length > 4000) erros.push('escopo vazio ou longo demais');\n  if (!(valor > 0) || valor > 1000000) erros.push('valor inválido');\n  if (!String(b.condicoes || '').trim()) erros.push('informe as condições de pagamento');\n  if (!String(b.prazo || '').trim()) erros.push('informe o prazo');\n  const dias = Number(b.validade_dias || VALIDADE_DIAS_PADRAO);\n  if (!(dias >= 1 && dias <= 90)) erros.push('validade entre 1 e 90 dias');\n  return { ok: !erros.length, erros, valor, dias };\n}\n// Cria a versão da proposta e os planos. ctx: { empresas, propostas, cfgRows, agora, gerador }.\nfunction criar(b, ctx) {\n  const cfg = cfgMapa(ctx.cfgRows);\n  const agora = ctx.agora || new Date().toISOString();\n  const v = validar(b);\n  if (!v.ok) return { ok: false, erro: v.erros.join('; ') };\n  const alvo = elegiveis(ctx.empresas, ctx.propostas).find((x) => String(x.empresa.pipedrive_deal_id) === String(b.deal_id));\n  if (!alvo) return { ok: false, erro: 'negócio não elegível para proposta' };\n  const e = alvo.empresa;\n  const versao = alvo.versoes + 1;\n  const token = (ctx.gerador || novoToken)();\n  const link = (cfg.PROPOSTA_BASE_URL || '') + '?t=' + token;\n  if (!cfg.PROPOSTA_BASE_URL) return { ok: false, erro: 'PROPOSTA_BASE_URL ausente em atom2_config' };\n  const proposta = { proposal_id: 'P-' + e.pipedrive_deal_id + '-v' + versao, company_id: e.company_id, deal_id: String(e.pipedrive_deal_id), versao, servico: b.servico, escopo: String(b.escopo).trim(), valor_total: Math.round(v.valor * 100) / 100, condicoes: String(b.condicoes).trim(), prazo: String(b.prazo).trim(), validade_ate: new Date(new Date(agora).getTime() + v.dias * 86400000).toISOString(), token, link, status: 'enviada', criado_em: agora, vistas: 0 };\n  const receptivo = String(e.fluxo) === 'receptivo' || String(e.company_id).startsWith('r_');\n  const etapa = Number(receptivo ? cfg.PD2_STAGE_IN_PROPOSTA_ID : cfg.PD2_STAGE_OUT_PROPOSTA_ID);\n  const body = { value: proposta.valor_total, currency: 'BRL' };\n  if (etapa) body.stage_id = etapa;\n  if (cfg.PD_DEAL_LINK_PROPOSTA_KEY) body[cfg.PD_DEAL_LINK_PROPOSTA_KEY] = link;\n  if (cfg.PD_DEAL_VALOR_TOTAL_KEY) body[cfg.PD_DEAL_VALOR_TOTAL_KEY] = proposta.valor_total;\n  if (cfg.PD2_FIELD_PROPOSTA_ID) body[cfg.PD2_FIELD_PROPOSTA_ID] = proposta.proposal_id;\n  if (cfg.PD2_FIELD_PROXIMA_ACAO) body[cfg.PD2_FIELD_PROXIMA_ACAO] = 'Acompanhar a proposta ' + proposta.proposal_id;\n  const nome = e.contato_nome;\n  const rascunho = (nome ? nome + ', aqui' : 'Aqui') + ' está a proposta da ' + e.nome + ': ' + link + '.\\nPosso esclarecer algum ponto?';\n  return {\n    ok: true, proposta,\n    pd: [\n      { method: 'PUT', url: API + '/deals/' + e.pipedrive_deal_id, body },\n      { method: 'POST', url: API + '/notes', body: { deal_id: Number(e.pipedrive_deal_id), pinned_to_deal_flag: 1, content: `<p><b>Proposta ${esc(proposta.proposal_id)}</b> · ${esc(proposta.servico)} · ${brl(proposta.valor_total)} · válida até ${dataBR(proposta.validade_ate)}</p><p>${esc(proposta.escopo).replace(/\\n/g, '<br>')}</p><p>Condições: ${esc(proposta.condicoes)} · Prazo: ${esc(proposta.prazo)}</p><p>Link: <a href=\"${esc(link)}\">${esc(link)}</a></p><p><b>Mensagem para enviar:</b><br>${esc(rascunho).replace(/\\n/g, '<br>')}</p>` } }\n    ],\n    empresa: { company_id: e.company_id, funil_etapa: receptivo ? 'IN_PROPOSTA' : 'F9', status_motivo: 'Proposta ' + proposta.proposal_id + ' enviada', atualizado_em: agora },\n    // Acompanhamento automático (W07, trilha PROP): \"conseguiu avaliar?\" em 2 dias úteis e \"manter ou encerrar?\" 3 dias depois.\n    cadencia: { company_id: e.company_id, deal_id: proposta.deal_id, funil: 'PROP', status: 'ativa', passo_atual: '', proximo_passo: 'P2', proximo_em: somarDiasUteis(agora, 2), envios: 0, motivo_fim: '', iniciado_em: agora, atualizado_em: agora },\n    mensagem: { msg_id: 'prop_' + proposta.proposal_id, company_id: e.company_id, deal_id: proposta.deal_id, direcao: 'saida', canal: 'whatsapp_n2', telefone: e.telefone, passo: 'PROPOSTA', texto: rascunho, status: 'rascunho_humano', motivo: 'envio da proposta: o Thiago envia', modo: 'MANUAL', criado_em: agora },\n    evento: { event_id: 'e_w10_' + proposta.proposal_id + '_criada', correlation_id: 'deal_' + proposta.deal_id, company_id: e.company_id, workflow: 'ATOM2_W10', tipo: 'PROPOSTA_ENVIADA', motivo: proposta.servico, dados: JSON.stringify({ valor_total: proposta.valor_total, versao }), ocorrido_em: agora }\n  };\n}\nconst tok = ($('Ler config (salvar)').all().map((i) => i.json).find((r) => r && r.chave === 'QA_TOKEN') || {}).valor;\nconst k = String(($('Salvar (POST)').first().json.query || {}).k || '');\nconst autorizado = !!tok && k === String(tok);\nif (!autorizado) return [{ json: { ok: false, erro: 'acesso negado', status: 403 } }];\nconst r = criar($('Salvar (POST)').first().json.body || {}, { empresas: $('Ler empresas (salvar)').all().map((i) => i.json), propostas: $('Ler propostas (salvar)').all().map((i) => i.json), cfgRows: $('Ler config (salvar)').all().map((i) => i.json) });\nreturn [{ json: r.ok ? { ...r, status: 200 } : { ...r, status: 400 } }];"
+        }
+      },
+      {
+        "id": "70b42386-2124-4a84-bdd0-bab385f0a1a0",
+        "name": "Válida?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1100,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "b34f1f75-5bb2-40c0-92d4-3ba58ce3efee",
+        "name": "Planos Pipedrive",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1320,
+          220
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "return $('Criar proposta').first().json.pd.map((p) => ({ json: p }));"
+        }
+      },
+      {
+        "id": "9ea7f75e-8fe6-4b50-8892-9ae86b05e7ab",
+        "name": "Aplicar no Pipedrive",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1540,
+          220
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 300
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "1177b09e-9dde-4025-b0d1-d24c10d19f2f",
+        "name": "Registros proposta",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1760,
+          220
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W10 (trecho de n8n/code/w10_proposta.js)\n// Depois do Pipedrive: só grava a proposta (e a cadência de acompanhamento) se o PUT do negócio deu certo; senão, só o evento\n// de falha — a versão não é consumida e não fica página com botão de aceite que recusaria o aceite.\nfunction registrosProposta(c, resps) {\n  const r = (resps || [])[0] || {};\n  if (r.success !== true) return [{ destino: 'evento', linha: { ...c.evento, event_id: c.evento.event_id + '_crm_falha', tipo: 'CRM_FALHA', motivo: 'Pipedrive recusou a proposta; nada foi gravado, tente de novo', dados: JSON.stringify({ erro: r.error || r.error_info || null }) } }];\n  return [{ destino: 'proposta', linha: c.proposta }, { destino: 'empresa', linha: c.empresa }, { destino: 'cadencia', linha: c.cadencia }, { destino: 'mensagem', linha: c.mensagem }, { destino: 'evento', linha: c.evento }];\n}\nreturn registrosProposta($('Criar proposta').first().json, $('Aplicar no Pipedrive').all().map((i) => i.json)).map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "ea7f31dd-5a70-4f89-a6ac-5c7da5778367",
+        "name": "Responder ok",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1980,
+          220
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ ok: $('Aplicar no Pipedrive').first().json.success === true, erro: $('Aplicar no Pipedrive').first().json.success === true ? undefined : 'Pipedrive recusou', proposal_id: $('Criar proposta').first().json.proposta.proposal_id, link: $('Criar proposta').first().json.proposta.link, valor: 'R$ ' + Number($('Criar proposta').first().json.proposta.valor_total).toFixed(2).replace('.', ',') }) }}",
+          "options": {
+            "responseCode": 200,
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "8b3c6c42-35da-4b7f-a4f4-9c6fee18ba26",
+        "name": "Destino (salvar)",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          2200,
+          220
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "proposta",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "proposta"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "empresa",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "empresa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "mensagem",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "mensagem"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "evento",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "evento"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "cadencia",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "cadencia"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "f30bf1d2-71ec-4de5-8527-f092244eab37",
+        "name": "Linha proposta",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          60
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "10dfde35-19f1-44a5-ac2d-8010d9cb49ff",
+        "name": "Gravar proposta",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          60
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "1f568432-5a40-47b3-95c8-5a238abea878",
+        "name": "Linha empresa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          180
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "dc54ee46-6442-432d-854d-4128df4d27ec",
+        "name": "Atualizar empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          180
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "d888d13e-373d-496a-abe7-5ea20d9cbe3e",
+        "name": "Linha mensagem",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          300
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "8c22b7a8-122b-42d2-ab1a-7cd748680b5d",
+        "name": "Gravar mensagem",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          300
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "XU5IdQgGNqhpBRxM",
+            "cachedResultName": "atom2_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "msg_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.msg_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "cefe52d3-ed74-41bd-8f4e-a2196b02f33c",
+        "name": "Linha evento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          420
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "d3e4d686-c9d7-4d59-8e59-1f632e9ecb14",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          420
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "26eaa6d2-3d8c-4ce9-a24a-3cf7c7e2abce",
+        "name": "Responder erro",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          440
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ ok: false, erro: $json.erro }) }}",
+          "options": {
+            "responseCode": "={{ $json.status }}",
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "2b778e69-841d-4822-aafb-2b4c8cdf0d5c",
+        "name": "Proposta (GET)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          700
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom2-proposta-ver",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "7f34c297-3760-47ff-ac9d-2fdbc3ba8ccf"
+      },
+      {
+        "id": "77f5396e-a93c-4ce6-9479-29574f7a6995",
+        "name": "Ler propostas (ver)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          700
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "ba565316-565d-4cd6-80c6-d77a4068301b",
+        "name": "Ler empresas (ver)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          700
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "d2f60337-b40f-4961-b5d6-c0183a4b3eb3",
+        "name": "Montar proposta",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          660,
+          700
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W10 (trecho de n8n/code/w10_proposta.js)\nconst esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst brl = (v) => 'R$ ' + Number(v).toFixed(2).replace('.', ',').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.');\nconst dataBR = (iso) => { const d = String(iso || '').slice(0, 10).split('-'); return d.length === 3 ? d[2] + '/' + d[1] + '/' + d[0] : ''; };\n// Botão \"falar no WhatsApp\" das páginas (número da ATOM em ATOM_WHATSAPP_NUMERO; sem número, sem botão).\nconst botaoWhats = (cfg, texto) => { const n = String((cfg || {}).ATOM_WHATSAPP_NUMERO || '').replace(/\\D/g, ''); return n.length >= 12 ? `<a class=\"botao\" href=\"https://wa.me/${n}?text=${encodeURIComponent(texto)}\" target=\"_blank\" rel=\"noopener\">Falar no WhatsApp</a>` : ''; };\nfunction pagina(titulo, corpo, extra) {\n  return `<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow,noarchive\"><meta name=\"referrer\" content=\"no-referrer\"><title>${esc(titulo)}</title>\n<style>\n:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--mut:#5d6677;--bd:#e3e6ec;--pri:#2f5bd3;--ok:#1f7a4d;--no:#b42318}\n@media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--tx:#e8ebf1;--mut:#9aa3b2;--bd:#2c3340;--pri:#7c9cff}}\n*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}\nmain{max-width:760px;margin:0 auto;padding:32px 16px 64px}h1{font-size:26px;line-height:1.25;margin:0 0 8px}h2{font-size:18px;margin:0 0 8px}.sub,.mut{color:var(--mut)}\n.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;margin:0 0 14px}.valor{font-size:28px;font-weight:700}\nlabel{display:block;font-size:14px;color:var(--mut);margin:10px 0 0}input,select,textarea{width:100%;margin-top:4px;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}\nbutton{font:inherit;border:0;border-radius:8px;padding:10px 18px;cursor:pointer;color:#fff;background:var(--ok);margin-top:14px}button:disabled{opacity:.5}\n.status{font-size:14px;color:var(--mut);margin-left:8px}.botao{display:inline-block;background:#1f7a4d;color:#fff;border-radius:8px;padding:10px 18px;text-decoration:none;font-weight:600}.escopo{white-space:pre-wrap}footer{margin-top:28px;font-size:13px;color:var(--mut)}\n</style></head><body><main>${corpo}</main>${extra || ''}</body></html>`;\n}\n// Página da proposta para o cliente.\nfunction paginaProposta(token, propostas, empresas, agoraISO, cfg) {\n  const agora = agoraISO || new Date().toISOString();\n  const nao = { status: 404, html: pagina('Proposta indisponível', '<h1>Proposta indisponível</h1><p class=\"sub\">Este link expirou ou foi substituído por uma versão mais nova. Fale com a ATOM Digital pelo WhatsApp.</p>') };\n  const t = String(token || '').trim();\n  if (!/^[a-f0-9]{24,64}$/.test(t)) return nao;\n  const p = (propostas || []).find((x) => x && x.token === t);\n  if (!p) return nao;\n  const maisNova = (propostas || []).some((x) => x && x.deal_id === p.deal_id && Number(x.versao) > Number(p.versao));\n  if (maisNova || ['recusada', 'cancelada'].includes(p.status)) return nao;\n  const e = (empresas || []).find((x) => x && x.company_id === p.company_id) || {};\n  const vencida = String(p.validade_ate) < agora && p.status !== 'aceita';\n  const aceita = p.status === 'aceita';\n  const corpo = `<h1>Proposta · ${esc(e.nome || '')}</h1><p class=\"sub\">${esc(p.proposal_id)} · ${esc(p.servico)} · ${aceita ? 'aceita em ' + dataBR(p.aceita_em) : vencida ? 'validade encerrada em ' + dataBR(p.validade_ate) : 'válida até ' + dataBR(p.validade_ate)}</p>\n<section class=\"card\"><h2>Escopo</h2><div class=\"escopo\">${esc(p.escopo)}</div></section>\n<section class=\"card\"><h2>Investimento</h2><div class=\"valor\">${brl(p.valor_total)}</div><p>Condições: ${esc(p.condicoes)}<br>Prazo: ${esc(p.prazo)}</p></section>\n${aceita ? '<p class=\"card\">Proposta aceita. Vamos confirmar o escopo e encaminhar o contrato pela Autentique.</p>' : vencida ? '<p class=\"card\">A validade terminou. Responda no WhatsApp que atualizamos para você.</p>' : `<section class=\"card\"><p>Ao aceitar, confirmamos o escopo e enviamos o contrato pela Autentique para assinatura. Nenhuma cobrança é feita antes do contrato assinado.</p><button id=\"ac\">Aceitar proposta</button><span class=\"status\" role=\"status\"></span></section>`}\n<p>${botaoWhats(cfg, 'Tenho uma dúvida sobre a proposta ' + p.proposal_id)}</p>\n<footer>Proposta preparada pela ATOM Digital. Dúvidas? Responda a mensagem do WhatsApp.</footer>`;\n  const js = aceita || vencida ? '' : `<script>const T=${JSON.stringify(t)};document.getElementById('ac').addEventListener('click',async(ev)=>{if(!confirm('Confirmar o aceite desta proposta?'))return;const b=ev.target,st=b.nextElementSibling;b.disabled=true;st.textContent='Registrando…';\ntry{const r=await fetch(location.pathname+'-aceite?t='+encodeURIComponent(T),{method:'POST'});const j=await r.json();if(!r.ok||!j.ok)throw new Error(j.erro||'erro');st.textContent=j.mensagem;}catch(e){st.textContent='Não registrado: '+e.message;b.disabled=false;}});</script>`;\n  return { status: 200, html: pagina('Proposta · ' + (e.nome || ''), corpo, js), proposta: { proposal_id: p.proposal_id, vistas: Number(p.vistas || 0) + 1 } };\n}\nconst cfg = Object.fromEntries($('Ler config (ver)').all().map((i) => i.json).filter((r) => r && r.chave).map((r) => [r.chave, String(r.valor ?? '')]));\nreturn [{ json: paginaProposta(($('Proposta (GET)').first().json.query || {}).t, $('Ler propostas (ver)').all().map((i) => i.json), $('Ler empresas (ver)').all().map((i) => i.json), new Date().toISOString(), cfg) }];"
+        }
+      },
+      {
+        "id": "3cf40662-c4db-409c-9f7e-de348d29fa91",
+        "name": "Responder proposta",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          700
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseCode": "={{ $json.status }}",
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "52ff5255-94b0-41c3-b819-72797e8a861d",
+        "name": "Contar visita",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1100,
+          700
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const r = $('Montar proposta').first().json;\nreturn r.proposta ? [{ json: r.proposta }] : [];"
+        }
+      },
+      {
+        "id": "44dc7d3d-3471-466d-a344-3728c708a55b",
+        "name": "Atualizar visitas",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          700
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "proposal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.proposal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "ee69f689-49e8-4728-89da-85b0fe9da609",
+        "name": "Aceite (POST)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1000
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atom2-proposta-ver-aceite",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "b365fcb6-e385-46ef-8a16-46c24ecf1eaf"
+      },
+      {
+        "id": "8eff7ea4-c187-4391-8006-10f25b6101f2",
+        "name": "Ler config (aceite)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          1000
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "88c0f955-6222-47ee-ae8c-8dde22ff48f3",
+        "name": "Ler propostas (aceite)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          1000
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "9b224459-02ab-44d2-bce7-82a3585aa0f1",
+        "name": "Ler empresas (aceite)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          1000
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f9d8b884-64c0-4c70-a215-83fa8eb510c5",
+        "name": "Registrar aceite",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          1000
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_W10 · Aceite da proposta (trecho de n8n/code/w10_proposta.js). Aceite pela página → proposta aceita, negócio GANHO (= aceite, F11).\nconst API = 'https://api.pipedrive.com/v1';\nconst cfgMapa = (rows) => Object.fromEntries((rows || []).filter((r) => r && r.chave).map((r) => [r.chave, String(r.valor ?? '')]));\n// Aceite: só a versão mais nova, dentro da validade, ainda não aceita.\nfunction aceitar(token, propostas, empresas, cfgRows, ip, agoraISO) {\n  const cfg = cfgMapa(cfgRows);\n  const agora = agoraISO || new Date().toISOString();\n  const t = String(token || '').trim();\n  const p = /^[a-f0-9]{24,64}$/.test(t) ? (propostas || []).find((x) => x && x.token === t) : null;\n  if (!p) return { ok: false, erro: 'proposta não encontrada' };\n  if ((propostas || []).some((x) => x && x.deal_id === p.deal_id && Number(x.versao) > Number(p.versao))) return { ok: false, erro: 'existe uma versão mais nova' };\n  if (p.status === 'aceita') return { ok: true, mensagem: 'Proposta já aceita. Obrigado!', repetido: true };\n  if (p.status !== 'enviada') return { ok: false, erro: 'proposta indisponível' };\n  if (String(p.validade_ate) < agora) return { ok: false, erro: 'validade encerrada' };\n  const e = (empresas || []).find((x) => x && x.company_id === p.company_id) || {};\n  const teste = String(p.company_id).startsWith('c_teste_');\n  return {\n    ok: true, mensagem: 'Excelente! Vou confirmar o escopo e encaminhar o contrato pela Autentique, conforme combinado.',\n    proposta: { proposal_id: p.proposal_id, status: 'aceita', aceita_em: agora, aceite_ip: String(ip || '').slice(0, 64) },\n    empresa: { company_id: p.company_id, funil_etapa: 'F11', status_motivo: 'Ganho: proposta ' + p.proposal_id + ' aceita', atualizado_em: agora },\n    pd: [\n      { method: 'PUT', url: API + '/deals/' + p.deal_id, body: { status: 'won', ...(cfg.PD2_FIELD_PROXIMA_ACAO ? { [cfg.PD2_FIELD_PROXIMA_ACAO]: 'Formalizar: contrato (Autentique) e cobrança (Asaas)' } : {}) } },\n      { method: 'POST', url: API + '/activities', body: { deal_id: Number(p.deal_id), subject: 'Proposta aceita: conferir dados e liberar o contrato', type: 'task', due_date: agora.slice(0, 10) } }\n    ],\n    evento: { event_id: 'e_w10_' + p.proposal_id + '_aceita', correlation_id: 'deal_' + p.deal_id, company_id: p.company_id, workflow: 'ATOM2_W10', tipo: 'PROPOSTA_ACEITA', motivo: teste ? 'registro de teste' : 'aceite pela página', dados: JSON.stringify({ valor_total: p.valor_total, nome: e.nome || '' }), ocorrido_em: agora }\n  };\n}\nconst h = $('Aceite (POST)').first().json;\nconst ip = String((h.headers || {})['x-forwarded-for'] || '').split(',')[0].trim();\nreturn [{ json: aceitar((h.query || {}).t, $('Ler propostas (aceite)').all().map((i) => i.json), $('Ler empresas (aceite)').all().map((i) => i.json), $('Ler config (aceite)').all().map((i) => i.json), ip) }];"
+        }
+      },
+      {
+        "id": "029761e7-65af-40ee-b0e4-25fc5fcec105",
+        "name": "Responder aceite",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          1000
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ ok: $json.ok, mensagem: $json.mensagem, erro: $json.erro }) }}",
+          "options": {
+            "responseCode": "={{ $json.ok ? 200 : 400 }}",
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "name": "X-Robots-Tag",
+                  "value": "noindex, nofollow"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "9cbb1d0c-a711-4c30-9f2e-f90f925a03bd",
+        "name": "Aceite novo?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1320,
+          1000
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok && !$json.repetido }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "e50650bb-3961-41e4-a501-bd95813629b5",
+        "name": "Planos aceite",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1540,
+          1000
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "return $('Registrar aceite').first().json.pd.map((p) => ({ json: p }));"
+        }
+      },
+      {
+        "id": "ce6be48e-560b-4ec6-9bab-bf11011a4af7",
+        "name": "Ganho no Pipedrive",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1760,
+          1000
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "batching": {
+              "batch": {
+                "batchSize": 1,
+                "batchInterval": 300
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "f2dffb2a-8550-4773-998e-27e5dede3ffe",
+        "name": "Registros aceite",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1980,
+          1000
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const a = $('Registrar aceite').first().json;\nconst r = $('Ganho no Pipedrive').all().map((i) => i.json);\nconst ok = r[0] && r[0].success === true;\nconst out = [{ destino: 'proposta', linha: a.proposta }, { destino: 'empresa', linha: a.empresa }, { destino: 'evento', linha: a.evento }];\nif (!ok) out.push({ destino: 'evento', linha: { ...a.evento, event_id: a.evento.event_id + '_crm_falha', tipo: 'CRM_FALHA', motivo: 'Pipedrive recusou marcar ganho: marcar à mão', dados: JSON.stringify({ erro: (r[0] && (r[0].error || r[0].error_info)) || null }) } });\nreturn out.map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "95d5e054-9224-4398-adae-1a808c2ef464",
+        "name": "Destino (aceite)",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          2200,
+          1000
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "proposta",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "proposta"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "empresa",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "empresa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "evento",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "evento"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "f33e7e50-683a-4085-983d-018f128b2f7f",
+        "name": "Linha proposta aceita",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          880
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "dcac6c3b-bac6-4d8d-b7c7-a6e47e004606",
+        "name": "Atualizar proposta",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          880
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "U2eyFFKEsvsDB316",
+            "cachedResultName": "atom2_propostas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "proposal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.proposal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "3d0c12e8-29f8-4539-86d1-1ba8b96406b0",
+        "name": "Linha empresa ganha",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          1000
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "5fe62e39-ba0c-443e-8d92-64af7428adf8",
+        "name": "Atualizar empresa (ganho)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          1000
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "company_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.company_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "04d3bbed-a41e-4558-85d3-7f3532407af4",
+        "name": "Linha evento aceite",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          1120
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "5a82fc0e-d20c-41f2-aa07-4261f9a3656b",
+        "name": "Gravar evento aceite",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          1120
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "event_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.event_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "273c4ad0-7775-4d71-86bd-934d882a7f60",
+        "name": "Sticky Note 0416f5e7",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -320
+        ],
+        "parameters": {
+          "content": "## ATOM2_W10 · Proposta (único ponto com preço)\nA) Painel: /webhook/atom2-proposta?k=QA_TOKEN (você informa serviço, escopo, valor, condições, prazo).\nB) Registrar: cria P-<negócio>-v<n>, página privada, Pipedrive → etapa Proposta + valor + Link da proposta (libera preço no W08) + nota com a mensagem pronta (você envia). Empresa → F9.\nC) Página do cliente: /webhook/atom2-proposta-ver?t=TOKEN (noindex; versão antiga/expirada some).\nD) Aceite pela página → proposta aceita, negócio GANHO (aceite = F11) + tarefa de formalização.\nFonte: n8n/code/w10_proposta.js · testes: n8n/tests/run_w10.js",
+          "color": 4,
+          "width": 640,
+          "height": 240
+        }
+      },
+      {
+        "id": "c361f367-965f-4d0a-926f-fb61cb9384c5",
+        "name": "Linha cadência",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2420,
+          540
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "b3f69a0a-1501-4753-9377-093c98419ce2",
+        "name": "Gravar cadência (acompanhamento)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          540
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yg5jYnoqI2f4aYOd",
+            "cachedResultName": "atom2_cadencia"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "deal_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.deal_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "47a8af7c-accc-40f6-bca8-0ded985606c4",
+        "name": "Ler config (ver)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          550,
+          820
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": {
+      "sameAsDraft": true
+    },
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Painel (GET)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-proposta\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-proposta\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\n\n\t\t\t\t<trigger 2>\n\t\t\t\t\t - Node name: Salvar (POST)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-proposta-salvar\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-proposta-salvar\n\t\t\t\t\t - HTTP Method: POST\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 2>\n\n\n\t\t\t\t<trigger 3>\n\t\t\t\t\t - Node name: Proposta (GET)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-proposta-ver\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-proposta-ver\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 3>\n\n\n\t\t\t\t<trigger 4>\n\t\t\t\t\t - Node name: Aceite (POST)\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom2-proposta-ver-aceite\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom2-proposta-ver-aceite\n\t\t\t\t\t - HTTP Method: POST\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 4>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }."
+}

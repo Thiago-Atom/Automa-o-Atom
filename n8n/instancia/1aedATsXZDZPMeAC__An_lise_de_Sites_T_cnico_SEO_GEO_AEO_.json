@@ -1,0 +1,389 @@
+{
+  "workflow": {
+    "id": "1aedATsXZDZPMeAC",
+    "name": "Análise de Sites (Técnico + SEO/GEO/AEO)",
+    "active": false,
+    "isArchived": false,
+    "versionId": "d799b6d0-1c5e-43d2-8710-39a7d5962e2e",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 8,
+    "createdAt": "2026-09-03T20:03:48.717Z",
+    "updatedAt": "2026-09-28T19:27:39.759Z",
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate",
+      "timeSavedMode": "fixed",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Formulário de Análise": {
+        "main": [
+          [
+            {
+              "node": "Coletar Conteúdo do Site",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Coletar Conteúdo do Site": {
+        "main": [
+          [
+            {
+              "node": "Buscar Concorrentes (SERP)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Concorrentes (SERP)": {
+        "main": [
+          [
+            {
+              "node": "Volume de Oportunidade (Keyword API)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Volume de Oportunidade (Keyword API)": {
+        "main": [
+          [
+            {
+              "node": "Análise com Claude",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Análise com Claude": {
+        "main": [
+          [
+            {
+              "node": "Preparar HTML do Relatório",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar HTML do Relatório": {
+        "main": [
+          [
+            {
+              "node": "Gerar PDF (HTML→PDF)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gerar PDF (HTML→PDF)": {
+        "main": [
+          [
+            {
+              "node": "Anexar PDF ao Cliente (CRM)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "5bf956ca-78a0-46ab-8c14-8cbe48109e34",
+        "name": "Formulário de Análise",
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.2,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "formTitle": "Análise de Site",
+          "formDescription": "Informe a URL do site, o termo principal e o cliente no CRM para gerar a análise técnica + SEO/GEO/AEO.",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "URL do site",
+                "fieldName": "site_url",
+                "fieldType": "text",
+                "requiredField": true,
+                "placeholder": "https://exemplo.com.br"
+              },
+              {
+                "fieldLabel": "Termo / palavra-chave principal",
+                "fieldName": "keyword",
+                "fieldType": "text",
+                "requiredField": true,
+                "placeholder": "ex.: consultoria de marketing"
+              },
+              {
+                "fieldLabel": "ID do cliente no CRM",
+                "fieldName": "client_id",
+                "fieldType": "text",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "Nome do cliente",
+                "fieldName": "client_name",
+                "fieldType": "text"
+              }
+            ]
+          }
+        },
+        "webhookId": "ad91580d-c33d-4848-a5d8-928e00a9f525"
+      },
+      {
+        "id": "77431bf5-ac81-42de-92cc-e86567fa01b4",
+        "name": "Coletar Conteúdo do Site",
+        "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
+        "typeVersion": 1,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "resource": "Scraping",
+          "operation": "scrape",
+          "url": "={{ $json.site_url }}",
+          "scrapeOptions": {
+            "options": {
+              "blockAds": true,
+              "formats": {
+                "format": [
+                  {
+                    "type": "markdown"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "1dfa0543-1c7d-41e8-8721-8a39904327b4",
+        "name": "Buscar Concorrentes (SERP)",
+        "type": "@brave/n8n-nodes-brave-search.braveSearch",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "operation": "web",
+          "query": "={{ $(\"Formulário de Análise\").item.json.keyword }}",
+          "count": 10,
+          "additionalParameters": {
+            "country": "BR",
+            "search_lang": "pt-br",
+            "ui_lang": "pt-BR"
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "12a226c6-575e-4501-8af0-4d4106061df5",
+        "name": "Volume de Oportunidade (Keyword API)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "<__PLACEHOLDER_VALUE__Endpoint da sua API de SEO (SEMrush/Ahrefs) para volume da keyword__>",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "keyword",
+                "value": "={{ $(\"Formulário de Análise\").item.json.keyword }}"
+              },
+              {
+                "name": "database",
+                "value": "br"
+              }
+            ]
+          },
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpTemplatedCustomAuth"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "bab568f1-4a80-429f-91ed-272d35c34cd1",
+        "name": "Análise com Claude",
+        "type": "@n8n/n8n-nodes-langchain.anthropic",
+        "typeVersion": 1,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "resource": "text",
+          "operation": "message",
+          "modelId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "claude-sonnet-4-20250514",
+            "cachedResultName": "Claude Sonnet 4"
+          },
+          "simplify": true,
+          "messages": {
+            "values": [
+              {
+                "role": "user",
+                "content": "=Analise o site abaixo e produza um relatório completo em HTML (apenas o HTML do <body>, sem markdown, sem crases).\n\nSITE ALVO: {{ $(\"Formulário de Análise\").item.json.site_url }}\nTERMO PRINCIPAL: {{ $(\"Formulário de Análise\").item.json.keyword }}\nCLIENTE: {{ $(\"Formulário de Análise\").item.json.client_name }}\n\nCONTEÚDO COLETADO DO SITE (Firecrawl):\n{{ JSON.stringify($(\"Coletar Conteúdo do Site\").item.json) }}\n\nRESULTADOS DE BUSCA / CONCORRENTES (Brave SERP):\n{{ JSON.stringify($(\"Buscar Concorrentes (SERP)\").item.json) }}\n\nMÉTRICAS DA PALAVRA-CHAVE:\n{{ JSON.stringify($(\"Volume de Oportunidade (Keyword API)\").item.json) }}"
+              }
+            ]
+          },
+          "options": {
+            "maxTokens": 4096,
+            "temperature": 0.4,
+            "system": "Você é um consultor sênior de web, UX e SEO. Produza um relatório profissional em HTML bem estruturado (headings, tabelas, listas) cobrindo, para o cliente: 1) TÉCNICO/ARQUITETURA DA INFORMAÇÃO — estrutura, navegação, hierarquia, performance percebida; 2) DESIGN — layout, consistência visual, responsividade, acessibilidade; 3) COPY — clareza, proposta de valor, CTAs, tom de voz; 4) SEO — on-page, títulos, meta, headings, links, indexabilidade; 5) GEO (Generative Engine Optimization) — como o site aparece/aparecerá em respostas de IA; 6) AEO (Answer Engine Optimization) — dados estruturados, featured snippets, perguntas e respostas; 7) ANÁLISE DOS 5 MAIORES CONCORRENTES a partir dos resultados de busca, comparando pontos fortes/fracos; 8) VOLUME DE OPORTUNIDADE do termo — interprete o volume/dificuldade/CPC e estime o potencial. Termine com um plano de ação priorizado (quick wins e médio prazo). Responda em português do Brasil. Retorne SOMENTE o HTML do corpo do relatório."
+          }
+        }
+      },
+      {
+        "id": "c1d1c256-b211-4b98-91c3-a284c1e646da",
+        "name": "Preparar HTML do Relatório",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "jsCode": "const res = $input.first().json;\nlet body = '';\nif (Array.isArray(res.content)) { body = res.content.map(b => b.text || b.content || '').join('\\n'); }\nelse if (typeof res.content === 'string') { body = res.content; }\nelse if (res.text) { body = res.text; }\nelse if (res.output) { body = res.output; }\nconst form = $('Formulário de Análise').first().json;\nconst safe = String(form.site_url || 'site').replace(/[^a-z0-9]/gi, '_').slice(0, 60);\nconst today = new Date().toISOString().slice(0, 10);\nconst html = '<!DOCTYPE html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><style>body{font-family:Arial,Helvetica,sans-serif;color:#222;line-height:1.5;padding:32px;}h1{color:#1a1a2e;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ccc;padding:6px;text-align:left;}</style></head><body>' + body + '<hr><p style=\"color:#888;font-size:12px;\">Gerado em ' + today + ' — ' + form.site_url + '</p></body></html>';\nreturn [{ json: { html, client_id: form.client_id, client_name: form.client_name || '', site_url: form.site_url, keyword: form.keyword, filename: 'analise-' + safe + '-' + today + '.pdf' } }];"
+        }
+      },
+      {
+        "id": "9d11d752-fb7e-47cb-baaa-f2f773f87979",
+        "name": "Gerar PDF (HTML→PDF)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "<__PLACEHOLDER_VALUE__Endpoint do serviço HTML→PDF (ex.: PDFShift/Api2PDF)__>",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ source: $json.html, landscape: false, format: \"A4\" }) }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpTemplatedCustomAuth",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file",
+                "outputPropertyName": "data"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "f01988b7-5a11-4585-9604-e8bfbd6f18aa",
+        "name": "Anexar PDF ao Cliente (CRM)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          0
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "<__PLACEHOLDER_VALUE__Endpoint do seu CRM para anexar arquivo ao cliente (use o client_id)__>",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-Client-Id",
+                "value": "={{ $(\"Preparar HTML do Relatório\").item.json.client_id }}"
+              },
+              {
+                "name": "X-File-Name",
+                "value": "={{ $(\"Preparar HTML do Relatório\").item.json.filename }}"
+              }
+            ]
+          },
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpTemplatedCustomAuth"
+        }
+      }
+    ],
+    "nodeGroups": [
+      {
+        "id": "741bc362-86d3-4bd4-8371-dcd13a62c130",
+        "name": "Coleta",
+        "nodeNames": [
+          "Coletar Conteúdo do Site",
+          "Buscar Concorrentes (SERP)",
+          "Volume de Oportunidade (Keyword API)"
+        ],
+        "description": "Coleta o conteúdo do site, os concorrentes na SERP e as métricas da palavra-chave."
+      },
+      {
+        "id": "951e21eb-142a-4b5b-956c-f5cf853b4fde",
+        "name": "Análise",
+        "nodeNames": [
+          "Análise com Claude",
+          "Preparar HTML do Relatório"
+        ],
+        "description": "Claude analisa técnico, design, copy, SEO/GEO/AEO, concorrentes e volume de oportunidade."
+      },
+      {
+        "id": "a08b2f3b-a03d-4a59-84bd-46a912dbe3e9",
+        "name": "Entrega",
+        "nodeNames": [
+          "Gerar PDF (HTML→PDF)",
+          "Anexar PDF ao Cliente (CRM)"
+        ],
+        "description": "Gera o PDF do relatório e anexa ao registro do cliente no CRM."
+      }
+    ],
+    "activeVersion": null,
+    "meta": null
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nForm trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Formulário de Análise\n\t\t\t\t\t - Form fields: {\"values\":[{\"fieldLabel\":\"URL do site\",\"fieldName\":\"site_url\",\"fieldType\":\"text\",\"requiredField\":true,\"placeholder\":\"https://exemplo.com.br\"},{\"fieldLabel\":\"Termo / palavra-chave principal\",\"fieldName\":\"keyword\",\"fieldType\":\"text\",\"requiredField\":true,\"placeholder\":\"ex.: consultoria de marketing\"},{\"fieldLabel\":\"ID do cliente no CRM\",\"fieldName\":\"client_id\",\"fieldType\":\"text\",\"requiredField\":true},{\"fieldLabel\":\"Nome do cliente\",\"fieldName\":\"client_name\",\"fieldType\":\"text\"}]}\n\t\t\t\t</trigger 1>\n\nTo execute a form trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { formData: { FIELD_NAME: VALUE } } }."
+}
