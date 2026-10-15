@@ -478,8 +478,8 @@ function custoConsumo(cons) { // por diagnóstico, em BRL: total = caixa (sai do
 }
 function consumoEfetivo(id) { // prospecção: a parte de mercado do Semrush (segmento + cidade) é consultada uma vez e reaproveitada
   const c = JSON.parse(JSON.stringify(CONSUMO[id] || {}));
-  if (tipo(id)?.finalidade === "prospeccao" && c.semrush && plan.semrushProspeccao === "seo" && id !== "seo") c.semrush.unidades = 0;
-  if (tipo(id)?.finalidade === "prospeccao" && c.semrush && plan.reusoMercado > 1) {
+  if (tipo(id)?.finalidade === "prospeccao" && c.semrush && plan.semrushProspeccao === "seo" && id !== "seo" && id !== "site") c.semrush.unidades = 0;
+  if (tipo(id)?.finalidade === "prospeccao" && id !== "site" && c.semrush && plan.reusoMercado > 1) { // no Site, o Semrush lê o domínio do cliente: não há parte de mercado a reaproveitar
     const parte = Math.min(100, Math.max(0, plan.parteMercadoSemrush)) / 100;
     c.semrush.unidades = c.semrush.unidades * ((1 - parte) + parte / plan.reusoMercado);
   }
@@ -905,7 +905,7 @@ function telaCustos() {
       <div class="campo"><label>Reserva para novas tentativas (%)</label>${inp("reserva", plan.reserva)}</div>
       <div class="campo"><label>Empresas por segmento e cidade</label>${inp("reusoMercado", plan.reusoMercado)}</div>
       <div class="campo"><label>% do Semrush que é de mercado</label>${inp("parteMercadoSemrush", plan.parteMercadoSemrush)}</div>
-      <div class="campo"><label>Semrush na prospecção</label><select data-plan-sel="semrushProspeccao"><option value="todos"${plan.semrushProspeccao !== "seo" ? " selected" : ""}>Em todos os diagnósticos</option><option value="seo"${plan.semrushProspeccao === "seo" ? " selected" : ""}>Só no SEO (e no Total)</option></select></div>
+      <div class="campo"><label>Semrush na prospecção</label><select data-plan-sel="semrushProspeccao"><option value="todos"${plan.semrushProspeccao !== "seo" ? " selected" : ""}>Em todos os diagnósticos</option><option value="seo"${plan.semrushProspeccao === "seo" ? " selected" : ""}>Só no Site, no SEO e no Total</option></select></div>
     </div>
     <div class="rolar"><table class="t"><thead><tr><th>Ferramenta</th><th>Plano</th><th class="r">Mensalidade</th><th>Consumo no mês</th><th class="r">Mês</th><th class="r">Semana</th><th class="r">Dia útil</th><th>Fonte</th></tr></thead><tbody>
     ${C.linhas.map(l => `<tr><td><b>${esc(l.f.nome)}</b><br><span class="cap">${esc(l.f.papel)}</span></td><td class="small">${esc(l.f.plano)}<br><span class="cap">${l.f.modo === "credito" ? "mensalidade vira crédito de uso" : l.f.modo === "franquia" ? "mensalidade + excedente" : "por uso"}</span></td>
