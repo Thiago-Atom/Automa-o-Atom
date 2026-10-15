@@ -2,715 +2,644 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Roboto:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Roboto:wght@300;400;500;700&display=swap">
 <style>
-/* Layout: coluna única de leitura (máx. 1100px), seções empilhadas; o recorte diagonal roxo da ATOM assina o topo. */
+/* Visual da apresentação "Atom 2026 · Agência de IA": branco, roxo profundo, pontos e fios verdes, títulos Light com palavra em negrito, lascas diagonais nos cantos. */
 :root {
-  --roxo: #604485;
+  --roxo: #461B77;
+  --roxo-texto: #461B77;
+  --lavanda: #f3eff9;
+  --verde: #00C864;
+  --verde-texto: #087A45;
   --fundo: #ffffff;
-  --superficie: #f6f4f9;
+  --superficie: #f6f4fa;
   --texto: #1e1e1e;
-  --suave: #5b5664;
-  --linha: #e2dde9;
-  --destaque: #604485;
-  --sobre-roxo: #ffffff;
-  --ruim: #b3261e;
-  --medio: #8a6200;
-  --bom: #604485;
-  --ruim-fundo: #fbe9e7;
-  --medio-fundo: #fbf3dc;
-  --bom-fundo: #efe9f6;
+  --suave: #5d5470;
+  --linha: #e3dcef;
+  --ruim: #b3261e; --ruim-fundo: #fbe9e7;
+  --medio: #a35f00; --medio-fundo: #fbf1de;
+  --bom: #2e7d32; --bom-fundo: #e5f4e6;
   --sans: Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: "IBM Plex Mono", "Courier New", monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --fundo: #1e1e1e; --superficie: #272529; --texto: #ffffff; --suave: #bdb7c6; --linha: #3b3840;
-    --destaque: #ffffff; --ruim: #ff8a80; --medio: #e6c35c; --bom: #c4aee6;
-    --ruim-fundo: #3a2523; --medio-fundo: #352e1b; --bom-fundo: #2f2738; color-scheme: dark;
+    --roxo-texto: #c7aef0; --lavanda: #2a2138; --verde-texto: #4fe39a;
+    --fundo: #16101f; --superficie: #211a2d; --texto: #f1edf7; --suave: #b7aac9; --linha: #3a2f4b;
+    --ruim: #ff8a80; --ruim-fundo: #3b2222; --medio: #e8b860; --medio-fundo: #382c17; --bom: #74d88a; --bom-fundo: #1d3323;
+    color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --fundo: #1e1e1e; --superficie: #272529; --texto: #ffffff; --suave: #bdb7c6; --linha: #3b3840;
-  --destaque: #ffffff; --ruim: #ff8a80; --medio: #e6c35c; --bom: #c4aee6;
-  --ruim-fundo: #3a2523; --medio-fundo: #352e1b; --bom-fundo: #2f2738; color-scheme: dark;
+  --roxo-texto: #c7aef0; --lavanda: #2a2138; --verde-texto: #4fe39a;
+  --fundo: #16101f; --superficie: #211a2d; --texto: #f1edf7; --suave: #b7aac9; --linha: #3a2f4b;
+  --ruim: #ff8a80; --ruim-fundo: #3b2222; --medio: #e8b860; --medio-fundo: #382c17; --bom: #74d88a; --bom-fundo: #1d3323;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
-body { background: var(--fundo); color: var(--texto); font-family: var(--sans); font-size: 16px; line-height: 1.65; }
-.wrap { max-width: 1100px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3 { font-weight: 300; text-wrap: balance; margin: 0; }
-h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.08; }
-h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.15; }
-h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.3; }
+body { background: var(--fundo); color: var(--texto); font-family: var(--sans); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { margin: 0; font-weight: 300; text-wrap: balance; }
+h1 b, h2 b { font-weight: 700; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.08; }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1.12; }
+h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
 p { margin: 0; max-width: 68ch; }
-.etiqueta { font-family: var(--mono); font-weight: 500; font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--destaque); }
+a { color: var(--roxo-texto); }
+.etq { font-family: var(--mono); font-weight: 500; font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--roxo-texto); }
 .mono { font-family: var(--mono); }
 .suave { color: var(--suave); }
-:focus-visible { outline: 2px solid var(--destaque); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; }
 
-/* Topo com recorte diagonal */
-.topo { position: relative; overflow: hidden; border-bottom: 1px solid var(--linha); }
-.topo::after { content: ""; position: absolute; top: 0; right: 0; width: min(34vw, 380px); height: 100%; background: var(--roxo); clip-path: polygon(38% 0, 100% 0, 100% 100%, 0 100%); }
-.topo .wrap { position: relative; z-index: 1; padding-block: 56px 48px; display: grid; gap: 18px; }
-.topo .wrap > * { max-width: min(680px, 64vw); }
-.versao { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--mono); font-size: .8rem; color: var(--suave); }
-.versao b { color: var(--texto); font-weight: 500; }
-@media (max-width: 640px) {
-  .topo::after { width: 90px; opacity: .9; }
-  .topo .wrap > * { max-width: calc(100% - 70px); }
+/* Barra */
+.barra { border-bottom: 1px solid var(--linha); background: var(--fundo); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+.barra .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px; flex-wrap: wrap; }
+.marca { display: grid; line-height: 1; text-decoration: none; }
+.marca b { font-weight: 700; letter-spacing: .14em; font-size: 1.15rem; color: var(--roxo-texto); }
+.marca span { font-family: var(--mono); font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--verde-texto); margin-top: 3px; }
+.migalha { font-family: var(--mono); font-size: .8rem; color: var(--suave); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.migalha a { text-decoration: none; font-weight: 500; }
+.migalha a:hover { text-decoration: underline; }
+
+/* Abertura com as faixas diagonais da capa */
+.abertura { position: relative; overflow: hidden; border-bottom: 1px solid var(--linha); }
+.abertura .wrap { position: relative; z-index: 1; padding-block: 64px 56px; display: grid; gap: 18px; }
+.abertura .wrap > * { max-width: min(600px, 56vw); }
+.abertura .arte { position: absolute; top: 0; right: 0; bottom: 0; width: 46%; background-image: url("img/inst.jpg"); background-size: cover; background-position: 100% 50%; clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%); }
+.abertura p.lead { font-size: 1.1rem; color: var(--suave); }
+.lasca { position: absolute; top: 0; right: 0; width: min(30vw, 300px); height: 78px; overflow: hidden; clip-path: polygon(26% 0, 100% 0, 100% 100%, 0 100%); background: linear-gradient(90deg, var(--roxo), #7a55b8); }
+.lasca::after { content: ""; position: absolute; top: 0; right: 0; width: 34%; height: 100%; background: var(--verde); clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%); }
+@media (max-width: 760px) {
+  .abertura .arte { width: 34%; opacity: .9; }
+  .abertura .wrap > * { max-width: calc(100% - 26vw); }
+  .lasca { width: 120px; height: 46px; }
 }
 
-section { padding-block: 56px; border-bottom: 1px solid var(--linha); }
-.cab { display: grid; gap: 6px; margin-bottom: 28px; }
-.cab p { margin-top: 8px; color: var(--suave); }
+/* Sequência com pontos verdes */
+.seq { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-family: var(--mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
+.seq span { display: inline-flex; align-items: center; gap: 8px; }
+.seq span::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--verde); }
 
-/* Legenda de status */
-.legenda { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: .88rem; }
-.st { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border: 1px solid currentColor; white-space: nowrap; }
-.st-def { color: var(--bom); }
+section { padding-block: 56px; border-bottom: 1px solid var(--linha); position: relative; }
+.cab { display: grid; gap: 8px; margin-bottom: 30px; }
+.cab p { color: var(--suave); }
+.cab-linha { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+
+/* Status */
+.st { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; color: var(--suave); }
+.st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.st-ok { color: var(--verde-texto); }
 .st-disc { color: var(--medio); }
-.st-adef { color: var(--suave); border-style: dashed; }
+.st-adef { color: var(--suave); }
+.st-adef::before { background: transparent; border: 1.5px solid currentColor; }
 
-/* Fluxo das etapas */
-.fluxo { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; counter-reset: etapa; }
-.etapa { position: relative; padding: 22px 26px 22px 30px; background: var(--superficie); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%, 16px 50%); display: grid; gap: 8px; align-content: start; }
-.etapa:first-child { clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); padding-left: 22px; }
-.etapa:nth-child(even) { background: var(--bom-fundo); }
-.etapa .n { font-family: var(--mono); font-size: .75rem; letter-spacing: .15em; color: var(--destaque); }
-.etapa h3 { font-size: 1.05rem; }
-.etapa p { font-size: .9rem; color: var(--suave); }
-.etapa .quando { font-family: var(--mono); font-size: .72rem; color: var(--texto); }
-@media (max-width: 900px) {
-  .fluxo { grid-template-columns: 1fr; gap: 4px; }
-  .etapa, .etapa:first-child { clip-path: none; padding: 18px 20px; border-left: 3px solid var(--roxo); }
+/* Quadros da tela inicial */
+.quadros { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 22px; }
+.quadros.tres { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.quadro { display: flex; flex-direction: column; background: var(--fundo); border: 1px solid var(--linha); border-radius: 12px; overflow: hidden; color: var(--texto); text-decoration: none; transition: border-color .15s, transform .15s, box-shadow .15s; min-width: 0; }
+.quadro:hover, .quadro:focus-visible { border-color: var(--roxo-texto); transform: translateY(-2px); box-shadow: 0 10px 24px -16px rgba(70, 27, 119, .45); }
+.quadro img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-bottom: 1px solid var(--linha); background: var(--superficie); }
+.capa-texto { aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: var(--lavanda); border-bottom: 1px solid var(--linha); padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; }
+.capa-texto::before { content: ""; position: absolute; top: 0; right: 0; width: 46%; height: 100%; background-image: url("img/inst.jpg"); background-size: cover; background-position: 100% 50%; clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%); }
+.capa-texto .grande { position: relative; font-size: 2.6rem; font-weight: 300; line-height: 1; color: var(--roxo-texto); font-variant-numeric: tabular-nums; max-width: 55%; }
+.capa-texto .peq { position: relative; font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--suave); max-width: 55%; }
+.quadro .corpo { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.quadro .tag { font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--verde-texto); }
+.quadro h3 { font-size: 1.3rem; }
+.quadro p { font-size: .92rem; color: var(--suave); }
+.quadro .pe { margin-top: auto; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: .74rem; }
+.quadro .ir { color: var(--roxo-texto); font-weight: 500; }
+.quadro.destaque { border-color: var(--roxo); }
+@media (min-width: 900px) {
+  .quadro.largo { grid-column: span 2; flex-direction: row; }
+  .quadro.largo > img, .quadro.largo > .capa-texto { width: 56%; border-bottom: 0; border-right: 1px solid var(--linha); }
+  .quadro.largo .corpo { justify-content: center; padding: 28px; }
+  .quadro.largo h3 { font-size: 1.7rem; }
 }
 
-/* Pilares e dimensões */
-.pilares { display: grid; gap: 40px; }
-.pilar-cab { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--roxo); }
-.pilar-cab h3 { font-size: 1.45rem; font-weight: 300; }
-.pilar-cab span { color: var(--suave); font-size: .95rem; }
-.dims { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 16px; }
-.dim { border: 1px solid var(--linha); padding: 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
-.dim-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.dim-id { font-family: var(--mono); font-size: .75rem; color: var(--destaque); letter-spacing: .1em; }
-.dim .perg { font-size: .95rem; color: var(--suave); }
-.dim ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: .9rem; }
-.dim li { display: grid; grid-template-columns: 18px 1fr; gap: 6px; }
-.dim li::before { content: "→"; color: var(--destaque); }
-.meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-family: var(--mono); font-size: .72rem; color: var(--suave); padding-top: 10px; border-top: 1px solid var(--linha); }
-.meta b { color: var(--texto); font-weight: 500; }
-details.regua summary { cursor: pointer; font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--destaque); }
-details.regua .faixas { display: grid; gap: 6px; margin-top: 10px; font-size: .85rem; }
-.faixa { display: grid; grid-template-columns: 52px 1fr; gap: 10px; padding: 6px 8px; }
-.faixa .f { font-family: var(--mono); font-weight: 500; }
-.f-r { background: var(--ruim-fundo); } .f-r .f { color: var(--ruim); }
-.f-m { background: var(--medio-fundo); } .f-m .f { color: var(--medio); }
-.f-b { background: var(--bom-fundo); } .f-b .f { color: var(--bom); }
+/* Últimos trabalhos */
+.trabalhos { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 0 28px; }
+.trabalhos li { border-top: 1px solid var(--linha); }
+.trabalhos a { display: grid; grid-template-columns: 14px 1fr auto; gap: 12px; align-items: baseline; padding: 14px 0; text-decoration: none; color: var(--texto); }
+.trabalhos a::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--verde); transform: translateY(-1px); }
+.trabalhos a:hover b { color: var(--roxo-texto); }
+.trabalhos b { font-weight: 500; display: block; }
+.trabalhos small { color: var(--suave); font-size: .85rem; }
+.trabalhos em { font-style: normal; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--roxo-texto); white-space: nowrap; }
 
-/* Régua geral */
-.escala { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
-.escala > div { padding: 22px; display: grid; gap: 6px; align-content: start; }
+/* Etapas: fio verde com ponto, como "A máquina de vendas" */
+.etapas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
+.etapa { display: grid; gap: 8px; align-content: start; }
+.etapa .fio { display: flex; align-items: center; gap: 0; margin-bottom: 6px; }
+.etapa .fio::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--verde); flex: none; }
+.etapa .fio::after { content: ""; height: 2px; background: var(--verde); flex: 1; }
+.etapa h3 { font-size: 1.15rem; }
+.etapa p { font-size: .92rem; color: var(--suave); }
+.etapa .quando { font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--roxo-texto); padding-top: 6px; }
+@media (max-width: 900px) { .etapas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .etapas { grid-template-columns: 1fr; } }
+.frase { margin-top: 30px; font-weight: 700; color: var(--roxo-texto); }
+
+/* Régua */
+.escala { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.escala > div { padding: 22px; border-radius: 12px; display: grid; gap: 6px; align-content: start; }
 .escala .num { font-size: 2.6rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
-.escala .r { background: var(--ruim-fundo); } .escala .r .num { color: var(--ruim); }
-.escala .m { background: var(--medio-fundo); } .escala .m .num { color: var(--medio); }
-.escala .b { background: var(--bom-fundo); } .escala .b .num { color: var(--bom); }
-.escala h3 { font-size: 1.05rem; }
-.escala p { font-size: .9rem; color: var(--suave); }
+.escala .r { background: var(--ruim-fundo); } .escala .r .num, .escala .r h3 { color: var(--ruim); }
+.escala .m { background: var(--medio-fundo); } .escala .m .num, .escala .m h3 { color: var(--medio); }
+.escala .b { background: var(--bom-fundo); } .escala .b .num, .escala .b h3 { color: var(--bom); }
+.escala p { font-size: .9rem; color: var(--texto); }
 @media (max-width: 700px) { .escala { grid-template-columns: 1fr; } }
-.regras { margin-top: 22px; display: grid; gap: 8px; list-style: none; padding: 0; }
-.regras li { display: grid; grid-template-columns: 22px 1fr; gap: 6px; max-width: 80ch; }
-.regras li::before { content: "→"; color: var(--destaque); }
+.regras { margin: 24px 0 0; display: grid; gap: 10px; list-style: none; padding: 0; }
+.regras li { display: grid; grid-template-columns: 22px 1fr; gap: 6px; max-width: 84ch; }
+.regras li::before { content: "→"; color: var(--roxo-texto); }
 
-/* Simulador */
-.aviso { font-family: var(--mono); font-size: .78rem; color: var(--suave); border: 1px dashed var(--linha); padding: 8px 12px; display: inline-block; margin-bottom: 20px; }
-.sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px; align-items: start; }
-@media (max-width: 860px) { .sim { grid-template-columns: 1fr; } }
-.controles { display: grid; gap: 4px; }
-.ctl-grupo { font-family: var(--mono); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--suave); margin: 14px 0 4px; }
-.ctl-grupo:first-child { margin-top: 0; }
-.ctl { display: grid; grid-template-columns: minmax(0, 1fr) 120px 34px; gap: 10px; align-items: center; padding: 4px 0; font-size: .9rem; }
-.ctl label { min-width: 0; }
-.ctl input[type=range] { width: 100%; accent-color: var(--roxo); }
-.ctl output { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; font-weight: 500; }
-.ctl.nm output { color: var(--suave); }
-.ctl .nmchk { grid-column: 1 / -1; font-size: .75rem; color: var(--suave); display: flex; gap: 6px; align-items: center; margin-top: -4px; }
-.painel { display: grid; gap: 20px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
-.radar-box { border: 1px solid var(--linha); padding: 12px; }
-.radar-box svg { width: 100%; height: auto; display: block; }
-.resumo { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
-.nota-geral { font-size: 3.6rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
-.nota-geral small { font-size: 1.1rem; color: var(--suave); }
-.chip { display: inline-block; font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; }
+/* Áreas e simulador */
+.pilar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 30px 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--roxo); }
+.pilar:first-child { margin-top: 0; }
+.pilar h3 { font-size: 1.4rem; font-weight: 300; }
+.pilar h3 b { font-weight: 700; }
+.pilar span { color: var(--suave); font-size: .92rem; }
+.areas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }
+.area { border: 1px solid var(--linha); border-radius: 12px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; background: var(--fundo); }
+.area.fora { background: var(--superficie); }
+.area-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.area-top h4 { margin: 0; font-size: 1.02rem; font-weight: 700; line-height: 1.3; }
+.area .nota { font-size: 1.6rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.area .nota small { font-size: .8rem; color: var(--suave); }
+.crit { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
+.crit label { display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: start; font-size: .88rem; padding: 3px 0; cursor: pointer; }
+.crit input { margin: 3px 0 0; accent-color: var(--roxo); width: 15px; height: 15px; }
+.area.fora .crit label { color: var(--suave); }
+.area .pe { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 8px; border-top: 1px solid var(--linha); font-family: var(--mono); font-size: .7rem; color: var(--suave); }
+.area .incl { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.area .incl input { accent-color: var(--roxo); }
+
+.sim { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 960px) { .sim { grid-template-columns: 1fr; } }
+.boletim { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); border: 1px solid var(--linha); border-radius: 12px; padding: 22px; display: grid; gap: 18px; background: var(--fundo); }
+.geral { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.geral .n { font-size: 3.4rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+.geral .n small { font-size: 1rem; color: var(--suave); }
+.barras { display: grid; gap: 0; border-top: 2px solid var(--roxo); }
+.barra-l { display: grid; grid-template-columns: minmax(0, 1fr) 90px 44px; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--linha); font-size: .88rem; }
+.barra-l .trilho { height: 10px; background: var(--superficie); border-radius: 2px; overflow: hidden; }
+.barra-l .trilho i { display: block; height: 100%; }
+.barra-l .v { font-variant-numeric: tabular-nums; text-align: right; font-weight: 500; }
+.chip { display: inline-block; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
 .chip.r { background: var(--ruim-fundo); color: var(--ruim); }
 .chip.m { background: var(--medio-fundo); color: var(--medio); }
 .chip.b { background: var(--bom-fundo); color: var(--bom); }
-.urg h3 { font-size: .8rem; font-family: var(--mono); font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--suave); margin-bottom: 8px; }
+.urg { background: var(--lavanda); border-radius: 8px; padding: 16px 18px; display: grid; gap: 8px; }
 .urg ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; counter-reset: u; }
-.urg li { counter-increment: u; display: grid; grid-template-columns: 26px 1fr auto; gap: 8px; align-items: baseline; padding: 8px 10px; background: var(--superficie); font-size: .92rem; }
-.urg li::before { content: counter(u); font-family: var(--mono); color: var(--destaque); }
-.urg li span:last-child { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.urg li { counter-increment: u; display: grid; grid-template-columns: 22px 1fr auto; gap: 6px; font-size: .92rem; }
+.urg li::before { content: counter(u) "."; font-weight: 700; color: var(--roxo-texto); }
+.urg li span:last-child { font-variant-numeric: tabular-nums; font-weight: 500; }
+.aviso { display: inline-flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: .74rem; color: var(--suave); border: 1px dashed var(--linha); border-radius: 6px; padding: 7px 12px; margin-bottom: 22px; }
 
-/* Cálculo de impacto */
-.impacto { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; gap: 0; align-items: stretch; border: 1px solid var(--linha); }
-.campo { padding: 16px; display: grid; gap: 6px; border-right: 1px solid var(--linha); min-width: 0; }
-.campo label { font-size: .82rem; color: var(--suave); }
-.campo input { font: 300 1.5rem var(--sans); color: var(--texto); background: transparent; border: 0; border-bottom: 1px solid var(--linha); padding: 2px 0; width: 100%; font-variant-numeric: tabular-nums; }
-.campo input:focus { border-bottom-color: var(--roxo); outline: none; }
-.campo .op { font-family: var(--mono); font-size: .72rem; color: var(--suave); }
-.total { background: var(--roxo); color: var(--sobre-roxo); padding: 16px 22px; display: grid; gap: 4px; align-content: center; min-width: 210px; }
-.total .v { font-size: 1.9rem; font-weight: 300; font-variant-numeric: tabular-nums; line-height: 1.1; }
-.total .l { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
-.conta { margin-top: 14px; font-family: var(--mono); font-size: .82rem; color: var(--suave); overflow-wrap: anywhere; }
-@media (max-width: 900px) {
-  .impacto { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .campo { border-bottom: 1px solid var(--linha); }
-  .total { grid-column: 1 / -1; min-width: 0; }
-}
+/* Quanto vale */
+.valor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 28px; align-items: stretch; }
+@media (max-width: 860px) { .valor { grid-template-columns: 1fr; } }
+.conta { border-top: 2px solid var(--roxo); border-bottom: 2px solid var(--roxo); }
+.conta .ln { display: grid; grid-template-columns: 30px minmax(0, 1fr) minmax(90px, 150px); gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--linha); }
+.conta .ln:last-child { border-bottom: 0; }
+.conta .op { font-weight: 700; color: var(--roxo-texto); font-size: 1.2rem; }
+.conta .ln.res { color: var(--suave); }
+.conta .ln.res .op { color: var(--suave); font-weight: 400; }
+.conta input { font: 300 1.5rem var(--sans); color: var(--texto); background: transparent; border: 0; border-bottom: 1px solid var(--linha); padding: 2px 0; width: 100%; text-align: right; font-variant-numeric: tabular-nums; }
+.conta input:focus { outline: none; border-bottom-color: var(--verde); }
+.conta .calc { font-size: 1.5rem; font-weight: 300; text-align: right; font-variant-numeric: tabular-nums; }
+.total { background: var(--roxo); color: #ffffff; border-radius: 12px; padding: 32px 28px; display: grid; gap: 12px; align-content: center; }
+.total .l { font-family: var(--mono); font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; }
+.total .v { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+.total p { color: #e4dcef; font-size: .92rem; }
+.fonte { margin-top: 14px; font-size: .85rem; color: var(--suave); }
 
-/* Entregável */
-.paginas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; counter-reset: pg; }
-.paginas li { counter-increment: pg; border: 1px solid var(--linha); padding: 14px 16px; display: grid; gap: 4px; font-size: .9rem; }
-.paginas li::before { content: "pág. " counter(pg); font-family: var(--mono); font-size: .72rem; color: var(--destaque); letter-spacing: .1em; }
-.paginas b { font-weight: 700; }
-.paginas span { color: var(--suave); font-size: .85rem; }
+/* Plano */
+.plano { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 860px) { .plano { grid-template-columns: 1fr; } }
+.fase { border: 1px solid var(--linha); border-top: 5px solid var(--roxo); border-radius: 4px; padding: 22px; display: grid; gap: 10px; align-content: start; }
+.fase.gratis { border-top-color: var(--verde); }
+.fase .etq { color: var(--roxo-texto); }
+.fase.gratis .etq { color: var(--verde-texto); }
+.fase h3 { font-size: 1.6rem; font-weight: 300; }
+.fase ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: .92rem; }
+.fase li { display: grid; grid-template-columns: 20px 1fr; }
+.fase li::before { content: "→"; color: var(--roxo-texto); }
+
+/* Ficha de modelo */
+.ficha { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+@media (max-width: 900px) { .ficha { grid-template-columns: 1fr; } }
+.paginas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+.paginas figure { margin: 0; display: grid; gap: 4px; }
+.paginas img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--linha); border-radius: 4px; display: block; background: var(--superficie); }
+.paginas figcaption { font-family: var(--mono); font-size: .68rem; color: var(--suave); }
+.capa-grande { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--linha); border-radius: 8px; display: block; }
+.estrutura { list-style: none; padding: 0; margin: 0; }
+.estrutura li { display: grid; grid-template-columns: 14px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--linha); font-size: .94rem; }
+.estrutura li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--verde); margin-top: 8px; }
+.fatos { margin: 0; }
+.fatos div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--linha); font-size: .92rem; }
+.fatos dt { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--suave); padding-top: 3px; }
+.fatos dd { margin: 0; min-width: 0; }
+h4.sub { font-family: var(--mono); font-weight: 500; font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--roxo-texto); margin: 0 0 12px; }
+.bloco + .bloco { margin-top: 30px; }
+.botao { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; border-radius: 8px; padding: 11px 18px; background: var(--roxo); color: #ffffff; text-decoration: none; border: 1px solid var(--roxo); }
+.botao:hover { filter: brightness(1.15); }
+.botao.fantasma { background: transparent; color: var(--texto); border-color: var(--linha); }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
 
 /* Decisões e histórico */
-.duas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
+.duas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 44px; }
 @media (max-width: 860px) { .duas { grid-template-columns: 1fr; } }
-.decisoes { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-.decisoes li { padding: 14px 16px; background: var(--superficie); display: grid; gap: 4px; }
-.decisoes li b { font-weight: 700; }
-.decisoes li span { font-size: .9rem; color: var(--suave); }
-.hist { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
-.hist li { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--linha); }
-.hist .v { font-family: var(--mono); font-size: .8rem; }
-.hist .v b { display: block; color: var(--destaque); font-weight: 500; }
+.decisoes { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.decisoes li { padding: 14px 16px; background: var(--superficie); border-radius: 8px; display: grid; gap: 3px; }
+.decisoes b { font-weight: 700; }
+.decisoes span { font-size: .9rem; color: var(--suave); }
+.hist { list-style: none; padding: 0; margin: 0; }
+.hist li { display: grid; grid-template-columns: 96px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--linha); }
+.hist .v { font-family: var(--mono); font-size: .78rem; color: var(--suave); }
+.hist .v b { display: block; color: var(--verde-texto); font-weight: 500; font-size: .85rem; }
 .hist ul { margin: 6px 0 0; padding-left: 18px; font-size: .9rem; color: var(--suave); }
 
-footer { padding-block: 36px 48px; font-family: var(--mono); font-size: .8rem; color: var(--suave); }
-
-/* Barra de navegação */
-.barra { border-bottom: 1px solid var(--linha); background: var(--fundo); }
-.barra .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px; flex-wrap: wrap; }
-.marca { font-family: var(--mono); font-weight: 500; letter-spacing: .22em; font-size: .85rem; color: var(--destaque); text-decoration: none; }
-.migalha { font-family: var(--mono); font-size: .8rem; color: var(--suave); display: flex; gap: 8px; flex-wrap: wrap; }
-.migalha a { color: var(--destaque); text-decoration: none; }
-.migalha a:hover { text-decoration: underline; }
-
-/* Tela inicial */
-.grupo { padding-block: 44px; border-bottom: 1px solid var(--linha); }
-.grupo-cab { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 20px; }
-.grupo-cab h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
-.grupo-cab span { color: var(--suave); font-size: .95rem; }
-.quadros { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 16px; }
-.quadro { position: relative; display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; padding: 22px; border: 1px solid var(--linha); color: var(--texto); text-decoration: none; background: var(--fundo); overflow: hidden; transition: border-color .15s, transform .15s; min-width: 0; }
-.quadro::after { content: ""; position: absolute; top: 0; right: 0; width: 64px; height: 26px; background: var(--roxo); clip-path: polygon(38% 0, 100% 0, 100% 100%, 0 100%); opacity: 0; transition: opacity .15s; }
-.quadro:hover, .quadro:focus-visible { border-color: var(--roxo); transform: translateY(-2px); }
-.quadro:hover::after, .quadro:focus-visible::after { opacity: 1; }
-.quadro.principal { background: var(--superficie); border-color: var(--roxo); }
-.quadro .tipo { font-family: var(--mono); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--destaque); }
-.quadro h3 { font-size: 1.35rem; font-weight: 300; }
-.quadro p { font-size: .92rem; color: var(--suave); }
-.quadro .rodape { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--linha); font-family: var(--mono); font-size: .75rem; color: var(--suave); }
-.quadro .abrir { color: var(--destaque); font-weight: 500; }
-.sequencia { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-family: var(--mono); font-size: .78rem; color: var(--suave); }
-.sequencia b { color: var(--texto); font-weight: 500; }
-
-/* Página de modelo */
-.ficha { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 40px; }
-@media (max-width: 860px) { .ficha { grid-template-columns: 1fr; } }
-.fatos { display: grid; gap: 0; margin: 0; }
-.fatos div { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--linha); font-size: .92rem; }
-.fatos dt { font-family: var(--mono); font-size: .75rem; color: var(--suave); text-transform: uppercase; letter-spacing: .08em; padding-top: 2px; }
-.fatos dd { margin: 0; min-width: 0; }
-.lista-pag { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
-.lista-pag li { display: grid; grid-template-columns: 64px 1fr auto; gap: 10px; padding: 9px 0; border-top: 1px solid var(--linha); font-size: .92rem; align-items: baseline; }
-.lista-pag .pn { font-family: var(--mono); font-size: .75rem; color: var(--destaque); }
-.lista-pag .au { font-family: var(--mono); font-size: .7rem; color: var(--suave); text-transform: uppercase; letter-spacing: .06em; }
-.pend { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-.pend li { padding: 12px 14px; background: var(--superficie); font-size: .9rem; display: grid; gap: 2px; }
-.pend li b { font-weight: 700; }
-.pend li span { color: var(--suave); }
-h4 { font-family: var(--mono); font-weight: 500; font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; color: var(--suave); margin: 0 0 10px; }
-.bloco + .bloco { margin-top: 32px; }
+footer { padding-block: 32px 48px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: .85rem; color: var(--suave); }
+footer .url { font-family: var(--mono); letter-spacing: .2em; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
 <nav class="barra" aria-label="Navegação">
   <div class="wrap">
-    <a class="marca" href="#inicio">ATOM</a>
+    <a class="marca" href="#inicio"><b>ATOM</b><span>agência de IA</span></a>
     <div class="migalha" id="migalha"></div>
   </div>
 </nav>
 
+<!-- ========== TELA INICIAL ========== -->
 <div id="v-inicio">
-  <header class="topo">
+  <header class="abertura">
+    <div class="arte" aria-hidden="true"></div>
     <div class="wrap">
-      <div class="etiqueta">Central comercial</div>
-      <h1>Diagnósticos e propostas</h1>
-      <p>Todos os modelos que a ATOM usa para diagnosticar uma empresa e propor o trabalho, em um só lugar. Abra um quadro para ver o modelo, o que já está pronto e o que falta decidir.</p>
-      <div class="sequencia" aria-label="Sequência comercial"><b>oportunidade</b>→<b>diagnóstico</b>→<b>impacto</b>→<b>proposta</b>→<b>contrato</b></div>
+      <div class="etq">Central comercial</div>
+      <h1>Diagnósticos <b>e propostas.</b></h1>
+      <p class="lead">Os modelos que a Atom usa para diagnosticar uma empresa e propor o trabalho. Abra um quadro para ver o modelo, as páginas e o que falta decidir.</p>
+      <div class="seq" aria-label="Sequência comercial"><span>Diagnóstico</span><span>Quanto vale</span><span>Plano</span><span>Proposta</span><span>Contrato</span></div>
     </div>
   </header>
-  <section class="grupo">
+
+  <section>
     <div class="wrap">
-      <div class="grupo-cab"><h2>Modelos de diagnóstico</h2><span>como olhamos a empresa</span></div>
+      <div class="cab cab-linha">
+        <div class="cab"><div class="etq">Como olhamos a empresa</div><h2>Modelos de <b>diagnóstico</b></h2></div>
+      </div>
       <div class="quadros" id="q-diag"></div>
     </div>
   </section>
-  <section class="grupo">
+
+  <section>
     <div class="wrap">
-      <div class="grupo-cab"><h2>Modelos de proposta</h2><span>como apresentamos o trabalho</span></div>
+      <div class="cab"><div class="etq">Como apresentamos o trabalho</div><h2>Modelos de <b>proposta</b></h2></div>
       <div class="quadros" id="q-prop"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cab"><div class="etq">Apresentações por serviço</div><h2>Decks <b>com e sem preço</b></h2><p>As seis apresentações da biblioteca da Atom. Os PDFs ficam na biblioteca.</p></div>
+      <div class="quadros tres" id="q-serv"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cab"><div class="etq">Feitos com estes modelos</div><h2>Últimos <b>trabalhos</b></h2></div>
+      <ul class="trabalhos" id="trabalhos"></ul>
     </div>
   </section>
 </div>
 
+<!-- ========== FICHA DE MODELO ========== -->
 <div id="v-modelo" hidden>
-  <header class="topo">
+  <header class="abertura">
+    <div class="lasca" aria-hidden="true"></div>
     <div class="wrap">
-      <div class="etiqueta" id="m-tipo"></div>
+      <div class="etq" id="m-tag"></div>
       <h1 id="m-nome"></h1>
-      <p id="m-resumo"></p>
-      <div class="legenda" id="m-status"></div>
+      <p class="lead" id="m-resumo"></p>
+      <div id="m-status"></div>
+      <div class="acoes" id="m-acoes"></div>
     </div>
   </header>
   <section>
     <div class="wrap ficha">
+      <div class="bloco" id="m-esq"></div>
       <div>
-        <div class="bloco"><h4>Estrutura</h4><ol class="lista-pag" id="m-paginas"></ol></div>
-      </div>
-      <div>
-        <div class="bloco"><h4>Ficha</h4><dl class="fatos" id="m-fatos"></dl></div>
-        <div class="bloco"><h4>O que falta decidir</h4><ul class="pend" id="m-pend"></ul></div>
+        <div class="bloco"><h4 class="sub">Ficha</h4><dl class="fatos" id="m-fatos"></dl></div>
+        <div class="bloco" id="m-pend-bloco"><h4 class="sub">O que falta decidir</h4><ul class="decisoes" id="m-pend"></ul></div>
       </div>
     </div>
   </section>
 </div>
 
+<!-- ========== MÉTODO ========== -->
 <div id="v-metodo" hidden>
-<header class="topo">
-  <div class="wrap">
-    <div class="etiqueta">Método em construção</div>
-    <h1>Diagnóstico de marketing e vendas</h1>
-    <p>O método que a ATOM usa para olhar uma empresa de fora para dentro, medir onde ela perde clientes e transformar isso em um plano. Esta página é o quadro de trabalho: cada mudança no método aparece aqui e no histórico no fim da página.</p>
-    <div class="versao"><span>versão <b>0.1</b></span><span>atualizado em <b>15/10/2026</b></span><span>base: <b>docs/13_modelos_diagnostico.md</b></span></div>
-    <div class="legenda" aria-label="Legenda de status">
-      <span class="st st-def">Definido</span>
-      <span class="st st-disc">Em discussão</span>
-      <span class="st st-adef">A definir</span>
-    </div>
-  </div>
-</header>
-
-<main>
-  <section id="etapas">
+  <header class="abertura">
+    <div class="lasca" aria-hidden="true"></div>
     <div class="wrap">
-      <div class="cab">
-        <div class="etiqueta">Como funciona</div>
-        <h2>Cinco etapas, da coleta ao plano</h2>
-        <p>As duas primeiras levantam fatos. As três seguintes transformam os fatos em nota, em dinheiro e em plano. Nenhuma nota é dada sem um dado que a sustente.</p>
+      <div class="etq">Método em construção · v0.3</div>
+      <h1>Diagnóstico de <b>marketing e vendas.</b></h1>
+      <p class="lead">Como a Atom olha uma empresa de fora para dentro, mede onde ela perde clientes e transforma isso em um plano. A régua é a mesma do Diagnóstico Digital, Modelo Unificado, e o método estende essa régua para vendas e gestão.</p>
+      <div class="seq"><span class="st st-ok">Definido</span><span class="st st-disc">Em discussão</span><span class="st st-adef">Proposta, a definir</span></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="cab"><div class="etq">Como funciona</div><h2>Cinco etapas, <b>da coleta ao plano</b></h2></div>
+      <div class="etapas">
+        <div class="etapa"><div class="fio"></div><h3>Pré-diagnóstico</h3><p>Coleta de dados públicos: Google, mapa, avaliações, site, Instagram e respostas das IAs.</p><div class="quando">Antes da reunião · ATOM_14</div></div>
+        <div class="etapa"><div class="fio"></div><h3>Entrevista</h3><p>Conversa com o dono ou gestor para medir o que não é público: processo, números e time.</p><div class="quando">Reunião · roteiro a definir</div></div>
+        <div class="etapa"><div class="fio"></div><h3>Boletim</h3><p>Cada área recebe nota de 0 a 10 pelos cinco critérios da régua. As três piores viram urgências.</p><div class="quando">Régua ATOM</div></div>
+        <div class="etapa"><div class="fio"></div><h3>Quanto vale</h3><p>Procura × contato × fechamento × ticket, arredondado a cada etapa e com as premissas à vista.</p><div class="quando">Cálculo</div></div>
+        <div class="etapa"><div class="fio"></div><h3>Plano</h3><p>Hoje e grátis, 90 dias para ser encontrado, 6 meses para ser escolhido. Daí sai a proposta.</p><div class="quando">Entrega + proposta</div></div>
       </div>
-      <div class="fluxo">
-        <div class="etapa">
-          <span class="n">ETAPA 1</span>
-          <h3>Pré-diagnóstico</h3>
-          <p>Coleta automática de dados públicos: Google, mapa, avaliações, site, Instagram e busca com IA.</p>
-          <span class="quando">antes da reunião · ATOM_14</span>
-        </div>
-        <div class="etapa">
-          <span class="n">ETAPA 2</span>
-          <h3>Entrevista</h3>
-          <p>Conversa com o dono ou gestor comercial para medir o que não é público: processo, números, time.</p>
-          <span class="quando">reunião · roteiro a definir</span>
-        </div>
-        <div class="etapa">
-          <span class="n">ETAPA 3</span>
-          <h3>Pontuação</h3>
-          <p>Cada dimensão recebe nota de 0 a 10 pela régua escrita. O que não foi medido fica como "não medido".</p>
-          <span class="quando">automático + revisão</span>
-        </div>
-        <div class="etapa">
-          <span class="n">ETAPA 4</span>
-          <h3>Quanto isso vale</h3>
-          <p>Procura × contato × fechamento × ticket. Mostra em reais o que está em jogo, com as premissas à vista.</p>
-          <span class="quando">cálculo</span>
-        </div>
-        <div class="etapa">
-          <span class="n">ETAPA 5</span>
-          <h3>Plano de ação</h3>
-          <p>As três maiores urgências viram ações para hoje, 90 dias e 6 meses. O plano é a ponte para a proposta.</p>
-          <span class="quando">entrega + proposta</span>
-        </div>
-      </div>
+      <p class="frase">Nenhuma nota sem dado. Toda página cita a fonte e a data da coleta.</p>
     </div>
   </section>
 
-  <section id="dimensoes">
+  <section>
     <div class="wrap">
-      <div class="cab">
-        <div class="etiqueta">O que medimos</div>
-        <h2>Três pilares, onze dimensões</h2>
-        <p>Marketing traz a pessoa até a empresa, vendas transforma a pessoa em cliente e gestão mostra se a empresa sabe o que está acontecendo. Abra a régua de cada dimensão para ver o critério de nota.</p>
-      </div>
-      <div class="pilares" id="pilares"></div>
-    </div>
-  </section>
-
-  <section id="regua">
-    <div class="wrap">
-      <div class="cab">
-        <div class="etiqueta">Régua</div>
-        <h2>Uma escala para todas as dimensões</h2>
-        <p>A mesma escala de 0 a 10 vale para todas as dimensões, com três faixas que o cliente entende sem explicação.</p>
-      </div>
+      <div class="cab"><div class="etq">Régua ATOM</div><h2>Cinco critérios por área, <b>dois pontos cada</b></h2><p>Cada critério atendido vale 2 pontos, então cada área vai de 0 a 10. A régua é a mesma do Modelo Unificado.</p></div>
       <div class="escala">
-        <div class="r"><span class="num">0–3</span><h3>Perdendo cliente</h3><p>Existe um problema que hoje faz a empresa perder vendas para o concorrente.</p></div>
-        <div class="m"><span class="num">4–6</span><h3>Pode melhorar</h3><p>Funciona, mas abaixo dos concorrentes diretos ou do que o mercado já faz.</p></div>
-        <div class="b"><span class="num">7–10</span><h3>Funciona</h3><p>Está no nível ou acima dos três principais concorrentes da cidade.</p></div>
+        <div class="r"><span class="num">0–4</span><h3>Perdendo cliente</h3><p>Até dois critérios atendidos. A empresa perde venda para o concorrente nesta área.</p></div>
+        <div class="m"><span class="num">5–7</span><h3>Pode melhorar</h3><p>Três critérios atendidos. Funciona, mas abaixo de quem disputa o mesmo cliente.</p></div>
+        <div class="b"><span class="num">8–10</span><h3>Funciona</h3><p>Quatro ou cinco critérios atendidos. Está no nível dos líderes da cidade.</p></div>
       </div>
       <ul class="regras">
-        <li><span><b>Nota geral</b> é a média das dimensões medidas. Dimensão "não medida" fica fora da média e aparece no relatório como tal. <span class="st st-disc">pesos em discussão</span></span></li>
-        <li><span><b>Urgências</b> são as três dimensões com menor nota. Em empate, vence a que está mais perto da venda (vendas antes de marketing).</span></li>
-        <li><span><b>Toda nota cita a fonte e a data</b> da coleta. Estimativa aparece marcada como estimativa.</span></li>
+        <li><span><b>Nota geral</b> é a média das áreas medidas. Área não medida fica fora da média e aparece como "não medido". <span class="st st-disc">pesos em discussão</span></span></li>
+        <li><span><b>As três urgências</b> são as notas mais baixas que mais custam cliente. No empate, vence a área mais perto da venda.</span></li>
+        <li><span><b>Marque cada critério</b> abaixo para ver o boletim mudar. As áreas de vendas e gestão são propostas: ative "na nota" para testá-las.</span></li>
       </ul>
     </div>
   </section>
 
-  <section id="simulador">
+  <section>
     <div class="wrap">
-      <div class="cab">
-        <div class="etiqueta">Simulador</div>
-        <h2>Como o resultado aparece para o cliente</h2>
-        <p>Mexa nas notas para ver o mapa, a nota geral e as urgências mudarem. Serve para testar a régua antes de usar com clientes reais.</p>
-      </div>
-      <div class="aviso">Exemplo com dados fictícios: "Clínica Exemplo", Goiânia/GO.</div>
+      <div class="cab"><div class="etq">Áreas e simulador</div><h2>O que medimos <b>e como aparece no boletim</b></h2></div>
+      <div class="aviso">Exemplo com dados fictícios, os mesmos do boletim do Modelo Unificado.</div>
       <div class="sim">
-        <div class="controles" id="controles"></div>
-        <div class="painel">
-          <div class="radar-box"><svg id="radar" viewBox="0 0 520 470" role="img" aria-label="Mapa das notas por dimensão"></svg></div>
-          <div class="resumo">
-            <div class="nota-geral" id="notaGeral">0<small>/10</small></div>
-            <div><div id="faixaGeral"></div><p class="suave" id="medidas" style="font-size:.88rem;margin-top:6px"></p></div>
-          </div>
-          <div class="urg"><h3>Três urgências</h3><ol id="urgencias"></ol></div>
+        <div id="areas"></div>
+        <aside class="boletim" aria-label="Boletim">
+          <div class="etq">O boletim</div>
+          <div class="geral"><div class="n" id="geral">0<small>/10</small></div><div><div id="geral-chip"></div><p class="suave" id="geral-qtd" style="font-size:.85rem;margin-top:6px"></p></div></div>
+          <div class="barras" id="barras"></div>
+          <div class="urg"><div class="etq">As três urgências</div><ol id="urgencias"></ol></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cab"><div class="etq">Quanto isso vale</div><h2>Essa procura vale <b id="titulo-valor">R$ 0</b> por mês</h2><p>Cada etapa é arredondada e o número arredondado segue para a próxima, para que o valor do quadro bata com a conta exibida.</p></div>
+      <div class="valor">
+        <div class="conta">
+          <div class="ln"><span class="op"></span><label for="procura">Buscas por mês na cidade</label><input id="procura" type="number" min="0" step="10" value="3090"></div>
+          <div class="ln"><span class="op">×</span><label for="contato">% que entra em contato</label><input id="contato" type="number" min="0" max="100" step="0.5" value="3"></div>
+          <div class="ln res"><span class="op">=</span><span>novos contatos por mês</span><span class="calc" id="r-contatos">0</span></div>
+          <div class="ln"><span class="op">×</span><label for="fecha">% que fecha</label><input id="fecha" type="number" min="0" max="100" step="1" value="25"></div>
+          <div class="ln res"><span class="op">=</span><span>novos clientes por mês</span><span class="calc" id="r-clientes">0</span></div>
+          <div class="ln"><span class="op">×</span><label for="ticket">Ticket médio (R$)</label><input id="ticket" type="number" min="0" step="50" value="3000"></div>
+        </div>
+        <div class="total">
+          <span class="l">Por mês</span>
+          <span class="v" id="r-valor">R$ 0</span>
+          <p>em clientes que já estão procurando. É o tamanho da procura, não uma promessa de faturamento.</p>
+          <span class="l" id="r-ano" style="color:#c9f5dc"></span>
         </div>
       </div>
+      <p class="fonte">Procura: Semrush, buscas que citam a cidade · contato e fechamento: premissas conservadoras, ajustadas com o cliente · ticket: informado pela empresa.</p>
     </div>
   </section>
 
-  <section id="impacto">
+  <section>
     <div class="wrap">
-      <div class="cab">
-        <div class="etiqueta">Quanto isso vale</div>
-        <h2>O dinheiro que está na mesa</h2>
-        <p>A conta usa a procura medida na cidade e premissas por segmento. O número de clientes é arredondado antes de multiplicar pelo ticket, para que o valor exibido bata com a conta exibida.</p>
+      <div class="cab"><div class="etq">O plano</div><h2>Três passos. <b>O primeiro custa zero.</b></h2><p>As ações saem dos critérios reprovados. O passo grátis traz o que o próprio cliente resolve em uma tarde.</p></div>
+      <div class="plano">
+        <div class="fase gratis"><div class="etq">Hoje · grátis</div><h3>Arrumar a casa</h3><ul><li><span>Corrigir telefone e horário no Google;</span></li><li><span>Responder as avaliações em aberto;</span></li><li><span>Pôr o WhatsApp na bio do Instagram.</span></li></ul></div>
+        <div class="fase"><div class="etq">Em 90 dias</div><h3>Ser encontrado</h3><ul><li><span>Disputar o mapa e a lista na busca principal;</span></li><li><span>Uma página para cada serviço e cada unidade;</span></li><li><span>Rotina para pedir avaliação a cada cliente.</span></li></ul></div>
+        <div class="fase"><div class="etq">Em 6 meses</div><h3>Ser escolhido</h3><ul><li><span>Aparecer nas respostas das IAs;</span></li><li><span>Responder no WhatsApp em minutos, com IA;</span></li><li><span>Relatório mensal com estes mesmos números.</span></li></ul></div>
       </div>
-      <div class="impacto">
-        <div class="campo"><label for="procura">Procura mensal</label><input id="procura" type="number" min="0" step="10" value="1900"><span class="op">buscas na cidade</span></div>
-        <div class="campo"><label for="contato">% que entra em contato</label><input id="contato" type="number" min="0" max="100" step="0.5" value="3"><span class="op">premissa do segmento</span></div>
-        <div class="campo"><label for="fecha">% que fecha</label><input id="fecha" type="number" min="0" max="100" step="1" value="25"><span class="op">premissa ou dado do cliente</span></div>
-        <div class="campo"><label for="ticket">Ticket médio (R$)</label><input id="ticket" type="number" min="0" step="50" value="3000"><span class="op">do Pipedrive ou entrevista</span></div>
-        <div class="total"><span class="l">Por mês</span><span class="v" id="valor">R$ 0</span><span class="l" id="clientes">0 clientes</span></div>
-      </div>
-      <p class="conta" id="conta"></p>
+      <p class="fonte">Prazos são objetivos de cada fase, não promessa de posição.</p>
     </div>
   </section>
 
-  <section id="entregavel">
-    <div class="wrap">
-      <div class="cab">
-        <div class="etiqueta">O que o cliente recebe</div>
-        <h2>O relatório, página a página</h2>
-        <p>Estrutura proposta a partir do modelo Diagnóstico Geral, com as páginas fixas da ATOM no início e o plano no fim. <span class="st st-disc">em discussão</span></p>
-      </div>
-      <ol class="paginas">
-        <li><b>Páginas fixas ATOM</b><span>As seis primeiras do modelo Atom 2026.</span></li>
-        <li><b>Capa do cliente</b><span>Nome, site, cidade e mês.</span></li>
-        <li><b>Boletim</b><span>Nota por dimensão, nota geral e três urgências.</span></li>
-        <li><b>A procura</b><span>Quantas pessoas buscam o serviço na cidade.</span></li>
-        <li><b>Você e os concorrentes</b><span>Mapa, avaliações e site lado a lado.</span></li>
-        <li><b>O que dizem de você</b><span>Temas elogiados e reclamados nas avaliações.</span></li>
-        <li><b>Site no celular</b><span>Velocidade e quatro testes de conversão.</span></li>
-        <li><b>Redes e busca com IA</b><span>Instagram, ChatGPT e Gemini.</span></li>
-        <li><b>Atendimento e vendas</b><span>Tempo de resposta e processo comercial.</span></li>
-        <li><b>Quanto isso vale</b><span>A conta da etapa 4.</span></li>
-        <li><b>O plano</b><span>Hoje, 90 dias e 6 meses.</span></li>
-        <li><b>Próximo passo</b><span>Como a ATOM entra.</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="aberto">
+  <section>
     <div class="wrap duas">
       <div>
-        <div class="cab">
-          <div class="etiqueta">Decisões em aberto</div>
-          <h2>O que precisamos decidir</h2>
-        </div>
+        <div class="cab"><div class="etq">Decisões em aberto</div><h2>O que <b>precisamos decidir</b></h2></div>
         <ul class="decisoes">
-          <li><b>As dimensões têm o mesmo peso?</b><span>Proposta: peso igual na versão 1, e revisão depois dos primeiros 20 diagnósticos.</span></li>
-          <li><b>O diagnóstico é gratuito ou pago?</b><span>Muda a profundidade: o gratuito usa só a etapa 1; o pago inclui entrevista e plano.</span></li>
+          <li><b>As áreas de vendas e gestão entram no boletim?</b><span>Processo e CRM, fechamento, pós-venda e números do negócio dependem da entrevista. Proposta: entram só no diagnóstico com reunião.</span></li>
+          <li><b>As áreas têm o mesmo peso?</b><span>Proposta: peso igual na versão 1, revisão depois dos primeiros 20 diagnósticos.</span></li>
           <li><b>Mídia paga entra na prospecção?</b><span>Dá para ver anúncios ativos de fora, mas não o resultado deles.</span></li>
-          <li><b>Roteiro da entrevista</b><span>Duração, quem participa e quais perguntas medem V2, V3, V4 e G1.</span></li>
+          <li><b>Roteiro da entrevista</b><span>Duração, quem participa e as perguntas que medem cada critério de vendas e gestão.</span></li>
           <li><b>Premissas por segmento</b><span>% de contato e % de fechamento para clínicas médicas, odontológicas e lojas de pneus.</span></li>
           <li><b>Cliente oculto no WhatsApp</b><span>Quem faz o teste e onde registra o tempo de resposta.</span></li>
         </ul>
       </div>
       <div>
-        <div class="cab">
-          <div class="etiqueta">Histórico</div>
-          <h2>Alterações no método</h2>
-        </div>
+        <div class="cab"><div class="etq">Histórico</div><h2>Alterações <b>no método</b></h2></div>
         <ol class="hist">
-          <li><span class="v"><b>v0.2</b>15/10/2026</span><div>Tela inicial com os quadros dos modelos.<ul><li>Três modelos de diagnóstico: este método, Diagnóstico Geral e Diagnóstico SEO/GEO.</li><li>Quatro modelos de proposta: proposta padrão Atom 2026 e ofertas A, B e C.</li><li>Cada quadro abre uma ficha com estrutura, situação e pendências.</li></ul></div></li>
-          <li><span class="v"><b>v0.1</b>15/10/2026</span><div>Primeira versão do quadro do método.<ul><li>Cinco etapas, da coleta ao plano.</li><li>Onze dimensões em três pilares, com indicadores, fontes e régua.</li><li>Régua 0–10 trazida do docs/13 e estendida para vendas e gestão.</li><li>Simulador de notas e cálculo de impacto.</li><li>Lista de decisões em aberto.</li></ul></div></li>
+          <li><span class="v"><b>v0.3</b>15/10/2026</span><div>Visual da apresentação Atom 2026 · Agência de IA e régua do Modelo Unificado.<ul><li>Régua trocada para 5 critérios de 2 pontos por área, faixas 0–4, 5–7 e 8–10.</li><li>As 8 áreas do Modelo Unificado viram a base; vendas e gestão entram como proposta.</li><li>Simulador por critério e boletim com barras, como na página 11 do modelo.</li><li>Quanto vale com arredondamento a cada etapa e plano em três passos.</li><li>Central com os modelos reais: Modelo Unificado, proposta de site, loja virtual e os seis decks.</li></ul></div></li>
+          <li><span class="v"><b>v0.2</b>15/10/2026</span><div>Tela inicial com os quadros dos modelos de diagnóstico e de proposta.</div></li>
+          <li><span class="v"><b>v0.1</b>15/10/2026</span><div>Primeira versão: etapas, dimensões, régua, simulador e cálculo de impacto.</div></li>
         </ol>
       </div>
     </div>
   </section>
-</main>
 </div>
 
-<footer><div class="wrap">ATOM Agência Digital · atomdigital.com.br · documento de trabalho interno</div></footer>
+<footer><div class="wrap"><span>Atom · agência de IA · documento de trabalho interno</span><span class="url">atomdigital.com.br</span></div></footer>
 
 <script>
-const PILARES = [
-  { id: "mkt", nome: "Marketing", sub: "atrair: a pessoa encontra e escolhe a empresa?" },
-  { id: "ven", nome: "Vendas", sub: "converter: o contato vira cliente?" },
-  { id: "ges", nome: "Gestão", sub: "medir: a empresa sabe o que funciona?" }
-];
-const DIMS = [
-  { id: "M1", p: "mkt", nome: "Procura e Google", curto: "Google", st: "def",
-    perg: "Quando alguém procura o serviço na cidade, encontra a empresa?",
-    ind: ["Posição na busca principal e na busca pela marca", "Top 3 do Google Maps nas buscas do segmento", "Volume de busca local (buscas com a cidade)"],
-    fonte: "Semrush · Apify Maps", coleta: "Automática",
-    r: ["Fora do top 3 do mapa na busca principal", "Top 3 em 1 de 3 buscas", "Top 3 em 2 ou mais buscas"], ex: 3 },
-  { id: "M2", p: "mkt", nome: "Reputação", curto: "Reputação", st: "def",
-    perg: "Quem pesquisa a empresa confia no que lê?",
-    ind: ["Nota e número de avaliações contra os 3 concorrentes", "Percentual de avaliações respondidas", "Temas elogiados e reclamados"],
-    fonte: "Apify Maps · Claude classifica temas", coleta: "Automática",
-    r: ["Nota abaixo de 4,0 ou menos de 20 avaliações", "Nota 4,0 ou mais, abaixo da mediana dos concorrentes", "Nota 4,5 ou mais, acima da mediana e responde 50% ou mais"], ex: 6 },
-  { id: "M3", p: "mkt", nome: "Site e conversão", curto: "Site", st: "def",
-    perg: "O site abre rápido no celular e leva a pessoa a falar com a empresa?",
-    ind: ["Tempo para abrir no celular (LCP)", "Botão de WhatsApp ou telefone na primeira tela", "Diz o que faz e onde atende", "Formulário ou agendamento"],
-    fonte: "PageSpeed · HTML do site", coleta: "Automática",
-    r: ["LCP acima de 4 s ou 2 ou mais testes falhos", "LCP de 2,5 a 4 s ou 1 teste falho", "LCP até 2,5 s e os 4 testes aprovados"], ex: 4 },
-  { id: "M4", p: "mkt", nome: "Redes sociais", curto: "Redes", st: "def",
-    perg: "O perfil parece ativo e leva para o atendimento?",
-    ind: ["Dias desde o último post", "Posts e Reels por mês", "Link e WhatsApp na bio"],
-    fonte: "Apify Instagram", coleta: "Parcial",
-    r: ["Último post há mais de 30 dias", "1 a 3 posts por mês", "4 ou mais posts por mês e WhatsApp na bio"], ex: 5 },
-  { id: "M5", p: "mkt", nome: "Busca com IA", curto: "IA", st: "def",
-    perg: "Quando alguém pergunta ao ChatGPT ou ao Gemini, a empresa é indicada?",
-    ind: ["Citada pelo ChatGPT, Gemini e Google Modo IA", "Dados estruturados de negócio local", "Arquivo llms.txt e páginas por serviço"],
-    fonte: "API OpenAI e Gemini com busca · HTML", coleta: "Parcial",
-    r: ["Citada em 0 de 3 ferramentas", "Citada em 1 de 3", "Citada em 2 ou mais de 3"], ex: 1 },
-  { id: "M6", p: "mkt", nome: "Mídia paga", curto: "Mídia", st: "disc",
-    perg: "A empresa compra atenção de forma organizada?",
-    ind: ["Anúncios ativos no Google e na Meta", "Página de destino própria para o anúncio", "Pixel e tag de conversão instalados"],
-    fonte: "Biblioteca de Anúncios Meta · Semrush · HTML", coleta: "Parcial",
-    r: ["Sem anúncio ativo ou anúncio levando à home", "Anúncio ativo sem medição de conversão", "Anúncio com página própria e conversão medida"], ex: 2 },
-  { id: "V1", p: "ven", nome: "Velocidade de atendimento", curto: "Atendimento", st: "def",
-    perg: "Quanto tempo a pessoa espera para ser atendida?",
-    ind: ["Tempo de resposta no WhatsApp (cliente oculto)", "Resposta fora do horário comercial", "Tempo dos concorrentes no mesmo teste"],
-    fonte: "Teste feito por pessoa", coleta: "Manual",
-    r: ["Resposta em mais de 1 hora", "Resposta entre 5 e 60 minutos", "Resposta em até 5 minutos"], ex: 4 },
-  { id: "V2", p: "ven", nome: "Processo e CRM", curto: "Processo", st: "adef",
-    perg: "Existe um caminho definido do primeiro contato até a venda?",
-    ind: ["Usa CRM e registra todos os contatos", "Etapas do funil definidas", "Follow-up com cadência"],
-    fonte: "Entrevista", coleta: "Manual",
-    r: ["Contatos só no WhatsApp, sem registro", "CRM ou planilha sem rotina de follow-up", "CRM com etapas e follow-up em uso"], ex: 3 },
-  { id: "V3", p: "ven", nome: "Proposta e fechamento", curto: "Fechamento", st: "adef",
-    perg: "A empresa sabe quantas propostas fecha e por que perde?",
-    ind: ["Taxa de fechamento conhecida", "Tempo médio até fechar", "Motivo de perda registrado"],
-    fonte: "Entrevista · CRM do cliente", coleta: "Manual",
-    r: ["Não sabe a taxa de fechamento", "Sabe a taxa, mas não registra o motivo de perda", "Sabe taxa, tempo e motivos de perda"], ex: 5 },
-  { id: "V4", p: "ven", nome: "Pós-venda e recompra", curto: "Pós-venda", st: "adef",
-    perg: "O cliente atendido volta, indica e avalia?",
-    ind: ["Pede avaliação depois do atendimento", "Programa ou pedido de indicação", "Reativa a base de clientes antigos"],
-    fonte: "Entrevista", coleta: "Manual",
-    r: ["Nenhuma ação depois da venda", "Uma ação feita sem rotina", "Rotina de avaliação, indicação e reativação"], ex: 2 },
-  { id: "G1", p: "ges", nome: "Números do negócio", curto: "Números", st: "adef",
-    perg: "A empresa sabe de onde vêm os clientes e quanto custa cada um?",
-    ind: ["Origem dos clientes registrada", "Ticket médio e custo por cliente conhecidos", "Meta mensal de vendas"],
-    fonte: "Entrevista", coleta: "Manual",
-    r: ["Não sabe a origem dos clientes", "Sabe a origem, sem custo por cliente", "Sabe origem, custo e acompanha meta"], ex: 3 }
-];
-const ST = { def: ["st-def", "Definido"], disc: ["st-disc", "Em discussão"], adef: ["st-adef", "A definir"] };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const BIBLIOTECA = "https://claude.ai/artifact/XXJxzV21z3gymxyD7Z19pe";
 
-// Dimensões
-document.getElementById("pilares").innerHTML = PILARES.map(p => `
-  <div>
-    <div class="pilar-cab"><h3>${p.nome}</h3><span>${p.sub}</span></div>
-    <div class="dims">${DIMS.filter(d => d.p === p.id).map(d => `
-      <article class="dim">
-        <div class="dim-top"><div><div class="dim-id">${d.id}</div><h3>${esc(d.nome)}</h3></div><span class="st ${ST[d.st][0]}">${ST[d.st][1]}</span></div>
-        <p class="perg">${esc(d.perg)}</p>
-        <ul>${d.ind.map(i => `<li><span>${esc(i)}</span></li>`).join("")}</ul>
-        <details class="regua"><summary>Régua</summary><div class="faixas">
-          <div class="faixa f-r"><span class="f">0–3</span><span>${esc(d.r[0])}</span></div>
-          <div class="faixa f-m"><span class="f">4–6</span><span>${esc(d.r[1])}</span></div>
-          <div class="faixa f-b"><span class="f">7–10</span><span>${esc(d.r[2])}</span></div>
-        </div></details>
-        <div class="meta"><span>fonte <b>${esc(d.fonte)}</b></span><span>coleta <b>${d.coleta}</b></span></div>
-      </article>`).join("")}</div>
-  </div>`).join("");
+/* ---------- Método: áreas e critérios ---------- */
+const PILARES = [
+  { id: "mkt", nome: "<b>Marketing</b>", sub: "ser encontrado e escolhido" },
+  { id: "ven", nome: "<b>Vendas</b>", sub: "transformar o contato em cliente" },
+  { id: "ges", nome: "<b>Gestão</b>", sub: "saber o que funciona" }
+];
+const AREAS = [
+  { id: "rep", p: "mkt", nome: "Reputação da marca", st: "ok", fonte: "Semrush · Google", ex: 4,
+    c: ["1º na busca pelo nome", "Site é o 1º resultado, não um agregador", "Perfil do Google aparece na busca pelo nome", "Nota no Google 4,5 ou mais", "Nenhuma reclamação grave sem resposta"] },
+  { id: "bus", p: "mkt", nome: "Busca no Google", st: "ok", fonte: "Semrush", ex: 1,
+    c: ["1ª página na busca principal", "Alguma busca de serviço no top 20", "Página própria para cada serviço", "Visitas crescendo em 12 meses", "Maioria das visitas de quem não buscou pelo nome"] },
+  { id: "map", p: "mkt", nome: "Google Maps", st: "ok", fonte: "Apify Maps", ex: 2,
+    c: ["Top 3 na busca principal", "Perfil verificado", "Telefone e horário certos", "50 fotos ou mais", "Categoria principal certa"] },
+  { id: "ava", p: "mkt", nome: "Avaliações", st: "ok", fonte: "Apify Maps", ex: 2,
+    c: ["Nota 4,5 ou mais", "Volume de pelo menos metade do líder", "Avaliação nova no último mês", "Responde 80% ou mais", "Nenhuma 1 estrela nos últimos 3 meses"] },
+  { id: "sit", p: "mkt", nome: "Site", st: "ok", fonte: "PageSpeed · rastreio", ex: 3,
+    c: ["Abre em até 3 s no celular", "Diz o que faz e onde na primeira tela", "WhatsApp sempre visível", "Telefone certo e clicável", "Saúde técnica 80/100 ou mais"] },
+  { id: "ins", p: "mkt", nome: "Instagram", st: "ok", fonte: "Apify Instagram", ex: 1,
+    c: ["Post nos últimos 7 dias", "8 posts ou mais no mês", "Reels no mês", "WhatsApp na bio", "Link na bio"] },
+  { id: "ia", p: "mkt", nome: "Busca com IA", st: "ok", fonte: "APIs OpenAI e Gemini · HTML", ex: 1,
+    c: ["Citado no ChatGPT", "Citado no Gemini", "Citado no Google Modo IA", "Site identifica empresa e unidades", "Mesmo nome, endereço e telefone em todo lugar"] },
+  { id: "mid", p: "mkt", nome: "Mídia paga", st: "disc", fonte: "Biblioteca de Anúncios · HTML", ex: 1, fora: true,
+    c: ["Anúncio ativo no Google", "Anúncio ativo na Meta", "Página de destino própria", "Tag de conversão instalada", "Anúncio fala do serviço e da cidade"] },
+  { id: "wha", p: "ven", nome: "WhatsApp", st: "ok", fonte: "Cliente oculto", ex: 1,
+    c: ["Respondeu em até 5 min", "Respondeu à pergunta feita", "Respondeu fora do horário", "Pediu o nome ou ofereceu agendar", "Mandou endereço ou link útil"] },
+  { id: "crm", p: "ven", nome: "Processo e CRM", st: "adef", fonte: "Entrevista", ex: 1, fora: true,
+    c: ["Todo contato registrado em CRM", "Etapas do funil definidas", "Follow-up em até 24 h", "Um responsável por lead", "Revisão semanal do funil"] },
+  { id: "fec", p: "ven", nome: "Proposta e fechamento", st: "adef", fonte: "Entrevista · CRM", ex: 2, fora: true,
+    c: ["Sabe a taxa de fechamento", "Proposta enviada em até 48 h", "Registra o motivo de perda", "Acompanha o tempo até fechar", "Tem apresentação padrão"] },
+  { id: "pos", p: "ven", nome: "Pós-venda", st: "adef", fonte: "Entrevista", ex: 1, fora: true,
+    c: ["Pede avaliação depois do atendimento", "Pede indicação", "Reativa clientes antigos", "Mede recompra", "Tem canal de contato pós-venda"] },
+  { id: "num", p: "ges", nome: "Números do negócio", st: "adef", fonte: "Entrevista", ex: 1, fora: true,
+    c: ["Sabe de onde vem cada cliente", "Conhece o ticket médio", "Conhece o custo por cliente", "Tem meta mensal de vendas", "Acompanha os números em painel"] }
+];
+const ST = { ok: ["st-ok", "Definido"], disc: ["st-disc", "Em discussão"], adef: ["st-adef", "Proposta"] };
+const ORDEM = { ven: 0, ges: 1, mkt: 2 };
+const estado = Object.fromEntries(AREAS.map(a => [a.id, { marc: a.c.map((_, i) => i < a.ex), dentro: !a.fora }]));
 
-// Simulador
-const estado = Object.fromEntries(DIMS.map(d => [d.id, { v: d.ex, nm: false }]));
-const ctl = document.getElementById("controles");
-ctl.innerHTML = PILARES.map(p => `<div class="ctl-grupo">${p.nome}</div>` + DIMS.filter(d => d.p === p.id).map(d => `
-  <div class="ctl" id="c-${d.id}">
-    <label for="s-${d.id}">${d.id} · ${esc(d.nome)}</label>
-    <input type="range" id="s-${d.id}" min="0" max="10" step="1" value="${d.ex}">
-    <output id="o-${d.id}" for="s-${d.id}">${d.ex}</output>
-    <label class="nmchk"><input type="checkbox" id="n-${d.id}"> não medido</label>
-  </div>`).join("")).join("");
-DIMS.forEach(d => {
-  document.getElementById("s-" + d.id).addEventListener("input", e => { estado[d.id].v = +e.target.value; atualizar(); });
-  document.getElementById("n-" + d.id).addEventListener("change", e => { estado[d.id].nm = e.target.checked; atualizar(); });
+document.getElementById("areas").innerHTML = PILARES.map(p => `
+  <div class="pilar"><h3>${p.nome}</h3><span>${p.sub}</span></div>
+  <div class="areas">${AREAS.filter(a => a.p === p.id).map(a => `
+    <div class="area${a.fora ? " fora" : ""}" id="a-${a.id}">
+      <div class="area-top"><div><h4>${esc(a.nome)}</h4><span class="st ${ST[a.st][0]}">${ST[a.st][1]}</span></div><div class="nota" id="n-${a.id}"></div></div>
+      <ul class="crit">${a.c.map((c, i) => `<li><label><input type="checkbox" id="c-${a.id}-${i}"${i < a.ex ? " checked" : ""}><span>${esc(c)}</span></label></li>`).join("")}</ul>
+      <div class="pe"><span>${esc(a.fonte)}</span><label class="incl"><input type="checkbox" id="d-${a.id}"${a.fora ? "" : " checked"}> na nota</label></div>
+    </div>`).join("")}</div>`).join("");
+
+AREAS.forEach(a => {
+  a.c.forEach((_, i) => document.getElementById(`c-${a.id}-${i}`).addEventListener("change", e => { estado[a.id].marc[i] = e.target.checked; boletim(); }));
+  document.getElementById("d-" + a.id).addEventListener("change", e => { estado[a.id].dentro = e.target.checked; boletim(); });
 });
 
-function faixa(n) { return n <= 3 ? ["r", "Perdendo cliente"] : n <= 6 ? ["m", "Pode melhorar"] : ["b", "Funciona"]; }
-const ORDEM_PILAR = { ven: 0, ges: 1, mkt: 2 };
+const nota = id => estado[id].marc.filter(Boolean).length * 2;
+const faixa = n => n <= 4 ? ["r", "Perdendo cliente", "var(--ruim)"] : n <= 7 ? ["m", "Pode melhorar", "var(--medio)"] : ["b", "Funciona", "var(--bom)"];
 
-function radar() {
-  const svg = document.getElementById("radar");
-  const cx = 260, cy = 232, R = 165, n = DIMS.length;
-  const ang = i => -Math.PI / 2 + i * 2 * Math.PI / n;
-  const pt = (i, r) => [cx + r * Math.cos(ang(i)), cy + r * Math.sin(ang(i))];
-  let h = "";
-  // faixas da régua como anéis
-  [[10, "var(--bom-fundo)"], [6, "var(--medio-fundo)"], [3, "var(--ruim-fundo)"]].forEach(([v, c]) => {
-    h += `<polygon points="${DIMS.map((_, i) => pt(i, R * v / 10).join(",")).join(" ")}" fill="${c}" stroke="var(--linha)" stroke-width="1"/>`;
+function boletim() {
+  AREAS.forEach(a => {
+    const n = nota(a.id), dentro = estado[a.id].dentro;
+    document.getElementById("n-" + a.id).innerHTML = `${n}<small>/10</small>`;
+    document.getElementById("a-" + a.id).classList.toggle("fora", !dentro);
   });
-  DIMS.forEach((_, i) => { const [x, y] = pt(i, R); h += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--linha)" stroke-width="1"/>`; });
-  const pts = DIMS.map((d, i) => pt(i, R * (estado[d.id].nm ? 0 : estado[d.id].v) / 10));
-  h += `<polygon points="${pts.map(p => p.join(",")).join(" ")}" fill="var(--roxo)" fill-opacity=".28" stroke="var(--roxo)" stroke-width="2"/>`;
-  DIMS.forEach((d, i) => {
-    const [x, y] = pts[i];
-    if (!estado[d.id].nm) h += `<circle cx="${x}" cy="${y}" r="4" fill="var(--roxo)" stroke="var(--fundo)" stroke-width="1.5"/>`;
-    const [lx, ly] = pt(i, R + 26);
-    const a = Math.cos(ang(i)); const anchor = a > .3 ? "start" : a < -.3 ? "end" : "middle";
-    const val = estado[d.id].nm ? "n/m" : estado[d.id].v;
-    h += `<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--suave)">${d.id} ${esc(d.curto)}</text>`;
-    h += `<text x="${lx}" y="${ly + 15}" text-anchor="${anchor}" dominant-baseline="middle" font-family="Roboto, sans-serif" font-size="13" font-weight="700" fill="var(--texto)">${val}</text>`;
-  });
-  svg.innerHTML = h;
-}
-
-function atualizar() {
-  DIMS.forEach(d => {
-    const s = estado[d.id];
-    document.getElementById("o-" + d.id).textContent = s.nm ? "n/m" : s.v;
-    document.getElementById("s-" + d.id).disabled = s.nm;
-    document.getElementById("c-" + d.id).classList.toggle("nm", s.nm);
-  });
-  const medidas = DIMS.filter(d => !estado[d.id].nm);
-  const media = medidas.length ? medidas.reduce((a, d) => a + estado[d.id].v, 0) / medidas.length : 0;
+  const medidas = AREAS.filter(a => estado[a.id].dentro);
+  document.getElementById("barras").innerHTML = medidas.map(a => {
+    const n = nota(a.id), [, , cor] = faixa(n);
+    return `<div class="barra-l"><span>${esc(a.nome)}</span><span class="trilho"><i style="width:${n * 10}%;background:${cor}"></i></span><span class="v">${n}/10</span></div>`;
+  }).join("") || `<p class="suave" style="padding:10px 0">Nenhuma área na nota.</p>`;
+  const media = medidas.length ? medidas.reduce((s, a) => s + nota(a.id), 0) / medidas.length : 0;
   const m1 = Math.round(media * 10) / 10;
-  document.getElementById("notaGeral").innerHTML = `${m1.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}<small>/10</small>`;
+  document.getElementById("geral").innerHTML = `${m1.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}<small>/10</small>`;
   const [fc, fl] = faixa(m1);
-  document.getElementById("faixaGeral").innerHTML = `<span class="chip ${fc}">${fl}</span>`;
-  document.getElementById("medidas").textContent = `${medidas.length} de ${DIMS.length} dimensões medidas` + (medidas.length < DIMS.length ? "; as demais ficam fora da média." : ".");
-  const urg = medidas.slice().sort((a, b) => estado[a.id].v - estado[b.id].v || ORDEM_PILAR[a.p] - ORDEM_PILAR[b.p]).slice(0, 3);
-  document.getElementById("urgencias").innerHTML = urg.map(d => {
-    const [c, l] = faixa(estado[d.id].v);
-    return `<li><span>${d.id} · ${esc(d.nome)} <span class="chip ${c}">${l}</span></span><span>${estado[d.id].v}/10</span></li>`;
-  }).join("");
-  radar();
+  document.getElementById("geral-chip").innerHTML = `<span class="chip ${fc}">${fl}</span>`;
+  document.getElementById("geral-qtd").textContent = `${medidas.length} de ${AREAS.length} áreas na nota`;
+  const urg = medidas.slice().sort((x, y) => nota(x.id) - nota(y.id) || ORDEM[x.p] - ORDEM[y.p]).slice(0, 3);
+  document.getElementById("urgencias").innerHTML = urg.map(a => `<li><span>${esc(a.nome)}</span><span>${nota(a.id)}/10</span></li>`).join("");
 }
-atualizar();
+boletim();
 
-// Impacto
+/* ---------- Quanto vale ---------- */
 const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-const nfmt = v => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
-function impacto() {
+const int = v => v.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
+function valor() {
   const g = id => Math.max(0, parseFloat(document.getElementById(id).value) || 0);
-  const procura = g("procura"), contato = g("contato"), fecha = g("fecha"), ticket = g("ticket");
-  const contatos = procura * contato / 100;
-  const clientes = Math.round(contatos * fecha / 100);
-  const valor = clientes * ticket;
-  document.getElementById("valor").textContent = brl(valor);
-  document.getElementById("clientes").textContent = `${clientes} ${clientes === 1 ? "cliente" : "clientes"} · ${brl(valor * 12)}/ano`;
-  document.getElementById("conta").textContent = `${nfmt(procura)} buscas × ${nfmt(contato)}% = ${nfmt(contatos)} contatos → × ${nfmt(fecha)}% = ${clientes} clientes (arredondado) → × ${brl(ticket)} = ${brl(valor)} por mês.`;
+  const contatos = Math.round(g("procura") * g("contato") / 100);
+  const clientes = Math.round(contatos * g("fecha") / 100);
+  const total = clientes * g("ticket");
+  document.getElementById("r-contatos").textContent = int(contatos);
+  document.getElementById("r-clientes").textContent = int(clientes);
+  document.getElementById("r-valor").textContent = brl(total);
+  document.getElementById("titulo-valor").textContent = brl(total);
+  document.getElementById("r-ano").textContent = `${brl(total * 12)} por ano`;
 }
-["procura", "contato", "fecha", "ticket"].forEach(id => document.getElementById(id).addEventListener("input", impacto));
-impacto();
+["procura", "contato", "fecha", "ticket"].forEach(id => document.getElementById(id).addEventListener("input", valor));
+valor();
 
-// Central: quadros e fichas dos modelos
-const STATUS = {
-  construcao: ["st-disc", "Em construção"],
-  recebido: ["st-def", "Modelo recebido"],
-  definido: ["st-def", "Definido"],
-  construir: ["st-adef", "A construir"]
-};
+/* ---------- Central: modelos ---------- */
+const pgs = (pasta, n, nomes) => Array.from({ length: n }, (_, i) => ({ src: `${pasta}/${String(i + 1).padStart(2, "0")}.jpg`, t: nomes[i] || `Página ${i + 1}` }));
 const MODELOS = [
-  { id: "metodo", grupo: "diag", principal: true, tipo: "Método", nome: "Diagnóstico de marketing e vendas",
-    resumo: "O método-base: 5 etapas, 11 dimensões, régua de 0 a 10, simulador e cálculo de impacto.",
-    status: "construcao", meta: "v0.2 · 11 dimensões" },
-  { id: "diag-geral", grupo: "diag", tipo: "Diagnóstico · prospecção", nome: "Diagnóstico Geral",
-    resumo: "Para negócio local: mapa, avaliações, site, Instagram, busca com IA e WhatsApp, com boletim de notas e plano.",
-    status: "recebido", meta: "15 páginas · ATOM_14",
-    fatos: [["Público", "Negócio local com atendimento na cidade"], ["Formato", "PDF 960×540, gerado de HTML"], ["Automação", "ATOM_14, disparado pelo Pipedrive; PDF no Drive com link no negócio"], ["Fonte", "docs/13_modelos_diagnostico.md"]],
-    paginas: [["1", "Capa ATOM", "Fixo"], ["2", "Capa do cliente", "Auto"], ["3", "Boletim: 6 notas e 3 urgências", "Auto"], ["4", "A procura na cidade", "Parcial"], ["5", "Quem aparece no mapa", "Parcial"], ["6", "Você × 3 concorrentes", "Parcial"], ["7", "O que dizem de você", "Auto"], ["8", "Site no celular", "Auto"], ["9", "Instagram", "Parcial"], ["10", "Busca com IA", "Parcial"], ["11", "Cliente oculto no WhatsApp", "Manual"], ["12", "Quanto isso vale", "Auto"], ["13", "O plano: hoje, 90 dias, 6 meses", "Auto"], ["14", "Quem somos", "Fixo"], ["15", "Próximo passo", "Fixo"]],
-    pend: [["Régua das notas", "A régua do método (página Método) substitui as \"notas da ATOM\" sem critério."], ["Cliente oculto", "Quem faz o teste de WhatsApp e onde registra o tempo."], ["Estatísticas de mercado", "Confirmar as fontes de 96%, 46% e 63% usadas como texto fixo."], ["Conta da pág. 12", "Calcular com o número inteiro de clientes (R$ 42.000, não R$ 42.750)."]] },
-  { id: "diag-seo", grupo: "diag", tipo: "Diagnóstico · prospecção", nome: "Diagnóstico SEO/GEO",
-    resumo: "Para empresa com site: busca orgânica, buscas que trazem visitas, saúde técnica e preparo para busca com IA.",
-    status: "recebido", meta: "27 páginas · ATOM_14",
-    fatos: [["Público", "Empresa com site que depende de busca"], ["Formato", "PDF 1440×810, Roboto + IBM Plex Mono"], ["Automação", "ATOM_14, escolhido automaticamente quando o site tem tráfego orgânico"], ["Fonte", "docs/13_modelos_diagnostico.md"]],
-    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "Capa do cliente", "Auto"], ["8", "Glossário", "Fixo"], ["9", "O diagnóstico em uma frase", "Auto"], ["10", "Boletim: x de 6 em ordem", "Auto"], ["11", "Como o Google mostra você", "Auto"], ["12", "As 8 buscas que mais trazem visitas", "Auto"], ["14", "Visitas nos últimos 12 meses", "Auto"], ["15", "O que o cliente digita", "Auto"], ["16–17", "Três problemas e canibalização", "Auto"], ["18", "Saúde técnica e tamanho do site", "Parcial"], ["19", "Google e IA entendem você?", "Auto"], ["20", "Tamanho da oportunidade", "Auto"], ["21–23", "Duas frentes, execução e indicadores", "Auto"], ["24–27", "Investimento, próximos passos e encerramento", "Fixo"]],
-    pend: [["Páginas fixas com erro", "\"fazermos\" → \"fazemos\" e selo \"TABELA 2025/1\" desatualizado."], ["Nota técnica", "Trocar a nota do Site Audit pela nota do PageSpeed no celular."], ["Cases por segmento", "Lista de cases aprovados para citar na pág. 21."], ["Telefone", "Confirmar o WhatsApp de contato e usar o mesmo nos dois modelos."]] },
-  { id: "proposta-padrao", grupo: "prop", principal: true, tipo: "Proposta · modelo-base", nome: "Proposta comercial Atom 2026",
-    resumo: "O modelo oficial: as seis páginas fixas da ATOM e, a partir da página 7, a parte específica do cliente.",
-    status: "recebido", meta: "21 páginas · 1920×1080",
-    fatos: [["Formato", "Slides 1920×1080 (Atom 2026.pdf)"], ["Identidade", "Roxo #604485, Roboto e IBM Plex Mono, recorte diagonal"], ["Regra", "Páginas 1 a 6 entram sempre, sem alteração"], ["Fonte", "Design System ATOM Digital"]],
-    paginas: [["1", "Capa", "Fixo"], ["2", "Um pouco sobre a Atom", "Fixo"], ["3", "Citação de Da Vinci", "Fixo"], ["4", "Números: + 3K, + 120, + 15", "Fixo"], ["5", "Algumas marcas que atendemos", "Fixo"], ["6", "Como atendemos o seu negócio", "Fixo"], ["7+", "Divisores de seção e serviços propostos", "Por cliente"], ["fim", "Investimento, próximos passos e contracapa", "Por cliente"]],
-    pend: [["Ligação com o diagnóstico", "Quais achados do diagnóstico entram na proposta e em que página."], ["Selo da tabela", "Atualizar o selo \"TABELA 2025/1\" da página 6."], ["Formato de entrega", "PDF, página privada sem CMS, ou os dois."]] },
-  { id: "oferta-a", grupo: "prop", tipo: "Oferta A", nome: "Site de referência",
-    resumo: "Site pensado para converter, com SEO de base. Porta de entrada do cliente.",
-    status: "definido", meta: "R$ 3.000",
-    fatos: [["Preço", "R$ 3.000"], ["Recorrências", "SEO/GEO e manutenção são vendidos à parte"], ["Fonte", "Plano Mestre 2.0, resumo na auditoria Fase A"]],
-    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "O que o diagnóstico mostrou no site", "Por cliente"], ["8", "Escopo do site", "A definir"], ["9", "Prazo e investimento", "A definir"]],
-    pend: [["Escopo", "Quantas páginas, o que entra e o que fica fora."], ["Prazo médio de entrega", "Número de dias para a linha de prazo."]] },
-  { id: "oferta-b", grupo: "prop", tipo: "Oferta B", nome: "Agente de atendimento com IA",
-    resumo: "Atendimento no WhatsApp com IA para responder em minutos e não perder contato.",
-    status: "construir", meta: "escopo e preço em aberto",
-    fatos: [["Preço", "Em aberto"], ["Liga com", "Dimensão V1 · Velocidade de atendimento"], ["Fonte", "Plano Mestre 2.0, resumo na auditoria Fase A"]],
-    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "Tempo de resposta medido no diagnóstico", "Por cliente"], ["8", "Como o agente atende", "A definir"], ["9", "Investimento", "A definir"]],
-    pend: [["Escopo", "Canais, horários, integração com o CRM e passagem para humano."], ["Preço", "Implantação e mensalidade."]] },
-  { id: "oferta-c", grupo: "prop", tipo: "Oferta C", nome: "Pacote combinado",
-    resumo: "Site de referência e agente de atendimento juntos: atrair e converter no mesmo projeto.",
-    status: "construir", meta: "A + B",
-    fatos: [["Preço", "Em aberto"], ["Composição", "Oferta A + Oferta B"], ["Fonte", "Plano Mestre 2.0, resumo na auditoria Fase A"]],
-    paginas: [["1–6", "Páginas fixas ATOM", "Fixo"], ["7", "As urgências do diagnóstico", "Por cliente"], ["8", "Frente 1: site", "A definir"], ["9", "Frente 2: atendimento", "A definir"], ["10", "Investimento combinado", "A definir"]],
-    pend: [["Desconto do pacote", "Se o combinado tem condição diferente da soma de A e B."]] }
+  { id: "metodo", g: "diag", largo: true, destaque: true, tag: "Método · em construção", nome: "Diagnóstico de marketing e vendas",
+    resumo: "O método por trás dos diagnósticos: cinco etapas, a régua de 5 critérios por área, o boletim, quanto vale e o plano em três passos.",
+    capa: { grande: "8 + 5", peq: "áreas definidas + propostas" }, pe: "v0.3", st: "disc" },
+  { id: "unificado", g: "diag", tag: "Modelo oficial · 36 páginas", nome: "Diagnóstico Digital · Modelo Unificado",
+    resumo: "Junta o Diagnóstico Geral e o SEO/GEO em uma apresentação: oito notas, três urgências, quanto vale e o plano.",
+    capa: { grande: "8 notas", peq: "3 urgências · 1 plano" }, pe: "Slides · 13/10", st: "ok",
+    link: "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t", linkTxt: "Abrir o modelo",
+    estrutura: ["Páginas fixas do modelo Atom 2026, iguais em toda apresentação.", "Abertura, como ler os números, glossário, a frase-síntese e o boletim com as oito notas.", "Como o Google mostra a empresa: procura, posições, origem e evolução das visitas.", "Reputação, site e atendimento: mapa, concorrentes, avaliações, site e estrutura, Instagram, IA e WhatsApp.", "Quanto vale a procura, o plano, a proposta, indicadores, investimento e próximos passos.", "Fechamento e página final."],
+    fatos: [["Formato", "Slides 1920×1080, Roboto e IBM Plex Mono"], ["Régua", "5 critérios de 2 pontos por área; 0–4, 5–7, 8–10"], ["Origem", "Diagnóstico Geral (15 págs.) + SEO/GEO (27 págs.)"], ["Automação", "ATOM_14, disparado pelo Pipedrive"]],
+    pend: [["Áreas de vendas e gestão", "Decidir se as áreas propostas no método entram no boletim."], ["Visual", "O modelo usa o roxo #604485 do Atom 2026; os decks novos usam o roxo profundo e o verde. Alinhar."], ["Cliente oculto", "Quem faz o teste de WhatsApp e onde registra."]] },
+  { id: "site", g: "prop", largo: true, destaque: true, tag: "Modelo definitivo · 16 páginas", nome: "Proposta de site",
+    resumo: "Modelo oficial para todas as propostas de site: abertura padrão, capa com o logo do cliente, o que inclui, projetos, vitrine, depoimentos, \"site sem visitas não vende\" e o preço. Exemplo: Labeza.",
+    img: "site/04.jpg", pe: "Exemplo: Labeza", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
+    paginas: pgs("site", 16, ["Capa Atom", "Atom em números", "Marcas que confiam", "Capa do cliente"]),
+    fatos: [["Cliente exemplo", "Labeza"], ["Abertura", "Capa, Atom em números e marcas, iguais em toda proposta"], ["Versões", "PDF de exemplo na biblioteca"]],
+    pend: [["Ligação com o diagnóstico", "Quais achados do boletim entram na proposta e em que página."]] },
+  { id: "loja", g: "prop", tag: "Modelo · Nuvemshop · 17 páginas", nome: "Proposta de loja virtual",
+    resumo: "Loja na Nuvemshop: abertura padrão, capa do cliente, três páginas no estilo Nuvemshop, o que inclui, vitrine, depoimentos, criação por R$ 1.800 (3× R$ 600) e o plano recomendado.",
+    img: "loja/04.jpg", pe: "R$ 1.800 · 3× R$ 600", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
+    paginas: pgs("loja", 17, ["Capa Atom", "Atom em números", "Marcas que confiam", "Capa do cliente"]),
+    fatos: [["Cliente exemplo", "Labeza"], ["Criação", "R$ 1.800, em 3× R$ 600"], ["Mensalidade", "Plano da Nuvemshop, com recomendação"], ["Versões", "PDF com preço e sem preço"]],
+    pend: [] }
 ];
-
-const stChip = s => `<span class="st ${STATUS[s][0]}">${STATUS[s][1]}</span>`;
+const SERVICOS = [
+  { id: "inst", nome: "Atom 2026 · Agência de IA", tag: "Institucional · 20 páginas", resumo: "Quem é a Atom, números, máquina de vendas, serviços, Nuvemshop, cases e contato.", img: "img/inst.jpg" },
+  { id: "seo", nome: "SEO, GEO e AEO", tag: "Serviço · 16 páginas", resumo: "Topo do Google e presença nas respostas das IAs. Cases Tetracon, Siguimi, RCO e Griffe.", img: "img/seo.jpg" },
+  { id: "trafego", nome: "Tráfego pago", tag: "Serviço · 15 páginas", resumo: "Google, Meta e LinkedIn Ads com IA em todas as contas e rastreamento até a venda.", img: "img/trafego.jpg" },
+  { id: "sites", nome: "Sites, landing pages e lojas", tag: "Serviço · 16 páginas", resumo: "Sites exclusivos, páginas de conversão e lojas na Nuvemshop.", img: "img/sites.jpg" },
+  { id: "agentes", nome: "Agentes de IA", tag: "Serviço · 15 páginas", resumo: "Atendimento e qualificação 24h no WhatsApp, integrados ao CRM.", img: "img/agentes.jpg" },
+  { id: "bi", nome: "BI em tempo real", tag: "Serviço · 15 páginas", resumo: "Painel com receita, margem, CAC, pipeline e insights da IA.", img: "img/bi.jpg" }
+];
+const TRABALHOS = [
+  { nome: "Coalumaq", tipo: "Diagnóstico", det: "Diagnóstico Digital ATOM · out/2026", url: "https://claude.ai/artifact/1MfJSLV1C7u35KJMXyHZZA" },
+  { nome: "SIMEGO", tipo: "Diagnóstico + proposta", det: "Diagnóstico Digital e Proposta de Site", url: "https://claude.ai/artifact/LXJVD4Ho5iaxqy5BZBG9ub" },
+  { nome: "Togalt Group", tipo: "Diagnóstico", det: "Diagnóstico Digital ATOM", url: "https://claude.ai/artifact/9t86kTZS2Ve83SUqdrJyuT" },
+  { nome: "Manto Impermeabilizações", tipo: "Diagnóstico", det: "Diagnóstico Digital ATOM", url: "https://claude.ai/artifact/8oEoLhvvqTNCaQPVzu2agm" },
+  { nome: "Imobiliária Magalhães", tipo: "Proposta", det: "Proposta ATOM", url: "https://claude.ai/artifact/TGC7rja9iPvaFMaPVfoKjd" },
+  { nome: "Compressores Goiás", tipo: "Análise", det: "Análise de mercado · out/2026", url: "https://claude.ai/artifact/F9HLhqYNpmikuQLrX1yyxD" }
+];
+const STC = { ok: ["st-ok", "Pronto"], disc: ["st-disc", "Em construção"], adef: ["st-adef", "A construir"] };
+const capa = m => m.img ? `<img src="${m.img}" alt="${esc(m.nome)}" loading="lazy" width="640" height="360">`
+  : `<div class="capa-texto"><span class="grande">${esc(m.capa.grande)}</span><span class="peq">${esc(m.capa.peq)}</span></div>`;
 const quadro = m => `
-  <a class="quadro${m.principal ? " principal" : ""}" href="#${m.id}">
-    <span class="tipo">${esc(m.tipo)}</span>
-    <h3>${esc(m.nome)}</h3>
-    <p>${esc(m.resumo)}</p>
-    <div class="rodape"><span>${esc(m.meta)}</span>${stChip(m.status)}</div>
-    <span class="abrir mono" style="font-size:.78rem">Abrir →</span>
+  <a class="quadro${m.largo ? " largo" : ""}${m.destaque ? " destaque" : ""}" href="#${m.id}">
+    ${capa(m)}
+    <div class="corpo">
+      <span class="tag">${esc(m.tag)}</span>
+      <h3>${esc(m.nome)}</h3>
+      <p>${esc(m.resumo)}</p>
+      <div class="pe"><span class="st ${STC[m.st][0]}">${STC[m.st][1]}</span><span class="ir">Abrir →</span></div>
+    </div>
   </a>`;
-document.getElementById("q-diag").innerHTML = MODELOS.filter(m => m.grupo === "diag").map(quadro).join("");
-document.getElementById("q-prop").innerHTML = MODELOS.filter(m => m.grupo === "prop").map(quadro).join("");
+document.getElementById("q-diag").innerHTML = MODELOS.filter(m => m.g === "diag").map(quadro).join("");
+document.getElementById("q-prop").innerHTML = MODELOS.filter(m => m.g === "prop").map(quadro).join("");
+document.getElementById("q-serv").innerHTML = SERVICOS.map(s => `
+  <a class="quadro" href="${BIBLIOTECA}" target="_blank" rel="noopener">
+    <img src="${s.img}" alt="${esc(s.nome)}" loading="lazy" width="640" height="360">
+    <div class="corpo"><span class="tag">${esc(s.tag)}</span><h3>${esc(s.nome)}</h3><p>${esc(s.resumo)}</p>
+      <div class="pe"><span class="suave">com e sem preço</span><span class="ir">Biblioteca ↗</span></div></div>
+  </a>`).join("");
+document.getElementById("trabalhos").innerHTML = TRABALHOS.map(t => `
+  <li><a href="${t.url}" target="_blank" rel="noopener"><span><b>${esc(t.nome)}</b><small>${esc(t.det)}</small></span><em>${esc(t.tipo)} ↗</em></a></li>`).join("");
 
 function abrirModelo(m) {
-  document.getElementById("m-tipo").textContent = m.tipo;
+  document.getElementById("m-tag").textContent = m.tag;
   document.getElementById("m-nome").textContent = m.nome;
   document.getElementById("m-resumo").textContent = m.resumo;
-  document.getElementById("m-status").innerHTML = stChip(m.status);
-  document.getElementById("m-paginas").innerHTML = m.paginas.map(([n, t, a]) => `<li><span class="pn">pág. ${esc(n)}</span><span>${esc(t)}</span><span class="au">${esc(a)}</span></li>`).join("");
+  document.getElementById("m-status").innerHTML = `<span class="st ${STC[m.st][0]}">${STC[m.st][1]}</span>`;
+  document.getElementById("m-acoes").innerHTML = m.link ? `<a class="botao" href="${m.link}" target="_blank" rel="noopener">${esc(m.linkTxt)} ↗</a>` : "";
+  const esq = document.getElementById("m-esq");
+  if (m.paginas) {
+    esq.innerHTML = `<h4 class="sub">As ${m.paginas.length} páginas</h4><div class="paginas">${m.paginas.map((p, i) => `<figure><img src="${p.src}" alt="${esc(m.nome)}, página ${i + 1}" loading="lazy" width="640" height="360"><figcaption>${String(i + 1).padStart(2, "0")} · ${esc(p.t)}</figcaption></figure>`).join("")}</div>`;
+  } else {
+    esq.innerHTML = `<h4 class="sub">Estrutura</h4><ol class="estrutura">${m.estrutura.map(t => `<li><span>${esc(t)}</span></li>`).join("")}</ol>`;
+  }
   document.getElementById("m-fatos").innerHTML = m.fatos.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+  document.getElementById("m-pend-bloco").hidden = !m.pend.length;
   document.getElementById("m-pend").innerHTML = m.pend.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("");
 }
 
@@ -718,9 +647,7 @@ function rota() {
   const id = (location.hash || "").slice(1);
   const m = MODELOS.find(x => x.id === id);
   const vista = !m ? "inicio" : m.id === "metodo" ? "metodo" : "modelo";
-  document.getElementById("v-inicio").hidden = vista !== "inicio";
-  document.getElementById("v-metodo").hidden = vista !== "metodo";
-  document.getElementById("v-modelo").hidden = vista !== "modelo";
+  ["inicio", "metodo", "modelo"].forEach(v => document.getElementById("v-" + v).hidden = v !== vista);
   if (vista === "modelo") abrirModelo(m);
   document.getElementById("migalha").innerHTML = vista === "inicio"
     ? `<span>Diagnósticos e propostas</span>`
