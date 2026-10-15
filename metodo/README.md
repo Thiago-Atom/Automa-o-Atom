@@ -179,6 +179,7 @@ Para abrir localmente com tudo funcionando (menos conectores): `npm run metodo` 
 
 | Data | Mudança |
 |---|---|
+| 15/10/2026 | Script e método de cada diagnóstico: aba "Script e método" com o método em uma tela, o script etapa por etapa (abordagem D1 a D12, entrega, reunião e proposta; no Total, da oferta à ponte para o projeto), perguntas de descoberta, objeções aprovadas (W08) e regras. Conteúdo em `ROTEIROS` (`dados.js`); teste garante que nenhum preço aparece antes da etapa Proposta |
 | 15/10/2026 | Leitura das coletas (mapa, site, Instagram), marcação dos critérios e as 3 informações da abordagem com a primeira mensagem passam para `motor.js` (as mesmas no n8n); a tela Coleta mostra as 3 informações |
 | 15/10/2026 | Início do SaaS (fase 1): motor único `metodo/motor.js` usado pela página e pelo n8n; passo Proposta no Gerar (modo 2); plano em `docs/14_saas_propostas.md` |
 | 15/10/2026 | Capacidade de 12 reuniões por dia; metas de 6 meses ajustadas para caber nela: Site 262 (antes 1.000), SEO 24 (antes 90), Geral 31 (antes 120) |

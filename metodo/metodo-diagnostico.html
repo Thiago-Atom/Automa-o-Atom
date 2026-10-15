@@ -441,6 +441,18 @@ footer .contato div { display: grid; gap: 2px; font-size: var(--fs-small); font-
 footer .contato .over { font-weight: 500; }
 footer .url { font-family: var(--mono); font-size: 12px; letter-spacing: .3em; padding: 7px 12px; box-shadow: inset 0 0 0 1px var(--fio-forte); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+/* Script e método */
+.roteiro { display: grid; gap: 14px; counter-reset: et; }
+.msg-r { background: var(--fundo); box-shadow: var(--sombra); border-left: 3px solid var(--verde); padding: 16px 18px; display: grid; gap: 8px; }
+.msg-r.preco { border-left-color: var(--fio-forte); background: var(--tom); }
+.msg-r .topo { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.msg-r .topo b { font-size: var(--fs-small); }
+.msg-r .fala { margin: 0; white-space: pre-wrap; }
+.msg-r .fala mark, table.t mark { background: var(--lavanda); color: var(--tinta); padding: 0 3px; border-radius: 3px; }
+.msg-r .btn { padding: 6px 12px; }
+.metodo-r { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.metodo-r > div { border-top: 3px solid var(--fio-forte); padding-top: 10px; display: grid; gap: 4px; align-content: start; }
+@media (max-width: 760px) { .metodo-r { grid-template-columns: 1fr 1fr; } }
 </style>
 
 <header class="topo">
@@ -716,10 +728,10 @@ function telaInicio() {
 }
 
 function cabTipo(t, aba) {
-  const abas = [["metodo", "Os 12 pontos e as áreas"], ["processo", "Processo"], ["escopo", "Escopo, limites e custo"]];
+  const abas = [["metodo", "Os 12 pontos e as áreas"], ["processo", "Processo"], ["escopo", "Escopo, limites e custo"], ["script", "Script e método"]];
   return `<div class="trocar">${TIPOS.map(x => `<a href="#${x.id}-${aba}" class="${x.id === t.id ? "on" : ""}">${esc(x.nome)}</a>`).join("")}</div>
   <div class="cab"><span class="over">${esc(t.prioridade)} · diagnóstico ${pad(t.ordem - 1)}</span><h1>Diagnóstico <b>${esc(t.nome)}.</b></h1><p class="lead"><b style="color:var(--tinta)">${esc(t.sub)}.</b> ${esc(t.desc)}</p></div>
-  <div class="diag"><nav class="subnav" aria-label="Seções">${abas.map(([k, r], i) => `<a href="#${t.id}-${k}" class="${aba === k ? "on" : ""}"><span>${pad(i)}</span>${r}</a>`).join("")}<a href="#gerar" data-gerar="${t.id}"><span>04</span>Gerar diagnóstico →</a></nav><div>`;
+  <div class="diag"><nav class="subnav" aria-label="Seções">${abas.map(([k, r], i) => `<a href="#${t.id}-${k}" class="${aba === k ? "on" : ""}"><span>${pad(i)}</span>${r}</a>`).join("")}<a href="#gerar" data-gerar="${t.id}"><span>05</span>Gerar diagnóstico →</a></nav><div>`;
 }
 const fimTipo = () => `</div></div>`;
 
@@ -873,6 +885,40 @@ function telaEscopo(t) {
     <tr class="total"><td colspan="3">Sai do bolso por diagnóstico</td><td class="r num">${brl(c.total, 2)}</td></tr></tbody></table></div>
     <p class="cap" style="margin-top:12px">${t.finalidade === "produto" ? `Teto de custo do produto: ${brl(plan.tetoProduto)}. Com a reserva de ${plan.reserva}%, este diagnóstico custa ${brl(c.total * (1 + plan.reserva / 100), 2)}${c.total * (1 + plan.reserva / 100) > plan.tetoProduto ? " — ACIMA do teto" : " — dentro do teto"}. ` : "Diagnóstico de prospecção: feito em cada empresa abordada, por isso precisa ser barato. "}Quantos diagnósticos as franquias já pagam por mês está em <a href="#custos">Metas e custos</a>. "Na franquia" = incluído no plano até o limite; o "vale" é o preço que custaria fora dela.</p>
     <div class="acoes" style="margin-top:20px"><a class="btn" href="#gerar" data-gerar="${t.id}">Gerar um diagnóstico ${esc(t.nome)}</a><a class="btn sec" href="${t.proposta[1]}" target="_blank" rel="noopener">${esc(t.proposta[0])} ↗</a>${t.modelo ? `<a class="btn sec" href="${t.modelo[1]}" target="_blank" rel="noopener">${esc(t.modelo[0])} ↗</a>` : ""}</div></div>` + fimTipo();
+}
+
+/* ---------- Script e método ---------- */
+const marcaCampos = (x) => esc(x).replace(/\[([^\]]+)\]/g, "<mark>[$1]</mark>");
+function telaScript(t) {
+  const R = ROTEIROS[t.id], C = ROTEIROS.comum;
+  if (!R) return cabTipo(t, "script") + `<div class="vazio"><span>Roteiro ainda não escrito.</span></div>` + fimTipo();
+  const passos = (t.processo || []).map(p => `<li><span><b>${esc(p.nome)}</b> · ${esc(p.quem)} · ${esc(p.tempo)}${p.modo === "auto" ? " · automático" : ""}</span></li>`).join("");
+  return cabTipo(t, "script") + `
+  <section class="secao" style="margin-top:0"><div class="cab"><span class="over">O método em uma tela</span><h2>${esc(R.gancho)}</h2></div>
+    <div class="metodo-r">
+      <div><span class="cap">Para quem</span><span>${esc(t.publico)}</span></div>
+      <div><span class="cap">O que o cliente recebe</span><span>${esc(t.entrega)}</span></div>
+      <div><span class="cap">Prazo</span><span>${esc(t.prazo)}</span></div>
+      <div><span class="cap">O que vendemos depois</span><span>${esc(t.oferta)}</span></div>
+    </div>
+    <div class="tres" style="margin-top:20px">
+      <div><span class="over">Como medimos</span><h4>${t.areas.length} áreas, a mesma régua</h4><ul class="setas">${t.areas.map(a => `<li><span>${esc(AREAS[a].nome)}</span></li>`).join("")}</ul><span class="cap">5 critérios de 2 pontos por área. Ver <a href="#${t.id}-metodo">Os 12 pontos</a>.</span></div>
+      <div><span class="over">Como fazemos</span><h4>Passo a passo</h4><ul class="setas">${passos}</ul><span class="cap">Detalhe em <a href="#${t.id}-processo">Processo</a>.</span></div>
+      <div><span class="over">Perguntas de descoberta</span><h4>Para a reunião</h4><ul class="setas">${R.descoberta.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></div>
+    </div></section>
+  <section class="secao"><div class="cab"><span class="over">Script</span><h2>O que dizer, <b>etapa por etapa</b></h2><p class="lead">Os campos entre colchetes vêm do Pipedrive e da coleta. Preço só aparece na etapa de proposta.</p></div>
+    <div class="roteiro">${R.etapas.map(([nome, texto, nota], i) => `<div class="msg-r${/^Proposta/.test(nome) ? " preco" : ""}"><div class="topo"><b>${pad(i)} · ${esc(nome)}</b><button type="button" class="btn sec" data-copiar-r="${i}">Copiar</button></div><p class="fala">${marcaCampos(texto)}</p>${nota ? `<span class="cap">${esc(nota)}</span>` : ""}</div>`).join("")}</div>
+    <span class="msg" id="msg-r" role="status"></span></section>
+  <section class="secao"><div class="cab"><span class="over">Objeções</span><h2>Respostas <b>aprovadas</b></h2><p class="lead">Valem para todos os diagnósticos.</p></div>
+    <div class="rolar"><table class="t"><thead><tr><th>O lead diz</th><th>Responder</th><th>Cuidado</th></tr></thead><tbody>
+    ${C.objecoes.map(([q, r, n]) => `<tr><td><b>${esc(q)}</b></td><td>${marcaCampos(r)}</td><td class="suave small">${esc(n || "")}</td></tr>`).join("")}</tbody></table></div>
+    <div class="cab" style="margin-top:24px"><span class="over">Regras do script</span></div><ul class="setas">${C.regras.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></section>` + fimTipo();
+}
+function ligarScript(t) {
+  document.querySelectorAll("[data-copiar-r]").forEach(b => b.onclick = async () => {
+    const m = document.getElementById("msg-r"), e = ROTEIROS[t.id].etapas[Number(b.dataset.copiarR)];
+    try { await navigator.clipboard.writeText(e[1]); m.textContent = `"${e[0]}" copiado.`; } catch (x) { m.textContent = "Não foi possível copiar aqui."; }
+  });
 }
 
 /* ---------- Metas e custos ---------- */
@@ -1429,6 +1475,7 @@ function rota() {
     else { nav = "tipo";
       if (aba === "processo") { tela.innerHTML = telaProcesso(t); ligarProcesso(t); }
       else if (aba === "escopo") { tela.innerHTML = telaEscopo(t); }
+      else if (aba === "script") { tela.innerHTML = telaScript(t); ligarScript(t); }
       else { tela.innerHTML = telaMetodo(t); ligarMetodo(t); }
     }
   }

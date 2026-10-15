@@ -273,6 +273,90 @@ const FERRAMENTAS = [
 ];
 
 
+// Scripts de venda de cada diagnóstico. [Colchetes] = campo preenchido por pessoa ou pelo n8n.
+// Regras: sem preço antes da etapa "proposta"; toda informação citada ao lead vem da coleta, com fonte e data;
+// respostas a objeções reaproveitam as aprovadas no ATOM2_W08 (Roteador de respostas).
+const ROTEIROS = {
+  comum: {
+    objecoes: [
+      ["Quanto custa?", "O investimento depende do que faz sentido para a [Empresa], e ele vem na proposta, depois de entendermos o cenário. Para eu já preparar algo certeiro: o que você mais quer melhorar hoje?", "Resposta aprovada no W08. Nunca citar valor, faixa ou parcela antes da proposta."],
+      ["Já tenho agência.", "Ótimo! A análise pode complementar o trabalho atual. Quer ver os pontos que encontramos?", "Resposta aprovada no W08."],
+      ["Agora não.", "Sem problema! Vou encerrar o acompanhamento. Quando fizer sentido, estou à disposição.", "Resposta aprovada no W08. Registrar o motivo de perda \"Agora não\"."],
+      ["Vocês garantem primeira posição?", "Ninguém pode garantir isso. Trabalhamos SEO/GEO com fundamentos técnicos e conteúdo preparado para mecanismos de busca e IA.", "Resposta aprovada no W08. Nunca prometer posição, citação em IA ou prazo de posição."],
+      ["Manda por e-mail.", "Combinado. Qual e-mail corporativo devo usar para enviar a análise?", "Resposta aprovada no W08."]
+    ],
+    regras: ["Nenhum preço, faixa ou parcela antes da etapa Proposta.", "Toda informação citada vem da coleta, com fonte e data. Sem dado, a frase sai.", "Uma pergunta por mensagem; mensagens curtas, de celular.", "Nada vai ao cliente sem a aprovação do Thiago no painel."]
+  },
+  site: {
+    gancho: "O site é a vitrine: o lead julga a empresa em segundos, pelo celular.",
+    etapas: [
+      ["Abordagem (D1)", "Olá, [Nome]! Sou o Thiago, da Atom. Olhei o site da [Empresa]. [Informação 1] [Informação 2] [Informação 3] Preparei um diagnóstico gratuito do site, com o que mais trava os contatos e como resolver. Posso te enviar?", "As 3 informações saem da coleta (motor: tresFatos). Preferir as do site: o que ele diz na primeira tela, WhatsApp visível, telefone clicável."],
+      ["D3", "[Nome], o diagnóstico do site da [Empresa] está pronto: cada ponto vem com a página e a evidência. Quer que eu envie?", ""],
+      ["D6", "Um dos pontos que vi no site da [Empresa]: [achado principal]. Posso te mandar o diagnóstico completo?", "O achado principal é a 1ª urgência do diagnóstico, dita sem jargão."],
+      ["D9", "Sei que a rotina aperta. O diagnóstico fica pronto para quando fizer sentido. Envio agora ou prefere outro momento?", ""],
+      ["D12 (encerramento)", "Vou encerrar por aqui para não incomodar. Se quiser ver o diagnóstico do site da [Empresa], é só responder esta mensagem.", "Encerra a cadência."],
+      ["Entrega do diagnóstico", "Aqui está o diagnóstico do site da [Empresa]: [link]. Em 15 minutos eu te mostro os 3 pontos que mais pesam e o que fazer em cada um. Fica melhor [opção 1] ou [opção 2]?", "Link privado (W09), 60 dias, sem preço."],
+      ["Reunião (15 min)", "1. Abertura (2 min): \"O que é um bom contato para vocês: orçamento, agendamento ou visita?\"\n2. Nota e 3 urgências (6 min): mostrar cada uma com a captura e a evidência.\n3. Descoberta (3 min): \"Quantos contatos chegam pelo site por mês? De onde vem a maioria?\"\n4. O que muda (3 min): mapa de páginas e o caminho até o contato.\n5. Ponte (1 min): \"Faz sentido eu te enviar a proposta do novo site com esse escopo?\"", "Sem preço na reunião: o preço vai na proposta."],
+      ["Proposta", "Conforme combinamos, segue a proposta do novo site da [Empresa]: [link da proposta]. Ela traz o escopo, o prazo e o investimento, e vale até [data]. Qualquer dúvida, me chama aqui.", "Única etapa com preço: página privada do W10, com aceite."]
+    ],
+    descoberta: ["Quantos contatos chegam pelo site por mês?", "Quem responde esses contatos e em quanto tempo?", "Qual serviço vocês mais querem vender pelo site?"]
+  },
+  seo: {
+    gancho: "A procura já existe: a pergunta é quem aparece quando o cliente busca.",
+    etapas: [
+      ["Abordagem (D1)", "Olá, [Nome]! Sou o Thiago, da Atom. Olhei como a [Empresa] aparece no Google. [Informação 1] [Informação 2] [Informação 3] Preparei um diagnóstico gratuito mostrando onde está a procura que dá dinheiro e quem está ficando com ela. Posso te enviar?", "Preferir: posição no mapa para a busca principal, procura mensal na cidade (Semrush), nota e avaliações contra o líder."],
+      ["D3", "[Nome], o diagnóstico da [Empresa] no Google e nas IAs está pronto, com as buscas e a posição de vocês em cada uma. Quer que eu envie?", ""],
+      ["D6", "Um dado do diagnóstico: para \"[busca principal]\" em [cidade], quem aparece primeiro é [concorrente]. Posso te mandar o diagnóstico completo?", "Concorrente e posição vêm da coleta, com data."],
+      ["D9", "Sei que a rotina aperta. O diagnóstico fica pronto para quando fizer sentido. Envio agora ou prefere outro momento?", ""],
+      ["D12 (encerramento)", "Vou encerrar por aqui para não incomodar. Se quiser ver o diagnóstico da [Empresa] no Google, é só responder esta mensagem.", ""],
+      ["Entrega do diagnóstico", "Aqui está o diagnóstico da [Empresa] no Google e nas IAs: [link]. Em 20 minutos eu te mostro onde está a procura, quem ocupa esse espaço e o plano para tomar parte dele. Fica melhor [opção 1] ou [opção 2]?", ""],
+      ["Reunião (20 min)", "1. Abertura (2 min): \"Qual serviço vocês mais querem que o cliente encontre?\"\n2. A procura (4 min): buscas por mês na cidade e quanto isso vale (tamanho da procura, não promessa).\n3. Onde aparecem e onde somem (5 min): Google, mapa e respostas de IA, com a evidência.\n4. Quem ocupa o espaço (3 min): os 3 concorrentes e por quê.\n5. O plano (4 min): SEO, GEO e Google Ads em 6 meses, com o placar mensal.\n6. Ponte (2 min): \"Faz sentido eu te enviar a proposta com esse plano?\"", "Nunca prometer posição. Usar a resposta aprovada se perguntarem."],
+      ["Proposta", "Conforme combinamos, segue a proposta do plano de SEO, GEO e Google Ads da [Empresa]: [link da proposta]. Ela traz o escopo, o placar que acompanhamos todo mês e o investimento, e vale até [data].", ""]
+    ],
+    descoberta: ["Qual serviço dá mais margem para vocês?", "Vocês já investem em Google Ads? Com que resultado?", "Como sabem hoje de onde veio cada cliente?"]
+  },
+  geral: {
+    gancho: "Um raio-x curto e honesto do cliente inteiro, para abrir a conversa.",
+    etapas: [
+      ["Abordagem (D1)", "Olá, [Nome]! Sou o Thiago, da Atom. Olhei a presença digital da [Empresa]. [Informação 1] [Informação 2] [Informação 3] Preparei um diagnóstico gratuito mostrando o que muda o jogo para vocês. Posso te enviar?", "É a mensagem gerada pelo motor (mensagemAbordagem)."],
+      ["D3", "[Nome], o raio-x da [Empresa] está pronto: busca, mapa, avaliações, site e Instagram, com as 3 urgências. Quer que eu envie?", ""],
+      ["D6", "Um ponto do raio-x da [Empresa]: [achado principal]. Posso te mandar o raio-x completo?", ""],
+      ["D9", "Sei que a rotina aperta. O raio-x fica pronto para quando fizer sentido. Envio agora ou prefere outro momento?", ""],
+      ["D12 (encerramento)", "Vou encerrar por aqui para não incomodar. Se quiser ver o raio-x da [Empresa], é só responder esta mensagem.", ""],
+      ["Entrega do diagnóstico", "Aqui está o raio-x da [Empresa]: [link]. Em 15 minutos eu te mostro as 3 urgências e o que fazer primeiro. Fica melhor [opção 1] ou [opção 2]?", ""],
+      ["Reunião (15 min)", "1. Abertura (2 min): \"Hoje, de onde vem a maioria dos clientes de vocês?\"\n2. Nota geral e 3 urgências (6 min), cada uma com a evidência.\n3. Quanto vale (2 min): a procura em jogo por mês.\n4. O raso e o fundo (3 min): \"O raio-x olha só o que é público. O Diagnóstico Total entra no atendimento, no processo comercial e nos números, com entrevista e cliente oculto.\"\n5. Ponte (2 min): \"Quer que eu te envie a proposta do Diagnóstico Total, ou já do setup?\"", "O raio-x leva ao Diagnóstico Total (produto pago) ou direto ao setup."],
+      ["Proposta", "Conforme combinamos, segue a proposta para a [Empresa]: [link da proposta]. Ela traz o escopo, o prazo e o investimento, e vale até [data].", ""]
+    ],
+    descoberta: ["De onde vem a maioria dos clientes hoje?", "Quem cuida do marketing e do atendimento?", "Qual o maior problema comercial da empresa hoje?"]
+  },
+  atendimento: {
+    gancho: "O lead já chegou: o dinheiro se perde na demora e no esquecimento.",
+    etapas: [
+      ["Abordagem (D1)", "Olá, [Nome]! Sou o Thiago, da Atom. [Informação 1] [Informação 2] [Informação 3] Preparei um diagnóstico gratuito do atendimento da [Empresa], mostrando onde os contatos esfriam e como recuperar. Posso te enviar?", "Se o cliente oculto já foi feito, uma das informações é o tempo de resposta medido, com dia e hora. Nunca citar teste que não foi feito."],
+      ["D3", "[Nome], o diagnóstico do atendimento da [Empresa] está pronto. Quer que eu envie?", ""],
+      ["D6", "Hoje sua equipe consegue responder todos os contatos com rapidez? Podemos avaliar os dados do atendimento e mostrar oportunidades reais.", "Pergunta aprovada no W08."],
+      ["D9", "Sei que a rotina aperta. O diagnóstico fica pronto para quando fizer sentido. Envio agora ou prefere outro momento?", ""],
+      ["D12 (encerramento)", "Vou encerrar por aqui para não incomodar. Se quiser ver o diagnóstico do atendimento da [Empresa], é só responder esta mensagem.", ""],
+      ["Entrega e entrevista", "Aqui está o diagnóstico do atendimento da [Empresa]: [link]. Para fechar os números, preciso de 45 minutos com quem atende e quem gere. Fica melhor [opção 1] ou [opção 2]?", "A entrevista marca os critérios de processo, fechamento e pós-venda."],
+      ["Reunião (45 min)", "1. Abertura (3 min): \"Quantos contatos chegam por dia e por onde?\"\n2. Cliente oculto (8 min): o tempo e a qualidade da resposta, com os concorrentes.\n3. Entrevista (20 min): quem responde, como registra, quando faz follow-up, como faz a proposta, o que acontece depois da venda.\n4. Onde o lead esfria (8 min): mostrar o gargalo com conversas reais, sem expor nomes.\n5. Ponte (6 min): \"Faz sentido eu te enviar a proposta do agente de IA com o CRM?\"", "Conversas de clientes só com autorização."],
+      ["Proposta", "Conforme combinamos, segue a proposta do agente de IA no WhatsApp integrado ao CRM: [link da proposta]. Ela traz o escopo, o prazo e o investimento, e vale até [data].", ""]
+    ],
+    descoberta: ["Quantos contatos chegam por dia?", "Quanto tempo leva a primeira resposta, em média?", "O que acontece com quem não fechou?"]
+  },
+  completo: {
+    gancho: "O produto: o retrato completo, vendido, com o plano e o placar todo mês.",
+    etapas: [
+      ["Oferta (depois do raio-x Geral)", "[Nome], o raio-x mostrou o que é público. O Diagnóstico Total vai ao fundo: atendimento, processo comercial e números, com entrevista e cliente oculto, e entrega o plano em 3 frentes com o placar que repetimos todo mês. Te envio a proposta?", "Sem preço nesta mensagem: o preço (2× R$ 198) vai na proposta."],
+      ["Proposta do Diagnóstico Total", "Segue a proposta do Diagnóstico Total da [Empresa]: [link da proposta]. São 2 parcelas, a entrada e um boleto em 15 dias, e a entrega fica pronta em 3 a 5 dias depois da entrevista. A proposta vale até [data].", "Etapa com preço. A 1ª parcela paga dispara o Total no Pipedrive."],
+      ["Agendar a entrevista", "Pagamento confirmado, obrigado! Para o diagnóstico, preciso de 45 minutos com você e com quem cuida do atendimento. Fica melhor [opção 1] ou [opção 2]?", ""],
+      ["Entrevista (45 min)", "1. Clientes prioritários e o serviço que dá mais margem.\n2. Como o lead chega, quem responde e onde é registrado.\n3. Como é feita a proposta e quanto tempo leva até fechar.\n4. O que acontece depois da venda (avaliação, indicação, recompra).\n5. Quais números a empresa acompanha (ticket, custo por cliente, fechamento).", "Marca os critérios internos (CRM, fechamento, pós-venda, números, medição)."],
+      ["Entrega (padrão Coalumaq)", "1. O objetivo.\n2. Como o cliente procura hoje (com uma resposta real de IA).\n3. Os números que importam.\n4. Onde aparece e onde some.\n5. Três motivos.\n6. Quem ocupa o espaço.\n7. A procura.\n8. O que a Atom faz, em três frentes.\n9. Placar hoje × meta.", "Apresentação de 30 minutos. Placar repetido todo mês."],
+      ["Ponte para o projeto", "Com o plano na mesa: \"Quer que eu te envie a proposta para executar as duas primeiras frentes: o setup e o novo site?\"", "Total leva à proposta Geral + Site (motor.js)."]
+    ],
+    descoberta: ["Qual o ticket médio e o serviço que dá mais margem?", "Quantos clientes novos por mês vocês precisam?", "O que já tentaram em marketing e o que deu errado?"]
+  }
+};
+
 const PIPEDRIVE = { // lido na conta em 15/10/2026 (funis, etapas e campos "ATOM ·")
   funis: { 2: "Funil de vendas", 5: "Prospecção Ativa", 6: "Atendimento Receptivo" },
   gatilhos: [[2, 8, "Diagnóstico"], [5, 34, "Diagnóstico N2"], [6, 40, "Qualificado"]], // [funil, etapa, nome]: o negócio que chega aqui pede o diagnóstico

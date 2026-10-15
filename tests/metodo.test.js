@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { carregarMetodo } from '../lib/metodo.js';
 
-const { AREAS, TIPOS, PLANEJAMENTO_PADRAO: PLAN, MOTOR } = carregarMetodo();
+const { AREAS, TIPOS, PLANEJAMENTO_PADRAO: PLAN, ROTEIROS, MOTOR } = carregarMetodo();
 
 function rascunho(tipos, marcadas = {}) {
   const marc = {}, dentro = {};
@@ -163,4 +163,20 @@ test('mensagem de abordagem oferece o diagnóstico e nunca leva preço', () => {
   assert.match(msg, /diagnóstico gratuito/);
   assert.doesNotMatch(msg, /R\$|preço/i);
   assert.throws(() => MOTOR.mensagemAbordagem([{ texto: 'Custa R$ 100.' }], EMP));
+});
+
+// ---------- Script de cada diagnóstico ----------
+test('todo diagnóstico tem script com gancho, etapas e perguntas de descoberta', () => {
+  for (const t of TIPOS) {
+    const R = ROTEIROS[t.id];
+    assert.ok(R && R.gancho && R.etapas.length && R.descoberta.length, t.id);
+    assert.ok(R.etapas.every((e) => e.length === 3 && e[0] && e[1]), t.id);
+  }
+});
+
+test('script: nenhum preço antes da etapa Proposta', () => {
+  const preco = /R\$|\bpre[çc]o|\bvalor|parcela|investimento|\bcusta/i;
+  for (const t of TIPOS) for (const [nome, texto] of ROTEIROS[t.id].etapas)
+    if (!/^Proposta/.test(nome)) assert.doesNotMatch(texto, preco, `${t.id} · ${nome}`);
+  for (const [, resp] of ROTEIROS.comum.objecoes) assert.doesNotMatch(resp, /R\$|\d+ ?mil|parcela/i);
 });
