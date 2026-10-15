@@ -286,6 +286,21 @@ const FERRAMENTAS = [
 ];
 
 
+const PIPEDRIVE = { // lido na conta em 15/10/2026 (funis, etapas e campos "ATOM ·")
+  funis: { 2: "Funil de vendas", 5: "Prospecção Ativa", 6: "Atendimento Receptivo" },
+  gatilhos: [[2, 8, "Diagnóstico"], [5, 34, "Diagnóstico N2"], [6, 40, "Qualificado"]], // [funil, etapa, nome]: o negócio que chega aqui pede o diagnóstico
+  campos: {
+    dominio: "4ead439861c0448a64b9c8bc700ac72b95ef4aee", nicho: "f2e7fb5625b9ea04e6923cd309f18b203e14365b",
+    oferta: "8ce409a84529872560e0f1a87bc2b2f1ca0d4a14", origem: "3946f1f5a8e92aa8f92e17af24301f17d58716a5",
+    pagamento: "f95e59d62603186a50e72fe625df0b769e9874d8", refazer: "9c5a95cd952ee5f8eaf3a3ad6fc8c7b93b00e751",
+    status: "0d0aeb53fb080fe43e7030b60685894cdb263d69", data: "7ba3113147bf9ac87e72cdf6c6a044ef62463d94",
+    versao: "75287c565520bdc7f0d50ed7798f1a30e9f5938c", pendencias: "00d36a85250066580dbb4302abd87732c99067ac"
+  },
+  // "ATOM · Oferta de interesse" decide o diagnóstico de prospecção; o Total entra quando a 1ª parcela é paga
+  oferta: { "Site": ["site"], "Marketing com IA": ["seo"], "Agente de IA": ["atendimento"], "Clínica completa": ["geral"] },
+  semOferta: ["geral"],
+  pago: /pago|paga|confirmad|recebid/i
+};
 const CONTA_APIFY = { lido: "15/10/2026", ciclo: "02/10 a 01/11", usado: 2.85, limite: 19 }; // lido na API da Apify (users/me/limits)
 const TAXAS_ASAAS = { lido: "15/10/2026", boleto: 1.99, pix: 1.99, pixGratisMes: 100 }; // lido na conta Asaas (myAccount/fees)
 const PLANEJAMENTO_PADRAO = {
