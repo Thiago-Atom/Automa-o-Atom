@@ -1,0 +1,232 @@
+{
+  "workflow": {
+    "id": "P8T2SrzL2ff3Nzuy",
+    "name": "ATOM_21_Aplicar_Acao",
+    "active": false,
+    "isArchived": false,
+    "versionId": "2ae51c1d-4e4e-425e-ada9-a4687d553e76",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 6,
+    "createdAt": "2026-10-05T22:53:56.635Z",
+    "updatedAt": "2026-10-05T23:05:52.892Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "errorWorkflow": "vd4MLxMjp8SlGgRh",
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Subfluxo das duas IAs: traduz a saída JSON (acao, campos, nota) em ações no Pipedrive — etapa, reunião, aceite, contrato, transferência com pausa, perdido com retomada e não contatar. Fora de PRODUCAO só grava nota.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Saída da IA": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Planejar ações",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Planejar ações": {
+        "main": [
+          [
+            {
+              "node": "Executar no Pipedrive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Executar no Pipedrive": {
+        "main": [
+          [
+            {
+              "node": "Resumo das ações",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "992be7f0-a108-44ae-9f89-130a9a336a2a",
+        "name": "Saída da IA",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "workflowInputs",
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "deal_id",
+                "type": "number"
+              },
+              {
+                "name": "person_id",
+                "type": "number"
+              },
+              {
+                "name": "numero",
+                "type": "string"
+              },
+              {
+                "name": "saida",
+                "type": "object"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "b1893c75-9246-4046-9efa-ded54f173336",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "cb6520eb-7545-462a-b608-24913130c444",
+        "name": "Planejar ações",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const cfg = {};\nfor (const i of $('Ler configuração').all()) { const r = i.json || {}; if (r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\nconst val = (k, d) => (cfg[k] && cfg[k].valor && cfg[k].status !== 'PENDENTE' && cfg[k].status !== 'OBSOLETO' ? cfg[k].valor : d);\nconst p = $('Saída da IA').first().json;\nlet s = p.saida;\nif (typeof s === 'string') { try { s = JSON.parse(s); } catch (e) { s = {}; } }\ns = s || {};\nconst dealId = Number(p.deal_id) || 0;\nconst personId = Number(p.person_id) || 0;\nconst numero = String(p.numero || '');\nif (!dealId) return [];\nconst BASE = 'https://api.pipedrive.com';\nconst owner = Number(val('PD_ALERTA_USER_ID', '0')) || undefined;\nconst hoje = new Date(Date.now() - 3 * 3600000).toISOString().slice(0, 10);\nconst etapa = {\n  'Em conversa': val('ETAPA_EM_CONVERSA', ''), 'Diagnóstico entregue': val('ETAPA_DIAGNOSTICO_ENTREGUE', ''),\n  'Reunião marcada': val('ETAPA_REUNIAO_MARCADA', ''), 'Proposta enviada': val('ETAPA_PROPOSTA_ENVIADA', ''),\n  'Em decisão': val('ETAPA_EM_DECISAO', ''), 'Contrato': val('ETAPA_CONTRATO', '')\n};\nconst ops = [];\nconst notas = [];\nconst add = (method, url, body, descricao) => ops.push({ method, url: BASE + url, body, descricao });\nconst tarefa = (subject, note, due) => add('POST', '/api/v2/activities', {\n  subject, type: 'task', deal_id: dealId, owner_id: owner, due_date: due || hoje,\n  participants: personId ? [{ person_id: personId, primary: true }] : undefined, note\n}, 'Tarefa: ' + subject);\nconst moverPara = (nome) => { const id = etapa[nome]; if (id) add('PATCH', '/api/v2/deals/' + dealId, { stage_id: Number(id) }, 'Mover para ' + nome); else notas.push('⚠ Etapa \"' + nome + '\" sem ID em atom_config: o card não foi movido.'); };\nconst acao = String(s.acao || 'nenhuma');\nif (acao === 'mover_etapa') moverPara(String(s.etapa_destino || ''));\nif (acao === 'marcar_reuniao') {\n  const ms = Date.parse(s.data_reuniao || '');\n  if (ms) {\n    const iso = new Date(ms).toISOString();\n    const revisao = s.tipo_reuniao === 'revisao';\n    add('POST', '/api/v2/activities', {\n      subject: (revisao ? 'Revisão da proposta' : 'Reunião de diagnóstico') + ' (marcada pela IA)', type: 'meeting', deal_id: dealId, owner_id: owner,\n      due_date: iso.slice(0, 10), due_time: iso.slice(11, 16), duration: revisao ? '00:15' : '00:20',\n      participants: personId ? [{ person_id: personId, primary: true }] : undefined,\n      note: 'Marcada pela IA do número ' + numero + '. Confira o horário na agenda do Thiago.'\n    }, 'Criar ' + (revisao ? 'revisão' : 'reunião'));\n    if (!revisao) moverPara('Reunião marcada');\n  } else notas.push('⚠ A IA pediu para marcar reunião, mas a data veio inválida: ' + (s.data_reuniao || '(vazia)'));\n}\nif (acao === 'registrar_aceite') {\n  moverPara('Contrato');\n  tarefa('Aceite registrado pela IA: conferir e liberar o contrato', 'Opção escolhida: ' + (s.opcao_escolhida || '(não informada)') + '. Confira valores e condições antes da formalização.');\n}\nif (acao === 'reenviar_contrato') tarefa('Cliente pediu o reenvio do contrato', 'Pedido recebido pela IA do número ' + numero + '. Confira o e-mail do signatário e reenvie.');\nif (acao === 'transferir_thiago') {\n  tarefa('[URGENTE] Responder o cliente pessoalmente', 'A IA do número ' + numero + ' transferiu a conversa. Motivo e contexto na nota mais recente.');\n  const campo = val('PD_DEAL_IA_PAUSADA', '');\n  if (campo) { const cf = {}; cf[campo] = val('PD_DEAL_IA_PAUSADA_SIM', 'Sim'); add('PATCH', '/api/v2/deals/' + dealId, { custom_fields: cf }, 'Pausar a IA neste negócio'); }\n  else notas.push('⚠ Campo PD_DEAL_IA_PAUSADA não configurado: a IA não ficou pausada.');\n}\nif (acao === 'perdido') {\n  const motivo = String(s.motivo_perda || 'Sem motivo informado').slice(0, 250);\n  add('PATCH', '/api/v2/deals/' + dealId, { status: 'lost', lost_reason: motivo }, 'Marcar como perdido: ' + motivo);\n  if (/momento/i.test(motivo) && s.data_retomada) {\n    const d = String(s.data_retomada);\n    const due = /^\\d{4}-\\d{2}$/.test(d) ? d + '-05' : (/^\\d{4}-\\d{2}-\\d{2}/.test(d) ? d.slice(0, 10) : '');\n    if (due) tarefa('Retomar contato combinado com o cliente', 'O cliente pediu para retomar nesta data. Leve um Raio-X atualizado.', due);\n    else notas.push('Retomada combinada: ' + d + ' (data não reconhecida; crie a tarefa à mão).');\n  }\n}\nif (acao === 'nao_contatar') {\n  const campo = val('PD_PERSON_NAO_CONTATAR', '');\n  if (personId && campo) { const cf = {}; cf[campo] = val('PD_PERSON_NAO_CONTATAR_SIM', 'Sim'); add('PATCH', '/api/v2/persons/' + personId, { custom_fields: cf }, 'Marcar pessoa como Não contatar'); }\n  add('PATCH', '/api/v2/deals/' + dealId, { status: 'lost', lost_reason: 'Não contatar' }, 'Marcar como perdido: Não contatar');\n}\nconst c = s.campos || {};\nconst dados = Object.keys(c).filter((k) => c[k] !== '' && c[k] !== null && c[k] !== undefined).map((k) => k + ': ' + c[k]).join(' · ');\nconst linhas = [];\nif (s.nota) linhas.push(String(s.nota));\nif (dados) linhas.push('Dados informados: ' + dados);\nif (s.gancho_usado) linhas.push('Gancho usado: ' + s.gancho_usado);\nfor (const n of notas) linhas.push(n);\nconst modo = val('MODO_EXECUCAO', 'SIMULACAO').toUpperCase();\nconst sandbox = val('SANDBOX_DEAL_IDS', '').split(',').map((x) => x.trim());\nconst real = modo === 'PRODUCAO' || (modo === 'SANDBOX' && sandbox.includes(String(dealId)));\nif (!real) {\n  linhas.push('<b>[SIMULAÇÃO]</b> Ações que seriam executadas: ' + (ops.length ? ops.map((o) => o.descricao).join('; ') : 'nenhuma'));\n  return [{ json: { method: 'POST', url: BASE + '/v1/notes', body: { deal_id: dealId, content: '<b>IA · número ' + numero + '</b><br>' + linhas.join('<br>') }, descricao: 'Nota (simulação)' } }];\n}\nif (linhas.length) add('POST', '/v1/notes', { deal_id: dealId, content: '<b>IA · número ' + numero + '</b><br>' + linhas.join('<br>') }, 'Nota da conversa');\nreturn ops.map((o) => ({ json: o }));"
+        }
+      },
+      {
+        "id": "5585d7dd-3732-4cd1-9a03-099d99b6d6ef",
+        "name": "Executar no Pipedrive",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "method": "={{ $json.method }}",
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "8f4e6769-c5e8-48d2-8482-632dcac845db",
+        "name": "Resumo das ações",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const planos = $('Planejar ações').all();\nconst res = $input.all();\nconst itens = res.map((r, i) => ({ acao: (planos[i] && planos[i].json.descricao) || '', ok: r.json.statusCode >= 200 && r.json.statusCode < 300, status: r.json.statusCode, erro: r.json.statusCode >= 300 ? JSON.stringify(r.json.body || {}).slice(0, 300) : '' }));\nreturn [{ json: { total: itens.length, falhas: itens.filter((x) => !x.ok).length, itens } }];"
+        }
+      },
+      {
+        "id": "9778a4ce-198d-40ce-9a54-e376d5122629",
+        "name": "Sticky Note 2f62024f",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          384,
+          0
+        ],
+        "parameters": {
+          "content": "## ATOM_21 · Aplicar ação\n- Recebe a saída em JSON de qualquer uma das IAs.\n- Traduz cada acao em chamadas ao Pipedrive: mover etapa, criar reunião, registrar aceite, reenviar contrato, transferir (tarefa + pausa), perdido (com retomada) e não contatar.\n- Sempre grava uma nota com as palavras do cliente.\n- Fora de PRODUCAO (e fora de SANDBOX_DEAL_IDS no SANDBOX) só grava uma nota dizendo o que faria.\n- Depende das chaves ETAPA_* em atom_config.",
+          "color": 4
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow's trigger(s) are not supported for direct execution through MCP: Saída da IA. Only Schedule, Webhook, Form, and Chat triggers can be executed directly through MCP, so this workflow cannot be executed through MCP. Its trigger(s) still run normally when the workflow is active."
+}

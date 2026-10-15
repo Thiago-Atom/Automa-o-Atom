@@ -1,0 +1,669 @@
+{
+  "workflow": {
+    "id": "SuN90LonjxDsgarn",
+    "name": "ATOM_19_WhatsApp_Entrada",
+    "active": false,
+    "isArchived": false,
+    "versionId": "e626a260-d7af-467b-b389-99bbae905f55",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 14,
+    "createdAt": "2026-10-05T23:05:31.503Z",
+    "updatedAt": "2026-10-05T23:05:48.730Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "errorWorkflow": "vd4MLxMjp8SlGgRh",
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Webhook único da Meta para os dois números: verificação (GET) e mensagens (POST). Identifica o número pelo phone_number_id, ignora repetidas, grava em atom_conversas e chama a IA passiva (ATOM_14) ou ativa (ATOM_15).",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Verificação da Meta": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração (verificação)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração (verificação)": {
+        "main": [
+          [
+            {
+              "node": "Conferir token",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Conferir token": {
+        "main": [
+          [
+            {
+              "node": "Token confere?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Token confere?": {
+        "main": [
+          [
+            {
+              "node": "Responder o desafio",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Recusar verificação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook da Meta": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Extrair mensagens novas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair mensagens novas": {
+        "main": [
+          [
+            {
+              "node": "Registrar mensagem recebida",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar mensagem recebida": {
+        "main": [
+          [
+            {
+              "node": "Qual número?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Qual número?": {
+        "main": [
+          [
+            {
+              "node": "IA passiva (ATOM_14)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "IA ativa (ATOM_15)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "27f4a5c2-d4c3-4925-8a04-37ff9c791880",
+        "name": "Verificação da Meta",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          96
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "atom-whatsapp",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "b5a6d812-c8b4-400e-9d5d-45178fbc6296"
+      },
+      {
+        "id": "f7502a73-db97-40b1-b758-5b1f64ddc5cb",
+        "name": "Ler configuração (verificação)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          96
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "002337b5-fe6c-454d-b26b-2d933100716f",
+        "name": "Conferir token",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          96
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "let token = '';\nfor (const i of $('Ler configuração (verificação)').all()) { const r = i.json || {}; if (r.chave === 'WA_VERIFY_TOKEN' && String(r.status || '').toUpperCase() !== 'PENDENTE') token = String(r.valor || '').trim(); }\nconst q = $('Verificação da Meta').first().json.query || {};\nconst ok = !!token && q['hub.mode'] === 'subscribe' && q['hub.verify_token'] === token;\nreturn [{ json: { ok, challenge: String(q['hub.challenge'] || '') } }];"
+        }
+      },
+      {
+        "id": "72a5c4de-1aa6-4788-bb96-21afa9170722",
+        "name": "Token confere?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          672,
+          96
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "fe3cd31b-92a0-44e6-9340-1c99973874a0",
+        "name": "Responder o desafio",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.challenge }}",
+          "options": {
+            "responseCode": 200
+          }
+        }
+      },
+      {
+        "id": "d1059334-446b-40bd-a9d4-11c363d6e97c",
+        "name": "Recusar verificação",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          896,
+          192
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "Forbidden",
+          "options": {
+            "responseCode": 403
+          }
+        }
+      },
+      {
+        "id": "c5f98cb3-3553-451e-97f9-cc7ce23dc94b",
+        "name": "Webhook da Meta",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          512
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atom-whatsapp",
+          "responseMode": "onReceived",
+          "options": {
+            "noResponseBody": true
+          }
+        },
+        "webhookId": "8e8fb040-51b4-4242-86ce-9ae2dad59fa7"
+      },
+      {
+        "id": "47b5a9c0-7a86-44a6-a7b1-0c0159e7ed55",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          512
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "1ee6661f-2654-4600-8bae-a2b5bfd30f61",
+        "name": "Extrair mensagens novas",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          512
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const cfg = {};\nfor (const i of $('Ler configuração').all()) { const r = i.json || {}; if (r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\nconst val = (k, d) => (cfg[k] && cfg[k].valor && cfg[k].status !== 'PENDENTE' && cfg[k].status !== 'OBSOLETO' ? cfg[k].valor : d);\nconst n1 = val('WA_N1_PHONE_ID', ''); const n2 = val('WA_N2_PHONE_ID', '');\nconst body = $('Webhook da Meta').first().json.body || {};\nconst FORMATOS = { audio: 'um áudio', image: 'uma imagem', video: 'um vídeo', document: 'um documento', sticker: 'uma figurinha', location: 'uma localização', contacts: 'um contato' };\nconst out = [];\nfor (const e of (body.entry || [])) for (const ch of (e.changes || [])) {\n  const v = ch.value || {};\n  const pid = String((v.metadata || {}).phone_number_id || '');\n  const numero = pid && pid === n2 ? '2' : (pid && pid === n1 ? '1' : '');\n  if (!numero) continue;\n  const nomes = {};\n  for (const c of (v.contacts || [])) nomes[c.wa_id] = (c.profile || {}).name || '';\n  for (const m of (v.messages || [])) {\n    let texto = '';\n    if (m.type === 'text') texto = (m.text || {}).body || '';\n    else if (m.type === 'button') texto = (m.button || {}).text || '';\n    else if (m.type === 'interactive') { const it = m.interactive || {}; texto = (it.button_reply || {}).title || (it.list_reply || {}).title || ''; }\n    else texto = '[O cliente enviou ' + (FORMATOS[m.type] || ('uma mensagem do tipo ' + m.type)) + '. A IA ainda não lê esse formato: peça, com gentileza, que ele escreva.]';\n    out.push({ numero, telefone: String(m.from || ''), nome_perfil: nomes[m.from] || '', texto, wa_message_id: String(m.id || ''), tipo: m.type });\n  }\n}\nconst st = $getWorkflowStaticData('global');\nst.vistos = st.vistos || [];\nconst novos = out.filter((x) => x.wa_message_id && !st.vistos.includes(x.wa_message_id));\nst.vistos = st.vistos.concat(novos.map((x) => x.wa_message_id)).slice(-2000);\nreturn novos.map((x) => ({ json: x }));"
+        }
+      },
+      {
+        "id": "8d37f33b-f081-438f-8e87-7ba998f25674",
+        "name": "Registrar mensagem recebida",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          512
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "GKMhyKyQvIQTJgYw",
+            "cachedResultName": "atom_conversas"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "wa_message_id": "={{ $json.wa_message_id }}",
+              "numero": "={{ $json.numero }}",
+              "telefone": "={{ $json.telefone }}",
+              "direcao": "in",
+              "texto": "={{ $json.texto }}",
+              "tipo": "={{ $json.tipo }}",
+              "status": "RECEBIDA",
+              "criado_em": "={{ $now.toISO() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "wa_message_id",
+                "displayName": "wa_message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "direcao",
+                "displayName": "direcao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tipo",
+                "displayName": "tipo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "criado_em",
+                "displayName": "criado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "fb82306f-b862-4733-ad7e-8275af016e8f",
+        "name": "Qual número?",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          896,
+          512
+        ],
+        "parameters": {
+          "mode": "rules",
+          "rules": {
+            "values": [
+              {
+                "outputKey": "Número 1",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": false,
+                    "leftValue": "",
+                    "typeValidation": "loose"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $(\"Extrair mensagens novas\").item.json.numero }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "1"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "Número 2",
+                "renameOutput": true,
+                "conditions": {
+                  "options": {
+                    "caseSensitive": false,
+                    "leftValue": "",
+                    "typeValidation": "loose"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $(\"Extrair mensagens novas\").item.json.numero }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "2"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "4e78269b-b5b9-4aa7-b099-3654a47a1512",
+        "name": "IA passiva (ATOM_14)",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          1120,
+          416
+        ],
+        "parameters": {
+          "mode": "each",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Juo2fuBR0V51O6fj",
+            "cachedResultName": "ATOM_14_IA_Prospeccao_Passiva"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefone": "={{ $(\"Extrair mensagens novas\").item.json.telefone }}",
+              "nome_perfil": "={{ $(\"Extrair mensagens novas\").item.json.nome_perfil }}",
+              "texto": "={{ $(\"Extrair mensagens novas\").item.json.texto }}",
+              "wa_message_id": "={{ $(\"Extrair mensagens novas\").item.json.wa_message_id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "nome_perfil",
+                "displayName": "nome_perfil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wa_message_id",
+                "displayName": "wa_message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              }
+            ],
+            "attemptToConvertTypes": false
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        }
+      },
+      {
+        "id": "0750f7d7-9344-43bb-92c4-1907aa91a867",
+        "name": "IA ativa (ATOM_15)",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          1120,
+          608
+        ],
+        "parameters": {
+          "mode": "each",
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "XgsYzsWBXZnpCGiH",
+            "cachedResultName": "ATOM_15_IA_Prospeccao_Ativa"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefone": "={{ $(\"Extrair mensagens novas\").item.json.telefone }}",
+              "nome_perfil": "={{ $(\"Extrair mensagens novas\").item.json.nome_perfil }}",
+              "texto": "={{ $(\"Extrair mensagens novas\").item.json.texto }}",
+              "wa_message_id": "={{ $(\"Extrair mensagens novas\").item.json.wa_message_id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "nome_perfil",
+                "displayName": "nome_perfil",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wa_message_id",
+                "displayName": "wa_message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              }
+            ],
+            "attemptToConvertTypes": false
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        }
+      },
+      {
+        "id": "b45e70ec-09a9-47f6-9bf9-7e9f38aef8ef",
+        "name": "Sticky Note 81162ed6",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          496,
+          608
+        ],
+        "parameters": {
+          "content": "## ATOM_19 · Entrada do WhatsApp\n- Um único webhook para os dois números (mesma conta da Meta).\n- GET: verificação do webhook com WA_VERIFY_TOKEN.\n- POST: lê as mensagens, descobre o número pelo phone_number_id (WA_N1/N2_PHONE_ID), ignora repetidas, grava em atom_conversas e chama a IA certa.\n- Status de entrega da Meta são ignorados.\n- Antes da produção: conferir a assinatura X-Hub-Signature-256 com o segredo do app.",
+          "color": 4
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nWebhook trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Verificação da Meta\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom-whatsapp\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom-whatsapp\n\t\t\t\t\t - HTTP Method: GET\n\t\t\t\t\t - Response Mode: Webhook is configured to respond using \"Respond to Webhook\" node.\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 1>\n\n\n\t\t\t\t<trigger 2>\n\t\t\t\t\t - Node name: Webhook da Meta\n\t\t\t\t\t - Production URL: https://thiagoatom.app.n8n.cloud/webhook/atom-whatsapp\n\t\t\t\t\t - Test URL: https://thiagoatom.app.n8n.cloud/webhook-test/atom-whatsapp\n\t\t\t\t\t - HTTP Method: POST\n\t\t\t\t\t - Response Mode: Webhook is configured to respond immediately with the message \"Workflow got started.\"\n\t\t\t\t\t - No credentials required for this webhook.\n\t\t\t\t</trigger 2>\n\nTo execute a webhook trigger, pass triggerNodeName and inputs: { triggerNodeName: \"<node name>\", inputs: { webhookData: { headers?, query?, body? } } }."
+}

@@ -1,0 +1,123 @@
+{
+  "workflow": {
+    "id": "gfNAFRBcb0c4ZldB",
+    "name": "Semrush MCP - Teste de conexão",
+    "active": false,
+    "isArchived": false,
+    "versionId": "2cdd321d-84ab-406a-8819-2e76c62de451",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 3,
+    "createdAt": "2026-09-27T18:55:57.479Z",
+    "updatedAt": "2026-09-27T19:02:10.441Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "binaryMode": "separate"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Testa a conexão do n8n com o Semrush MCP (plano Guru) puxando o domain_rank de atomdigital.com.br no banco BR.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Iniciar teste": {
+        "main": [
+          [
+            {
+              "node": "Semrush MCP - Domain Rank",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "parameters": {
+          "content": "## Semrush MCP - conexão OK\n\n**Credencial:** Semrush MCP (OAuth) — MCP OAuth2, conectada.\nEndpoint: `https://mcp.semrush.com/v2/mcp`\n\nFluxo de uso: `get_report_schema` → `execute_report`.\nNo servidor v2 o parâmetro do domínio é **`target`** (não `domain`).\n\nCusto: ~10 API units por linha (50.000/ciclo no Guru).",
+          "color": 5
+        },
+        "id": "b9677272-e2ee-4cb0-b7cd-cb5af12584c8",
+        "name": "Sticky Note ed7e0c77",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          112,
+          304
+        ]
+      },
+      {
+        "parameters": {},
+        "id": "36ac1857-f10e-4c3e-890d-58f99606cd36",
+        "name": "Iniciar teste",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "endpointUrl": "https://mcp.semrush.com/v2/mcp",
+          "authentication": "mcpOAuth2Api",
+          "tool": {
+            "__rl": true,
+            "mode": "id",
+            "value": "execute_report"
+          },
+          "inputMode": "json",
+          "jsonInput": "{\n  \"report\": \"domain_rank\",\n  \"params\": {\n    \"target\": \"atomdigital.com.br\",\n    \"database\": \"br\"\n  }\n}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "id": "bb030ca6-fa2c-42db-a848-c3a7247410be",
+        "name": "Semrush MCP - Domain Rank",
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1.1,
+        "position": [
+          272,
+          0
+        ],
+        "credentials": {
+          "mcpOAuth2Api": {
+            "id": "npPAt0SyjDkM7BYO",
+            "name": "Semrush MCP (OAuth)"
+          }
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp",
+      "templateCredsSetupCompleted": true
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

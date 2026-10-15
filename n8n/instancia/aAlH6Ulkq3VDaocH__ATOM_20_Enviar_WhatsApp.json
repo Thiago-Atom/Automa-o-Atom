@@ -1,0 +1,493 @@
+{
+  "workflow": {
+    "id": "aAlH6Ulkq3VDaocH",
+    "name": "ATOM_20_Enviar_WhatsApp",
+    "active": false,
+    "isArchived": false,
+    "versionId": "5bdc02d0-3df2-45c2-8d3b-40c75d783fcf",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 9,
+    "createdAt": "2026-10-05T22:52:47.775Z",
+    "updatedAt": "2026-10-05T23:05:51.736Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "errorWorkflow": "vd4MLxMjp8SlGgRh",
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Subfluxo de envio das duas IAs: janela de 24h (texto livre ou modelo aprovado), horário comercial, número 1 ou 2, modo SIMULACAO/SANDBOX/PRODUCAO; registra tudo em atom_conversas.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Pedido de envio": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Mensagens do cliente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mensagens do cliente": {
+        "main": [
+          [
+            {
+              "node": "Decidir envio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Decidir envio": {
+        "main": [
+          [
+            {
+              "node": "Enviar de verdade?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar de verdade?": {
+        "main": [
+          [
+            {
+              "node": "Enviar pela Meta",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Registrar na conversa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar pela Meta": {
+        "main": [
+          [
+            {
+              "node": "Resultado do envio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resultado do envio": {
+        "main": [
+          [
+            {
+              "node": "Registrar na conversa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "aa8dbad7-7515-4c35-9243-6e2baed6497a",
+        "name": "Pedido de envio",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          80
+        ],
+        "parameters": {
+          "inputSource": "workflowInputs",
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "numero",
+                "type": "string"
+              },
+              {
+                "name": "telefone",
+                "type": "string"
+              },
+              {
+                "name": "texto",
+                "type": "string"
+              },
+              {
+                "name": "deal_id",
+                "type": "number"
+              },
+              {
+                "name": "toque",
+                "type": "string"
+              },
+              {
+                "name": "gancho",
+                "type": "string"
+              },
+              {
+                "name": "modelo_nome",
+                "type": "string"
+              },
+              {
+                "name": "modelo_parametros",
+                "type": "array"
+              },
+              {
+                "name": "eh_resposta",
+                "type": "boolean"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "f2367697-a463-4659-886b-b1e6052a5cc1",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          80
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "8adc48a3-5123-48d3-8537-b31f797e985d",
+        "name": "Mensagens do cliente",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          80
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "GKMhyKyQvIQTJgYw",
+            "cachedResultName": "atom_conversas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "telefone",
+                "condition": "eq",
+                "keyValue": "={{ String($(\"Pedido de envio\").first().json.telefone || \"\").replace(/\\D/g, \"\") }}"
+              },
+              {
+                "keyName": "direcao",
+                "condition": "eq",
+                "keyValue": "in"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "bfcbb6d7-39af-4074-aa7b-fb2ce3cd136d",
+        "name": "Decidir envio",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          80
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const cfg = {};\nfor (const i of $('Ler configuração').all()) { const r = i.json || {}; if (r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\nconst val = (k, d) => (cfg[k] && cfg[k].valor && cfg[k].status !== 'PENDENTE' && cfg[k].status !== 'OBSOLETO' ? cfg[k].valor : d);\nconst p = $('Pedido de envio').first().json;\nconst numero = String(p.numero || '').trim();\nconst tel = String(p.telefone || '').replace(/\\D/g, '');\nconst texto = String(p.texto || '').trim();\nconst modelo = String(p.modelo_nome || '').trim();\nconst params = Array.isArray(p.modelo_parametros) ? p.modelo_parametros : [];\nconst agora = Date.now();\nconst ultimaIn = $input.all().map((i) => i.json || {}).reduce((m, r) => Math.max(m, Date.parse(r.criado_em) || 0), 0);\nconst janelaAberta = ultimaIn > 0 && (agora - ultimaIn) < (24 * 3600 - 300) * 1000;\nconst modo = val('MODO_EXECUCAO', 'SIMULACAO').toUpperCase();\nconst phoneId = val(numero === '2' ? 'WA_N2_PHONE_ID' : 'WA_N1_PHONE_ID', '');\nconst versao = val('WA_GRAPH_VERSAO', 'v21.0');\nconst sandboxTels = val('WA_SANDBOX_TELEFONES', '').split(',').map((s) => s.replace(/\\D/g, '')).filter(Boolean);\nconst toque = String(p.toque || '').toUpperCase();\nconst seguemReuniao = ['R4', 'R5', 'O3', 'O4'].includes(toque);\nlet dentroHorario = true;\nif (!p.eh_resposta && !seguemReuniao) {\n  const hc = val('HORARIO_COMERCIAL', '09:00-18:00;1,2,3,4,5');\n  const partes = hc.split(';'); const hs = partes[0].split('-');\n  const min = (x) => { const q = x.split(':'); return Number(q[0]) * 60 + Number(q[1] || 0); };\n  const dias = (partes[1] || '1,2,3,4,5').split(',').map(Number);\n  const loc = new Date(agora - 3 * 3600000);\n  const dow = loc.getUTCDay() === 0 ? 7 : loc.getUTCDay();\n  const m = loc.getUTCHours() * 60 + loc.getUTCMinutes();\n  dentroHorario = dias.includes(dow) && m >= min(hs[0]) && m < min(hs[1]);\n}\nlet decisao = 'ENVIAR'; let motivo = '';\nif (!tel) { decisao = 'BLOQUEADA'; motivo = 'Sem telefone'; }\nelse if (!texto && !modelo) { decisao = 'BLOQUEADA'; motivo = 'Sem texto e sem modelo'; }\nelse if (!phoneId) { decisao = 'BLOQUEADA'; motivo = 'WA_N' + (numero === '2' ? '2' : '1') + '_PHONE_ID não configurado'; }\nelse if (!dentroHorario) { decisao = 'ADIADA'; motivo = 'Fora do horário comercial'; }\nelse if (!janelaAberta && !modelo) { decisao = 'BLOQUEADA'; motivo = 'Janela de 24h fechada e nenhum modelo aprovado informado'; }\nif (decisao === 'ENVIAR' && modo === 'SIMULACAO') { decisao = 'SIMULADA'; motivo = 'MODO_EXECUCAO=SIMULACAO'; }\nif (decisao === 'ENVIAR' && modo === 'SANDBOX' && !sandboxTels.includes(tel)) { decisao = 'SIMULADA'; motivo = 'SANDBOX: telefone fora de WA_SANDBOX_TELEFONES'; }\nconst usarTexto = janelaAberta && texto;\nconst payload = usarTexto\n  ? { messaging_product: 'whatsapp', recipient_type: 'individual', to: tel, type: 'text', text: { preview_url: true, body: texto } }\n  : { messaging_product: 'whatsapp', recipient_type: 'individual', to: tel, type: 'template', template: { name: modelo, language: { code: val('WA_MODELO_IDIOMA', 'pt_BR') }, components: params.length ? [{ type: 'body', parameters: params.map((x) => ({ type: 'text', text: String(x) })) }] : [] } };\nreturn [{ json: {\n  decisao, motivo, numero, telefone: tel, deal_id: Number(p.deal_id) || 0, toque, gancho: String(p.gancho || ''),\n  texto_registro: usarTexto ? texto : ('[modelo ' + modelo + '] ' + params.join(' | ')),\n  janela_aberta: janelaAberta, phone_id: phoneId, graph_versao: versao, payload, wa_message_id: ''\n} }];"
+        }
+      },
+      {
+        "id": "99b24210-84a9-4abf-9157-16e73b6a939e",
+        "name": "Enviar de verdade?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          896,
+          80
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.decisao }}",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                },
+                "rightValue": "ENVIAR"
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "753d7a42-d14b-484c-bf66-f6389cf15ade",
+        "name": "Enviar pela Meta",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "=https://graph.facebook.com/{{ $json.graph_versao }}/{{ $json.phone_id }}/messages",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.payload) }}",
+          "options": {
+            "timeout": 20000,
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "60603a35-8f8b-49d6-b009-44c72c5946a0",
+        "name": "Resultado do envio",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const d = $('Decidir envio').first().json;\nconst r = $input.first().json || {};\nconst ok = r.statusCode >= 200 && r.statusCode < 300;\nconst id = ok && r.body && r.body.messages && r.body.messages[0] ? r.body.messages[0].id : '';\nreturn [{ json: Object.assign({}, d, { decisao: ok ? 'ENVIADA' : 'ERRO', motivo: ok ? '' : ('Meta HTTP ' + r.statusCode + ' ' + JSON.stringify(r.body || {}).slice(0, 300)), wa_message_id: id }) }];"
+        }
+      },
+      {
+        "id": "bf997c04-b2c5-42df-a4cd-00f26dca27d5",
+        "name": "Registrar na conversa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          80
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "GKMhyKyQvIQTJgYw",
+            "cachedResultName": "atom_conversas"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "wa_message_id": "={{ $json.wa_message_id }}",
+              "numero": "={{ $json.numero }}",
+              "telefone": "={{ $json.telefone }}",
+              "direcao": "out",
+              "texto": "={{ $json.texto_registro }}",
+              "deal_id": "={{ $json.deal_id }}",
+              "tipo": "={{ $json.toque }}",
+              "gancho": "={{ $json.gancho }}",
+              "status": "={{ $json.decisao }}",
+              "motivo": "={{ $json.motivo }}",
+              "criado_em": "={{ $now.toISO() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "wa_message_id",
+                "displayName": "wa_message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "direcao",
+                "displayName": "direcao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tipo",
+                "displayName": "tipo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "gancho",
+                "displayName": "gancho",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "motivo",
+                "displayName": "motivo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "criado_em",
+                "displayName": "criado_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "3020afa5-3361-4e4f-8bca-123be555ac2f",
+        "name": "Sticky Note 69fc1e65",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          720,
+          80
+        ],
+        "parameters": {
+          "content": "## ATOM_20 · Enviar WhatsApp\n- Subfluxo usado pelas duas IAs e pela cadência.\n- Confere a janela de 24h: dentro dela manda texto livre; fora, só com modelo aprovado.\n- Toques iniciados pela ATOM respeitam HORARIO_COMERCIAL (exceto R4, R5, O3, O4).\n- MODO_EXECUCAO: SIMULACAO não envia; SANDBOX só envia para WA_SANDBOX_TELEFONES.\n- Tudo fica registrado em atom_conversas.\n- Falta: credencial \"Meta WhatsApp Cloud API (Bearer)\" e WA_N1/N2_PHONE_ID.",
+          "color": 4
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow's trigger(s) are not supported for direct execution through MCP: Pedido de envio. Only Schedule, Webhook, Form, and Chat triggers can be executed directly through MCP, so this workflow cannot be executed through MCP. Its trigger(s) still run normally when the workflow is active."
+}

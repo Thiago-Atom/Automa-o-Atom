@@ -1,0 +1,1270 @@
+{
+  "workflow": {
+    "id": "XgsYzsWBXZnpCGiH",
+    "name": "ATOM_15_IA_Prospeccao_Ativa",
+    "active": false,
+    "isArchived": false,
+    "versionId": "1eb098fe-0ab3-49fd-9df5-f5752ae3f9d8",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 29,
+    "createdAt": "2026-10-05T22:59:44.859Z",
+    "updatedAt": "2026-10-05T23:05:49.594Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true,
+      "errorWorkflow": "vd4MLxMjp8SlGgRh",
+      "timezone": "America/Sao_Paulo"
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "IA do número 2 (prospecção ativa), 7 etapas: acha ou cria o negócio (convertendo o lead), monta o contexto do Pipedrive e da conversa, o Claude responde em JSON; ATOM_21 aplica a ação e ATOM_20 envia.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Mensagem recebida": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Buscar pessoa pelo telefone",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar pessoa pelo telefone": {
+        "main": [
+          [
+            {
+              "node": "Buscar negócios abertos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar negócios abertos": {
+        "main": [
+          [
+            {
+              "node": "Buscar leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar leads": {
+        "main": [
+          [
+            {
+              "node": "Situação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Situação": {
+        "main": [
+          [
+            {
+              "node": "Qual caso?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Qual caso?": {
+        "main": [
+          [
+            {
+              "node": "Identificar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Criar negócio a partir do lead",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Criar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Criar pessoa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Identificar negócio": {
+        "main": [
+          [
+            {
+              "node": "Buscar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar negócio a partir do lead": {
+        "main": [
+          [
+            {
+              "node": "Arquivar lead convertido",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Arquivar lead convertido": {
+        "main": [
+          [
+            {
+              "node": "Identificar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar negócio": {
+        "main": [
+          [
+            {
+              "node": "Identificar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar pessoa": {
+        "main": [
+          [
+            {
+              "node": "Criar negócio da nova pessoa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar negócio da nova pessoa": {
+        "main": [
+          [
+            {
+              "node": "Identificar negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar negócio": {
+        "main": [
+          [
+            {
+              "node": "Buscar pessoa completa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar pessoa completa": {
+        "main": [
+          [
+            {
+              "node": "Buscar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar empresa": {
+        "main": [
+          [
+            {
+              "node": "Buscar notas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar notas": {
+        "main": [
+          [
+            {
+              "node": "Buscar atividades",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar atividades": {
+        "main": [
+          [
+            {
+              "node": "Campos do negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Campos do negócio": {
+        "main": [
+          [
+            {
+              "node": "Histórico da conversa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Histórico da conversa": {
+        "main": [
+          [
+            {
+              "node": "Montar prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar prompt": {
+        "main": [
+          [
+            {
+              "node": "IA pode responder?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IA pode responder?": {
+        "main": [
+          [
+            {
+              "node": "IA da prospecção ativa responde",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Avisar o Thiago",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IA da prospecção ativa responde": {
+        "main": [
+          [
+            {
+              "node": "Ler saída da IA",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Claude": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "IA da prospecção ativa responde",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler saída da IA": {
+        "main": [
+          [
+            {
+              "node": "Aplicar ação (ATOM_21)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Enviar resposta (ATOM_20)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "3396ef56-1932-47ea-9d43-5b91fdfd92b2",
+        "name": "Mensagem recebida",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          256
+        ],
+        "parameters": {
+          "inputSource": "workflowInputs",
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "telefone",
+                "type": "string"
+              },
+              {
+                "name": "nome_perfil",
+                "type": "string"
+              },
+              {
+                "name": "texto",
+                "type": "string"
+              },
+              {
+                "name": "wa_message_id",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "f62885e5-2449-4a72-bf4b-1462f24ced37",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          256
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "ae017ff9-44c2-4918-aba5-9a21faca7dc2",
+        "name": "Buscar pessoa pelo telefone",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/persons/search?term={{ String($(\"Mensagem recebida\").first().json.telefone || \"\").replace(/\\D/g, \"\").slice(-8) }}&fields=phone&limit=5",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "0594d994-5e62-442d-a162-0519a8f8d9f0",
+        "name": "Buscar negócios abertos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/deals?person_id={{ $(\"Buscar pessoa pelo telefone\").first().json.data?.items?.[0]?.item?.id || 0 }}&status=open&limit=10&sort_by=update_time&sort_direction=desc",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "e1c64774-ff26-4693-a9b6-d1334a227d27",
+        "name": "Buscar leads",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/v1/leads?person_id={{ $(\"Buscar pessoa pelo telefone\").first().json.data?.items?.[0]?.item?.id || 0 }}&archived_status=not_archived&limit=10",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "abccc8bb-def7-4c7e-a246-5bd41bce91a4",
+        "name": "Situação",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          256
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const NUMERO = '2';\nconst cfg = {};\nfor (const i of $('Ler configuração').all()) { const r = i.json || {}; if (r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\nconst val = (k, d) => (cfg[k] && cfg[k].valor && cfg[k].status !== 'PENDENTE' && cfg[k].status !== 'OBSOLETO' ? cfg[k].valor : d);\nconst m = $('Mensagem recebida').first().json;\nconst tel = String(m.telefone || '').replace(/\\D/g, '');\nconst nome = String(m.nome_perfil || '').trim() || ('WhatsApp ' + tel.slice(-4));\nconst busca = $('Buscar pessoa pelo telefone').first().json || {};\nconst itens = (busca.data && busca.data.items) || [];\nconst pessoa = itens.length ? itens[0].item : null;\nconst deals = ((($('Buscar negócios abertos').first().json || {}).data) || []).filter((d) => pessoa && Number(d.person_id) === Number(pessoa.id));\nconst leads = ((($('Buscar leads').first().json || {}).data) || []).filter((l) => pessoa && Number(l.person_id) === Number(pessoa.id));\nconst owner = Number(val('PD_ALERTA_USER_ID', '0')) || undefined;\nconst stEmConversa = Number(val('ETAPA_EM_CONVERSA', '') || val('FUNIL_STAGE_NOVO_ID', '6'));\nconst stDiagnostico = Number(val('ETAPA_DIAGNOSTICO_ENTREGUE', '') || '8');\nconst out = { numero: NUMERO, telefone: tel, nome, deal_id: 0, person_id: pessoa ? pessoa.id : 0, lead_id: '', caso: '', caso_index: 0, body_deal: null, body_pessoa: null };\nif (pessoa && deals.length) { out.caso = 'tem_negocio'; out.caso_index = 0; out.deal_id = deals[0].id; }\nelse if (pessoa && leads.length) { const l = leads[0]; out.caso = 'converter_lead'; out.caso_index = 1; out.lead_id = l.id; out.body_deal = { title: l.title || (pessoa.organization && pessoa.organization.name) || pessoa.name || nome, person_id: pessoa.id, org_id: l.organization_id || undefined, stage_id: stDiagnostico, owner_id: owner }; }\nelse if (pessoa) { out.caso = 'criar_negocio'; out.caso_index = 2; out.body_deal = { title: (pessoa.organization && pessoa.organization.name) || pessoa.name || nome, person_id: pessoa.id, org_id: pessoa.organization ? pessoa.organization.id : undefined, stage_id: stEmConversa, owner_id: owner }; }\nelse { out.caso = 'criar_pessoa_e_negocio'; out.caso_index = 3; out.body_pessoa = { name: nome, phones: [{ value: '+' + tel, primary: true, label: 'mobile' }], owner_id: owner }; out.body_deal = { title: nome, stage_id: stEmConversa, owner_id: owner }; }\nreturn [{ json: out }];"
+        }
+      },
+      {
+        "id": "4296d136-b93d-40fe-94fc-81b47b19a540",
+        "name": "Qual caso?",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          1344,
+          224
+        ],
+        "parameters": {
+          "mode": "expression",
+          "numberOutputs": 4,
+          "output": "={{ $json.caso_index }}"
+        }
+      },
+      {
+        "id": "b96d5f83-0b4e-47c0-9499-41729924d58e",
+        "name": "Identificar negócio",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          256
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const s = $('Situação').first().json;\nlet dealId = s.deal_id || 0;\nlet personId = s.person_id || 0;\nconst pegar = (n) => { try { return $(n).first().json; } catch (e) { return null; } };\nfor (const n of ['Criar negócio a partir do lead', 'Criar negócio', 'Criar negócio da nova pessoa']) { const r = pegar(n); if (r && r.data && r.data.id) { dealId = r.data.id; personId = r.data.person_id || personId; } }\nconst p = pegar('Criar pessoa'); if (!personId && p && p.data && p.data.id) personId = p.data.id;\nreturn [{ json: { deal_id: dealId, person_id: personId, caso: s.caso } }];"
+        }
+      },
+      {
+        "id": "7a40196a-9249-4bd0-8f48-7d9201887ff4",
+        "name": "Criar negócio a partir do lead",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          160
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/api/v2/deals",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body_deal) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "bd908b65-0644-4c31-a8d9-128ac1306b5f",
+        "name": "Arquivar lead convertido",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1792,
+          160
+        ],
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://api.pipedrive.com/v1/leads/{{ $(\"Situação\").first().json.lead_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "{\"is_archived\": true}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "a3f9f27c-3d47-4301-aea1-fcb8abd27901",
+        "name": "Criar negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1792,
+          352
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/api/v2/deals",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body_deal) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "e6ad2277-7dfa-4783-ab75-532f3591b5e7",
+        "name": "Criar pessoa",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          544
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/api/v2/persons",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body_pessoa) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "39d602d6-ac04-4e6c-9759-fe1eb0d41329",
+        "name": "Criar negócio da nova pessoa",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1792,
+          544
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/api/v2/deals",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify(Object.assign({}, $(\"Situação\").first().json.body_deal, { person_id: $json.data?.id })) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "1676db5f-a658-4ce9-9605-73c0f32026e6",
+        "name": "Buscar negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2240,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/deals/{{ $json.deal_id || 0 }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "e11f5c65-6343-43bf-827b-5c572514d78c",
+        "name": "Buscar pessoa completa",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2464,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/persons/{{ $(\"Identificar negócio\").first().json.person_id || 0 }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "2a79581e-907e-4ffe-b0ab-5d7825b8cc96",
+        "name": "Buscar empresa",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2688,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/organizations/{{ $(\"Buscar negócio\").first().json.data?.org_id || 0 }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "1387b82b-76b5-4c3b-9abf-a6903cbc7d00",
+        "name": "Buscar notas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2912,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/v1/notes?deal_id={{ $(\"Identificar negócio\").first().json.deal_id || 0 }}&limit=12&sort=add_time%20DESC",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "dff18f03-415e-4b4a-8596-e7abfed6e670",
+        "name": "Buscar atividades",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3136,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.pipedrive.com/api/v2/activities?deal_id={{ $(\"Identificar negócio\").first().json.deal_id || 0 }}&limit=50",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "b3b2bfa7-2613-4f13-9f73-359947da43ec",
+        "name": "Campos do negócio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3360,
+          256
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.pipedrive.com/v1/dealFields?limit=500",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "5ceb0bbd-443c-4282-bc87-055462f4b2f2",
+        "name": "Histórico da conversa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3584,
+          256
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "GKMhyKyQvIQTJgYw",
+            "cachedResultName": "atom_conversas"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "telefone",
+                "condition": "eq",
+                "keyValue": "={{ String($(\"Mensagem recebida\").first().json.telefone || \"\").replace(/\\D/g, \"\") }}"
+              }
+            ]
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "25dc0645-c52a-434c-8c85-70c32379e7fb",
+        "name": "Montar prompt",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3808,
+          256
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const NUMERO = '2';\nconst BASE = [\n  'Você é a Zayra, da equipe do Thiago, na ATOM Digital, agência de Goiânia com 15 anos de mercado que ajuda empresas a venderem mais através de Marketing e Vendas com IAs.',\n  '',\n  'SEU PAPEL: você atende o número da prospecção ativa e acompanha o cliente em 7 etapas: Leads, Em conversa, Diagnóstico entregue, Reunião marcada, Proposta enviada, Em decisão e Contrato. Toda conversa começou com a ATOM: alguém da empresa autorizou o envio por telefone, e o Thiago mandou o Raio-X com o achado principal. Leia o histórico (achado citado, quem assinou, com quem foi combinada a permissão, o que foi dito nas reuniões) e continue dali. Nunca recomece do zero.',\n  '',\n  'SUA META EM CADA FASE: até a reunião, levar a uma reunião de 20 minutos, por vídeo, gratuita, com o Thiago. Na Reunião marcada, garantir que o decisor esteja presente. Na Proposta enviada, garantir que a revisão de 15 minutos aconteça (os valores são apresentados pelo Thiago nela). Em decisão, ajudar a decidir sem pressão e descobrir o motivo se for não. No Contrato, tirar o atrito da assinatura. Você não negocia valor nem condição e não altera contrato.',\n  '',\n  'OS 13 PRINCÍPIOS (em caso de choque, vale nesta ordem: 13, 10, 7 e 8, os demais):',\n  '1. O assunto é o cliente: nome dele, empresa dele, problema dele. A ATOM só aparece na apresentação. Com cliente de Goiânia, pode lembrar uma vez que a ATOM também é daqui.',\n  '2. Ensine algo que ele não sabia, com um dado do Raio-X.',\n  '3. Uma pergunta por mensagem: situação, problema, implicação, necessidade.',\n  '4. Dê antes de pedir.',\n  '5. Peça compromissos pequenos, um de cada vez.',\n  '6. Use as palavras do cliente, tiradas das notas e da conversa.',\n  '7. Prova social só com case da lista oficial. Sem case, não cite.',\n  '8. Urgência só com dado real do Raio-X. Nunca prazo ou vaga inventados.',\n  '9. Para marcar, ofereça dois horários reais da agenda. Nunca pergunte \"quando você pode?\".',\n  '10. Pedido recusado: no máximo 2 tentativas. Convites sem resposta: no máximo 3.',\n  '11. Nunca repita gancho, abertura ou frase já usada com este cliente.',\n  '12. Comece pelo achado de maior impacto.',\n  '13. Nunca minta: sobre ser IA, sobre a origem do contato, sobre o teste de atendimento ou sobre resultados.',\n  '',\n  'REGRAS DE CONVERSA: 1 a 3 linhas, sem emoji, postura respeitosa e curta. Chame o cliente pelo nome; dentista, de Dr. ou Dra. Nunca invente número, prazo, case ou resultado. Nunca prometa posição no Google. Nunca diga que a ATOM é Google Partner. Preço só na revisão da proposta, pelo Thiago: na terceira insistência, transfira. Não abra dizendo que é IA; se perguntarem, confirme que é a IA do atendimento e que as reuniões são com o Thiago, ao vivo. Se perguntarem como o Raio-X foi feito, explique com transparência: dados públicos do Google e das IAs e uma mensagem enviada como cliente comum para medir o tempo de resposta. Se perguntarem de onde veio o número, diga que a recepção autorizou o envio por telefone e ofereça a saída.',\n  '',\n  'PRODUTOS E PERGUNTAS DE DESCOBERTA: Sites (\"Vocês já têm site hoje ou esse seria o primeiro?\"); Landing Pages (\"Quem clica no anúncio hoje cai em qual página?\"); SEO/GEO (\"Quando alguém procura [serviço] em [cidade] no Google, vocês aparecem?\"); IA Agency, Google Ads gerido com IA (\"Hoje vocês sabem quantos clientes vieram de cada real investido em anúncio?\"); Agentes de IA no WhatsApp (\"Quando chega mensagem às 22h ou no domingo, quem responde?\"); Automação com IA (\"Qual tarefa da semana mais toma tempo da equipe e é sempre igual?\"). Pedido fora da lista: anote e diga que o Thiago avalia na reunião; nunca confirme que a ATOM faz.',\n  '',\n  'OBJEÇÕES (concorde com o sentimento, pergunte o que está por trás, nunca discuta): \"Tá caro\": \"Faz todo sentido olhar com cuidado. O que te deixaria seguro de que o investimento volta?\" \"Vou pensar\": \"Claro! Pra te ajudar a pensar: o que pesa mais agora, o momento ou o formato?\" \"Já tentei e não funcionou\": \"Que pena. O que aconteceu na época?\" \"Meu cliente vem por indicação\": \"Quem foi indicado confere no Google antes de ligar. Quer ver o que ele encontra?\" \"Já tenho quem cuida\": \"Que bom que vocês já têm alguém cuidando! Vocês recebem algum relatório de quantos clientes chegaram pelo Google no mês?\" \"Garantem a primeira posição?\": \"Ninguém consegue garantir posição no Google, e é bom desconfiar de quem garante. A gente mede o resultado e te mostra todo mês.\" \"Vocês são de onde?\": \"Somos de Goiânia, há 15 anos, e atendemos empresas de vários estados por vídeo.\" Contestou o teste de atendimento: \"Pode ter sido um dia atípico. O print está na análise, com data e hora.\"',\n  '',\n  'TRANSFIRA PARA O THIAGO (diga \"Vou pedir pro Thiago te responder pessoalmente sobre isso\" e use acao transferir_thiago) quando: preço pela terceira vez; desconto, prazo ou condição diferente; mudança de cláusula, jurídico ou nota fiscal; pedido fora do catálogo; pedido para falar com uma pessoa; cliente atual da ATOM; cliente irritado; empresa grande; qualquer pergunta sem resposta segura.',\n  '',\n  'SAÍDAS: \"Não tenho interesse\": agradeça, diga que a análise fica com ele, sem pergunta; acao perdido com o motivo nas palavras dele. \"Para de me mandar mensagem\": \"Desculpa o incômodo. Não vou te chamar mais.\"; acao nao_contatar. \"Mais pra frente\": combine o mês; acao perdido, motivo_perda \"Momento\", data_retomada AAAA-MM. Falou com quem não decide: pergunte quem decide e registre em campos.decisor (não é perda). Currículos e fornecedores: agradeça e peça o envio por e-mail; acao nenhuma.'\n];\nconst ROTEIROS = {\n  'Em conversa': 'Objetivo: descobrir o problema e o peso dele, com as palavras do cliente. Responda em uma frase o que ele perguntou e siga, uma pergunta por vez: situação (\"Hoje, de onde vem a maior parte dos clientes novos?\"), problema (\"O que mais incomoda nisso hoje?\"), implicação (\"Se continuar assim nos próximos seis meses, o que acontece com a empresa?\"), necessidade (\"Se isso estivesse resolvido, o que mudaria pra você?\"). Depois ligue a resposta a um achado do Raio-X e proponha 20 minutos com o Thiago em dois horários reais. Se ele passou a falar da análise, use acao mover_etapa para \"Diagnóstico entregue\". Quando aceitar um horário: acao marcar_reuniao, tipo_reuniao diagnostico.',\n  'Diagnóstico entregue': 'Objetivo: transformar um achado do Raio-X em vontade de conversar 20 minutos com o Thiago. Um achado por mensagem, do maior para o menor impacto, sempre ligado ao mundo dele. Se demonstrou interesse, ofereça dois horários reais nos próximos 3 dias úteis; se está frio, pergunte primeiro se faz sentido. Preço: \"Depende do que a empresa precisa. O Thiago mostra o que encontrou e passa os valores na conversa.\" Segunda vez: \"Prefiro não chutar um valor e errar com você. São só 20 minutos.\" Terceira: transfira. \"Manda por e-mail\": diga que a conta da análise só fica certa com os números dele. \"Vou ver com meu sócio\": convide o sócio para os 20 minutos e registre o decisor. Quando aceitar um horário: acao marcar_reuniao, tipo_reuniao diagnostico.',\n  'Reunião marcada': 'Objetivo: que o decisor esteja na reunião, na hora. Logo após marcar, confirme dia e hora e peça o valor médio de um cliente ou tratamento (\"Pra conta da reunião sair com o seu número, qual é o valor médio de um [tratamento]?\"); quando ele responder, registre em campos.valor_medio e diga que está enviando a apresentação da ATOM e o que três clientes falam da gente. Remarcar: duas opções reais nos próximos 3 dias úteis, no máximo 2 reagendamentos (acao marcar_reuniao com a nova data). \"Posso levar meu sócio?\": sim, registre o decisor. \"O que preciso preparar?\": nada, só os 20 minutos. Preço antes da reunião: o Thiago passa na conversa. Desistência: pergunte uma vez o que mudou; se mantiver, acao perdido com o motivo nas palavras dele.',\n  'Proposta enviada': 'Objetivo: garantir que a revisão de 15 minutos aconteça; é nela que o Thiago mostra os valores e o cliente decide. Nunca passe valores antes da revisão: \"O Thiago apresenta os valores na revisão, junto com as opções.\" Reagendar a revisão: duas opções reais (acao marcar_reuniao, tipo_reuniao revisao). Dúvida sobre um item da proposta: explique em uma frase e diga que o Thiago detalha na revisão. O sócio é bem-vindo na revisão.',\n  'Em decisão': 'Objetivo: ajudar o cliente a decidir sem pressão e, se for não, descobrir o motivo. \"Vou pensar\": \"Claro! Pra te ajudar a pensar: o que pesa mais agora, o momento ou o formato?\" \"Achei caro\": \"Faz sentido olhar com cuidado. O que te deixaria seguro de que o investimento volta?\" Pedido de desconto, prazo ou condição diferente: transfira. Aceite (ex.: \"vamos fechar a opção 2\"): acao registrar_aceite com opcao_escolhida, e diga que o contrato chega no e-mail hoje, junto com a primeira cobrança, e que o Thiago marca o início assim que ele assinar. Recusa ou fechou com outro: agradeça, pergunte o que pesou mais e use acao perdido com o motivo.',\n  'Contrato': 'Objetivo: tirar o atrito entre o sim e a assinatura. Não chegou o contrato: diga que vai reenviar e peça para conferir o spam (acao reenviar_contrato). Como assinar: pelo link do e-mail, abre o documento, confere e clica em assinar, leva uns dois minutos. Mudança de cláusula, prazo, forma ou condição de pagamento: transfira. Assinou: agradeça e diga que o Thiago entra em contato para marcar o início.'\n};\nconst SAIDA = [\n  'RESPONDA SOMENTE COM UM JSON VÁLIDO, sem nada antes ou depois, neste formato:',\n  '{\"mensagem\": \"\", \"acao\": \"nenhuma\", \"etapa_destino\": \"\", \"tipo_reuniao\": \"\", \"data_reuniao\": \"\", \"opcao_escolhida\": \"\", \"motivo_perda\": \"\", \"data_retomada\": \"\", \"campos\": {\"nome\": \"\", \"empresa\": \"\", \"cidade\": \"\", \"decisor\": \"\", \"contato_recepcao\": \"\", \"servico\": \"\", \"valor_medio\": \"\"}, \"nota\": \"\", \"gancho_usado\": \"\"}',\n  '- mensagem: o texto para o cliente, pronto para enviar.',\n  '- acao: nenhuma, mover_etapa, marcar_reuniao, registrar_aceite, reenviar_contrato, transferir_thiago, perdido ou nao_contatar.',\n  '- etapa_destino: só \"Em conversa\" ou \"Diagnóstico entregue\", e só com acao mover_etapa.',\n  '- tipo_reuniao: diagnostico ou revisao, só com acao marcar_reuniao.',\n  '- data_reuniao: ISO 8601 com o fuso de Brasília, por exemplo 2026-10-09T18:00:00-03:00. Só um horário que o cliente aceitou entre os HORÁRIOS LIVRES.',\n  '- data_retomada: AAAA-MM, quando motivo_perda for Momento.',\n  '- campos: só o que o cliente disse nesta conversa; o resto fica vazio.',\n  '- nota: situação, problema, implicação, necessidade e objeções, com as palavras do cliente.',\n  '- gancho_usado: o achado ou ângulo usado nesta mensagem, se houver.'\n];\nconst cfg = {};\nfor (const i of $('Ler configuração').all()) { const r = i.json || {}; if (r.chave) cfg[r.chave] = { valor: String(r.valor ?? '').trim(), status: String(r.status || '').toUpperCase() }; }\nconst val = (k, d) => (cfg[k] && cfg[k].valor && cfg[k].status !== 'PENDENTE' && cfg[k].status !== 'OBSOLETO' ? cfg[k].valor : d);\nconst pegar = (n) => { try { return $(n).first().json; } catch (e) { return null; } };\nconst msg = $('Mensagem recebida').first().json;\nconst ident = $('Identificar negócio').first().json;\nconst dR = pegar('Buscar negócio'); const deal = dR && dR.success ? dR.data : null;\nconst pR = pegar('Buscar pessoa completa'); const pessoa = pR && pR.success ? pR.data : null;\nconst oR = pegar('Buscar empresa'); const org = oR && oR.success ? oR.data : null;\nconst limpar = (s) => String(s || '').replace(/<br\\s*\\/?>/gi, ' / ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\\s+/g, ' ').trim();\nconst cf = (ent, chave) => { const id = val(chave, ''); if (!ent || !id) return ''; let x = (ent.custom_fields || {})[id]; if (x && typeof x === 'object') x = x.value !== undefined ? x.value : (x.label || ''); return x === null || x === undefined ? '' : String(x).trim(); };\nconst ehSim = (v, chaveSim) => /^(sim|true|1|yes)$/i.test(v) || (val(chaveSim, '') !== '' && v === val(chaveSim, ''));\nconst mapa = {};\nfor (const par of [['Em conversa', 'ETAPA_EM_CONVERSA'], ['Diagnóstico entregue', 'ETAPA_DIAGNOSTICO_ENTREGUE'], ['Reunião marcada', 'ETAPA_REUNIAO_MARCADA'], ['Proposta enviada', 'ETAPA_PROPOSTA_ENVIADA'], ['Em decisão', 'ETAPA_EM_DECISAO'], ['Contrato', 'ETAPA_CONTRATO']]) { const id = val(par[1], ''); if (id) mapa[id] = par[0]; }\nlet legado = {}; try { legado = JSON.parse(val('ETAPAS_LEGADO', '{}')); } catch (e) { legado = {}; }\nconst sid = deal ? String(deal.stage_id) : '';\nconst etapa = mapa[sid] || legado[sid] || 'Em conversa';\nconst pausada = ehSim(cf(deal, 'PD_DEAL_IA_PAUSADA'), 'PD_DEAL_IA_PAUSADA_SIM');\nconst naoContatar = ehSim(cf(pessoa, 'PD_PERSON_NAO_CONTATAR'), 'PD_PERSON_NAO_CONTATAR_SIM');\nconst linhas = [];\nconst add = (r, v) => { if (v) linhas.push(r + ': ' + v); };\nadd('Nome do contato', pessoa && pessoa.name);\nadd('Empresa', (org && org.name) || (deal && deal.title));\nadd('Site', org && org.website);\nadd('Cidade', cf(org, 'PD_ORG_CIDADE'));\nadd('Link do Raio-X', cf(deal, 'PD_DEAL_DIAG_LINK'));\nadd('Link da proposta', cf(deal, 'PD_DEAL_PROPOSTA_LINK'));\nconst defs = {};\nfor (const f of (((pegar('Campos do negócio') || {}).data) || [])) if (f && f.key) defs[f.key] = f;\nif (deal) for (const k of Object.keys(deal.custom_fields || {})) {\n  let x = deal.custom_fields[k]; const def = defs[k];\n  if (!def || x === null || x === undefined || x === '') continue;\n  if (x && typeof x === 'object') x = x.value !== undefined ? x.value : null;\n  if (x === null || x === undefined || x === '') continue;\n  if (Array.isArray(def.options) && def.options.length) { const rot = String(x).split(',').map((id) => (def.options.find((o) => String(o.id) === id.trim()) || {}).label).filter(Boolean); if (rot.length) x = rot.join(', '); }\n  add(def.name, limpar(String(x)).slice(0, 400));\n}\nconst agora = Date.now();\nconst ativs = (((pegar('Buscar atividades') || {}).data) || []);\nconst fmt = (d, h) => { const ms = Date.parse(d + 'T' + String(h).slice(0, 5) + ':00Z') - 3 * 3600000; const x = new Date(ms); const dias = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']; return dias[x.getUTCDay()] + ', ' + x.toISOString().slice(8, 10) + '/' + x.toISOString().slice(5, 7) + ' às ' + x.toISOString().slice(11, 16); };\nconst reunioes = ativs.filter((a) => !a.done && a.type === 'meeting' && a.due_date && a.due_time && Date.parse(a.due_date + 'T' + String(a.due_time).slice(0, 5) + ':00Z') > agora).map((a) => '- ' + limpar(a.subject) + ': ' + fmt(a.due_date, a.due_time)).join('\\n');\nconst notas = (((pegar('Buscar notas') || {}).data) || []).slice(0, 12).map((n) => '- ' + String(n.add_time || '').slice(0, 10) + ': ' + limpar(n.content).slice(0, 700)).join('\\n');\nconst hist = $('Histórico da conversa').all().map((i) => i.json || {}).filter((r) => r.texto).sort((a, b) => Date.parse(a.criado_em) - Date.parse(b.criado_em)).slice(-30);\nconst conversa = hist.map((r) => (r.direcao === 'in' ? 'Cliente' : 'ATOM' + (r.tipo && r.tipo !== 'RESPOSTA' ? ' (' + r.tipo + ')' : '')) + ': ' + String(r.texto).slice(0, 600)).join('\\n');\nconst ganchos = Array.from(new Set(hist.map((r) => r.gancho).filter(Boolean))).join('; ');\nconst loc = new Date(agora - 3 * 3600000);\nconst diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];\nconst hoje = diasSemana[loc.getUTCDay()] + ', ' + loc.toISOString().slice(8, 10) + '/' + loc.toISOString().slice(5, 7) + '/' + loc.toISOString().slice(0, 4) + ', ' + loc.toISOString().slice(11, 16);\nconst horarios = val('AGENDA_HORARIOS_LIVRES', '');\nconst prompt = BASE.concat([\n  '', 'ROTEIRO DA ETAPA ATUAL (' + etapa + '):', ROTEIROS[etapa] || ROTEIROS['Diagnóstico entregue'],\n  '', 'AGORA: ' + hoje + ' (horário de Brasília).',\n  'HORÁRIOS LIVRES DO THIAGO: ' + (horarios || 'não informados. Não ofereça horários específicos: pergunte qual dia e período ficam melhores e use acao nenhuma; o Thiago confirma.'),\n  '', 'DADOS DO CLIENTE:', linhas.join('\\n') || '(poucos dados cadastrados)',\n  'Reuniões agendadas: ' + (reunioes ? '\\n' + reunioes : 'nenhuma'),\n  '', 'NOTAS DO NEGÓCIO (mais recentes primeiro):', notas || '(sem notas)',\n  '', 'CONVERSA ATÉ AGORA:', conversa || '(primeira mensagem)',\n  '', 'GANCHOS JÁ USADOS COM ESTE CLIENTE (não repita):', ganchos || '(nenhum)',\n  '', 'ÚLTIMA MENSAGEM DO CLIENTE: ' + String(msg.texto || ''),\n  ''\n]).concat(SAIDA).join('\\n');\nconst owner = Number(val('PD_ALERTA_USER_ID', '0')) || undefined;\nreturn [{ json: {\n  numero: NUMERO, telefone: String(msg.telefone || '').replace(/\\D/g, ''), texto: String(msg.texto || ''),\n  deal_id: ident.deal_id, person_id: ident.person_id, etapa, pode_responder: !pausada && !naoContatar && !!ident.deal_id,\n  motivo_sem_resposta: !ident.deal_id ? 'Negócio não encontrado nem criado' : (naoContatar ? 'Pessoa marcada como Não contatar' : (pausada ? 'IA pausada neste negócio' : '')),\n  tarefa: { subject: 'Cliente escreveu no número ' + NUMERO + ' e a IA não respondeu', type: 'task', deal_id: ident.deal_id || undefined, owner_id: owner, due_date: loc.toISOString().slice(0, 10), note: 'Mensagem: ' + String(msg.texto || '').slice(0, 500) },\n  prompt\n} }];"
+        }
+      },
+      {
+        "id": "db3ec660-f94a-429f-8787-413b56444238",
+        "name": "IA pode responder?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          4032,
+          256
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.pode_responder }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "68be7bfb-4106-42b5-bcac-f4b81b5ff0d6",
+        "name": "IA da prospecção ativa responde",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.9,
+        "position": [
+          4256,
+          0
+        ],
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.prompt }}"
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "e4ef9a24-2917-4de6-aac1-c0014a8e401d",
+        "name": "Claude",
+        "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+        "typeVersion": 1.6,
+        "position": [
+          4336,
+          224
+        ],
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "id",
+            "value": "claude-sonnet-5-5"
+          },
+          "options": {
+            "maxTokensToSample": 1200
+          }
+        },
+        "credentials": {
+          "anthropicApi": {
+            "id": "IJjMZNhuyrB21L8T",
+            "name": "ATOM Anthropic (Claude)"
+          }
+        }
+      },
+      {
+        "id": "e8836661-35a4-4079-8772-524329b508e5",
+        "name": "Ler saída da IA",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          4608,
+          112
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const ctx = $('Montar prompt').first().json;\nconst t = String(($input.first().json || {}).text || '');\nconst a = t.indexOf('{'); const b = t.lastIndexOf('}');\nlet s = null;\ntry { s = JSON.parse(t.slice(a, b + 1)); } catch (e) { s = null; }\nconst acoes = ['nenhuma', 'mover_etapa', 'marcar_reuniao', 'registrar_aceite', 'reenviar_contrato', 'transferir_thiago', 'perdido', 'nao_contatar'];\nif (!s || typeof s.mensagem !== 'string' || !acoes.includes(s.acao)) {\n  s = { mensagem: '', acao: 'transferir_thiago', campos: {}, nota: 'A IA não gerou uma resposta válida para a mensagem: \"' + ctx.texto.slice(0, 300) + '\". Responda manualmente.', gancho_usado: '' };\n}\ns.mensagem = String(s.mensagem || '').trim();\nreturn [{ json: { saida: s, deal_id: ctx.deal_id, person_id: ctx.person_id, numero: ctx.numero, telefone: ctx.telefone, mensagem: s.mensagem, gancho: String(s.gancho_usado || '') } }];"
+        }
+      },
+      {
+        "id": "1468ca47-4238-4bb2-9b4d-c8096543331f",
+        "name": "Aplicar ação (ATOM_21)",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          4832,
+          32
+        ],
+        "parameters": {
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "P8T2SrzL2ff3Nzuy",
+            "cachedResultName": "ATOM_21_Aplicar_Acao"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "deal_id": "={{ $json.deal_id }}",
+              "person_id": "={{ $json.person_id }}",
+              "numero": "={{ $json.numero }}",
+              "saida": "={{ $json.saida }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "person_id",
+                "displayName": "person_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "saida",
+                "displayName": "saida",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object"
+              }
+            ],
+            "attemptToConvertTypes": false
+          },
+          "options": {
+            "waitForSubWorkflow": true
+          }
+        }
+      },
+      {
+        "id": "a851ad21-3ea1-41b6-9469-f9dd70490726",
+        "name": "Avisar o Thiago",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          4320,
+          400
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pipedrive.com/api/v2/activities",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "pipedriveApi",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify(Object.assign({}, $json.tarefa, { note: $json.tarefa.note + \" · Motivo: \" + $json.motivo_sem_resposta })) }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "credentials": {
+          "pipedriveApi": {
+            "id": "SU9ngClAj5BwJdVt",
+            "name": "ATOM Pipedrive API"
+          }
+        }
+      },
+      {
+        "id": "127b5090-6ca8-4b59-a8fe-48faea73fbcc",
+        "name": "Enviar resposta (ATOM_20)",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          4832,
+          224
+        ],
+        "parameters": {
+          "source": "database",
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "aAlH6Ulkq3VDaocH",
+            "cachedResultName": "ATOM_20_Enviar_WhatsApp"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "numero": "={{ $json.numero }}",
+              "telefone": "={{ $json.telefone }}",
+              "texto": "={{ $json.mensagem }}",
+              "deal_id": "={{ $json.deal_id }}",
+              "toque": "RESPOSTA",
+              "gancho": "={{ $json.gancho }}",
+              "modelo_nome": "",
+              "modelo_parametros": "={{ [] }}",
+              "eh_resposta": true
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "deal_id",
+                "displayName": "deal_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "toque",
+                "displayName": "toque",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "gancho",
+                "displayName": "gancho",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "modelo_nome",
+                "displayName": "modelo_nome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "modelo_parametros",
+                "displayName": "modelo_parametros",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "array"
+              },
+              {
+                "id": "eh_resposta",
+                "displayName": "eh_resposta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "boolean"
+              }
+            ],
+            "attemptToConvertTypes": false
+          },
+          "options": {
+            "waitForSubWorkflow": true
+          }
+        }
+      },
+      {
+        "id": "3774f58c-6933-4c48-915b-4cfad18655f3",
+        "name": "Sticky Note cf26976b",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          2352,
+          544
+        ],
+        "parameters": {
+          "content": "## ATOM_15 · IA da prospecção ativa (número 2)\n- Chamado pelo ATOM_19 quando chega mensagem no número 2.\n- Acha a pessoa pelo telefone; usa o negócio aberto, converte o lead da prospecção ou cria um negócio.\n- Monta o contexto (etapa, Raio-X, notas, reuniões, conversa, ganchos) e o Claude responde em JSON com o prompt e os roteiros das 7 etapas.\n- ATOM_21 aplica a ação no Pipedrive; ATOM_20 envia a resposta.\n- IA pausada ou Não contatar: não responde e cria tarefa para o Thiago.",
+          "color": 4
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow's trigger(s) are not supported for direct execution through MCP: Mensagem recebida. Only Schedule, Webhook, Form, and Chat triggers can be executed directly through MCP, so this workflow cannot be executed through MCP. Its trigger(s) still run normally when the workflow is active."
+}

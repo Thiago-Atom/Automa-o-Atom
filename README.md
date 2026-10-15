@@ -1,3 +1,16 @@
+# Comercial Atom · 2026
+
+Projeto unificado da máquina comercial da Atom Digital. **Comece por [COMECE-AQUI.md](COMECE-AQUI.md).**
+
+| Parte | Onde |
+|---|---|
+| Método de Diagnóstico (5 diagnósticos, custos, franquias, receita e lucro, Pipedrive) | [metodo/README.md](metodo/README.md) · página: https://claude.ai/artifact/MArQeozrka6Ufpbc1METMb · offline: `entrega/Metodo-Diagnostico-Atom.html` |
+| Retrato de todos os workflows do n8n (prospecção v2, automação, IA no WhatsApp, auditoria SEO) | [n8n/instancia/INVENTARIO.md](n8n/instancia/INVENTARIO.md) |
+| Automação ATOM_01–14 (fontes, lógica e testes) | abaixo |
+| Contexto para o Claude Code | [CLAUDE.md](CLAUDE.md) |
+
+---
+
 # Automação comercial, administrativa e operacional — Atom Digital
 
 Fluxos n8n que partem de eventos do Pipedrive e cobrem: e-mail → site → diagnóstico (Claude), cadastro pelo CNPJ,

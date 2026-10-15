@@ -1,0 +1,265 @@
+{
+  "workflow": {
+    "id": "c6CfSc7ijC3qLJ83",
+    "name": "GSC Semanal — Clientes ATOM",
+    "active": false,
+    "isArchived": false,
+    "versionId": "59b516c4-a306-4d0c-9c55-48f320079afc",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 6,
+    "createdAt": "2026-09-30T22:39:52.801Z",
+    "updatedAt": "2026-09-30T22:39:52.801Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": null,
+    "description": "Todo domingo às 22h puxa dados do Google Search Console dos 14 clientes da ATOM e salva um JSON no Drive para a análise semanal de SEO/GEO de segunda.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Domingo 22h": {
+        "main": [
+          [
+            {
+              "node": "Listar propriedades GSC",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Listar propriedades GSC": {
+        "main": [
+          [
+            {
+              "node": "Montar consultas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar consultas": {
+        "main": [
+          [
+            {
+              "node": "Consultar Search Analytics",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consultar Search Analytics": {
+        "main": [
+          [
+            {
+              "node": "Consolidar JSON",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consolidar JSON": {
+        "main": [
+          [
+            {
+              "node": "Salvar no Drive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "d351aab6-5132-4445-8cfa-1f498e6739e8",
+        "name": "Domingo 22h",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "weeksInterval": 1,
+                "triggerAtDay": [
+                  0
+                ],
+                "triggerAtHour": 22,
+                "triggerAtMinute": 0
+              }
+            ]
+          },
+          "misfirePolicy": "coalesce"
+        }
+      },
+      {
+        "id": "995d5db4-e8c7-4032-931a-87ca1fcda7ff",
+        "name": "Listar propriedades GSC",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          272,
+          128
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://www.googleapis.com/webmasters/v3/sites",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleOAuth2Api"
+        }
+      },
+      {
+        "id": "f33ea88b-701e-4aa1-9417-a71c8a106b9a",
+        "name": "Montar consultas",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          496,
+          128
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const alvo = [\n  'atomdigital.com.br', 'expodonto.com.br', 'orcaapp.com.br', 'clickguincho.com.br',\n  'drpedromaciel.com.br', 'astronautasfilmes.com.br', 'institutosiguimitanigute.com.br',\n  'aquasampa.com.br', 'drfredericoxavier.com.br', 'aconchegoidosos.com.br',\n  'primemateriaiseletricos.com.br', 'salazardigital.com.br', 'griffepneus.com.br', 'tetraconind.com.br'\n];\nconst sites = ($input.first().json.siteEntry || []).map(s => s.siteUrl);\nconst limpa = u => u.replace(/^sc-domain:/, '').replace(/^https?:\\/\\//, '').replace(/^www\\./, '').replace(/\\/$/, '');\nconst fmt = d => d.toISOString().slice(0, 10);\nconst dias = (d, n) => { const x = new Date(d); x.setUTCDate(x.getUTCDate() + n); return x; };\n// GSC tem ~3 dias de atraso: janela atual = 28 dias terminando 3 dias atrás\nconst fimAtual = dias(new Date(), -3);\nconst iniAtual = dias(fimAtual, -27);\nconst fimAnt = dias(iniAtual, -1);\nconst iniAnt = dias(fimAnt, -27);\nconst periodos = { atual: [fmt(iniAtual), fmt(fimAtual)], anterior: [fmt(iniAnt), fmt(fimAnt)] };\nconst faltando = [];\nconst out = [];\nfor (const dom of alvo) {\n  const cands = sites.filter(u => limpa(u) === dom);\n  if (!cands.length) { faltando.push(dom); continue; }\n  const siteUrl = cands.find(u => u.startsWith('sc-domain:')) || cands[0];\n  for (const [periodo, [ini, fim]] of Object.entries(periodos)) {\n    for (const dim of ['query', 'page']) {\n      out.push({ json: { dominio: dom, siteUrl, periodo, dimensao: dim,\n        body: { startDate: ini, endDate: fim, dimensions: [dim], rowLimit: dim === 'query' ? 1000 : 250, dataState: 'final' } } });\n    }\n  }\n}\nif (out.length) { out[0].json.faltando = faltando; out[0].json.periodos = periodos; }\nreturn out;"
+        }
+      },
+      {
+        "id": "d839d275-ee2c-49f5-808b-ad80ecf0b16e",
+        "name": "Consultar Search Analytics",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          720,
+          128
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "=https://www.googleapis.com/webmasters/v3/sites/{{ encodeURIComponent($json.siteUrl) }}/searchAnalytics/query",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleOAuth2Api",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.body) }}",
+          "options": {
+            "batching": {
+              "batch": {
+                "batchSize": 5,
+                "batchInterval": 1000
+              }
+            },
+            "timeout": 60000
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "d9580d85-cebe-4bf6-9e03-0e1fd4709691",
+        "name": "Consolidar JSON",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          800,
+          128
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const reqs = $('Montar consultas').all();\nconst res = $input.all();\nconst primeiro = reqs[0] ? reqs[0].json : {};\nconst resultado = {\n  geradoEm: new Date().toISOString(),\n  periodos: primeiro.periodos || {},\n  semPropriedadeNoGSC: primeiro.faltando || [],\n  sites: {}\n};\nres.forEach((r, i) => {\n  const idx = (r.pairedItem && typeof r.pairedItem.item === 'number') ? r.pairedItem.item : i;\n  const q = (reqs[idx] || reqs[i]).json;\n  const s = resultado.sites[q.dominio] = resultado.sites[q.dominio] || { siteUrl: q.siteUrl };\n  const chave = q.dimensao + '_' + q.periodo;\n  if (r.json.error) { s[chave] = { erro: String(r.json.error.message || r.json.error) }; return; }\n  const linhas = r.json.rows || [];\n  s[chave] = linhas.map(x => ({\n    k: x.keys[0], cliques: x.clicks, impressoes: x.impressions,\n    ctr: Math.round(x.ctr * 10000) / 100, posicao: Math.round(x.position * 10) / 10\n  }));\n  if (!s['totais_' + q.periodo] && q.dimensao === 'page') {\n    s['totais_' + q.periodo] = {\n      cliques: linhas.reduce((a, x) => a + x.clicks, 0),\n      impressoes: linhas.reduce((a, x) => a + x.impressions, 0)\n    };\n  }\n});\nconst data = new Date().toISOString().slice(0, 10);\nreturn [{ json: { nome: 'gsc-semanal-' + data + '.json', conteudo: JSON.stringify(resultado) } }];"
+        }
+      },
+      {
+        "id": "f792a647-bda6-4b6a-b919-8f9a5d4903ac",
+        "name": "Salvar no Drive",
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          1024,
+          128
+        ],
+        "parameters": {
+          "resource": "file",
+          "operation": "createFromText",
+          "name": "={{ $json.nome }}",
+          "content": "={{ $json.conteudo }}",
+          "driveId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "root",
+            "cachedResultName": "/ (Root folder)"
+          }
+        },
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "JslN0GAFUISauTt6",
+            "name": "ATOM Google Drive"
+          }
+        }
+      }
+    ],
+    "nodeGroups": [
+      {
+        "id": "27070c0f-a4d9-4443-946a-121015489ffb",
+        "name": "Coleta Search Console",
+        "nodeNames": [
+          "Listar propriedades GSC",
+          "Montar consultas",
+          "Consultar Search Analytics"
+        ],
+        "description": "Lista as propriedades do GSC e puxa consultas e páginas (28 dias atuais vs. 28 anteriores) dos 14 clientes"
+      },
+      {
+        "id": "6e68b6f5-bba5-45b9-8aa9-77727c7346c4",
+        "name": "Entrega no Drive",
+        "nodeNames": [
+          "Consolidar JSON",
+          "Salvar no Drive"
+        ],
+        "description": "Junta tudo num JSON gsc-semanal-AAAA-MM-DD.json no Drive, lido pela análise de segunda às 3h45"
+      }
+    ],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n\n\nSchedule trigger(s):\n\n\n\t\t\t\t<trigger 1>\n\t\t\t\t\t - Node name: Domingo 22h\n\t\t\t\t</trigger 1>\n\nScheduled workflows do not take inputs. To execute a specific schedule trigger, pass triggerNodeName only: { triggerNodeName: \"<node name>\" }."
+}
