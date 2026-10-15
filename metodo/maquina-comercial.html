@@ -1,0 +1,239 @@
+<title>Máquina Comercial Atom</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+/* Layout: o funil da Atom como uma trilha vertical de etapas (do primeiro card ao pós-venda), cada etapa com o que acontece, quem faz, workflow e situação. Identidade Atom: branco, Roboto fino com final em negrito, etiquetas IBM Plex Mono, roxo + verde. */
+:root {
+  --fundo: #ffffff; --tom: #f7f6fa; --lavanda: #f1edf8; --tinta: #1e1e1e; --suave: #5f5a66; --fio: #e9e6ee; --fio-forte: #d6d1de;
+  --roxo: #461b77; --verde: #00c864; --verde-texto: #08804a; --ambar: #a86400; --ambar-fundo: #fff4e0; --ruim: #c0392b; --ruim-fundo: #fdecea; --ok-fundo: #e6f8ee; --cinza-fundo: #f0eff3;
+  --sans: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif; --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --fundo: #141218; --tom: #1c1922; --lavanda: #241d30; --tinta: #ece9f1; --suave: #a9a3b4; --fio: #2c2834; --fio-forte: #3a3544;
+  --roxo: #b79cf0; --verde: #2fdc85; --verde-texto: #5fe3a0; --ambar: #f0b45a; --ambar-fundo: #2e2414; --ruim: #f08a7e; --ruim-fundo: #2e1a18; --ok-fundo: #142a1f; --cinza-fundo: #22202a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --fundo: #141218; --tom: #1c1922; --lavanda: #241d30; --tinta: #ece9f1; --suave: #a9a3b4; --fio: #2c2834; --fio-forte: #3a3544;
+  --roxo: #b79cf0; --verde: #2fdc85; --verde-texto: #5fe3a0; --ambar: #f0b45a; --ambar-fundo: #2e2414; --ruim: #f08a7e; --ruim-fundo: #2e1a18; --ok-fundo: #142a1f; --cinza-fundo: #22202a; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--fundo); color: var(--tinta); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.pagina { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 72px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(32px, 4.4vw, 48px); font-weight: 300; line-height: 1.12; letter-spacing: -.01em; }
+h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 300; line-height: 1.2; }
+h1 b, h2 b { font-weight: 700; }
+h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
+p { margin: 0; }
+.over { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--roxo); }
+.lead { color: var(--suave); max-width: 66ch; line-height: 1.75; }
+.cap { font-size: 12px; color: var(--suave); }
+.secao { display: grid; gap: 22px; padding-top: 56px; margin-top: 56px; border-top: 1px solid var(--fio); }
+.cab { display: grid; gap: 10px; }
+/* resumo */
+.resumo { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 2px solid var(--verde); }
+.resumo > div { padding: 16px 18px 16px 0; display: grid; gap: 4px; align-content: start; }
+.resumo > div + div { padding-left: 18px; border-left: 1px solid var(--fio); }
+.resumo b { font-size: 32px; font-weight: 500; color: var(--roxo); font-variant-numeric: tabular-nums; line-height: 1.1; }
+@media (max-width: 760px) { .resumo { grid-template-columns: 1fr 1fr; } .resumo > div:nth-child(3) { border-left: 0; padding-left: 0; } .resumo > div:nth-child(n+3) { border-top: 1px solid var(--fio); } }
+/* legenda e chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.st { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 3px 8px; white-space: nowrap; }
+.st::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.st.ok { color: var(--verde-texto); background: var(--ok-fundo); }
+.st.sim { color: var(--ambar); background: var(--ambar-fundo); }
+.st.off { color: var(--suave); background: var(--cinza-fundo); }
+.st.falta { color: var(--ruim); background: var(--ruim-fundo); }
+/* trilha */
+.fase { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 0 28px; }
+@media (max-width: 760px) { .fase { grid-template-columns: 1fr; } }
+.fase-nome { padding-top: 18px; display: grid; gap: 4px; align-content: start; }
+.fase-nome b { font-size: 15px; }
+.etapas { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--fio-forte); }
+.etapa { position: relative; padding: 16px 0 16px 26px; display: grid; gap: 8px; border-bottom: 1px solid var(--fio); }
+.etapa::before { content: ""; position: absolute; left: -7px; top: 22px; width: 12px; height: 12px; border-radius: 50%; background: var(--fundo); border: 2px solid var(--fio-forte); }
+.etapa.e-ok::before { border-color: var(--verde); background: var(--verde); }
+.etapa.e-sim::before { border-color: var(--ambar); }
+.etapa.e-falta::before { border-color: var(--ruim); background: var(--ruim-fundo); }
+.etapa.chave { background: var(--lavanda); }
+.etapa-topo { display: flex; justify-content: space-between; align-items: start; gap: 12px; flex-wrap: wrap; }
+.etapa-topo h3 { display: flex; gap: 10px; align-items: baseline; }
+.etapa-topo h3 .n { font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--suave); }
+.etapa p { font-size: 15px; max-width: 70ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--suave); }
+.meta code { font-family: var(--mono); font-size: 12px; color: var(--tinta); }
+.falta-txt { font-size: 14px; color: var(--ruim); }
+/* 3 fatos */
+.fatos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 860px) { .fatos { grid-template-columns: 1fr; } }
+.fato { border-top: 3px solid var(--verde); background: var(--tom); padding: 18px 20px; display: grid; gap: 8px; align-content: start; }
+.fato .cap b { color: var(--tinta); }
+.msg { border-left: 3px solid var(--roxo); background: var(--tom); padding: 16px 20px; display: grid; gap: 10px; max-width: 72ch; }
+.msg p { font-size: 15px; }
+/* listas */
+.lista { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--fio); }
+.lista li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; padding: 14px 0; border-bottom: 1px solid var(--fio); }
+.lista .i { font-family: var(--mono); font-size: 12px; color: var(--roxo); padding-top: 2px; }
+.lista b { font-weight: 700; }
+.ordem { counter-reset: f; }
+.tabela { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+th { text-align: left; font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--roxo); padding: 0 14px 10px 0; border-bottom: 1px solid var(--fio-forte); }
+td { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--fio); vertical-align: top; }
+a { color: var(--roxo); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--roxo); outline-offset: 2px; }
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--fio); }
+</style>
+
+<div class="pagina">
+  <header class="cab">
+    <span class="over">Comercial Atom · 2026 · mapa de 15/10/2026</span>
+    <h1>Do primeiro card <b>ao cliente pagando.</b></h1>
+    <p class="lead">O processo comercial da Atom inteiro, como ele vai rodar: um agente de IA aborda com três informações reais sobre a empresa, oferece o diagnóstico e, quando o lead aceita, o card anda no Pipedrive e o diagnóstico certo é feito sozinho. Depois vêm proposta, contrato, cobrança, financeiro e projeto. Cada etapa mostra o workflow do n8n que faz o trabalho e em que pé ele está hoje.</p>
+  </header>
+
+  <div class="resumo" style="margin-top:28px" aria-label="Situação geral">
+    <div><span class="over">Workflows no n8n</span><b>41</b><span class="cap">18 ligados hoje</span></div>
+    <div><span class="over">Etapas prontas</span><b>9</b><span class="cap">6 prontas e 3 em simulação, sem envio real</span></div>
+    <div><span class="over">Construídas, desligadas</span><b>3</b><span class="cap">base, reunião e cobrança</span></div>
+    <div><span class="over">Falta construir ou ligar</span><b>4</b><span class="cap">a maior: o diagnóstico automático pelo card</span></div>
+  </div>
+
+  <div class="chips" style="margin-top:18px" aria-label="Legenda">
+    <span class="st ok">Pronto</span><span class="st sim">Pronto, em simulação</span><span class="st off">Construído, desligado</span><span class="st falta">Falta construir ou ligar</span>
+  </div>
+
+  <section class="secao" aria-labelledby="t-processo">
+    <div class="cab"><span class="over">O processo</span><h2 id="t-processo">Uma linha só, <b>do lead ao pós-venda</b></h2>
+      <p class="lead">Hoje existem duas gerações de automação no n8n. A v2 (ATOM2) cuida da prospecção no funil Prospecção Ativa. A v1 (ATOM_) cuida de contrato, cobrança, financeiro e projeto, ligada ao Funil de vendas. O trabalho principal é ligar uma na outra e colocar o Método de Diagnóstico no meio.</p></div>
+
+    <div class="fase">
+      <div class="fase-nome"><span class="over">Antes do contato</span><b>Escolher e pesquisar</b><span class="cap">Nada sai para fora</span></div>
+      <ol class="etapas">
+        <li class="etapa e-off"><div class="etapa-topo"><h3><span class="n">01</span>Base de empresas</h3><span class="st off">Desligado</span></div>
+          <p>Lote de empresas do nicho (hoje, clínicas odontológicas) validado, normalizado e sem duplicatas.</p>
+          <div class="meta"><span><code>ATOM2_01_Importar_Empresas</code></span><span>Planilha Base_Prospeccao_ATOM_Odonto</span></div></li>
+        <li class="etapa e-falta chave"><div class="etapa-topo"><h3><span class="n">02</span>Pesquisa: 3 informações sobre o negócio</h3><span class="st falta">Falta construir</span></div>
+          <p>Para a abordagem não ser fria: três fatos verificados sobre a empresa, cada um com fonte e data. O N1 de hoje só olha defeitos do site; a pesquisa nova olha o negócio.</p>
+          <div class="meta"><span>Base: <code>ATOM2_03_Diagnostico_N1</code></span><span>Fontes: Google Maps (Apify), site, Semrush</span><span>Custo: centavos por empresa</span></div></li>
+        <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">03</span>Sua aprovação</h3><span class="st ok">Pronto</span></div>
+          <p>Você vê as três informações e a mensagem e aprova ou reprova. Nada é enviado sem isso.</p>
+          <div class="meta"><span><code>ATOM2_05_QA_Painel</code></span></div></li>
+        <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">04</span>Card no Pipedrive</h3><span class="st ok">Pronto</span></div>
+          <p>Aprovada, a empresa vira organização e negócio em Prospecção Ativa → <b>Abordagem autorizada</b>, com a pesquisa fixada na nota.</p>
+          <div class="meta"><span><code>ATOM2_W06_CRM_Sync</code></span></div></li>
+      </ol>
+    </div>
+
+    <div class="fase">
+      <div class="fase-nome"><span class="over">Abordagem</span><b>Agente de IA no WhatsApp</b><span class="cap">Sem preço até a proposta</span></div>
+      <ol class="etapas">
+        <li class="etapa e-sim"><div class="etapa-topo"><h3><span class="n">05</span>Primeira mensagem e cadência</h3><span class="st sim">Em simulação</span></div>
+          <p>D1 com as três informações e a oferta do diagnóstico gratuito; depois D3, D6, D9 e D12 em dias úteis. Card vai para <b>Contatado (cadência)</b>.</p>
+          <div class="meta"><span><code>ATOM2_W07_Cadencia</code></span><span>Envio: <code>ATOM_20_Enviar_WhatsApp</code> (desligado)</span></div>
+          <p class="falta-txt">Falta: a credencial da Meta (WhatsApp Cloud API) e o número 2. Sem ela, nenhuma mensagem sai.</p></li>
+        <li class="etapa e-sim"><div class="etapa-topo"><h3><span class="n">06</span>Resposta do lead</h3><span class="st sim">Em simulação</span></div>
+          <p>Cada resposta vira uma intenção: pode enviar, tenho interesse, quanto custa, já tenho agência, agora não, sem interesse, opt-out. Encerra a cadência e move o card para <b>Respondeu</b>. Pergunta de preço recebe resposta sem preço.</p>
+          <div class="meta"><span><code>ATOM2_W08_Roteador_Respostas</code></span><span>Conversa livre: <code>ATOM_15_IA_Prospeccao_Ativa</code> (desligado)</span></div></li>
+        <li class="etapa e-falta chave"><div class="etapa-topo"><h3><span class="n">07</span>Aceitou o diagnóstico: o card anda</h3><span class="st falta">Falta ligar</span></div>
+          <p>"Pode enviar" ou "tenho interesse" move o card para <b>Diagnóstico N2</b>. Esse movimento é o gatilho do diagnóstico automático.</p>
+          <div class="meta"><span>Mudança pequena no <code>ATOM2_W08</code></span><span>Também vale mover à mão</span></div></li>
+      </ol>
+    </div>
+
+    <div class="fase">
+      <div class="fase-nome"><span class="over">Diagnóstico</span><b>Método de Diagnóstico Atom</b><span class="cap">O mesmo motor da página</span></div>
+      <ol class="etapas">
+        <li class="etapa e-falta chave"><div class="etapa-topo"><h3><span class="n">08</span>Diagnóstico certo, feito sozinho</h3><span class="st falta">Falta construir</span></div>
+          <p>Card em Diagnóstico N2 → o Pipedrive decide qual diagnóstico (Oferta de interesse: Site, Marketing com IA → SEO, Agente de IA → Atendimento, Clínica completa → Geral + Site) → coleta → nota, urgências e plano pelo <code>metodo/motor.js</code>.</p>
+          <div class="meta"><span>Novo: <code>ATOM_30_Diagnostico_Metodo</code></span><span>Reaproveita a coleta do <code>ATOM_14_Diagnostico_Prospeccao</code></span></div></li>
+        <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">09</span>Sua aprovação e a entrega</h3><span class="st ok">Pronto</span></div>
+          <p>Você aprova no painel; o lead recebe um link privado (60 dias, sem preço). Na primeira abertura, o Pipedrive cria tarefa para você responder enquanto ele está olhando.</p>
+          <div class="meta"><span><code>ATOM2_05_QA_Painel</code></span><span><code>ATOM2_W09_Pagina_Diagnostico</code></span></div>
+          <p class="falta-txt">Falta: a página mostrar o diagnóstico novo do método (hoje mostra os achados do N1).</p></li>
+        <li class="etapa e-off"><div class="etapa-topo"><h3><span class="n">10</span>Reunião</h3><span class="st off">Desligado</span></div>
+          <p>A IA propõe horários e marca a reunião de 15 a 20 minutos; card vai para <b>Reunião agendada</b>.</p>
+          <div class="meta"><span><code>ATOM_15</code> + <code>ATOM_21_Aplicar_Acao</code></span></div></li>
+      </ol>
+    </div>
+
+    <div class="fase">
+      <div class="fase-nome"><span class="over">Venda</span><b>Proposta e aceite</b><span class="cap">O único ponto com preço</span></div>
+      <ol class="etapas">
+        <li class="etapa e-sim"><div class="etapa-topo"><h3><span class="n">11</span>Proposta</h3><span class="st sim">Pronto, preço digitado</span></div>
+          <p>Página privada e versionada da proposta; card vai para <b>Proposta</b> com o link. Hoje você digita serviço, escopo e valor no painel.</p>
+          <div class="meta"><span><code>ATOM2_W10_Proposta</code></span></div>
+          <p class="falta-txt">Falta: o painel vir preenchido pelo motor (ofertas, preço e escopo pelas urgências), como já faz o passo Proposta da página do método.</p></li>
+        <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">12</span>Aceite</h3><span class="st ok">Pronto</span></div>
+          <p>O cliente aceita na própria página; o negócio vira <b>Ganho</b> e nasce a tarefa de formalização.</p>
+          <div class="meta"><span><code>ATOM2_W10_Proposta</code></span></div></li>
+      </ol>
+    </div>
+
+    <div class="fase">
+      <div class="fase-nome"><span class="over">Depois do sim</span><b>Contrato, dinheiro e projeto</b><span class="cap">Construído na v1</span></div>
+      <ol class="etapas">
+        <li class="etapa e-falta chave"><div class="etapa-topo"><h3><span class="n">13</span>Contrato pela Autentique</h3><span class="st falta">Falta ligar</span></div>
+          <p>Conferência dos dados aprovados, contrato do modelo no Google Docs, assinatura do cliente e da Atom.</p>
+          <div class="meta"><span><code>ATOM_04_Conferencia_Formalizacao</code> → <code>ATOM_05_Autentique</code></span></div>
+          <p class="falta-txt">Falta: o aceite do W10 (funil Prospecção Ativa) disparar o ATOM_04, que hoje escuta o Funil de vendas e está contido.</p></li>
+        <li class="etapa e-off"><div class="etapa-topo"><h3><span class="n">14</span>Cobrança no Asaas e Controlle</h3><span class="st off">Bloqueado até o teste</span></div>
+          <p>Cliente e cobranças no Asaas (Site à vista, SEO em 6 parcelas), baixa e tarifa no Controlle.</p>
+          <div class="meta"><span><code>ATOM_06_Asaas</code></span><span><code>ATOM_07_Controlle</code></span></div></li>
+        <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">15</span>Projeto no Trello</h3><span class="st ok">Pronto</span></div>
+          <p>Contrato assinado e 1º pagamento confirmado → um cartão por cliente; o início da execução vem do Trello.</p>
+          <div class="meta"><span><code>ATOM_08_Trello</code></span></div></li>
+        <li class="etapa e-ok"><div class="etapa-topo"><h3><span class="n">16</span>Pedido de avaliação no Google</h3><span class="st ok">Pronto, depende do WhatsApp</span></div>
+          <p>Sete dias depois do início, um pedido por empresa, em horário comercial.</p>
+          <div class="meta"><span><code>ATOM_09_Avaliacao_Google</code></span><span>Erros e reconciliação: <code>ATOM_11</code></span><span>Indicadores: <code>ATOM2_W13</code></span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-fatos">
+    <div class="cab"><span class="over">Etapa 02 em detalhe</span><h2 id="t-fatos">As 3 informações <b>que esquentam a abordagem</b></h2>
+      <p class="lead">Uma sobre o negócio, uma sobre como o cliente encontra a empresa, uma oportunidade com número. Cada uma vem de uma fonte pública com data. Se a fonte não responde, a informação é trocada por outra, nunca inventada.</p></div>
+    <div class="fatos">
+      <div class="fato"><span class="over">1 · O negócio</span><h3>O que a empresa faz bem</h3><p class="cap">Do site e do perfil no Google: especialidade, tempo de mercado, diferencial que a própria empresa declara. <b>Mostra que olhamos de verdade.</b></p></div>
+      <div class="fato"><span class="over">2 · A reputação</span><h3>Como o cliente a vê</h3><p class="cap">Nota e número de avaliações no Google, comparados ao líder do bairro ou da cidade. <b>Elogia o que é forte, sem atacar.</b></p></div>
+      <div class="fato"><span class="over">3 · A oportunidade</span><h3>O que está ficando na mesa</h3><p class="cap">Posição no mapa para a busca principal, ou a procura mensal na cidade. <b>Abre a porta para o diagnóstico.</b></p></div>
+    </div>
+    <div class="msg" aria-label="Exemplo de mensagem com dados fictícios">
+      <span class="over">Exemplo de D1 · dados fictícios</span>
+      <p>Olá! Sou o Thiago, da Atom. Vi que a Clínica Exemplo é referência em implantes há 15 anos e tem nota 4,9 no Google, acima da média do bairro. Notei também que, para "dentista em Goiânia", ela aparece em 7º no mapa, onde estão cerca de 1.900 buscas por mês.</p>
+      <p>Preparei um diagnóstico gratuito mostrando como subir para os 3 primeiros. Posso te enviar?</p>
+      <span class="cap">Regra absoluta: nenhum preço na abordagem. O "pode enviar" é o aceite que move o card.</span>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-obra">
+    <div class="cab"><span class="over">O que construir</span><h2 id="t-obra">Sete peças, <b>nesta ordem</b></h2>
+      <p class="lead">A ordem segue o caminho do dinheiro: primeiro o que faz o lead aceitar o diagnóstico, por último o que acontece depois do sim. Tudo nasce desligado e é testado no negócio "[TESTE] Clínica Atom Sandbox".</p></div>
+    <ol class="lista">
+      <li><span class="i">A</span><span><b>Pesquisa das 3 informações (etapa 02).</b> Evoluir o ATOM2_03 para olhar o negócio, não só o site, e montar a D1 com a oferta do diagnóstico.</span></li>
+      <li><span class="i">B</span><span><b>Aceite move o card (etapa 07).</b> No W08, "pode enviar" e "tenho interesse" levam o card a Diagnóstico N2.</span></li>
+      <li><span class="i">C</span><span><b>Diagnóstico automático pelo card (etapa 08).</b> Novo ATOM_30: regra do Pipedrive, coleta do ATOM_14, motor do método, aprovação no painel.</span></li>
+      <li><span class="i">D</span><span><b>Página do diagnóstico novo (etapa 09).</b> O W09 passa a mostrar nota, urgências e plano do método, sem preço.</span></li>
+      <li><span class="i">E</span><span><b>Proposta preenchida pelo motor (etapa 11).</b> O painel do W10 abre com ofertas, preço e escopo já calculados; você só revisa.</span></li>
+      <li><span class="i">F</span><span><b>Aceite liga a formalização (etapa 13).</b> O ganho no W10 dispara ATOM_04 → Autentique → Asaas → Controlle → Trello.</span></li>
+      <li><span class="i">G</span><span><b>WhatsApp de verdade (etapas 05, 06 e 10).</b> Credencial da Meta, um único webhook de entrada e a passagem de simulação para produção por etapas.</span></li>
+    </ol>
+  </section>
+
+  <section class="secao" aria-labelledby="t-decisoes">
+    <div class="cab"><span class="over">Para destravar</span><h2 id="t-decisoes">O que depende <b>de você</b></h2></div>
+    <div class="tabela"><table>
+      <thead><tr><th>Decisão ou acesso</th><th>Por que trava</th><th>Etapas</th></tr></thead>
+      <tbody>
+        <tr><td><b>Plano do n8n</b></td><td>10 mil execuções por mês; o volume de 12 reuniões por dia pede cerca de 11,9 mil, e o limite já estourou em 09/10.</td><td>todas</td></tr>
+        <tr><td><b>WhatsApp Cloud API da Meta</b></td><td>Sem a credencial e o ID do número 2, nenhuma mensagem sai: tudo fica em simulação.</td><td>05, 06, 10, 16</td></tr>
+        <tr><td><b>Um só agente no número 2</b></td><td>Existem dois caminhos para as respostas (W08 por regras e ATOM_15 com Claude). Recomendo o W08 para classificar e o ATOM_15 só para conversa livre.</td><td>06, 10</td></tr>
+        <tr><td><b>Limite de gasto da Apify</b></td><td>Está em US$ 19; a pesquisa e os diagnósticos pedem cerca de US$ 33 por mês.</td><td>02, 08</td></tr>
+        <tr><td><b>Preço do Geral e do Atendimento</b></td><td>Sem preço, a proposta que sai do Diagnóstico Total fica incompleta.</td><td>11</td></tr>
+        <tr><td><b>Teste do Asaas e do Controlle</b></td><td>Cobrança e financeiro estão bloqueados até o teste no sandbox.</td><td>14</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <footer><p class="cap">Fontes: os 41 workflows exportados da instância n8n em 15/10/2026 (<code>n8n/instancia/</code>), os funis e campos lidos no Pipedrive e o Método de Diagnóstico. Detalhes em <code>docs/15_maquina_comercial.md</code>.</p></footer>
+</div>

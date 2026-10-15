@@ -10,6 +10,7 @@ Dono: Thiago Mota (thiago@atomdigital.com.br). Idioma do projeto: português do 
 | `metodo/` | Método de Diagnóstico Atom: página web (5 diagnósticos, 17 áreas, 12 pontos, custos, franquias, receita e lucro, Gerar com Apify e Pipedrive). Conteúdo em `metodo/dados.js`, regras em `metodo/motor.js` (fonte única da página e do n8n; depois de mudar, rode `npm run metodo:motor`). Plano do SaaS em `docs/14_saas_propostas.md`. Documentação em `metodo/README.md`. Publicada em https://claude.ai/artifact/MArQeozrka6Ufpbc1METMb |
 | `lib/`, `n8n/src/`, `n8n/code/` | Automação ATOM_01 a ATOM_14: lógica determinística e fontes dos workflows (SDK do n8n) |
 | `n8n/instancia/` | Retrato fiel de TODOS os workflows da instância n8n (`thiagoatom.app.n8n.cloud`), exportados pela API. É a referência do que está rodando, inclusive o que não tem fonte em `n8n/src/` (ATOM2_*, ATOM_12/13/15/19/20/21, auditorias de SEO). Ver `n8n/instancia/INVENTARIO.md` |
+| `docs/15_maquina_comercial.md` + `metodo/maquina-comercial.html` | O processo comercial de ponta a ponta (16 etapas), workflow de cada etapa, o que falta e a ordem de construção |
 | `docs/` | Arquitetura, campos, configuração, testes, ativação, guias do Pipedrive e do n8n |
 | `prompts/`, `schemas/`, `sql/` | Gerados por `npm run docs` |
 | `tests/` | `npm test` (sem rede) |
