@@ -1,0 +1,528 @@
+{
+  "workflow": {
+    "id": "tnu09qecdrx2J6s4",
+    "name": "ATOM2_01_Importar_Empresas",
+    "active": false,
+    "isArchived": false,
+    "versionId": "b3381db7-053e-42a8-800e-385c34755dc4",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 14,
+    "createdAt": "2026-10-09T18:41:03.876Z",
+    "updatedAt": "2026-10-09T22:52:15.953Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · Valida, normaliza e deduplica lotes de clínicas (spec 5.1/5.2). Grava em atom2_empresas e atom2_eventos. Não envia nada para fora do n8n.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Entrada": {
+        "main": [
+          [
+            {
+              "node": "Lote",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Lote": {
+        "main": [
+          [
+            {
+              "node": "Ler configuração",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Teste manual": {
+        "main": [
+          [
+            {
+              "node": "Lote de teste",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Lote de teste": {
+        "main": [
+          [
+            {
+              "node": "Lote",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler configuração": {
+        "main": [
+          [
+            {
+              "node": "Ler base",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ler base": {
+        "main": [
+          [
+            {
+              "node": "Validar e deduplicar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validar e deduplicar": {
+        "main": [
+          [
+            {
+              "node": "Roteador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Roteador": {
+        "main": [
+          [
+            {
+              "node": "Linha da empresa",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Linha do evento",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Resumo do lote",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha da empresa": {
+        "main": [
+          [
+            {
+              "node": "Gravar empresa",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Linha do evento": {
+        "main": [
+          [
+            {
+              "node": "Gravar evento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "0b9cdf3e-b8f3-4c4b-8f97-eb8111457906",
+        "name": "Entrada",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "workflowInputs",
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "empresas",
+                "type": "array"
+              },
+              {
+                "name": "lote_id",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "366a268e-123d-45a9-9064-f1ebe7570188",
+        "name": "Lote",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          440,
+          100
+        ],
+        "parameters": {
+          "mode": "manual",
+          "includeOtherFields": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "empresas",
+                "name": "empresas",
+                "value": "={{ Array.isArray($json.empresas) ? $json.empresas : [] }}",
+                "type": "array"
+              },
+              {
+                "id": "lote_id",
+                "name": "lote_id",
+                "value": "={{ $json.lote_id ?? \"\" }}",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "6b6fca8f-cc0a-4f7b-a339-7f986d4d9b66",
+        "name": "Teste manual",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          220
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "3b250ec2-c638-47f8-88ea-8ac0bd77f551",
+        "name": "Lote de teste",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          220,
+          220
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "{\n  \"lote_id\": \"TESTE-W01\",\n  \"empresas\": [\n    {\n      \"nome\": \"Clínica Sorriso Alfa\",\n      \"vertical\": \"odontologia\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"https://www.sorrisoalfa.test/contato\",\n      \"telefone\": \"(62) 3333-0001\",\n      \"whatsapp\": \"62 99999-0001\",\n      \"unidades\": 1,\n      \"fonte_url\": \"https://maps.google.com/?cid=1\",\n      \"fonte_data\": \"2026-10-01\"\n    },\n    {\n      \"nome\": \"Odonto Beta\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"odontobeta.test\",\n      \"place_id\": \"PLACE-BETA\",\n      \"fonte_url\": \"https://maps.google.com/?cid=2\",\n      \"fonte_data\": \"2026-10-01\"\n    },\n    {\n      \"nome\": \"Instituto Gama de Implantes\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Anápolis\",\n      \"uf\": \"go\",\n      \"site\": \"http://gamaimplantes.test\",\n      \"unidades\": 3,\n      \"fonte_url\": \"https://maps.google.com/?cid=3\",\n      \"fonte_data\": \"2026-09-30\"\n    },\n    {\n      \"nome\": \"Clínica Médica Delta\",\n      \"vertical\": \"médica\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"clinicadelta.test\",\n      \"telefone\": \"6232220004\",\n      \"fonte_url\": \"https://maps.google.com/?cid=4\",\n      \"fonte_data\": \"2026-10-02\"\n    },\n    {\n      \"nome\": \"Centro Médico Épsilon\",\n      \"vertical\": \"medical\",\n      \"cidade\": \"Brasília\",\n      \"uf\": \"DF\",\n      \"place_id\": \"PLACE-EPSILON\",\n      \"fonte_url\": \"https://maps.google.com/?cid=5\",\n      \"fonte_data\": \"2026-10-02\"\n    },\n    {\n      \"nome\": \"Dra. Zeta Ortodontia\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"instagram\": \"@Zeta.Orto\",\n      \"site\": \"https://instagram.com/zeta.orto\",\n      \"fonte_url\": \"https://instagram.com/zeta.orto\",\n      \"fonte_data\": \"2026-10-03\"\n    },\n    {\n      \"nome\": \"Eta Dermatologia\",\n      \"vertical\": \"medical\",\n      \"cidade\": \"Uberlândia\",\n      \"uf\": \"MG\",\n      \"site\": \"etaderma.test\",\n      \"telefone\": \"123\",\n      \"fonte_url\": \"https://maps.google.com/?cid=7\",\n      \"fonte_data\": \"2026-10-03\"\n    },\n    {\n      \"nome\": \"Theta Odonto Família\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"thetaodonto.test\",\n      \"unidades\": \"duas\",\n      \"fonte_url\": \"https://maps.google.com/?cid=8\",\n      \"fonte_data\": \"2026-10-04\"\n    },\n    {\n      \"nome\": \"Iota Clínica do Sono\",\n      \"vertical\": \"medical\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"iotasono.test\",\n      \"fonte_url\": \"https://maps.google.com/?cid=9\",\n      \"fonte_data\": \"2026-10-04\"\n    },\n    {\n      \"nome\": \"Kappa Estética Dental\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Aparecida de Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"kappadental.test\",\n      \"place_id\": \"PLACE-KAPPA\",\n      \"fonte_url\": \"https://maps.google.com/?cid=10\",\n      \"fonte_data\": \"2026-10-05\"\n    },\n    {\n      \"nome\": \"Sorriso Alfa (duplicada por domínio)\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"goiania\",\n      \"uf\": \"GO\",\n      \"site\": \"sorrisoalfa.test\",\n      \"fonte_url\": \"https://maps.google.com/?cid=11\",\n      \"fonte_data\": \"2026-10-05\"\n    },\n    {\n      \"nome\": \"Beta Odontologia (duplicada por place_id)\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"place_id\": \"PLACE-BETA\",\n      \"fonte_url\": \"https://maps.google.com/?cid=12\",\n      \"fonte_data\": \"2026-10-05\"\n    },\n    {\n      \"nome\": \"Zeta Orto (duplicada por instagram)\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"instagram\": \"zeta.orto\",\n      \"fonte_url\": \"https://maps.google.com/?cid=13\",\n      \"fonte_data\": \"2026-10-05\"\n    },\n    {\n      \"nome\": \"Lambda Odonto\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"XX\",\n      \"site\": \"lambda.test\",\n      \"fonte_url\": \"https://maps.google.com/?cid=14\",\n      \"fonte_data\": \"2026-10-05\"\n    },\n    {\n      \"nome\": \"Mu Clínica\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"https://facebook.com/muclinica\",\n      \"fonte_data\": \"2099-01-01\"\n    },\n    {\n      \"nome\": \"Gama Implantes Unidade Goiânia\",\n      \"vertical\": \"dental\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"gamaimplantes.test\",\n      \"fonte_url\": \"https://maps.google.com/?cid=16\",\n      \"fonte_data\": \"2026-10-05\"\n    },\n    {\n      \"nome\": \"Clínica Iota do Sono\",\n      \"vertical\": \"medical\",\n      \"cidade\": \"Goiânia\",\n      \"uf\": \"GO\",\n      \"site\": \"iotasono2.test\",\n      \"fonte_url\": \"https://maps.google.com/?cid=17\",\n      \"fonte_data\": \"2026-10-05\"\n    }\n  ]\n}"
+        }
+      },
+      {
+        "id": "453c4605-abc4-4763-a6b0-f1aeb058c89f",
+        "name": "Ler configuração",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "c61e9950-8846-4877-bbcf-4db061c8111d",
+        "name": "Ler base",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e3102cb1-a35a-44fd-9934-881e65f4fe5f",
+        "name": "Validar e deduplicar",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1100,
+          100
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// ATOM2_01 · Validar e deduplicar (Code node, \"Run Once for All Items\").\n// Fonte: ATOM2_ESPECIFICACAO.md, seções 5.1 e 5.2. Edite aqui e recole no nó.\nconst lote = $('Lote').first().json;\nconst cfgRows = $('Ler configuração').all().map((i) => i.json);\nconst baseRows = $('Ler base').all().map((i) => i.json).filter((r) => r && r.company_id);\n\nconst cfg = {};\nfor (const r of cfgRows) {\n  if (r && r.chave) cfg[String(r.chave).trim()] = { valor: String(r.valor ?? '').trim(), status: String(r.status ?? '').trim().toUpperCase() };\n}\nconst cfgValor = (k, padrao) => (cfg[k] && cfg[k].status === 'CONFIGURADO' && cfg[k].valor && !/^PENDENTE/i.test(cfg[k].valor) ? cfg[k].valor : padrao);\nconst verticais = cfgValor('VERTICAIS_PERMITIDAS', 'dental,medical').split(',').map((s) => s.trim()).filter(Boolean);\nconst exigirDominio = cfgValor('EXIGIR_DOMINIO', 'SIM').toUpperCase() !== 'NAO';\nconst FLUXOS = ['clinicas', 'sites'];\n\nconst UFS = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];\nconst GENERICAS = ['clinica','clinicas','odontologia','odontologica','odontologico','odonto','consultorio','centro','instituto','medica','medico','medicos','medicina','saude','ltda','me','eireli','epp','ss','dr','dra','de','da','do','das','dos','e','&'];\nconst NAO_SITE = ['instagram.com','facebook.com','fb.com','wa.me','api.whatsapp.com','whatsapp.com','linktr.ee','google.com','goo.gl','g.page','maps.app.goo.gl','doctoralia.com.br','tiktok.com','youtube.com','linkedin.com'];\nconst ALIAS_VERTICAL = { dental: 'dental', odontologia: 'dental', odonto: 'dental', dentista: 'dental', odontologica: 'dental', medical: 'medical', medica: 'medical', medico: 'medical', medicina: 'medical', 'clinica medica': 'medical' };\n\nconst semAcento = (s) => String(s ?? '').normalize('NFD').replace(/\\p{M}/gu, '').toLowerCase();\nconst limpo = (s) => semAcento(s).replace(/[^a-z0-9& ]/g, ' ').replace(/\\s+/g, ' ').trim();\nconst texto = (v) => (v === null || v === undefined ? '' : String(v).trim());\n\nfunction nomeNorm(nome) {\n  // Nome só com palavras genéricas (ex.: \"OdontoLógica\") usa o nome inteiro, para não gerar chave fraca vazia.\n  return limpo(nome).split(' ').filter((p) => p && !GENERICAS.includes(p)).join(' ') || limpo(nome);\n}\nfunction dominioDe(site) {\n  const m = /^(?:[a-z][a-z0-9+.-]*:\\/\\/)?([^/?#\\s]+)/i.exec(texto(site));\n  if (!m) return '';\n  const host = m[1].toLowerCase().replace(/:\\d+$/, '').replace(/^www\\./, '').replace(/\\.$/, '');\n  return /^[a-z0-9-]+(\\.[a-z0-9-]+)+$/.test(host) && !/^\\d+(\\.\\d+){3}$/.test(host) ? host : '';\n}\nfunction ehNaoSite(dominio) {\n  return NAO_SITE.some((d) => dominio === d || dominio.endsWith('.' + d));\n}\nfunction instagramDe(v, siteOriginal) {\n  let s = texto(v);\n  if (!s) {\n    const m = /instagram\\.com\\/([^/?#\\s]+)/i.exec(texto(siteOriginal));\n    s = m ? m[1] : '';\n  }\n  s = s.replace(/^https?:\\/\\/(www\\.)?instagram\\.com\\//i, '').replace(/^@/, '').replace(/[/?#].*$/, '').toLowerCase();\n  return /^[a-z0-9._]{1,30}$/.test(s) ? s : '';\n}\nfunction telefoneDe(v) {\n  let d = texto(v).replace(/\\D/g, '');\n  if (!d) return { valor: '', aviso: '' };\n  // Já com DDI 55 (12–13 dígitos) não recebe outro 55; sem DDI (10–11 dígitos) recebe. DDD 11–99; celular (11 dígitos) começa com 9.\n  if (!(d.startsWith('55') && (d.length === 12 || d.length === 13)) && (d.length === 10 || d.length === 11)) d = '55' + d;\n  const nac = d.slice(2);\n  const ok = /^55\\d{10,11}$/.test(d) && Number(nac.slice(0, 2)) >= 11 && (nac.length === 10 || nac[2] === '9');\n  if (!ok) return { valor: '', aviso: 'telefone inválido descartado: ' + texto(v) };\n  return { valor: d, aviso: '' };\n}\nfunction dataISO(v) {\n  const s = texto(v);\n  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(s)) return null;\n  const d = new Date(s + 'T00:00:00Z');\n  if (isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== s) return null;\n  return s;\n}\nfunction hash(s) {\n  let h = 0x811c9dc5;\n  for (let i = 0; i < s.length; i++) {\n    h ^= s.charCodeAt(i);\n    h = Math.imul(h, 0x01000193) >>> 0;\n  }\n  return h.toString(16).padStart(8, '0');\n}\n\nconst agora = new Date().toISOString();\nconst hoje = agora.slice(0, 10);\nconst loteId = texto(lote.lote_id) || 'LOTE-' + agora.replace(/[-:T]/g, '').slice(0, 12);\nconst entrada = Array.isArray(lote.empresas) ? lote.empresas : [];\n\n// Índices da base existente + o que já foi aceito neste lote.\nconst idx = { dominio: new Map(), place: new Map(), insta: new Map(), fraca: new Map() };\nfunction indexar(r) {\n  if (r.dominio) {\n    if (!idx.dominio.has(r.dominio)) idx.dominio.set(r.dominio, []);\n    idx.dominio.get(r.dominio).push(r);\n  }\n  if (r.place_id) idx.place.set(r.place_id, r);\n  if (r.instagram) idx.insta.set(r.instagram, r);\n  if (r.chave_fraca) {\n    if (!idx.fraca.has(r.chave_fraca)) idx.fraca.set(r.chave_fraca, []);\n    idx.fraca.get(r.chave_fraca).push(r);\n  }\n}\nbaseRows.forEach(indexar);\n\nconst saida = [];\nconst resumo = { lote_id: loteId, recebidas: entrada.length, gravadas: 0, revisao: 0, duplicadas: 0, invalidas: 0 };\n\nentrada.forEach((bruto, i) => {\n  const e = bruto && typeof bruto === 'object' ? bruto : {};\n  const erros = [];\n  const avisos = [];\n\n  const nome = texto(e.nome);\n  if (nome.length < 2 || nome.length > 120) erros.push('nome ausente ou fora de 2–120 caracteres');\n\n  const vRaw = limpo(e.vertical);\n  const vertical = ALIAS_VERTICAL[vRaw] || '';\n  if (!vertical) erros.push('vertical desconhecida: ' + texto(e.vertical));\n  else if (!verticais.includes(vertical)) erros.push('vertical fora do piloto: ' + vertical);\n\n  const cidade = texto(e.cidade);\n  if (cidade.length < 2 || cidade.length > 80) erros.push('cidade ausente');\n  const uf = texto(e.uf).toUpperCase();\n  if (!UFS.includes(uf)) erros.push('UF inválida: ' + texto(e.uf));\n\n  const fonteUrl = texto(e.fonte_url);\n  if (!/^https?:\\/\\/\\S+\\.\\S+/i.test(fonteUrl)) erros.push('fonte_url ausente ou inválida');\n  const fonteData = dataISO(e.fonte_data);\n  if (!fonteData) erros.push('fonte_data ausente ou inválida (use AAAA-MM-DD)');\n  else if (fonteData > hoje) erros.push('fonte_data no futuro');\n\n  let dominio = dominioDe(e.site);\n  if (dominio && ehNaoSite(dominio)) {\n    avisos.push('site informado é rede social/agregador, não site próprio: ' + dominio);\n    dominio = '';\n  } else if (texto(e.site) && !dominio) {\n    avisos.push('site inválido descartado: ' + texto(e.site));\n  }\n  const placeId = texto(e.place_id);\n  const instagram = instagramDe(e.instagram, e.site);\n  if (exigirDominio && !dominio) erros.push('sem domínio oficial (Playbook Operacional §2)');\n  else if (!dominio && !placeId && !instagram) erros.push('sem identificador: informe site próprio, place_id ou instagram');\n\n  const fluxoRaw = limpo(e.fluxo);\n  const fluxo = fluxoRaw ? fluxoRaw : 'clinicas';\n  if (!FLUXOS.includes(fluxo)) erros.push('fluxo inválido: ' + texto(e.fluxo) + ' (use clinicas ou sites)');\n\n  const tel = telefoneDe(e.telefone);\n  const wpp = telefoneDe(e.whatsapp);\n  if (tel.aviso) avisos.push(tel.aviso);\n  if (wpp.aviso) avisos.push(wpp.aviso.replace('telefone', 'whatsapp'));\n\n  let unidades = null;\n  if (texto(e.unidades) !== '') {\n    const u = Number(e.unidades);\n    if (Number.isInteger(u) && u >= 1 && u <= 500) unidades = u;\n    else avisos.push('unidades inválido descartado: ' + texto(e.unidades));\n  }\n\n  const ref = { posicao: i + 1, nome: nome || '(sem nome)' };\n\n  if (erros.length) {\n    resumo.invalidas += 1;\n    saida.push({ json: { destino: 'evento', evento: { tipo: 'IMPORT_INVALIDA', motivo: erros.join('; '), company_id: '', dados: JSON.stringify({ ...ref, avisos, entrada: e }) } } });\n    return;\n  }\n\n  const nn = nomeNorm(nome);\n  const chaveFraca = [nn, limpo(cidade), uf].join('|');\n  const chaveForte = dominio ? 'd:' + dominio : placeId ? 'p:' + placeId : 'i:' + instagram;\n  const companyId = 'c_' + hash(chaveForte + '|' + limpo(cidade) + '|' + uf);\n\n  let decisao = null;\n  const mesmoPlace = placeId && idx.place.get(placeId);\n  const mesmoInsta = instagram && idx.insta.get(instagram);\n  const mesmoDominio = dominio ? idx.dominio.get(dominio) || [] : [];\n  const mesmaCidade = mesmoDominio.find((r) => limpo(r.cidade) === limpo(cidade) && r.uf === uf);\n  if (mesmoPlace) decisao = { tipo: 'DUPLICADA', motivo: 'mesmo place_id de ' + mesmoPlace.company_id, ref: mesmoPlace.company_id };\n  else if (mesmaCidade) decisao = { tipo: 'DUPLICADA', motivo: 'mesmo domínio e cidade de ' + mesmaCidade.company_id, ref: mesmaCidade.company_id };\n  else if (mesmoInsta) decisao = { tipo: 'DUPLICADA', motivo: 'mesmo instagram de ' + mesmoInsta.company_id, ref: mesmoInsta.company_id };\n  else if (mesmoDominio.length) decisao = { tipo: 'POSSIVEL_FILIAL', motivo: 'mesmo domínio em outra cidade: ' + mesmoDominio.map((r) => r.company_id).join(', ') };\n  else if (idx.fraca.has(chaveFraca)) decisao = { tipo: 'AMBIGUA', motivo: 'mesmo nome e cidade, identificador diferente: ' + idx.fraca.get(chaveFraca).map((r) => r.company_id).join(', ') };\n\n  if (decisao && decisao.tipo === 'DUPLICADA') {\n    resumo.duplicadas += 1;\n    saida.push({ json: { destino: 'evento', evento: { tipo: 'IMPORT_DUPLICADA', motivo: decisao.motivo, company_id: decisao.ref, dados: JSON.stringify({ ...ref, avisos }) } } });\n    return;\n  }\n\n  const revisao = Boolean(decisao);\n  const linha = {\n    company_id: companyId,\n    nome,\n    nome_norm: nn,\n    razao_social: texto(e.razao_social),\n    cnpj: texto(e.cnpj).replace(/[^0-9A-Za-z]/g, '').toUpperCase(),\n    vertical,\n    cidade,\n    uf,\n    bairro: texto(e.bairro),\n    dominio,\n    place_id: placeId,\n    instagram,\n    telefone: tel.valor,\n    whatsapp: wpp.valor,\n    unidades,\n    fonte_url: fonteUrl,\n    fonte_data: fonteData,\n    chave_forte: chaveForte,\n    chave_fraca: chaveFraca,\n    status: revisao ? 'review_pending' : 'validated',\n    funil_etapa: revisao ? 'F0' : 'F1',\n    fluxo,\n    company_status: texto(e.company_status),\n    contact_channel: texto(e.contact_channel),\n    contact_permission_status: texto(e.contact_permission_status) || 'nao_avaliado',\n    owner: texto(e.owner),\n    status_motivo: revisao ? decisao.tipo + ': ' + decisao.motivo : avisos.join('; '),\n    score: null,\n    faixa: '',\n    score_versao: '',\n    score_detalhe: '',\n    lote_id: loteId,\n    opt_out: false,\n    pipedrive_org_id: '',\n    pipedrive_lead_id: '',\n    criado_em: agora,\n    atualizado_em: agora,\n  };\n  indexar(linha);\n  if (revisao) resumo.revisao += 1;\n  else resumo.gravadas += 1;\n  saida.push({ json: { destino: 'gravar', linha } });\n  if (revisao) {\n    saida.push({ json: { destino: 'evento', evento: { tipo: 'IMPORT_' + decisao.tipo, motivo: decisao.motivo, company_id: companyId, dados: JSON.stringify({ ...ref, avisos }) } } });\n  }\n});\n\n// Cada evento recebe identificação e data; o resumo vai no último item.\nsaida.forEach((s, n) => {\n  if (s.json.destino === 'evento') {\n    s.json.evento = { event_id: loteId + '-' + String(n + 1).padStart(4, '0'), correlation_id: loteId, workflow: 'ATOM2_01', ocorrido_em: agora, ...s.json.evento };\n  }\n});\nsaida.push({ json: { destino: 'resumo', resumo } });\nreturn saida;\n"
+        }
+      },
+      {
+        "id": "ea9874ae-c36c-4983-a3d6-8454efe74021",
+        "name": "Roteador",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1320,
+          100
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "outputKey": "gravar",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "gravar"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "evento",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "evento"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "outputKey": "resumo",
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.destino }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "resumo"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "e74c074f-cc45-4aea-a958-4f7e63b66d1c",
+        "name": "Linha da empresa",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1540,
+          -100
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.linha }}"
+        }
+      },
+      {
+        "id": "ee9e315f-d79d-484c-abe0-b7e86bf8ec62",
+        "name": "Gravar empresa",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1760,
+          -100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1JOPdQzYupmL9HwZ",
+            "cachedResultName": "atom2_empresas"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "27068194-7d83-4605-b011-0046525fe279",
+        "name": "Linha do evento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1540,
+          100
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.evento }}"
+        }
+      },
+      {
+        "id": "b3432ed6-2232-4b1b-b280-163905f4a383",
+        "name": "Gravar evento",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1760,
+          100
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e6TommLZgw2TFuKD",
+            "cachedResultName": "atom2_eventos"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "69b25793-a946-46bf-a006-7027f649300a",
+        "name": "Resumo do lote",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1540,
+          300
+        ],
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={{ $json.resumo }}"
+        }
+      },
+      {
+        "id": "2d4332eb-5426-4cc3-a6f6-e532d3adc868",
+        "name": "Sticky Note cc61dcf5",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -260
+        ],
+        "parameters": {
+          "content": "## ATOM2_01 · Importar empresas\nValida, normaliza e deduplica um lote (spec 5.1 e 5.2).\n\n**Entrada:** { empresas: [...], lote_id }\n**Grava:** validated / review_pending em atom2_empresas; duplicadas, inválidas e revisões em atom2_eventos.\n**Não envia nada para fora do n8n.**\n\nFonte do código: n8n/code/w01_validar.js. Testes: n8n/tests/run_w01.js",
+          "color": 4,
+          "width": 520,
+          "height": 240
+        }
+      }
+    ],
+    "nodeGroups": [
+      {
+        "id": "a0868ff8-6c0a-4c3e-937d-460c62afd7fd",
+        "name": "Validação",
+        "nodeNames": [
+          "Ler configuração",
+          "Ler base",
+          "Validar e deduplicar"
+        ],
+        "description": "Lê config e base, valida cada empresa e decide: gravar, revisar, duplicada ou inválida"
+      },
+      {
+        "id": "00a537fa-f33b-4483-89bc-c753e151f838",
+        "name": "Gravação",
+        "nodeNames": [
+          "Roteador",
+          "Linha da empresa",
+          "Gravar empresa",
+          "Linha do evento",
+          "Gravar evento",
+          "Resumo do lote"
+        ],
+        "description": "Grava empresas e eventos nas tabelas atom2 e devolve o resumo do lote"
+      }
+    ],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}

@@ -1,0 +1,325 @@
+{
+  "workflow": {
+    "id": "T6kgz121QxSXbOIw",
+    "name": "ATOM2_00_Manutencao",
+    "active": false,
+    "isArchived": false,
+    "versionId": "c8729540-de80-43ba-ab38-759b3718f809",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "nodeCount": 7,
+    "createdAt": "2026-10-09T19:12:50.621Z",
+    "updatedAt": "2026-10-09T19:12:50.621Z",
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": true
+    },
+    "tags": [],
+    "parentFolderId": "oiDfuh8svmxSCIm6",
+    "description": "v2 · Contenção R1 na v1 (atom_config, fila atom_mensagens) e config da v2. Execução manual única.",
+    "scopes": [
+      "execution:delete",
+      "execution:list",
+      "execution:read",
+      "execution:reveal",
+      "workflow:create",
+      "workflow:delete",
+      "workflow:disableRedaction",
+      "workflow:enableRedaction",
+      "workflow:execute",
+      "workflow:execute-chat",
+      "workflow:export",
+      "workflow:import",
+      "workflow:list",
+      "workflow:move",
+      "workflow:publish",
+      "workflow:read",
+      "workflow:share",
+      "workflow:unpublish",
+      "workflow:unshare",
+      "workflow:update"
+    ],
+    "canExecute": true,
+    "connections": {
+      "Executar manutenção": {
+        "main": [
+          [
+            {
+              "node": "Contenção v1 (atom_config)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Cancelar fila antiga (atom_mensagens)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Config v2 (atom2_config)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Contenção v1 (atom_config)": {
+        "main": [
+          [
+            {
+              "node": "Gravar atom_config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Config v2 (atom2_config)": {
+        "main": [
+          [
+            {
+              "node": "Gravar atom2_config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "3f3ee53a-0e4c-490e-87a5-b725fe15bdba",
+        "name": "Executar manutenção",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          100
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "94697bb6-427d-4318-9b36-e9d770ec23d2",
+        "name": "Contenção v1 (atom_config)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          240,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// Contenção do risco R1 (auditoria Fase A), aprovada pelo Thiago em 09/10/2026.\nconst nota = ' [09/10/2026: contenção R1 até o funil F0–F12 existir; ver handoff 3.4]';\nreturn [\n  { chave: 'FUNIL_REGRAS_ATIVAS', valor: 'false', status: 'CONFIGURADO', descricao: 'true liga as regras do funil (ATOM_12). false: só registra o estado.' + nota },\n  { chave: 'PD_STAGE_PROPOSTA_ACEITA_ID', valor: '', status: 'PENDENTE', descricao: 'Etapa que significa proposta aceita. Vazio/PENDENTE: ATOM_01 e ATOM_04 não formalizam. Antes era 28 (hoje \"Proposta\").' + nota },\n  { chave: 'DIAG_PROSP_AO_CRIAR', valor: 'false', status: 'CONFIGURADO', descricao: 'true: gera o diagnóstico pago ao criar negócio. false: só por pedido manual; o N1 da v2 roda em lote.' + nota }\n].map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "6de657d3-4a9d-4828-b884-37acf0ed9960",
+        "name": "Gravar atom_config",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          480,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rlZWp7gPKiB6xzw3",
+            "cachedResultName": "atom_config"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "chave",
+                "condition": "eq",
+                "keyValue": "={{ $json.chave }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "chave": "={{ $json.chave }}",
+              "valor": "={{ $json.valor }}",
+              "status": "={{ $json.status }}",
+              "descricao": "={{ $json.descricao }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "chave",
+                "displayName": "chave",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "valor",
+                "displayName": "valor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "descricao",
+                "displayName": "descricao",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "12367999-e3f3-4689-8375-c1efb76eb46c",
+        "name": "Cancelar fila antiga (atom_mensagens)",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          240,
+          200
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "zzbPCzCqyhV9ZklK",
+            "cachedResultName": "atom_mensagens"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "AGENDADA"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "CANCELADA",
+              "erro": "Cancelada em 09/10/2026: roteiro do processo antigo (contenção R1)"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "erro",
+                "displayName": "erro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "3388ff1a-fd05-4fe1-a950-f0c4091c8f6d",
+        "name": "Config v2 (atom2_config)",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          240,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "return [\n  { chave: 'CONSULTOR_NOME', valor: 'Zayra', status: 'CONFIGURADO', descricao: 'Nome em [consultor] dos scripts: \"Sou Zayra, da Atom Digital\" (decisão C8). Confirma ser IA se perguntarem; nunca assina como Thiago.' },\n  { chave: 'NUMERO_EXIBIDO', valor: '', status: 'PENDENTE', descricao: 'Número de contato exibido ao cliente (decisão C11, pendente com o Thiago).' },\n  { chave: 'QA_REVISOR', valor: 'Thiago', status: 'CONFIGURADO', descricao: 'Quem aprova achados e 100% das mensagens D1 (F2 → F3).' }\n].map((j) => ({ json: j }));"
+        }
+      },
+      {
+        "id": "a8204360-019e-440a-bc2e-066182ed4732",
+        "name": "Gravar atom2_config",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          480,
+          400
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Yb2LJ7dc5wzPw5UP",
+            "cachedResultName": "atom2_config"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "chave",
+                "condition": "eq",
+                "keyValue": "={{ $json.chave }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null
+          }
+        }
+      },
+      {
+        "id": "9d63b23c-ee64-424e-82ae-6cebb3e2d16c",
+        "name": "Sticky Note 1affebe3",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -40,
+          -260
+        ],
+        "parameters": {
+          "content": "## ATOM2_00 · Manutenção (contenção R1)\nExecução manual, uma vez.\n1. atom_config: FUNIL_REGRAS_ATIVAS=false, PD_STAGE_PROPOSTA_ACEITA_ID vazio/PENDENTE, DIAG_PROSP_AO_CRIAR=false.\n2. atom_mensagens: AGENDADA → CANCELADA (roteiros antigos).\n3. atom2_config: CONSULTOR_NOME, NUMERO_EXIBIDO, QA_REVISOR.\nRollback: histórico do handoff (valores antigos: true / 28 / true).",
+          "color": 3,
+          "width": 520,
+          "height": 220
+        }
+      }
+    ],
+    "nodeGroups": [],
+    "activeVersion": null,
+    "meta": {
+      "aiBuilderAssisted": true,
+      "builderVariant": "mcp"
+    }
+  },
+  "triggerInfo": "This workflow has the following trigger(s):\n"
+}
