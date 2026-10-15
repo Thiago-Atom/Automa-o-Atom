@@ -4,427 +4,407 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Roboto:wght@300;400;500;700&display=swap">
 <style>
-/* Visual da apresentação "Atom 2026 · Agência de IA": branco, roxo profundo, pontos e fios verdes, títulos Light com palavra em negrito, lascas diagonais nos cantos. */
+/* Mesmo sistema do deck "Atom 2026 · Agência de IA": página branca, título Light com a segunda frase em Bold,
+   lascas de foto roxa nos cantos, fio e ponto verdes, etiqueta mono espaçada, número de página mono. Um tema só, de propósito. */
 :root {
-  --roxo: #461B77;
-  --roxo-texto: #461B77;
-  --lavanda: #f3eff9;
-  --verde: #00C864;
-  --verde-texto: #087A45;
-  --fundo: #ffffff;
-  --superficie: #f6f4fa;
-  --texto: #1e1e1e;
-  --suave: #5d5470;
-  --linha: #e3dcef;
-  --ruim: #b3261e; --ruim-fundo: #fbe9e7;
-  --medio: #a35f00; --medio-fundo: #fbf1de;
-  --bom: #2e7d32; --bom-fundo: #e5f4e6;
+  color-scheme: light;
+  --roxo: #461b77;
+  --verde: #00c864;
+  --verde-escuro: #078a48;
+  --tinta: #1e1e1e;
+  --cinza: #585858;
+  --fio: #e4e4e4;
+  --lavanda: #f3f1f8;
+  --branco: #ffffff;
+  --ruim: #b3261e;
+  --medio: #a35f00;
+  --bom: #2e7d32;
   --sans: Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: "IBM Plex Mono", "Courier New", monospace;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --roxo-texto: #c7aef0; --lavanda: #2a2138; --verde-texto: #4fe39a;
-    --fundo: #16101f; --superficie: #211a2d; --texto: #f1edf7; --suave: #b7aac9; --linha: #3a2f4b;
-    --ruim: #ff8a80; --ruim-fundo: #3b2222; --medio: #e8b860; --medio-fundo: #382c17; --bom: #74d88a; --bom-fundo: #1d3323;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --roxo-texto: #c7aef0; --lavanda: #2a2138; --verde-texto: #4fe39a;
-  --fundo: #16101f; --superficie: #211a2d; --texto: #f1edf7; --suave: #b7aac9; --linha: #3a2f4b;
-  --ruim: #ff8a80; --ruim-fundo: #3b2222; --medio: #e8b860; --medio-fundo: #382c17; --bom: #74d88a; --bom-fundo: #1d3323;
-  color-scheme: dark;
-}
-
 * { box-sizing: border-box; }
-body { background: var(--fundo); color: var(--texto); font-family: var(--sans); font-size: 16px; line-height: 1.6; }
-.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3 { margin: 0; font-weight: 300; text-wrap: balance; }
+body { background: var(--branco); color: var(--tinta); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
+p { margin: 0; }
+h1, h2, h3 { margin: 0; font-weight: 300; letter-spacing: -.01em; text-wrap: balance; }
 h1 b, h2 b { font-weight: 700; }
-h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.08; }
-h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1.12; }
-h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
-p { margin: 0; max-width: 68ch; }
-a { color: var(--roxo-texto); }
-.etq { font-family: var(--mono); font-weight: 500; font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--roxo-texto); }
-.mono { font-family: var(--mono); }
-.suave { color: var(--suave); }
-:focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; }
+h1 { font-size: clamp(2.2rem, 4.2vw, 3.5rem); line-height: 1.12; }
+h2 { font-size: clamp(1.9rem, 3.4vw, 2.8rem); line-height: 1.14; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--verde); outline-offset: 3px; }
+
+.mono { font-family: var(--mono); font-size: .72rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); }
+.fecho { font-weight: 700; color: var(--roxo); }
+.cinza { color: var(--cinza); }
 
 /* Barra */
-.barra { border-bottom: 1px solid var(--linha); background: var(--fundo); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
-.barra .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px; flex-wrap: wrap; }
-.marca { display: grid; line-height: 1; text-decoration: none; }
-.marca b { font-weight: 700; letter-spacing: .14em; font-size: 1.15rem; color: var(--roxo-texto); }
-.marca span { font-family: var(--mono); font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--verde-texto); margin-top: 3px; }
-.migalha { font-family: var(--mono); font-size: .8rem; color: var(--suave); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.migalha a { text-decoration: none; font-weight: 500; }
-.migalha a:hover { text-decoration: underline; }
+.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--branco); border-bottom: 1px solid var(--fio); }
+.barra .in { max-width: 1440px; margin: 0 auto; padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.barra img { height: 30px; width: auto; display: block; }
+.migalha { font-family: var(--mono); font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cinza); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.migalha a { color: var(--roxo); text-decoration: none; font-weight: 500; }
 
-/* Abertura com as faixas diagonais da capa */
-.abertura { position: relative; overflow: hidden; border-bottom: 1px solid var(--linha); }
-.abertura .wrap { position: relative; z-index: 1; padding-block: 64px 56px; display: grid; gap: 18px; }
-.abertura .wrap > * { max-width: min(600px, 56vw); }
-.abertura .arte { position: absolute; top: 0; right: 0; bottom: 0; width: 46%; background-image: url("img/inst.jpg"); background-size: cover; background-position: 100% 50%; clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%); }
-.abertura p.lead { font-size: 1.1rem; color: var(--suave); }
-.lasca { position: absolute; top: 0; right: 0; width: min(30vw, 300px); height: 78px; overflow: hidden; clip-path: polygon(26% 0, 100% 0, 100% 100%, 0 100%); background: linear-gradient(90deg, var(--roxo), #7a55b8); }
-.lasca::after { content: ""; position: absolute; top: 0; right: 0; width: 34%; height: 100%; background: var(--verde); clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%); }
+/* Página: cada seção se comporta como uma página do deck */
+.pag { position: relative; overflow: hidden; border-bottom: 1px solid var(--fio); }
+.pag .in { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding-block: clamp(48px, 6vw, 80px) clamp(56px, 6vw, 88px); padding-left: max(16px, min(5vw, 72px), env(safe-area-inset-left, 0px)); padding-right: max(16px, min(5vw, 72px), env(safe-area-inset-right, 0px)); }
+.num { position: absolute; right: max(16px, min(5vw, 72px)); bottom: 22px; font-family: var(--mono); font-size: .72rem; letter-spacing: .35em; color: var(--roxo); z-index: 2; }
+.lasca { position: absolute; top: 0; right: max(16px, 4vw); width: clamp(150px, 20vw, 290px); height: auto; z-index: 0; pointer-events: none; }
+.lasca-base { position: absolute; bottom: 0; left: 0; width: clamp(140px, 18vw, 260px); height: auto; z-index: 0; pointer-events: none; }
+.pag.roxa { background: var(--roxo); color: var(--branco); border-bottom: 0; }
+.pag.roxa .mono, .pag.roxa .num { color: var(--verde); }
+.pag.roxa .fecho { color: var(--branco); }
+.pag.lav { background: var(--lavanda); }
+.titulo { display: grid; gap: 10px; max-width: 760px; margin-bottom: clamp(32px, 4vw, 52px); padding-right: clamp(0px, 16vw, 260px); }
+.titulo p { color: var(--cinza); max-width: 62ch; }
+.pag.roxa .titulo p { color: #dcd3ea; }
+
+/* Capa */
+.capa .in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 24px; padding-block: 0; min-height: min(640px, 82vh); }
+.capa .txt { display: grid; gap: 22px; padding-block: 56px; }
+.capa .sub { font-weight: 700; font-size: .95rem; line-height: 1.7; }
+.capa .logo { width: 150px; height: auto; display: block; margin-top: 18px; }
+.capa .arte { align-self: stretch; display: flex; justify-content: flex-end; }
+.capa .arte img { height: 100%; max-height: 640px; width: auto; max-width: 100%; object-fit: contain; object-position: right top; display: block; }
 @media (max-width: 760px) {
-  .abertura .arte { width: 34%; opacity: .9; }
-  .abertura .wrap > * { max-width: calc(100% - 26vw); }
-  .lasca { width: 120px; height: 46px; }
+  .capa .in { grid-template-columns: 1fr; min-height: 0; }
+  .capa .arte img { max-height: 300px; }
 }
 
-/* Sequência com pontos verdes */
-.seq { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-family: var(--mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
-.seq span { display: inline-flex; align-items: center; gap: 8px; }
-.seq span::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--verde); }
+/* Duas colunas como nas páginas 4 e 9 */
+.duas { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+.duas.meio { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+@media (max-width: 900px) { .duas, .duas.meio { grid-template-columns: 1fr; } }
+.lado { display: grid; gap: 18px; align-content: start; }
+.lado h2 { font-size: clamp(1.9rem, 3.2vw, 2.6rem); }
+.lado p { color: var(--cinza); }
 
-section { padding-block: 56px; border-bottom: 1px solid var(--linha); position: relative; }
-.cab { display: grid; gap: 8px; margin-bottom: 30px; }
-.cab p { color: var(--suave); }
-.cab-linha { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+/* Lista de pontos verdes (páginas 4, 9 e 14) */
+.pontos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 36px; }
+.pontos.uma { grid-template-columns: 1fr; }
+@media (max-width: 640px) { .pontos { grid-template-columns: 1fr; } }
+.pontos li { border-top: 1px solid var(--fio); padding: 14px 0 16px; }
+.pontos b { display: flex; gap: 10px; align-items: baseline; font-weight: 700; font-size: .95rem; }
+.pontos b::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--verde); flex: none; transform: translateY(-2px); }
+.pontos b .n { font-family: var(--mono); font-weight: 500; font-size: .7rem; letter-spacing: .15em; color: var(--roxo); }
+.pontos p { margin-top: 4px; padding-left: 17px; font-size: .9rem; color: var(--cinza); line-height: 1.55; }
+.pag.roxa .pontos li { border-top-color: rgba(255, 255, 255, .18); }
+.pag.roxa .pontos p { color: #dcd3ea; }
 
-/* Status */
-.st { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; color: var(--suave); }
-.st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-.st-ok { color: var(--verde-texto); }
-.st-disc { color: var(--medio); }
-.st-adef { color: var(--suave); }
-.st-adef::before { background: transparent; border: 1.5px solid currentColor; }
+/* Fio verde com ponto (páginas 8 e 19) */
+.passos { display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 960px) { .passos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .passos { grid-template-columns: 1fr; } }
+.passo { display: grid; gap: 8px; align-content: start; }
+.passo .fio { display: flex; align-items: center; margin-bottom: 10px; }
+.passo .fio::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--verde); flex: none; }
+.passo .fio::after { content: ""; flex: 1; height: 2px; background: var(--verde); }
+.passo h3 { font-size: 1.1rem; font-weight: 700; }
+.passo p { font-size: .9rem; color: var(--cinza); }
+.passo .mono { font-size: .64rem; letter-spacing: .25em; margin-top: 18px; }
+.pag.roxa .passo p { color: #dcd3ea; }
+.passo ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 6px; font-size: .9rem; }
+.passo li { display: grid; grid-template-columns: 18px 1fr; }
+.passo li::before { content: "→"; color: var(--verde); }
 
-/* Quadros da tela inicial */
-.quadros { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 22px; }
-.quadros.tres { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
-.quadro { display: flex; flex-direction: column; background: var(--fundo); border: 1px solid var(--linha); border-radius: 12px; overflow: hidden; color: var(--texto); text-decoration: none; transition: border-color .15s, transform .15s, box-shadow .15s; min-width: 0; }
-.quadro:hover, .quadro:focus-visible { border-color: var(--roxo-texto); transform: translateY(-2px); box-shadow: 0 10px 24px -16px rgba(70, 27, 119, .45); }
-.quadro img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-bottom: 1px solid var(--linha); background: var(--superficie); }
-.capa-texto { aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: var(--lavanda); border-bottom: 1px solid var(--linha); padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; }
-.capa-texto::before { content: ""; position: absolute; top: 0; right: 0; width: 46%; height: 100%; background-image: url("img/inst.jpg"); background-size: cover; background-position: 100% 50%; clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%); }
-.capa-texto .grande { position: relative; font-size: 2.6rem; font-weight: 300; line-height: 1; color: var(--roxo-texto); font-variant-numeric: tabular-nums; max-width: 55%; }
-.capa-texto .peq { position: relative; font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--suave); max-width: 55%; }
-.quadro .corpo { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.quadro .tag { font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--verde-texto); }
-.quadro h3 { font-size: 1.3rem; }
-.quadro p { font-size: .92rem; color: var(--suave); }
-.quadro .pe { margin-top: auto; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: .74rem; }
-.quadro .ir { color: var(--roxo-texto); font-weight: 500; }
-.quadro.destaque { border-color: var(--roxo); }
-@media (min-width: 900px) {
-  .quadro.largo { grid-column: span 2; flex-direction: row; }
-  .quadro.largo > img, .quadro.largo > .capa-texto { width: 56%; border-bottom: 0; border-right: 1px solid var(--linha); }
-  .quadro.largo .corpo { justify-content: center; padding: 28px; }
-  .quadro.largo h3 { font-size: 1.7rem; }
-}
+/* Cartões no formato "Cases de sucesso" (página 17) */
+.casos { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 18px; }
+.caso { display: flex; flex-direction: column; background: var(--branco); color: var(--tinta); text-decoration: none; box-shadow: 0 1px 2px rgba(30, 30, 30, .06), 0 6px 18px rgba(30, 30, 30, .07); min-width: 0; }
+.caso:hover .caso-cab { background: #3a1564; }
+.caso-cab { background: var(--roxo); color: var(--branco); padding: 14px 18px 16px; display: grid; gap: 4px; min-height: 76px; align-content: start; transition: background .15s; }
+.caso-cab .cat { font-family: var(--mono); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--verde); }
+.caso-cab b { font-weight: 700; font-size: 1rem; line-height: 1.3; }
+.caso img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-bottom: 1px solid var(--fio); }
+.caso-corpo { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.caso .big { font-size: 2.8rem; font-weight: 500; line-height: 1; color: var(--roxo); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.caso .leg { font-size: .85rem; color: var(--tinta); padding-bottom: 10px; border-bottom: 1px solid var(--fio); }
+.setas { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: .82rem; color: var(--cinza); line-height: 1.45; }
+.setas li { display: grid; grid-template-columns: 16px 1fr; }
+.setas li::before { content: "→"; color: var(--verde-escuro); }
+.caso-pe { margin-top: auto; padding-top: 14px; font-family: var(--mono); font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cinza); display: flex; justify-content: space-between; gap: 8px; }
+.caso-pe span:last-child { color: var(--roxo); font-weight: 500; }
 
-/* Últimos trabalhos */
-.trabalhos { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 0 28px; }
-.trabalhos li { border-top: 1px solid var(--linha); }
-.trabalhos a { display: grid; grid-template-columns: 14px 1fr auto; gap: 12px; align-items: baseline; padding: 14px 0; text-decoration: none; color: var(--texto); }
-.trabalhos a::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--verde); transform: translateY(-1px); }
-.trabalhos a:hover b { color: var(--roxo-texto); }
-.trabalhos b { font-weight: 500; display: block; }
-.trabalhos small { color: var(--suave); font-size: .85rem; }
-.trabalhos em { font-style: normal; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--roxo-texto); white-space: nowrap; }
+/* Tabela no formato da página 6 */
+.tabela { width: 100%; border-collapse: collapse; }
+.tabela th { text-align: left; font-family: var(--mono); font-weight: 400; font-size: .64rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); padding: 0 0 10px; }
+.tabela td { border-top: 1px solid var(--fio); padding: 14px 16px 14px 0; vertical-align: baseline; font-size: .92rem; }
+.tabela td.rot { font-family: var(--mono); font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); white-space: nowrap; width: 1%; padding-right: 28px; }
+.tabela a { text-decoration: none; font-weight: 700; }
+.tabela a:hover { color: var(--roxo); }
+.tabela .ir { text-align: right; color: var(--roxo); font-family: var(--mono); font-size: .7rem; letter-spacing: .15em; white-space: nowrap; }
+.rolar { overflow-x: auto; }
 
-/* Etapas: fio verde com ponto, como "A máquina de vendas" */
-.etapas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
-.etapa { display: grid; gap: 8px; align-content: start; }
-.etapa .fio { display: flex; align-items: center; gap: 0; margin-bottom: 6px; }
-.etapa .fio::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--verde); flex: none; }
-.etapa .fio::after { content: ""; height: 2px; background: var(--verde); flex: 1; }
-.etapa h3 { font-size: 1.15rem; }
-.etapa p { font-size: .92rem; color: var(--suave); }
-.etapa .quando { font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--roxo-texto); padding-top: 6px; }
-@media (max-width: 900px) { .etapas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 520px) { .etapas { grid-template-columns: 1fr; } }
-.frase { margin-top: 30px; font-weight: 700; color: var(--roxo-texto); }
+/* Botões */
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; }
+.botao { display: inline-flex; align-items: center; gap: 8px; background: var(--roxo); color: var(--branco); text-decoration: none; font-weight: 700; font-size: .88rem; padding: 11px 18px; }
+.botao:hover { background: #3a1564; }
+.botao.linha { background: transparent; color: var(--roxo); box-shadow: inset 0 0 0 1px var(--roxo); }
+.selo { display: inline-block; background: var(--roxo); color: var(--branco); font-weight: 700; font-size: .7rem; padding: 3px 8px; letter-spacing: .02em; white-space: nowrap; }
+.selo.verde { background: var(--verde); color: var(--tinta); }
+.selo.cinza { background: var(--fio); color: var(--tinta); }
 
-/* Régua */
-.escala { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.escala > div { padding: 22px; border-radius: 12px; display: grid; gap: 6px; align-content: start; }
-.escala .num { font-size: 2.6rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
-.escala .r { background: var(--ruim-fundo); } .escala .r .num, .escala .r h3 { color: var(--ruim); }
-.escala .m { background: var(--medio-fundo); } .escala .m .num, .escala .m h3 { color: var(--medio); }
-.escala .b { background: var(--bom-fundo); } .escala .b .num, .escala .b h3 { color: var(--bom); }
-.escala p { font-size: .9rem; color: var(--texto); }
-@media (max-width: 700px) { .escala { grid-template-columns: 1fr; } }
-.regras { margin: 24px 0 0; display: grid; gap: 10px; list-style: none; padding: 0; }
-.regras li { display: grid; grid-template-columns: 22px 1fr; gap: 6px; max-width: 84ch; }
-.regras li::before { content: "→"; color: var(--roxo-texto); }
+/* Números grandes com fio verde (página 5) */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
+@media (max-width: 760px) { .stats { grid-template-columns: 1fr; } }
+.stat { border-top: 2px solid var(--verde); padding-top: 22px; display: grid; gap: 10px; align-content: start; }
+.stat .v { font-size: clamp(3rem, 6vw, 4.6rem); font-weight: 500; line-height: 1; letter-spacing: -.02em; color: var(--roxo); font-variant-numeric: tabular-nums; }
+.stat p { font-size: .92rem; }
+.stat .fx { font-family: var(--mono); font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; }
 
-/* Áreas e simulador */
-.pilar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 30px 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--roxo); }
-.pilar:first-child { margin-top: 0; }
-.pilar h3 { font-size: 1.4rem; font-weight: 300; }
-.pilar h3 b { font-weight: 700; }
-.pilar span { color: var(--suave); font-size: .92rem; }
-.areas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }
-.area { border: 1px solid var(--linha); border-radius: 12px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; background: var(--fundo); }
-.area.fora { background: var(--superficie); }
-.area-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
-.area-top h4 { margin: 0; font-size: 1.02rem; font-weight: 700; line-height: 1.3; }
-.area .nota { font-size: 1.6rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.area .nota small { font-size: .8rem; color: var(--suave); }
-.crit { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
-.crit label { display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: start; font-size: .88rem; padding: 3px 0; cursor: pointer; }
-.crit input { margin: 3px 0 0; accent-color: var(--roxo); width: 15px; height: 15px; }
-.area.fora .crit label { color: var(--suave); }
-.area .pe { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 8px; border-top: 1px solid var(--linha); font-family: var(--mono); font-size: .7rem; color: var(--suave); }
-.area .incl { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
-.area .incl input { accent-color: var(--roxo); }
+/* Páginas do modelo */
+.miniaturas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); gap: 12px; }
+.miniaturas figure { margin: 0; display: grid; gap: 6px; }
+.miniaturas img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; box-shadow: 0 1px 2px rgba(30, 30, 30, .08), 0 4px 12px rgba(30, 30, 30, .06); }
+.miniaturas figcaption { font-family: var(--mono); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cinza); }
+.capa-modelo { width: 100%; height: auto; display: block; box-shadow: 0 1px 2px rgba(30, 30, 30, .08), 0 8px 24px rgba(30, 30, 30, .08); }
 
-.sim { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 32px; align-items: start; }
-@media (max-width: 960px) { .sim { grid-template-columns: 1fr; } }
-.boletim { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); border: 1px solid var(--linha); border-radius: 12px; padding: 22px; display: grid; gap: 18px; background: var(--fundo); }
-.geral { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-.geral .n { font-size: 3.4rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
-.geral .n small { font-size: 1rem; color: var(--suave); }
-.barras { display: grid; gap: 0; border-top: 2px solid var(--roxo); }
-.barra-l { display: grid; grid-template-columns: minmax(0, 1fr) 90px 44px; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--linha); font-size: .88rem; }
-.barra-l .trilho { height: 10px; background: var(--superficie); border-radius: 2px; overflow: hidden; }
-.barra-l .trilho i { display: block; height: 100%; }
-.barra-l .v { font-variant-numeric: tabular-nums; text-align: right; font-weight: 500; }
-.chip { display: inline-block; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
-.chip.r { background: var(--ruim-fundo); color: var(--ruim); }
-.chip.m { background: var(--medio-fundo); color: var(--medio); }
-.chip.b { background: var(--bom-fundo); color: var(--bom); }
-.urg { background: var(--lavanda); border-radius: 8px; padding: 16px 18px; display: grid; gap: 8px; }
-.urg ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; counter-reset: u; }
-.urg li { counter-increment: u; display: grid; grid-template-columns: 22px 1fr auto; gap: 6px; font-size: .92rem; }
-.urg li::before { content: counter(u) "."; font-weight: 700; color: var(--roxo-texto); }
-.urg li span:last-child { font-variant-numeric: tabular-nums; font-weight: 500; }
-.aviso { display: inline-flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: .74rem; color: var(--suave); border: 1px dashed var(--linha); border-radius: 6px; padding: 7px 12px; margin-bottom: 22px; }
+/* Simulador */
+.sim { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 44px); align-items: start; }
+@media (max-width: 980px) { .sim { grid-template-columns: 1fr; } }
+.grupo { font-family: var(--mono); font-size: .64rem; letter-spacing: .3em; text-transform: uppercase; color: var(--roxo); margin: 34px 0 12px; }
+.grupo:first-child { margin-top: 0; }
+.areas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 22px 22px; }
+.area { border-top: 2px solid var(--verde); padding-top: 12px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.area.fora { border-top-color: var(--fio); }
+.area-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.area h3 { font-size: 1rem; font-weight: 700; }
+.area .nota { font-size: 1.5rem; font-weight: 500; color: var(--roxo); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.area.fora .nota { color: var(--cinza); }
+.area .nota small { font-size: .75rem; font-weight: 400; color: var(--cinza); }
+.crit { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+.crit label { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start; font-size: .84rem; color: var(--cinza); cursor: pointer; line-height: 1.45; padding: 2px 0; }
+.crit label:hover { color: var(--tinta); }
+input.qd { appearance: none; -webkit-appearance: none; width: 13px; height: 13px; margin: 3px 0 0; border: 1.5px solid var(--roxo); background: var(--branco); cursor: pointer; }
+input.qd:checked { background: var(--roxo); box-shadow: inset 0 0 0 2px var(--branco); }
+.area-pe { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-family: var(--mono); font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; color: var(--cinza); padding-top: 6px; }
+.area-pe label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; color: var(--roxo); }
+.area-pe input.qd { margin: 0; }
+.estado { font-family: var(--mono); font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; }
+.estado.ok { color: var(--verde-escuro); } .estado.disc { color: var(--medio); } .estado.adef { color: var(--cinza); }
+
+.boletim { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 70px); background: var(--roxo); color: var(--branco); padding: 26px 26px 24px; display: grid; gap: 18px; }
+.boletim .mono { color: var(--verde); }
+.boletim .geral { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.boletim .geral .v { font-size: 3.4rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+.boletim .geral .v small { font-size: 1rem; color: #cfc4e2; }
+.boletim .geral .f { font-weight: 700; }
+.boletim .qtd { font-size: .8rem; color: #cfc4e2; }
+.linhas { display: grid; }
+.linha { display: grid; grid-template-columns: minmax(0, 1fr) 84px 40px; gap: 10px; align-items: center; padding: 7px 0; border-top: 1px solid rgba(255, 255, 255, .16); font-size: .84rem; }
+.linha .tr { height: 8px; background: rgba(255, 255, 255, .14); }
+.linha .tr i { display: block; height: 100%; }
+.linha .v { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+.urg { background: var(--branco); color: var(--tinta); padding: 16px 18px; display: grid; gap: 8px; }
+.urg .mono { color: var(--roxo); }
+.urg ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; counter-reset: u; font-size: .88rem; }
+.urg li { counter-increment: u; display: grid; grid-template-columns: 20px 1fr auto; gap: 6px; }
+.urg li::before { content: counter(u) "."; font-weight: 700; color: var(--roxo); }
+.urg li span:last-child { font-weight: 700; font-variant-numeric: tabular-nums; }
+.legenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .74rem; color: #cfc4e2; }
+.legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.legenda i { width: 10px; height: 10px; display: inline-block; }
 
 /* Quanto vale */
-.valor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 28px; align-items: stretch; }
-@media (max-width: 860px) { .valor { grid-template-columns: 1fr; } }
+.valor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: clamp(24px, 3vw, 48px); align-items: stretch; }
+@media (max-width: 880px) { .valor { grid-template-columns: 1fr; } }
 .conta { border-top: 2px solid var(--roxo); border-bottom: 2px solid var(--roxo); }
-.conta .ln { display: grid; grid-template-columns: 30px minmax(0, 1fr) minmax(90px, 150px); gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--linha); }
+.conta .ln { display: grid; grid-template-columns: 28px minmax(0, 1fr) minmax(90px, 160px); gap: 12px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--fio); font-size: 1rem; }
 .conta .ln:last-child { border-bottom: 0; }
-.conta .op { font-weight: 700; color: var(--roxo-texto); font-size: 1.2rem; }
-.conta .ln.res { color: var(--suave); }
-.conta .ln.res .op { color: var(--suave); font-weight: 400; }
-.conta input { font: 300 1.5rem var(--sans); color: var(--texto); background: transparent; border: 0; border-bottom: 1px solid var(--linha); padding: 2px 0; width: 100%; text-align: right; font-variant-numeric: tabular-nums; }
+.conta .op { font-weight: 700; color: var(--roxo); font-size: 1.15rem; }
+.conta .res { color: var(--cinza); }
+.conta .res .op { color: var(--cinza); font-weight: 400; }
+.conta input { font: 300 1.6rem var(--sans); color: var(--tinta); background: transparent; border: 0; border-bottom: 1px solid var(--fio); padding: 0 0 2px; width: 100%; text-align: right; font-variant-numeric: tabular-nums; }
 .conta input:focus { outline: none; border-bottom-color: var(--verde); }
-.conta .calc { font-size: 1.5rem; font-weight: 300; text-align: right; font-variant-numeric: tabular-nums; }
-.total { background: var(--roxo); color: #ffffff; border-radius: 12px; padding: 32px 28px; display: grid; gap: 12px; align-content: center; }
-.total .l { font-family: var(--mono); font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; }
-.total .v { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
-.total p { color: #e4dcef; font-size: .92rem; }
-.fonte { margin-top: 14px; font-size: .85rem; color: var(--suave); }
+.conta .calc { font-size: 1.6rem; font-weight: 300; text-align: right; font-variant-numeric: tabular-nums; }
+.caixa { background: var(--roxo); color: var(--branco); padding: clamp(28px, 3vw, 44px); display: grid; gap: 14px; align-content: center; }
+.caixa .mono { color: var(--branco); }
+.caixa .v { font-size: clamp(2.6rem, 5vw, 3.8rem); font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+.caixa p { color: #e4dcef; font-size: .92rem; }
+.nota-fonte { margin-top: 18px; font-size: .8rem; color: var(--cinza); }
 
-/* Plano */
-.plano { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-@media (max-width: 860px) { .plano { grid-template-columns: 1fr; } }
-.fase { border: 1px solid var(--linha); border-top: 5px solid var(--roxo); border-radius: 4px; padding: 22px; display: grid; gap: 10px; align-content: start; }
-.fase.gratis { border-top-color: var(--verde); }
-.fase .etq { color: var(--roxo-texto); }
-.fase.gratis .etq { color: var(--verde-texto); }
-.fase h3 { font-size: 1.6rem; font-weight: 300; }
-.fase ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: .92rem; }
-.fase li { display: grid; grid-template-columns: 20px 1fr; }
-.fase li::before { content: "→"; color: var(--roxo-texto); }
-
-/* Ficha de modelo */
-.ficha { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 40px; align-items: start; }
-@media (max-width: 900px) { .ficha { grid-template-columns: 1fr; } }
-.paginas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
-.paginas figure { margin: 0; display: grid; gap: 4px; }
-.paginas img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--linha); border-radius: 4px; display: block; background: var(--superficie); }
-.paginas figcaption { font-family: var(--mono); font-size: .68rem; color: var(--suave); }
-.capa-grande { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--linha); border-radius: 8px; display: block; }
-.estrutura { list-style: none; padding: 0; margin: 0; }
-.estrutura li { display: grid; grid-template-columns: 14px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--linha); font-size: .94rem; }
-.estrutura li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--verde); margin-top: 8px; }
-.fatos { margin: 0; }
-.fatos div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--linha); font-size: .92rem; }
-.fatos dt { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--suave); padding-top: 3px; }
-.fatos dd { margin: 0; min-width: 0; }
-h4.sub { font-family: var(--mono); font-weight: 500; font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--roxo-texto); margin: 0 0 12px; }
-.bloco + .bloco { margin-top: 30px; }
-.botao { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; border-radius: 8px; padding: 11px 18px; background: var(--roxo); color: #ffffff; text-decoration: none; border: 1px solid var(--roxo); }
-.botao:hover { filter: brightness(1.15); }
-.botao.fantasma { background: transparent; color: var(--texto); border-color: var(--linha); }
-.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-
-/* Decisões e histórico */
-.duas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 44px; }
-@media (max-width: 860px) { .duas { grid-template-columns: 1fr; } }
-.decisoes { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-.decisoes li { padding: 14px 16px; background: var(--superficie); border-radius: 8px; display: grid; gap: 3px; }
-.decisoes b { font-weight: 700; }
-.decisoes span { font-size: .9rem; color: var(--suave); }
-.hist { list-style: none; padding: 0; margin: 0; }
-.hist li { display: grid; grid-template-columns: 96px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--linha); }
-.hist .v { font-family: var(--mono); font-size: .78rem; color: var(--suave); }
-.hist .v b { display: block; color: var(--verde-texto); font-weight: 500; font-size: .85rem; }
-.hist ul { margin: 6px 0 0; padding-left: 18px; font-size: .9rem; color: var(--suave); }
-
-
-/* Os 12 pontos */
-.doze { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 0 32px; }
-.doze li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 16px 0; border-top: 1px solid var(--linha); }
-.doze .n { font-size: 1.7rem; font-weight: 300; line-height: 1; color: var(--roxo-texto); font-variant-numeric: tabular-nums; }
-.doze li:nth-child(-n+3) .n { color: var(--verde-texto); font-weight: 500; }
-.doze b { display: block; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
-.doze p { font-size: .9rem; color: var(--suave); }
-
-footer { padding-block: 32px 48px; }
-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: .85rem; color: var(--suave); }
-footer .url { font-family: var(--mono); letter-spacing: .2em; }
+/* Rodapé */
+.rodape .in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-block: 30px 40px; }
+.rodape img { height: 34px; width: auto; display: block; }
+.url { font-family: var(--mono); font-size: .8rem; letter-spacing: .3em; padding: 6px 10px; box-shadow: inset 0 0 0 1px var(--fio); }
+.contato { display: flex; flex-wrap: wrap; gap: 14px 36px; }
+.contato div { display: grid; gap: 2px; }
+.contato .mono { font-size: .6rem; }
+.contato b { font-size: .9rem; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
-<nav class="barra" aria-label="Navegação">
-  <div class="wrap">
-    <a class="marca" href="#inicio"><b>ATOM</b><span>agência de IA</span></a>
-    <div class="migalha" id="migalha"></div>
+<header class="barra">
+  <div class="in">
+    <a href="#inicio" aria-label="Início"><img src="assets/logo.jpg" alt="ATOM Agência de IA" width="285" height="105"></a>
+    <nav class="migalha" id="migalha" aria-label="Você está em"></nav>
   </div>
-</nav>
+</header>
 
-<!-- ========== TELA INICIAL ========== -->
-<div id="v-inicio">
-  <header class="abertura">
-    <div class="arte" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="etq">Central comercial</div>
-      <h1>Diagnósticos <b>e propostas.</b></h1>
-      <p class="lead">Os modelos que a Atom usa para diagnosticar uma empresa e propor o trabalho. Abra um quadro para ver o modelo, as páginas e o que falta decidir.</p>
-      <div class="seq" aria-label="Sequência comercial"><span>Diagnóstico</span><span>Quanto vale</span><span>Plano</span><span>Proposta</span><span>Contrato</span></div>
-    </div>
-  </header>
-
-  <section>
-    <div class="wrap">
-      <div class="cab cab-linha">
-        <div class="cab"><div class="etq">Como olhamos a empresa</div><h2>Modelos de <b>diagnóstico</b></h2></div>
+<!-- ================= TELA INICIAL ================= -->
+<main id="v-inicio">
+  <section class="pag capa">
+    <div class="in">
+      <div class="txt">
+        <h1>Diagnósticos e propostas <b>com método.</b></h1>
+        <p class="sub">Cada modelo da Atom em um só lugar.<br>O que realmente muda o jogo em cada canal.</p>
+        <img class="logo" src="assets/logo.jpg" alt="ATOM Agência de IA" width="285" height="105">
       </div>
-      <div class="quadros" id="q-diag"></div>
+      <div class="arte"><img src="assets/capa-arte.jpg" alt="" width="1176" height="1080"></div>
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Como apresentamos o trabalho</div><h2>Modelos de <b>proposta</b></h2></div>
-      <div class="quadros" id="q-prop"></div>
+  <section class="pag">
+    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="duas">
+        <div class="lado">
+          <span class="mono">Diagnóstico</span>
+          <h2>Como olhamos <b>a empresa</b></h2>
+          <p>O método define o que medir e como dar nota. O Modelo Unificado é a apresentação que o cliente recebe.</p>
+          <ul class="pontos uma">
+            <li><b>Nenhuma nota sem dado</b><p>Toda página cita a fonte e a data da coleta.</p></li>
+            <li><b>Cinco critérios por área</b><p>Cada critério vale 2 pontos. A nota vai de 0 a 10.</p></li>
+            <li><b>Três urgências e um plano</b><p>As piores notas viram o plano de 90 dias e a proposta.</p></li>
+          </ul>
+        </div>
+        <div class="casos" id="q-diag"></div>
+      </div>
+      <p class="fecho" style="margin-top:44px">O diagnóstico é a porta de entrada. A proposta nasce dele.</p>
     </div>
+    <span class="num">0 2</span>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Apresentações por serviço</div><h2>Decks <b>com e sem preço</b></h2><p>As seis apresentações da biblioteca da Atom, cada uma com os 12 pontos do canal.</p></div>
-      <div class="quadros tres" id="q-serv"></div>
+  <section class="pag">
+    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="titulo"><span class="mono">Proposta</span><h2>Como apresentamos <b>o trabalho</b></h2><p>Os dois modelos oficiais de proposta. Abertura padrão da Atom, capa com o logo do cliente e o preço no fim.</p></div>
+      <div class="casos" id="q-prop" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));max-width:1100px"></div>
+      <p class="fecho" style="margin-top:44px">Cada projeto nasce do zero, para a marca que vai usá-lo.</p>
     </div>
+    <span class="num">0 3</span>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Feitos com estes modelos</div><h2>Últimos <b>trabalhos</b></h2></div>
-      <ul class="trabalhos" id="trabalhos"></ul>
+  <section class="pag roxa">
+    <img class="lasca" src="assets/lasca-clara-sobre-roxo.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="titulo"><span class="mono">Apresentações por serviço</span><h2>Seis decks, <b>com e sem preço</b></h2><p>Cada um com os 12 pontos que decidem o resultado do canal.</p></div>
+      <div class="casos" id="q-serv"></div>
     </div>
+    <span class="num">0 4</span>
   </section>
-</div>
 
-<!-- ========== FICHA DE MODELO ========== -->
-<div id="v-modelo" hidden>
-  <header class="abertura">
-    <div class="lasca" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="etq" id="m-tag"></div>
-      <h1 id="m-nome"></h1>
-      <p class="lead" id="m-resumo"></p>
-      <div id="m-status"></div>
-      <div class="acoes" id="m-acoes"></div>
+  <section class="pag">
+    <img class="lasca-base" src="assets/lasca-escura.jpg" alt="" width="435" height="175">
+    <div class="in">
+      <div class="titulo"><span class="mono">Feitos com estes modelos</span><h2>Últimos <b>trabalhos</b></h2></div>
+      <div class="rolar"><table class="tabela"><thead><tr><th>Tipo</th><th>Cliente</th><th>Peça</th><th></th></tr></thead><tbody id="trabalhos"></tbody></table></div>
     </div>
-  </header>
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Pontos de convergência</div><h2>Os 12 pontos que <b>mudam o jogo</b></h2><p>O que realmente decide o sucesso do negócio em <span id="m-canal"></span>, em ordem de peso. Os três primeiros são os que mais custam venda quando faltam.</p></div>
-      <ol class="doze" id="m-doze"></ol>
-    </div>
+    <span class="num">0 5</span>
   </section>
-  <section>
-    <div class="wrap ficha">
-      <div class="bloco" id="m-esq"></div>
-      <div>
-        <div class="bloco"><h4 class="sub">Ficha</h4><dl class="fatos" id="m-fatos"></dl></div>
-        <div class="bloco" id="m-pend-bloco"><h4 class="sub">O que falta decidir</h4><ul class="decisoes" id="m-pend"></ul></div>
+</main>
+
+<!-- ================= FICHA DE MODELO ================= -->
+<main id="v-modelo" hidden>
+  <section class="pag">
+    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="duas">
+        <div class="lado">
+          <span class="mono" id="m-tag"></span>
+          <h2 id="m-titulo"></h2>
+          <p id="m-resumo"></p>
+          <div class="acoes" id="m-acoes"></div>
+        </div>
+        <div>
+          <span class="mono" style="display:block;margin-bottom:14px">Os 12 pontos que mudam o jogo</span>
+          <ol class="pontos" id="m-doze"></ol>
+        </div>
+      </div>
+      <p class="fecho" style="margin-top:40px">Em ordem de peso. Os três primeiros são os que mais custam venda quando faltam.</p>
+    </div>
+    <span class="num">0 1</span>
+  </section>
+
+  <section class="pag">
+    <img class="lasca-base" src="assets/lasca-escura.jpg" alt="" width="435" height="175">
+    <div class="in">
+      <div class="titulo"><span class="mono">O modelo</span><h2 id="m-titulo2"></h2></div>
+      <div class="duas" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
+        <div id="m-esq"></div>
+        <div class="lado">
+          <table class="tabela"><tbody id="m-fatos"></tbody></table>
+          <div id="m-pend-bloco"><span class="mono" style="display:block;margin:18px 0 6px">O que falta decidir</span><ul class="pontos uma" id="m-pend"></ul></div>
+        </div>
       </div>
     </div>
+    <span class="num">0 2</span>
   </section>
-</div>
+</main>
 
-<!-- ========== MÉTODO ========== -->
-<div id="v-metodo" hidden>
-  <header class="abertura">
-    <div class="lasca" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="etq">Método em construção · v0.4</div>
-      <h1>Diagnóstico de <b>marketing e vendas.</b></h1>
-      <p class="lead">Como a Atom olha uma empresa de fora para dentro, mede onde ela perde clientes e transforma isso em um plano. A régua é a mesma do Diagnóstico Digital, Modelo Unificado, e o método estende essa régua para vendas e gestão.</p>
-      <div class="seq"><span class="st st-ok">Definido</span><span class="st st-disc">Em discussão</span><span class="st st-adef">Proposta, a definir</span></div>
-    </div>
-  </header>
-
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Como funciona</div><h2>Cinco etapas, <b>da coleta ao plano</b></h2></div>
-      <div class="etapas">
-        <div class="etapa"><div class="fio"></div><h3>Pré-diagnóstico</h3><p>Coleta de dados públicos: Google, mapa, avaliações, site, Instagram e respostas das IAs.</p><div class="quando">Antes da reunião · ATOM_14</div></div>
-        <div class="etapa"><div class="fio"></div><h3>Entrevista</h3><p>Conversa com o dono ou gestor para medir o que não é público: processo, números e time.</p><div class="quando">Reunião · roteiro a definir</div></div>
-        <div class="etapa"><div class="fio"></div><h3>Boletim</h3><p>Cada área recebe nota de 0 a 10 pelos cinco critérios da régua. As três piores viram urgências.</p><div class="quando">Régua ATOM</div></div>
-        <div class="etapa"><div class="fio"></div><h3>Quanto vale</h3><p>Procura × contato × fechamento × ticket, arredondado a cada etapa e com as premissas à vista.</p><div class="quando">Cálculo</div></div>
-        <div class="etapa"><div class="fio"></div><h3>Plano</h3><p>Hoje e grátis, 90 dias para ser encontrado, 6 meses para ser escolhido. Daí sai a proposta.</p><div class="quando">Entrega + proposta</div></div>
+<!-- ================= MÉTODO ================= -->
+<main id="v-metodo" hidden>
+  <section class="pag">
+    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="titulo"><span class="mono">Método em construção · v0.5</span><h1>Diagnóstico de <b>marketing e vendas</b></h1><p>Como a Atom olha uma empresa de fora para dentro, mede onde ela perde clientes e transforma isso em um plano. A régua é a mesma do Modelo Unificado; o método estende essa régua para vendas e gestão.</p></div>
+      <div class="passos">
+        <div class="passo"><div class="fio"></div><h3>Pré-diagnóstico</h3><p>Coleta de dados públicos: Google, mapa, avaliações, site, Instagram e respostas das IAs.</p><span class="mono">Antes da reunião</span></div>
+        <div class="passo"><div class="fio"></div><h3>Entrevista</h3><p>Conversa com o dono ou o gestor para medir o que não é público: processo, números e time.</p><span class="mono">Reunião</span></div>
+        <div class="passo"><div class="fio"></div><h3>Boletim</h3><p>Cada área recebe nota de 0 a 10 pelos cinco critérios. As três piores viram urgências.</p><span class="mono">Régua Atom</span></div>
+        <div class="passo"><div class="fio"></div><h3>Quanto vale</h3><p>Procura × contato × fechamento × ticket, arredondado a cada etapa.</p><span class="mono">Cálculo</span></div>
+        <div class="passo"><div class="fio"></div><h3>Plano</h3><p>Hoje e grátis, 90 dias para ser encontrado, 6 meses para ser escolhido.</p><span class="mono">Proposta</span></div>
       </div>
-      <p class="frase">Nenhuma nota sem dado. Toda página cita a fonte e a data da coleta.</p>
+      <p class="fecho" style="margin-top:56px">Nenhuma nota sem dado. Toda página cita a fonte e a data da coleta.</p>
     </div>
+    <span class="num">0 1</span>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Pontos de convergência</div><h2>Os 12 pontos que <b>mudam o jogo</b></h2><p>O que realmente decide o sucesso em marketing e vendas, em ordem de peso. Os três primeiros são os que mais custam venda quando faltam.</p></div>
-      <ol class="doze" id="doze-metodo"></ol>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Régua ATOM</div><h2>Cinco critérios por área, <b>dois pontos cada</b></h2><p>Cada critério atendido vale 2 pontos, então cada área vai de 0 a 10. A régua é a mesma do Modelo Unificado.</p></div>
-      <div class="escala">
-        <div class="r"><span class="num">0–4</span><h3>Perdendo cliente</h3><p>Até dois critérios atendidos. A empresa perde venda para o concorrente nesta área.</p></div>
-        <div class="m"><span class="num">5–7</span><h3>Pode melhorar</h3><p>Três critérios atendidos. Funciona, mas abaixo de quem disputa o mesmo cliente.</p></div>
-        <div class="b"><span class="num">8–10</span><h3>Funciona</h3><p>Quatro ou cinco critérios atendidos. Está no nível dos líderes da cidade.</p></div>
+  <section class="pag">
+    <img class="lasca-base" src="assets/lasca-escura.jpg" alt="" width="435" height="175">
+    <div class="in">
+      <div class="duas">
+        <div class="lado"><span class="mono">Pontos de convergência</span><h2>Os 12 pontos que <b>mudam o jogo</b></h2><p>O que realmente decide o sucesso em marketing e vendas, em ordem de peso.</p></div>
+        <ol class="pontos" id="doze-metodo"></ol>
       </div>
-      <ul class="regras">
-        <li><span><b>Nota geral</b> é a média das áreas medidas. Área não medida fica fora da média e aparece como "não medido". <span class="st st-disc">pesos em discussão</span></span></li>
-        <li><span><b>As três urgências</b> são as notas mais baixas que mais custam cliente. No empate, vence a área mais perto da venda.</span></li>
-        <li><span><b>Marque cada critério</b> abaixo para ver o boletim mudar. As áreas de vendas e gestão são propostas: ative "na nota" para testá-las.</span></li>
-      </ul>
     </div>
+    <span class="num">0 2</span>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Áreas e simulador</div><h2>O que medimos <b>e como aparece no boletim</b></h2></div>
-      <div class="aviso">Exemplo com dados fictícios, os mesmos do boletim do Modelo Unificado.</div>
+  <section class="pag">
+    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="titulo"><span class="mono">Régua Atom</span><h2>Cinco critérios por área, <b>dois pontos cada</b></h2></div>
+      <div class="stats">
+        <div class="stat"><span class="v">0–4</span><p><b>Perdendo cliente.</b> Até dois critérios atendidos. A empresa perde venda para o concorrente nesta área.</p><span class="fx" style="color:var(--ruim)">Vermelho no boletim</span></div>
+        <div class="stat"><span class="v">5–7</span><p><b>Pode melhorar.</b> Três critérios atendidos. Funciona, mas abaixo de quem disputa o mesmo cliente.</p><span class="fx" style="color:var(--medio)">Amarelo no boletim</span></div>
+        <div class="stat"><span class="v">8–10</span><p><b>Funciona.</b> Quatro ou cinco critérios atendidos. Está no nível dos líderes da cidade.</p><span class="fx" style="color:var(--bom)">Verde no boletim</span></div>
+      </div>
+      <p class="fecho" style="margin-top:48px">Nota geral é a média das áreas medidas. Área não medida fica fora da média.</p>
+    </div>
+    <span class="num">0 3</span>
+  </section>
+
+  <section class="pag">
+    <div class="in">
+      <div class="titulo"><span class="mono">Áreas e simulador</span><h2>O boletim <b>em ação</b></h2><p>Marque os critérios para ver o boletim mudar. O exemplo usa os mesmos dados fictícios do boletim do Modelo Unificado. As áreas de vendas e gestão são propostas: marque "na nota" para testá-las.</p></div>
       <div class="sim">
         <div id="areas"></div>
         <aside class="boletim" aria-label="Boletim">
-          <div class="etq">O boletim</div>
-          <div class="geral"><div class="n" id="geral">0<small>/10</small></div><div><div id="geral-chip"></div><p class="suave" id="geral-qtd" style="font-size:.85rem;margin-top:6px"></p></div></div>
-          <div class="barras" id="barras"></div>
-          <div class="urg"><div class="etq">As três urgências</div><ol id="urgencias"></ol></div>
+          <span class="mono">O boletim</span>
+          <div class="geral"><span class="v" id="geral">0</span><span class="f" id="geral-f"></span></div>
+          <span class="qtd" id="geral-qtd"></span>
+          <div class="linhas" id="barras"></div>
+          <div class="legenda"><span><i style="background:#e5675f"></i>0–4</span><span><i style="background:#f0b44c"></i>5–7</span><span><i style="background:var(--verde)"></i>8–10</span></div>
+          <div class="urg"><span class="mono">As três urgências</span><ol id="urgencias"></ol></div>
         </aside>
       </div>
     </div>
+    <span class="num">0 4</span>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">Quanto isso vale</div><h2>Essa procura vale <b id="titulo-valor">R$ 0</b> por mês</h2><p>Cada etapa é arredondada e o número arredondado segue para a próxima, para que o valor do quadro bata com a conta exibida.</p></div>
+  <section class="pag">
+    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="titulo"><span class="mono">Quanto isso vale</span><h2>Essa procura vale <b id="titulo-valor">R$ 0</b> por mês</h2><p>Cada etapa é arredondada e o número arredondado segue para a próxima, para o valor do quadro bater com a conta.</p></div>
       <div class="valor">
         <div class="conta">
           <div class="ln"><span class="op"></span><label for="procura">Buscas por mês na cidade</label><input id="procura" type="number" min="0" step="10" value="3090"></div>
@@ -434,62 +414,82 @@ footer .url { font-family: var(--mono); letter-spacing: .2em; }
           <div class="ln res"><span class="op">=</span><span>novos clientes por mês</span><span class="calc" id="r-clientes">0</span></div>
           <div class="ln"><span class="op">×</span><label for="ticket">Ticket médio (R$)</label><input id="ticket" type="number" min="0" step="50" value="3000"></div>
         </div>
-        <div class="total">
-          <span class="l">Por mês</span>
+        <div class="caixa">
+          <span class="mono">Por mês</span>
           <span class="v" id="r-valor">R$ 0</span>
-          <p>em clientes que já estão procurando. É o tamanho da procura, não uma promessa de faturamento.</p>
-          <span class="l" id="r-ano" style="color:#c9f5dc"></span>
+          <p>em clientes que já estão procurando. Hoje, a maior parte vai para quem aparece primeiro.</p>
+          <p style="font-size:.82rem;color:#cfc4e2">É o tamanho da procura, não uma promessa de faturamento.</p>
         </div>
       </div>
-      <p class="fonte">Procura: Semrush, buscas que citam a cidade · contato e fechamento: premissas conservadoras, ajustadas com o cliente · ticket: informado pela empresa.</p>
+      <p class="nota-fonte">Procura: Semrush, buscas que citam a cidade · contato e fechamento: premissas conservadoras, ajustadas na reunião · ticket: informado pela empresa.</p>
     </div>
+    <span class="num">0 5</span>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="cab"><div class="etq">O plano</div><h2>Três passos. <b>O primeiro custa zero.</b></h2><p>As ações saem dos critérios reprovados. O passo grátis traz o que o próprio cliente resolve em uma tarde.</p></div>
-      <div class="plano">
-        <div class="fase gratis"><div class="etq">Hoje · grátis</div><h3>Arrumar a casa</h3><ul><li><span>Corrigir telefone e horário no Google;</span></li><li><span>Responder as avaliações em aberto;</span></li><li><span>Pôr o WhatsApp na bio do Instagram.</span></li></ul></div>
-        <div class="fase"><div class="etq">Em 90 dias</div><h3>Ser encontrado</h3><ul><li><span>Disputar o mapa e a lista na busca principal;</span></li><li><span>Uma página para cada serviço e cada unidade;</span></li><li><span>Rotina para pedir avaliação a cada cliente.</span></li></ul></div>
-        <div class="fase"><div class="etq">Em 6 meses</div><h3>Ser escolhido</h3><ul><li><span>Aparecer nas respostas das IAs;</span></li><li><span>Responder no WhatsApp em minutos, com IA;</span></li><li><span>Relatório mensal com estes mesmos números.</span></li></ul></div>
+  <section class="pag roxa">
+    <img class="lasca-base" src="assets/lasca-sobre-roxo.jpg" alt="" width="524" height="320">
+    <div class="in">
+      <div class="titulo"><span class="mono">O plano</span><h2>Três passos. <b>O primeiro custa zero.</b></h2><p>As ações saem dos critérios reprovados no boletim.</p></div>
+      <div class="passos" style="--cols:3">
+        <div class="passo"><div class="fio"></div><h3>Hoje · grátis</h3><p>Arrumar a casa.</p><ul><li><span>Corrigir telefone e horário no Google;</span></li><li><span>Responder as avaliações em aberto;</span></li><li><span>Pôr o WhatsApp na bio do Instagram.</span></li></ul></div>
+        <div class="passo"><div class="fio"></div><h3>Em 90 dias</h3><p>Ser encontrado.</p><ul><li><span>Disputar o mapa e a lista na busca principal;</span></li><li><span>Uma página para cada serviço e unidade;</span></li><li><span>Rotina para pedir avaliação a cada cliente.</span></li></ul></div>
+        <div class="passo"><div class="fio"></div><h3>Em 6 meses</h3><p>Ser escolhido.</p><ul><li><span>Aparecer nas respostas das IAs;</span></li><li><span>Responder no WhatsApp em minutos, com IA;</span></li><li><span>Relatório mensal com estes mesmos números.</span></li></ul></div>
       </div>
-      <p class="fonte">Prazos são objetivos de cada fase, não promessa de posição.</p>
+      <p class="fecho" style="margin-top:52px">Prazos são objetivos de cada fase, não promessa de posição.</p>
     </div>
+    <span class="num">0 6</span>
   </section>
 
-  <section>
-    <div class="wrap duas">
-      <div>
-        <div class="cab"><div class="etq">Decisões em aberto</div><h2>O que <b>precisamos decidir</b></h2></div>
-        <ul class="decisoes">
-          <li><b>As áreas de vendas e gestão entram no boletim?</b><span>Processo e CRM, fechamento, pós-venda e números do negócio dependem da entrevista. Proposta: entram só no diagnóstico com reunião.</span></li>
-          <li><b>As áreas têm o mesmo peso?</b><span>Proposta: peso igual na versão 1, revisão depois dos primeiros 20 diagnósticos.</span></li>
-          <li><b>Mídia paga entra na prospecção?</b><span>Dá para ver anúncios ativos de fora, mas não o resultado deles.</span></li>
-          <li><b>Roteiro da entrevista</b><span>Duração, quem participa e as perguntas que medem cada critério de vendas e gestão.</span></li>
-          <li><b>Premissas por segmento</b><span>% de contato e % de fechamento para clínicas médicas, odontológicas e lojas de pneus.</span></li>
-          <li><b>Cliente oculto no WhatsApp</b><span>Quem faz o teste e onde registra o tempo de resposta.</span></li>
-        </ul>
-      </div>
-      <div>
-        <div class="cab"><div class="etq">Histórico</div><h2>Alterações <b>no método</b></h2></div>
-        <ol class="hist">
-          <li><span class="v"><b>v0.4</b>15/10/2026</span><div>Os 12 pontos que mudam o jogo em cada modelo.<ul><li>Método, Modelo Unificado, proposta de site e loja virtual.</li><li>Os seis decks de serviço ganharam ficha própria com os 12 pontos do canal.</li></ul></div></li>
-          <li><span class="v"><b>v0.3</b>15/10/2026</span><div>Visual da apresentação Atom 2026 · Agência de IA e régua do Modelo Unificado.<ul><li>Régua trocada para 5 critérios de 2 pontos por área, faixas 0–4, 5–7 e 8–10.</li><li>As 8 áreas do Modelo Unificado viram a base; vendas e gestão entram como proposta.</li><li>Simulador por critério e boletim com barras, como na página 11 do modelo.</li><li>Quanto vale com arredondamento a cada etapa e plano em três passos.</li><li>Central com os modelos reais: Modelo Unificado, proposta de site, loja virtual e os seis decks.</li></ul></div></li>
-          <li><span class="v"><b>v0.2</b>15/10/2026</span><div>Tela inicial com os quadros dos modelos de diagnóstico e de proposta.</div></li>
-          <li><span class="v"><b>v0.1</b>15/10/2026</span><div>Primeira versão: etapas, dimensões, régua, simulador e cálculo de impacto.</div></li>
-        </ol>
+  <section class="pag">
+    <img class="lasca" src="assets/lasca-clara.jpg" alt="" width="460" height="175">
+    <div class="in">
+      <div class="duas meio">
+        <div class="lado">
+          <span class="mono">Decisões em aberto</span>
+          <h2>O que <b>precisamos decidir</b></h2>
+          <ul class="pontos uma">
+            <li><b>Vendas e gestão entram no boletim?</b><p>Dependem da entrevista. Proposta: entram só no diagnóstico com reunião.</p></li>
+            <li><b>As áreas têm o mesmo peso?</b><p>Proposta: peso igual na versão 1, revisão depois dos primeiros 20 diagnósticos.</p></li>
+            <li><b>Mídia paga entra na prospecção?</b><p>Dá para ver anúncios ativos de fora, mas não o resultado deles.</p></li>
+            <li><b>Roteiro da entrevista</b><p>Duração, quem participa e as perguntas de cada critério de vendas e gestão.</p></li>
+            <li><b>Premissas por segmento</b><p>% de contato e % de fechamento para clínicas médicas, odontológicas e lojas de pneus.</p></li>
+            <li><b>Cliente oculto no WhatsApp</b><p>Quem faz o teste e onde registra o tempo de resposta.</p></li>
+          </ul>
+        </div>
+        <div class="lado">
+          <span class="mono">Histórico</span>
+          <h2>Alterações <b>no método</b></h2>
+          <table class="tabela"><tbody>
+            <tr><td class="rot">v0.5</td><td>Visual idêntico ao deck Atom 2026 · Agência de IA: capa, logo e lascas tirados do próprio PDF, cartões no formato "Cases de sucesso", listas de ponto verde e páginas numeradas.</td></tr>
+            <tr><td class="rot">v0.4</td><td>Os 12 pontos que mudam o jogo em cada modelo e ficha para os seis decks de serviço.</td></tr>
+            <tr><td class="rot">v0.3</td><td>Régua do Modelo Unificado: 5 critérios de 2 pontos por área. Central com os modelos reais.</td></tr>
+            <tr><td class="rot">v0.2</td><td>Tela inicial com os quadros dos modelos.</td></tr>
+            <tr><td class="rot">v0.1</td><td>Primeira versão: etapas, dimensões, régua, simulador e cálculo.</td></tr>
+          </tbody></table>
+        </div>
       </div>
     </div>
+    <span class="num">0 7</span>
   </section>
-</div>
+</main>
 
-<footer><div class="wrap"><span>Atom · agência de IA · documento de trabalho interno</span><span class="url">atomdigital.com.br</span></div></footer>
+<footer class="pag rodape">
+  <div class="in">
+    <img src="assets/logo.jpg" alt="ATOM Agência de IA" width="285" height="105">
+    <div class="contato">
+      <div><span class="mono">Fale com</span><b>Thiago Mota</b></div>
+      <div><span class="mono">E-mail</span><b>thiago@atomdigital.com.br</b></div>
+      <div><span class="mono">WhatsApp</span><b>(62) 98433-8982</b></div>
+    </div>
+    <span class="url">atomdigital.com.br</span>
+  </div>
+</footer>
 
 <script>
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const BIBLIOTECA = "https://claude.ai/artifact/XXJxzV21z3gymxyD7Z19pe";
 
-/* ---------- Método: áreas e critérios ---------- */
+/* ---------- Método: áreas ---------- */
 const PILARES = [
   { id: "mkt", nome: "<b>Marketing</b>", sub: "ser encontrado e escolhido" },
   { id: "ven", nome: "<b>Vendas</b>", sub: "transformar o contato em cliente" },
@@ -523,62 +523,58 @@ const AREAS = [
   { id: "num", p: "ges", nome: "Números do negócio", st: "adef", fonte: "Entrevista", ex: 1, fora: true,
     c: ["Sabe de onde vem cada cliente", "Conhece o ticket médio", "Conhece o custo por cliente", "Tem meta mensal de vendas", "Acompanha os números em painel"] }
 ];
-const ST = { ok: ["st-ok", "Definido"], disc: ["st-disc", "Em discussão"], adef: ["st-adef", "Proposta"] };
+
+const ESTADO_TXT = { ok: ["ok", "Definido"], disc: ["disc", "Em discussão"], adef: ["adef", "Proposta"] };
 const ORDEM = { ven: 0, ges: 1, mkt: 2 };
 const estado = Object.fromEntries(AREAS.map(a => [a.id, { marc: a.c.map((_, i) => i < a.ex), dentro: !a.fora }]));
 
 document.getElementById("areas").innerHTML = PILARES.map(p => `
-  <div class="pilar"><h3>${p.nome}</h3><span>${p.sub}</span></div>
+  <div class="grupo">${p.nome.replace(/<\/?b>/g, "")} · ${esc(p.sub)}</div>
   <div class="areas">${AREAS.filter(a => a.p === p.id).map(a => `
     <div class="area${a.fora ? " fora" : ""}" id="a-${a.id}">
-      <div class="area-top"><div><h4>${esc(a.nome)}</h4><span class="st ${ST[a.st][0]}">${ST[a.st][1]}</span></div><div class="nota" id="n-${a.id}"></div></div>
-      <ul class="crit">${a.c.map((c, i) => `<li><label><input type="checkbox" id="c-${a.id}-${i}"${i < a.ex ? " checked" : ""}><span>${esc(c)}</span></label></li>`).join("")}</ul>
-      <div class="pe"><span>${esc(a.fonte)}</span><label class="incl"><input type="checkbox" id="d-${a.id}"${a.fora ? "" : " checked"}> na nota</label></div>
+      <div class="area-top"><h3>${esc(a.nome)}</h3><span class="nota" id="n-${a.id}"></span></div>
+      <span class="estado ${ESTADO_TXT[a.st][0]}">${ESTADO_TXT[a.st][1]}</span>
+      <ul class="crit">${a.c.map((c, i) => `<li><label><input class="qd" type="checkbox" id="c-${a.id}-${i}"${i < a.ex ? " checked" : ""}><span>${esc(c)}</span></label></li>`).join("")}</ul>
+      <div class="area-pe"><span>${esc(a.fonte)}</span><label><input class="qd" type="checkbox" id="d-${a.id}"${a.fora ? "" : " checked"}>na nota</label></div>
     </div>`).join("")}</div>`).join("");
 
 AREAS.forEach(a => {
   a.c.forEach((_, i) => document.getElementById(`c-${a.id}-${i}`).addEventListener("change", e => { estado[a.id].marc[i] = e.target.checked; boletim(); }));
   document.getElementById("d-" + a.id).addEventListener("change", e => { estado[a.id].dentro = e.target.checked; boletim(); });
 });
-
 const nota = id => estado[id].marc.filter(Boolean).length * 2;
-const faixa = n => n <= 4 ? ["r", "Perdendo cliente", "var(--ruim)"] : n <= 7 ? ["m", "Pode melhorar", "var(--medio)"] : ["b", "Funciona", "var(--bom)"];
+const faixa = n => n <= 4 ? ["Perdendo cliente", "#e5675f"] : n <= 7 ? ["Pode melhorar", "#f0b44c"] : ["Funciona", "#00c864"];
 
 function boletim() {
   AREAS.forEach(a => {
-    const n = nota(a.id), dentro = estado[a.id].dentro;
-    document.getElementById("n-" + a.id).innerHTML = `${n}<small>/10</small>`;
-    document.getElementById("a-" + a.id).classList.toggle("fora", !dentro);
+    document.getElementById("n-" + a.id).innerHTML = `${nota(a.id)}<small>/10</small>`;
+    document.getElementById("a-" + a.id).classList.toggle("fora", !estado[a.id].dentro);
   });
-  const medidas = AREAS.filter(a => estado[a.id].dentro);
-  document.getElementById("barras").innerHTML = medidas.map(a => {
-    const n = nota(a.id), [, , cor] = faixa(n);
-    return `<div class="barra-l"><span>${esc(a.nome)}</span><span class="trilho"><i style="width:${n * 10}%;background:${cor}"></i></span><span class="v">${n}/10</span></div>`;
-  }).join("") || `<p class="suave" style="padding:10px 0">Nenhuma área na nota.</p>`;
-  const media = medidas.length ? medidas.reduce((s, a) => s + nota(a.id), 0) / medidas.length : 0;
-  const m1 = Math.round(media * 10) / 10;
-  document.getElementById("geral").innerHTML = `${m1.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}<small>/10</small>`;
-  const [fc, fl] = faixa(m1);
-  document.getElementById("geral-chip").innerHTML = `<span class="chip ${fc}">${fl}</span>`;
-  document.getElementById("geral-qtd").textContent = `${medidas.length} de ${AREAS.length} áreas na nota`;
-  const urg = medidas.slice().sort((x, y) => nota(x.id) - nota(y.id) || ORDEM[x.p] - ORDEM[y.p]).slice(0, 3);
+  const med = AREAS.filter(a => estado[a.id].dentro);
+  document.getElementById("barras").innerHTML = med.map(a => {
+    const n = nota(a.id);
+    return `<div class="linha"><span>${esc(a.nome)}</span><span class="tr"><i style="width:${n * 10}%;background:${faixa(n)[1]}"></i></span><span class="v">${n}/10</span></div>`;
+  }).join("");
+  const media = med.length ? Math.round(med.reduce((s, a) => s + nota(a.id), 0) / med.length * 10) / 10 : 0;
+  document.getElementById("geral").innerHTML = `${media.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}<small>/10</small>`;
+  document.getElementById("geral-f").textContent = faixa(media)[0];
+  document.getElementById("geral-qtd").textContent = `${med.length} de ${AREAS.length} áreas na nota`;
+  const urg = med.slice().sort((x, y) => nota(x.id) - nota(y.id) || ORDEM[x.p] - ORDEM[y.p]).slice(0, 3);
   document.getElementById("urgencias").innerHTML = urg.map(a => `<li><span>${esc(a.nome)}</span><span>${nota(a.id)}/10</span></li>`).join("");
 }
 boletim();
 
 /* ---------- Quanto vale ---------- */
 const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-const int = v => v.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
 function valor() {
   const g = id => Math.max(0, parseFloat(document.getElementById(id).value) || 0);
   const contatos = Math.round(g("procura") * g("contato") / 100);
   const clientes = Math.round(contatos * g("fecha") / 100);
   const total = clientes * g("ticket");
-  document.getElementById("r-contatos").textContent = int(contatos);
-  document.getElementById("r-clientes").textContent = int(clientes);
+  document.getElementById("r-contatos").textContent = contatos.toLocaleString("pt-BR");
+  document.getElementById("r-clientes").textContent = clientes.toLocaleString("pt-BR");
   document.getElementById("r-valor").textContent = brl(total);
   document.getElementById("titulo-valor").textContent = brl(total);
-  document.getElementById("r-ano").textContent = `${brl(total * 12)} por ano`;
 }
 ["procura", "contato", "fecha", "ticket"].forEach(id => document.getElementById(id).addEventListener("input", valor));
 valor();
@@ -775,45 +771,46 @@ const TRABALHOS = [
   { nome: "Imobiliária Magalhães", tipo: "Proposta", det: "Proposta ATOM", url: "https://claude.ai/artifact/TGC7rja9iPvaFMaPVfoKjd" },
   { nome: "Compressores Goiás", tipo: "Análise", det: "Análise de mercado · out/2026", url: "https://claude.ai/artifact/F9HLhqYNpmikuQLrX1yyxD" }
 ];
-const STC = { ok: ["st-ok", "Pronto"], disc: ["st-disc", "Em construção"], adef: ["st-adef", "A construir"] };
-const capa = m => m.img ? `<img src="${m.img}" alt="${esc(m.nome)}" loading="lazy" width="640" height="360">`
-  : `<div class="capa-texto"><span class="grande">${esc(m.capa.grande)}</span><span class="peq">${esc(m.capa.peq)}</span></div>`;
-const quadro = m => `
-  <a class="quadro${m.largo ? " largo" : ""}${m.destaque ? " destaque" : ""}" href="#${m.id}">
-    ${capa(m)}
-    <div class="corpo">
-      <span class="tag">${esc(m.tag)}</span>
-      <h3>${esc(m.nome)}</h3>
-      <p>${esc(m.resumo)}</p>
-      <div class="pe"><span class="st ${STC[m.st][0]}">${STC[m.st][1]}</span><span class="ir">12 pontos · abrir →</span></div>
+
+const BIG = {
+  metodo: ["13", "áreas, 8 definidas e 5 propostas"], unificado: ["8", "notas, 3 urgências e um plano"],
+  site: ["16", "páginas · exemplo Labeza"], loja: ["17", "páginas · criação R$ 1.800"]
+};
+const caso = m => `
+  <a class="caso" href="#${m.id}">
+    <div class="caso-cab"><span class="cat">${esc(m.tag)}</span><b>${esc(m.nome)}</b></div>
+    ${m.g === "diag" ? "" : `<img src="${m.img}" alt="" loading="lazy" width="640" height="360">`}
+    <div class="caso-corpo">
+      ${BIG[m.id] ? `<span class="big">${BIG[m.id][0]}</span><span class="leg">${esc(BIG[m.id][1])}</span>` : `<span class="leg">${esc(m.resumo)}</span>`}
+      <ul class="setas">${m.pontos.slice(0, 3).map(p => `<li><span>${esc(p[0])}</span></li>`).join("")}</ul>
+      <div class="caso-pe"><span>12 pontos</span><span>Abrir →</span></div>
     </div>
   </a>`;
-["diag", "prop", "serv"].forEach(g => document.getElementById("q-" + g).innerHTML = MODELOS.filter(m => m.g === g).map(quadro).join(""));
+["diag", "prop", "serv"].forEach(g => document.getElementById("q-" + g).innerHTML = MODELOS.filter(m => m.g === g).map(caso).join(""));
 document.getElementById("trabalhos").innerHTML = TRABALHOS.map(t => `
-  <li><a href="${t.url}" target="_blank" rel="noopener"><span><b>${esc(t.nome)}</b><small>${esc(t.det)}</small></span><em>${esc(t.tipo)} ↗</em></a></li>`).join("");
+  <tr><td class="rot">${esc(t.tipo)}</td><td><a href="${t.url}" target="_blank" rel="noopener">${esc(t.nome)}</a></td><td class="cinza">${esc(t.det)}</td><td class="ir"><a href="${t.url}" target="_blank" rel="noopener">Abrir ↗</a></td></tr>`).join("");
 
-const doze = m => m.pontos.map(([t, d], i) => `<li><span class="n">${String(i + 1).padStart(2, "0")}</span><div><b>${esc(t)}</b><p>${esc(d)}</p></div></li>`).join("");
+const doze = m => m.pontos.map(([t, d], i) => `<li><b><span class="n">${String(i + 1).padStart(2, "0")}</span>${esc(t)}</b><p>${esc(d)}</p></li>`).join("");
 document.getElementById("doze-metodo").innerHTML = doze(MODELOS[0]);
 
 function abrirModelo(m) {
   document.getElementById("m-tag").textContent = m.tag;
-  document.getElementById("m-nome").textContent = m.nome;
+  document.getElementById("m-titulo").innerHTML = `O que decide o resultado em <b>${esc(m.canal)}</b>`;
+  document.getElementById("m-titulo2").innerHTML = `${esc(m.nome)} <b>por dentro</b>`;
   document.getElementById("m-resumo").textContent = m.resumo;
-  document.getElementById("m-status").innerHTML = `<span class="st ${STC[m.st][0]}">${STC[m.st][1]}</span>`;
   document.getElementById("m-acoes").innerHTML = m.link ? `<a class="botao" href="${m.link}" target="_blank" rel="noopener">${esc(m.linkTxt)} ↗</a>` : "";
-  document.getElementById("m-canal").textContent = m.canal;
   document.getElementById("m-doze").innerHTML = doze(m);
   const esq = document.getElementById("m-esq");
   if (m.paginas) {
-    esq.innerHTML = `<h4 class="sub">As ${m.paginas.length} páginas</h4><div class="paginas">${m.paginas.map((p, i) => `<figure><img src="${p.src}" alt="${esc(m.nome)}, página ${i + 1}" loading="lazy" width="640" height="360"><figcaption>${String(i + 1).padStart(2, "0")} · ${esc(p.t)}</figcaption></figure>`).join("")}</div>`;
+    esq.innerHTML = `<div class="miniaturas">${m.paginas.map((p, i) => `<figure><img src="${p.src}" alt="${esc(m.nome)}, página ${i + 1}" loading="lazy" width="640" height="360"><figcaption>${String(i + 1).padStart(2, "0")} · ${esc(p.t)}</figcaption></figure>`).join("")}</div>`;
   } else if (m.estrutura) {
-    esq.innerHTML = `<h4 class="sub">Estrutura</h4><ol class="estrutura">${m.estrutura.map(t => `<li><span>${esc(t)}</span></li>`).join("")}</ol>`;
+    esq.innerHTML = `<ul class="pontos uma">${m.estrutura.map((t, i) => `<li><b><span class="n">${String(i + 1).padStart(2, "0")}</span>Seção ${i + 1}</b><p>${esc(t)}</p></li>`).join("")}</ul>`;
   } else {
-    esq.innerHTML = `<h4 class="sub">Capa</h4><img class="capa-grande" src="${m.img}" alt="${esc(m.nome)}" width="640" height="360">`;
+    esq.innerHTML = `<img class="capa-modelo" src="${m.img}" alt="${esc(m.nome)}" width="640" height="360">`;
   }
-  document.getElementById("m-fatos").innerHTML = m.fatos.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+  document.getElementById("m-fatos").innerHTML = m.fatos.map(([k, v]) => `<tr><td class="rot">${esc(k)}</td><td>${esc(v)}</td></tr>`).join("");
   document.getElementById("m-pend-bloco").hidden = !m.pend.length;
-  document.getElementById("m-pend").innerHTML = m.pend.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("");
+  document.getElementById("m-pend").innerHTML = m.pend.map(([t, d]) => `<li><b>${esc(t)}</b><p>${esc(d)}</p></li>`).join("");
 }
 
 function rota() {
