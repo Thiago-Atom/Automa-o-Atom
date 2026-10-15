@@ -265,12 +265,12 @@ const FERRAMENTAS = [
   { id: "gemini", nome: "Gemini", plano: "API · Gemini 3.8 Flash + busca do Google", moeda: "USD", mensal: 0, modo: "uso", papel: "Teste de citações: o que o Gemini e o Google respondem",
     itens: [{ id: "tok", rot: "mil tokens (média entrada/saída)", preco: 0.00135, nota: "US$ 0,75 / 3,75 por milhão; média 80/20" }, { id: "busca", rot: "consultas com busca", preco: 0.014, franquia: 5000, nota: "5.000 grátis/mês, depois US$ 14 por 1.000" }],
     fonte: "ai.google.dev/gemini-api/docs/pricing", conf: "média", obs: "Preço promocional: dobra em 01/01/2027." },
-  { id: "apify", nome: "Apify", plano: "Starter (US$ 19/mês em crédito)", moeda: "USD", mensal: 19, modo: "credito", papel: "Google Maps, avaliações, Instagram e leitura do site",
+  { id: "apify", nome: "Apify", plano: "Starter · US$ 19/mês viram crédito (conta AtomAgencia)", moeda: "USD", mensal: 19, modo: "credito", papel: "Google Maps, avaliações, Instagram e leitura do site",
     itens: [{ id: "lugares", rot: "lugares do mapa", preco: 0.003, nota: "US$ 3 por 1.000 (nível Bronze)" }, { id: "avaliacoes", rot: "avaliações", preco: 0.00045, nota: "US$ 0,45 por 1.000" }, { id: "perfis", rot: "perfis do Instagram", preco: 0.0023, nota: "US$ 2,30 por 1.000" }, { id: "sites", rot: "leituras de site (até 10 páginas)", preco: 0.001, nota: "Website Content Crawler: grátis, paga só processamento (cerca de US$ 0,001)" }],
-    fonte: "apify.com/pricing e páginas dos Actors", conf: "alta", obs: "A mensalidade vira crédito de uso. Starter tem teto de US$ 100 de uso; acima, plano Scale (US$ 199)." },
-  { id: "semrush", nome: "Semrush", plano: "Pro (50 mil unidades MCP/mês)", moeda: "USD", mensal: 139.95, modo: "franquia", papel: "Buscas, posições, visitas, concorrentes e anúncios",
-    itens: [{ id: "unidades", rot: "unidades de API", preco: null, franquia: 50000, nota: "50.000 incluídas no Pro; preço extra não confirmado" }],
-    fonte: "semrush.com/kb/1618-mcp", conf: "média", obs: "Guru US$ 249,95; Business US$ 499,95, mas no Business a API exige pacote de unidades à parte." },
+    fonte: "apify.com/pricing e páginas dos Actors", conf: "alta", obs: "Lido na conta em 15/10/2026: plano Starter, nível Bronze, ciclo de 02/10 a 01/11 com US$ 2,85 usados dos US$ 19. O limite de gasto da conta está em US$ 19: passando disso, as coletas param até o próximo ciclo ou até o limite ser aumentado." },
+  { id: "semrush", nome: "Semrush", plano: "Plano atual · 2 milhões de unidades de API/mês", moeda: "USD", mensal: 139.95, modo: "franquia", papel: "Buscas, posições, visitas, concorrentes e anúncios",
+    itens: [{ id: "unidades", rot: "unidades de API", preco: null, franquia: 2000000, nota: "2.000.000 incluídas no plano atual (informado por Thiago em 15/10/2026)" }],
+    fonte: "plano da Atom + semrush.com/kb/1618-mcp", conf: "alta", obs: "Franquia de 2 milhões de unidades confirmada. Mensalidade: digite o valor pago hoje no campo ao lado." },
   { id: "firecrawl", nome: "Firecrawl", plano: "Não usado (substituído pelo crawler da Apify)", moeda: "USD", mensal: 0, modo: "franquia", papel: "Leitura das páginas do site e dos concorrentes",
     itens: [{ id: "paginas", rot: "páginas", preco: 0.00099, franquia: 100000, nota: "1 crédito por página; excedente estimado pelo plano" }],
     fonte: "firecrawl.dev/pricing", conf: "média", obs: "Hobby: US$ 19 por 5.000 páginas. Créditos não acumulam." },
@@ -286,10 +286,12 @@ const FERRAMENTAS = [
 ];
 
 
+const CONTA_APIFY = { lido: "15/10/2026", ciclo: "02/10 a 01/11", usado: 2.85, limite: 19 }; // lido na API da Apify (users/me/limits)
+const TAXAS_ASAAS = { lido: "15/10/2026", boleto: 1.99, pix: 1.99, pixGratisMes: 100 }; // lido na conta Asaas (myAccount/fees)
 const PLANEJAMENTO_PADRAO = {
   meses: 6, diasUteis: 22, semanasMes: 4.33,
-  taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 18, cenario: "capacidade", reusoMercado: 20, parteMercadoSemrush: 70,
+  taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 18, cenario: "capacidade", reusoMercado: 20, parteMercadoSemrush: 70, semrushProspeccao: "todos",
   metas: { site: 1000, seo: 90, geral: 120, atendimento: 0, completo: 0 },
-  precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 0,
+  precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 3.98, imposto: 16,
   cambio: 5.00, reserva: 20
 };

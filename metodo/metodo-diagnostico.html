@@ -154,17 +154,66 @@ details.filtro summary { cursor: pointer; font-weight: 700; font-size: var(--fs-
 .testes b { font-weight: 700; }
 
 /* Processo */
-.proc { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--fio); }
-.proc li { border-bottom: 1px solid var(--fio); }
-.proc button { width: 100%; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: baseline; text-align: left; background: none; border: 0; padding: 16px 10px; cursor: pointer; }
-.proc button:hover { background: var(--tom); }
-.proc li.on > button { background: var(--lavanda); box-shadow: inset 0 2px 0 var(--verde); }
-.proc .n { font-size: var(--fs-h3); font-weight: 300; color: var(--roxo); font-variant-numeric: tabular-nums; }
-.proc b { font-weight: 700; display: block; }
-.proc .modo { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--suave); white-space: nowrap; }
-.proc .abre { display: none; padding: 4px 10px 22px 66px; gap: 16px; }
-.proc li.on .abre { display: grid; }
-@media (max-width: 600px) { .proc .abre { padding-left: 10px; } }
+/* Passo a passo: mapa em raias + detalhe */
+.m-auto { --m: var(--verde); } .m-parcial { --m: #9b84c4; } .m-manual { --m: var(--roxo); }
+.pp-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 2px solid var(--verde); margin-bottom: 22px; }
+.pp-kpis > div { display: grid; gap: 4px; padding: 14px 18px 14px 0; }
+.pp-kpis > div + div { padding-left: 18px; border-left: 1px solid var(--fio); }
+.pp-kpis b { font-size: var(--fs-h3); font-weight: 500; color: var(--roxo); font-variant-numeric: tabular-nums; line-height: 1.1; }
+@media (max-width: 760px) { .pp-kpis { grid-template-columns: 1fr 1fr; } .pp-kpis > div:nth-child(3) { border-left: 0; padding-left: 0; } .pp-kpis > div:nth-child(n+3) { border-top: 1px solid var(--fio); } }
+.pp-ctrl { display: flex; flex-wrap: wrap; gap: 14px 40px; margin-bottom: 14px; }
+.pp-ctrl > div { display: grid; gap: 8px; }
+.pp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pp-chips button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--fio-forte); background: #fff; padding: 6px 12px; font-size: var(--fs-small); cursor: pointer; }
+.pp-chips button span { font-family: var(--mono); font-size: 11px; color: var(--suave); }
+.pp-chips button:hover { border-color: var(--roxo); }
+.pp-chips button.on { background: var(--lavanda); border-color: var(--roxo); color: var(--roxo); font-weight: 700; }
+.pp-chips button:disabled { opacity: .4; cursor: default; }
+.pp-chips i, .pp-legenda i { width: 10px; height: 10px; background: var(--m); display: inline-block; }
+.pp-nota { margin: 0 0 12px; color: var(--suave); }
+.pp-mapa { overflow-x: auto; border-top: 1px solid var(--fio); border-bottom: 1px solid var(--fio); outline: none; }
+.pp-grade { display: grid; --rotulo: 128px; }
+@media (max-width: 600px) { .pp-grade { --rotulo: 96px; } }
+.pp-canto { position: sticky; left: 0; background: #fff; z-index: 2; }
+.pp-fase { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--roxo); padding: 10px 8px 6px; border-left: 1px solid var(--fio-forte); }
+.pp-fase span { color: var(--suave); margin-right: 8px; }
+.pp-no { position: relative; display: grid; align-content: start; gap: 4px; text-align: left; background: #fff; border: 0; border-top: 4px solid var(--m); padding: 10px 8px 12px; cursor: pointer; min-height: 84px; font-size: 13px; line-height: 1.3; }
+.pp-no .n { font-family: var(--mono); font-size: 11px; color: var(--suave); }
+.pp-no b { font-weight: 700; }
+.pp-no:hover { background: var(--tom); }
+.pp-no.on { background: var(--lavanda); box-shadow: inset 0 0 0 2px var(--roxo); }
+.pp-no.on b { color: var(--roxo); }
+.pp-con { position: absolute; top: 8px; right: 8px; color: var(--verde-texto); font-size: 10px; }
+.pp-legenda .pp-con { position: static; }
+.pp-raia { position: sticky; left: 0; z-index: 1; background: #fff; display: grid; align-content: center; gap: 1px; padding: 8px 12px 8px 0; min-width: 0; border-top: 1px solid var(--fio); font-size: var(--fs-small); box-shadow: 1px 0 0 var(--fio); }
+.pp-raia .cap { font-size: 11px; }
+.pp-cel { border: 0; border-top: 1px solid var(--fio); background: none; padding: 8px 4px; cursor: pointer; display: grid; align-items: center; min-height: 46px; }
+.pp-cel:hover, .pp-cel.on { background: var(--tom); }
+.pp-cel .bar { display: block; background: var(--m); color: #fff; font-family: var(--mono); font-size: 10px; letter-spacing: .04em; padding: 5px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pp-cel .bar.m-parcial { color: #fff; }
+.apaga { opacity: .22; }
+.pp-legenda { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 10px 0 30px; }
+.pp-legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.pp-det { border-top: 2px solid var(--roxo); padding-top: 22px; display: grid; gap: 18px; scroll-margin-top: 110px; }
+.pp-det-cab { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 18px; align-items: center; }
+.pp-det-cab .big-n { font-size: var(--fs-h1); font-weight: 300; color: var(--roxo); line-height: 1; font-variant-numeric: tabular-nums; }
+.pp-det-cab h3 { font-size: var(--fs-h3); font-weight: 300; margin-top: 4px; }
+.pp-tag { color: var(--tinta); } .pp-tag::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--m); margin-right: 6px; }
+.pp-nav { display: flex; align-items: center; gap: 10px; }
+.pp-nav button { width: 40px; height: 40px; border: 1px solid var(--fio-forte); background: #fff; cursor: pointer; font-size: 18px; color: var(--roxo); }
+.pp-nav button:hover:not(:disabled) { background: var(--lavanda); border-color: var(--roxo); }
+.pp-nav button:disabled { opacity: .35; cursor: default; }
+.pp-faz { font-size: var(--fs-lead); line-height: 1.6; max-width: 70ch; margin: 0; }
+.pp-saida { display: grid; gap: 4px; background: var(--tom); border-left: 3px solid var(--verde); padding: 12px 16px; }
+.pp-blocos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px 32px; padding-top: 14px; border-top: 1px solid var(--fio); }
+.pp-prox { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: baseline; text-align: left; width: 100%; background: none; border: 0; border-top: 1px solid var(--fio); border-bottom: 2px solid var(--fio-forte); padding: 14px 0; cursor: pointer; color: var(--roxo); text-decoration: none; font-size: var(--fs-small); }
+.pp-prox:hover { border-bottom-color: var(--verde); }
+.pp-tudo { margin-top: 34px; }
+.pp-tudo summary { cursor: pointer; font-weight: 700; font-size: var(--fs-small); color: var(--roxo); margin-bottom: 12px; }
+.pp-tudo tr[data-pp] { cursor: pointer; } .pp-tudo tr[data-pp]:hover td { background: var(--tom); } .pp-tudo tr.on td { background: var(--lavanda); }
+@media (max-width: 600px) { .pp-det-cab { grid-template-columns: auto minmax(0, 1fr); } .pp-nav { grid-column: 1 / -1; } .pp-raia { min-width: 0; } }
+.ok-franq { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--verde-texto); }
+table.t td.gargalo { background: var(--lavanda); color: var(--roxo); font-weight: 700; }
 .grade4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 24px; }
 @media (max-width: 760px) { .grade4 { grid-template-columns: 1fr 1fr; } }
 .grade4 div { display: grid; gap: 2px; font-size: var(--fs-small); }
@@ -270,6 +319,12 @@ table.t input { width: 100px; padding: 6px 8px; border: 1px solid var(--fio-fort
 .coleta .estado-msg { font-size: var(--fs-small); }
 .coleta .estado-msg.erro { color: var(--ruim); }
 .coleta .estado-msg.ok { color: var(--verde-texto); }
+.roteiro { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: var(--fs-small); }
+.roteiro b { font-weight: 700; }
+.numeros-r { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 8px; }
+.numeros-r div { border-top: 2px solid var(--verde); padding-top: 6px; display: grid; gap: 2px; }
+.numeros-r span { font-size: var(--fs-h4); font-weight: 500; font-variant-numeric: tabular-nums; }
+.numeros-r small { font-size: var(--fs-caption); color: var(--suave); line-height: 1.4; }
 .paineis-c { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
 .painel-c { background: var(--fundo); border-top: 3px solid var(--verde); box-shadow: var(--sombra); padding: 14px 16px; display: grid; gap: 6px; }
 .painel-c .dl div { padding: 6px 0; }
@@ -342,16 +397,19 @@ let rascunho = null;
 const precoItem = (f, it) => plan.precos[f.id]?.[it.id] ?? it.preco;
 const mensalDe = f => plan.mensal[f.id] ?? f.mensal;
 const emBRL = (v, moeda) => v * (moeda === "EUR" ? plan.cambioEUR : plan.cambio);
-function custoConsumo(cons) { // custo variável (sem franquias), em BRL, por ferramenta
+const naFranquia = (f, it) => f.modo !== "uso" || !!it.franquia; // consumo coberto por mensalidade ou cota grátis já existente
+function custoConsumo(cons) { // por diagnóstico, em BRL: total = caixa (sai do bolso a cada diagnóstico); franq = valor equivalente consumido das franquias já pagas
   const linhas = FERRAMENTAS.map(f => {
-    let v = 0, faltando = false;
-    f.itens.forEach(it => { const q = cons[f.id]?.[it.id] || 0; const p = precoItem(f, it); if (p == null) { if (q) faltando = true; } else v += q * p; });
-    return { f, usd: v, brl: emBRL(v, f.moeda), faltando };
+    let caixa = 0, franq = 0, faltando = false, usaFranq = false;
+    f.itens.forEach(it => { const q = cons[f.id]?.[it.id] || 0; if (!q) return; const p = precoItem(f, it);
+      if (naFranquia(f, it)) { usaFranq = true; if (p != null) franq += q * p; } else if (p == null) faltando = true; else caixa += q * p; });
+    return { f, usd: caixa, brl: emBRL(caixa, f.moeda), franq: emBRL(franq, f.moeda), usaFranq, faltando };
   });
-  return { linhas, total: linhas.reduce((s, l) => s + l.brl, 0) };
+  return { linhas, total: linhas.reduce((s, l) => s + l.brl, 0), franq: linhas.reduce((s, l) => s + l.franq, 0) };
 }
 function consumoEfetivo(id) { // prospecção: a parte de mercado do Semrush (segmento + cidade) é consultada uma vez e reaproveitada
   const c = JSON.parse(JSON.stringify(CONSUMO[id] || {}));
+  if (tipo(id)?.finalidade === "prospeccao" && c.semrush && plan.semrushProspeccao === "seo" && id !== "seo") c.semrush.unidades = 0;
   if (tipo(id)?.finalidade === "prospeccao" && c.semrush && plan.reusoMercado > 1) {
     const parte = Math.min(100, Math.max(0, plan.parteMercadoSemrush)) / 100;
     c.semrush.unidades = c.semrush.unidades * ((1 - parte) + parte / plan.reusoMercado);
@@ -387,8 +445,9 @@ function capacidade() { // 18 reuniões por dia distribuídas na proporção das
 function funil() { return plan.cenario === "capacidade" ? capacidade() : funilMeta(); }
 function economiaProduto() {
   const custo = custoConsumo(CONSUMO.completo).total * (1 + plan.reserva / 100);
-  const preco = Number(plan.precoProduto) || 0, taxas = Number(plan.taxasVenda) || 0, margem = preco - custo - taxas;
-  return { custo, preco, taxas, margem, teto: Number(plan.tetoProduto) || 0, parcela: preco / Math.max(1, plan.parcelas || 1) };
+  const preco = Number(plan.precoProduto) || 0, taxas = Number(plan.taxasVenda) || 0, imposto = preco * (Number(plan.imposto) || 0) / 100;
+  const lucro = preco - imposto - taxas - custo;
+  return { custo, preco, taxas, imposto, lucro, margem: lucro, teto: Number(plan.tetoProduto) || 0, parcela: preco / Math.max(1, plan.parcelas || 1) };
 }
 function custoMensal() {
   const F = funil();
@@ -406,6 +465,7 @@ function custoMensal() {
       if (p == null) { if (exced > 0) semPreco = true; } else variavel += exced * p;
     });
     let total = f.modo === "credito" ? Math.max(m, variavel) : m + variavel;
+    if (f.id === "apify" && variavel > CONTA_APIFY.limite) alertas.push(`Apify: a operação planejada consome US$ ${n0(variavel)} por mês, mas o limite de gasto da conta está em US$ ${CONTA_APIFY.limite}. As coletas param quando o limite é atingido: aumente o limite na Apify (cada US$ além do crédito é cobrado) ou reduza o volume.`);
     if (f.id === "apify" && variavel > 100) alertas.push(`Apify: consumo de US$ ${n0(variavel)} por mês passa do teto do Starter (US$ 100). Seria preciso o plano Scale ou maior.`);
     if (f.id === "pagespeed") { const dia = (uso.pagespeed?.testes || 0) / plan.diasUteis; if (dia > 25000) alertas.push(`PageSpeed: ${n0(dia)} testes por dia, acima do limite gratuito de 25.000.`); }
     return { f, uso: uso[f.id] || {}, mensal: m, variavel, total, brl: emBRL(total, f.moeda), semPreco };
@@ -413,6 +473,40 @@ function custoMensal() {
   const sub = linhas.reduce((s, l) => s + l.brl, 0), reserva = sub * plan.reserva / 100, total = sub + reserva;
   const diags = F.diags;
   return { F, linhas, sub, reserva, total, dia: total / plan.diasUteis, semana: total / plan.semanasMes, porDiag: diags ? total / diags : 0, alertas };
+}
+
+function franquias(C) { // capacidade mensal de cada franquia, em diagnósticos
+  const linhas = [];
+  FERRAMENTAS.forEach(f => {
+    if (f.modo === "credito") {
+      const cap = mensalDe(f), usd = id => f.itens.reduce((s, it) => s + (consumoEfetivo(id)[f.id]?.[it.id] || 0) * (precoItem(f, it) || 0), 0);
+      const usoMes = C.linhas.find(l => l.f.id === f.id)?.variavel || 0;
+      if (cap > 0) linhas.push({ f, rot: `US$ ${n0(cap)} de crédito`, cap, por: usd, usoMes, fmt: v => "US$ " + v.toLocaleString("pt-BR", { maximumFractionDigits: 2 }) });
+      return;
+    }
+    if (f.modo === "franquia" && !mensalDe(f)) return; // plano não contratado
+    f.itens.forEach(it => { if (!it.franquia) return;
+      linhas.push({ f, it, rot: `${n0(it.franquia)} ${it.rot}${f.modo === "uso" ? " grátis" : ""}`, cap: it.franquia, por: id => consumoEfetivo(id)[f.id]?.[it.id] || 0, usoMes: C.linhas.find(l => l.f.id === f.id)?.uso[it.id] || 0, fmt: v => n0(v) });
+    });
+  });
+  const porTipo = TIPOS.map(t => { const ns = linhas.map(l => l.por(t.id) > 0 ? l.cap / l.por(t.id) : Infinity); const k = ns.indexOf(Math.min(...ns)); return { t, ns, min: ns[k], gargalo: isFinite(ns[k]) ? linhas[k] : null }; });
+  const fatores = linhas.map(l => l.usoMes > 0 ? l.cap / l.usoMes : Infinity), fator = Math.min(...fatores), kg = fatores.indexOf(fator);
+  return { linhas, porTipo, fator, gargaloMix: isFinite(fator) ? linhas[kg] : null, pagosMix: isFinite(fator) ? C.F.diags * Math.min(1, fator) : C.F.diags };
+}
+function franquiasHTML(C) {
+  const Q = franquias(C), F = C.F, cobre = Q.fator >= 1, apify = FERRAMENTAS.find(f => f.id === "apify");
+  const resta = Math.max(0, CONTA_APIFY.limite - CONTA_APIFY.usado), usdG = (() => { const l = Q.linhas.find(x => x.f.id === "apify"); return l ? l.por("geral") : 0; })();
+  const cel = v => !isFinite(v) ? `<span class="suave">não usa</span>` : n0(Math.floor(v));
+  return `<div class="colunas cartoes" style="--n:4">
+      <div class="col destaque"><span class="over">Já pagos no mês</span><span class="grande">${n0(Q.pagosMix)}</span><span class="small suave">diagnósticos do volume planejado (${n0(F.diags)} por mês) cabem nas franquias${cobre ? "" : `; ${n0(F.diags - Q.pagosMix)} passam do limite`}</span></div>
+      <div class="col"><span class="cap">Folga</span><span class="grande" style="color:${cobre ? "var(--verde-texto)" : "var(--ruim)"}">${isFinite(Q.fator) ? n1(Q.fator) + "×" : "—"}</span><span class="small suave">${cobre ? "o volume planejado cabe nas franquias com essa sobra" : "do volume planejado cabe nas franquias"}</span></div>
+      <div class="col"><span class="cap">Acaba primeiro</span><span class="grande" style="font-size:var(--fs-h3)">${Q.gargaloMix ? esc(Q.gargaloMix.f.nome) : "—"}</span><span class="small suave">${Q.gargaloMix ? `${esc(Q.gargaloMix.rot)}; o mês planejado usa ${Q.gargaloMix.fmt(Q.gargaloMix.usoMes)}` : ""}</span></div>
+      <div class="col"><span class="cap">Apify neste ciclo</span><span class="grande" style="font-size:var(--fs-h3)">US$ ${resta.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}</span><span class="small suave">restam do limite de US$ ${CONTA_APIFY.limite} (ciclo ${CONTA_APIFY.ciclo}, lido em ${CONTA_APIFY.lido})${usdG ? ` ≈ ${n0(resta / usdG)} diagnósticos Geral` : ""}</span></div>
+    </div>
+    <div class="rolar" style="margin-top:24px"><table class="t"><thead><tr><th>Franquia paga · por mês</th>${TIPOS.map(t => `<th class="r">${esc(t.nome)}</th>`).join("")}<th class="r">Planejado no mês</th></tr></thead><tbody>
+    ${Q.linhas.map((l, i) => `<tr><td><b>${esc(l.f.nome)}</b><br><span class="cap">${esc(l.rot)}</span></td>${Q.porTipo.map(p => `<td class="r num${p.gargalo === l ? " gargalo" : ""}">${cel(p.ns[i])}</td>`).join("")}<td class="r num">${l.fmt(l.usoMes)}<br><span class="cap" style="color:${l.usoMes > l.cap ? "var(--ruim)" : "inherit"}">${l.cap ? n0(l.usoMes / l.cap * 100) : 0}% da franquia</span></td></tr>`).join("")}
+    <tr class="total"><td>Diagnósticos pagos por mês, só deste tipo</td>${Q.porTipo.map(p => `<td class="r num">${isFinite(p.min) ? n0(Math.floor(p.min)) : "sem limite"}</td>`).join("")}<td></td></tr></tbody></table></div>
+    <p class="cap" style="margin-top:12px">Cada coluna supõe o mês inteiro só com aquele diagnóstico; a célula marcada é a franquia que acaba primeiro. Semrush: 2 milhões de unidades do plano atual. Apify: os US$ ${n0(mensalDe(apify))} da mensalidade viram crédito, e o limite de gasto da conta está em US$ ${CONTA_APIFY.limite}. Gemini: 5.000 consultas com busca grátis por mês. Claude e ChatGPT não têm franquia: são o custo que sai do bolso a cada diagnóstico.</p>`;
 }
 
 /* ======================= TELAS ======================= */
@@ -423,7 +517,7 @@ function produtoHTML() {
   return `<div class="colunas cartoes" style="--n:4;margin-top:40px">
     <div class="col destaque" style="grid-column:span 2"><span class="over">O produto · vendido</span><h3 style="color:#fff">Diagnóstico Total</h3><p class="small suave">${esc(t.desc)}</p><a class="ir" href="#completo-metodo" style="color:#fff;border-bottom-color:rgba(255,255,255,.35)">Abrir o Diagnóstico Total <span>→</span></a></div>
     <div class="col"><span class="cap">Preço</span><span class="grande">${plan.parcelas}× ${brl(E.parcela)}</span><span class="small suave">entrada e boleto em ${plan.diasSegundaParcela} dias · total ${brl(E.preco)}</span></div>
-    <div class="col"><span class="cap">Custo × teto</span><span class="grande" style="color:${acima ? "var(--ruim)" : "var(--verde-texto)"}">${brl(E.custo, 2)}</span><span class="small suave">teto ${brl(E.teto)} · margem ${brl(E.margem, 2)} por venda</span></div>
+    <div class="col"><span class="cap">Custo × teto</span><span class="grande" style="color:${acima ? "var(--ruim)" : "var(--verde-texto)"}">${brl(E.custo, 2)}</span><span class="small suave">teto ${brl(E.teto)} · lucro ${brl(E.lucro, 2)} por venda, após ${n0(plan.imposto)}% de imposto</span></div>
   </div>`;
 }
 function telaInicio() {
@@ -469,7 +563,7 @@ function telaInicio() {
 
   <section class="secao"><div class="cab"><span class="over">Histórico</span><h2>Alterações <b>no método</b></h2></div>
     <table class="t"><tbody>
-      <tr><td class="num" style="width:70px"><b>v0.8</b></td><td>Apify coleta Google Maps, site (Website Content Crawler, no lugar do Firecrawl) e Instagram de uma vez. Semrush de mercado reaproveitado por segmento e cidade; prospecção sem PDF. Quatro diagnósticos de prospecção baratos (Haiku, amostras pequenas; Geral raso) e o Diagnóstico Total como produto (2× R$ 198, teto de custo R$ 50, margem e caixa). Custo real registrado por diagnóstico. Apify conectado ao processo: o gerador coleta o Google Maps e preenche os critérios de mapa e avaliações com evidência.</td></tr>
+      <tr><td class="num" style="width:70px"><b>v0.8</b></td><td>Roteiro do Diagnóstico Total no padrão Coalumaq com placar hoje × meta; chave "Semrush só no SEO". Apify coleta Google Maps, site (Website Content Crawler, no lugar do Firecrawl) e Instagram de uma vez. Semrush de mercado reaproveitado por segmento e cidade; prospecção sem PDF. Quatro diagnósticos de prospecção baratos (Haiku, amostras pequenas; Geral raso) e o Diagnóstico Total como produto (2× R$ 198, teto de custo R$ 50, margem e caixa). Custo real registrado por diagnóstico. Apify conectado ao processo: o gerador coleta o Google Maps e preenche os critérios de mapa e avaliações com evidência.</td></tr>
       <tr><td class="num"><b>v0.7</b></td><td>Quatro diagnósticos (Site, SEO, Geral, Atendimento) que se somam por cliente. Os 12 pontos refeitos com filtro de caixa e posição. Metas, funil e custos por ferramenta. Casos de referência. Tipografia Inter e layout mais limpo.</td></tr>
       <tr><td class="num"><b>v0.6</b></td><td>Aplicação web com método, processo e gerador, conectados por clique.</td></tr>
       <tr><td class="num"><b>v0.4</b></td><td>Os 12 pontos que mudam o jogo em cada canal.</td></tr>
@@ -523,18 +617,101 @@ function detArea(t) {
     <div class="bloco"><span class="over">Também aparece em</span><div class="ligas">${outros.length ? outros.map(x => `<a href="#${x.id}-metodo" data-area="${id}" data-tipo="${x.id}">${esc(x.nome)}</a>`).join("") : `<span class="suave">Só neste diagnóstico</span>`}</div></div>`;
 }
 
+const FASES = ["Entrada", "Coleta", "Análise", "Entrega"];
+const RAIAS = [["com", "Comercial"], ["auto", "Automação", "n8n · Apify · IA"], ["cons", "Consultor"], ["midia", "Gestor de mídia"], ["thiago", "Thiago", "aprova e envia"]];
+const faseDe = p => p.nome === "Pedido" ? 0 : (p.alimenta === "todas" || p.nome === "Quanto vale") ? 2 : (Array.isArray(p.alimenta) && p.alimenta.length) ? 1 : 3;
+function raiasDe(p) {
+  const q = p.quem.toLowerCase(), r = [];
+  if (/comercial/.test(q)) r.push("com");
+  if (/n8n|apify|automa|claude|haiku/.test(q)) r.push("auto");
+  if (/consultor|revis/.test(q)) r.push("cons");
+  if (/gestor de m/.test(q)) r.push("midia");
+  if (/thiago/.test(q)) r.push("thiago");
+  return r.length ? r : ["cons"];
+}
+function minutos(s) { // "2 min", "1 h", "1 dia (espera)", "minutos (automático)…"
+  const m = String(s).match(/([\d,.]+)\s*(dia|h\b|min)/);
+  if (!m) return { min: 0, dias: 0 };
+  const v = parseFloat(m[1].replace(",", "."));
+  return m[2] === "dia" ? { min: 0, dias: v } : { min: m[2] === "h" ? v * 60 : v, dias: 0 };
+}
+const fmtMin = m => m >= 60 ? (m % 60 ? `${Math.floor(m / 60)} h ${Math.round(m % 60)}` : `${m / 60} h`) : `${Math.round(m)} min`;
+function etapasUnidas(ids) { // soma diagnósticos: etapas iguais (mesmo nome) rodam uma vez só
+  const mapa = new Map(), areas = [...new Set(ids.flatMap(id => tipo(id).areas))];
+  ids.forEach(id => tipo(id).processo.forEach((p, k) => {
+    const ja = mapa.get(p.nome);
+    if (!ja) { mapa.set(p.nome, { ...p, de: [id], ord: mapa.size, usa: [...(p.usa || [])], alimenta: p.alimenta === "todas" ? "todas" : [...(p.alimenta || [])] }); return; }
+    ja.de.push(id); ja.usa = [...new Set([...ja.usa, ...(p.usa || [])])];
+    if (ja.alimenta !== "todas") ja.alimenta = p.alimenta === "todas" ? "todas" : [...new Set([...ja.alimenta, ...(p.alimenta || [])])];
+  }));
+  const L = [...mapa.values()].map(p => ({ ...p, fase: faseDe(p), raias: raiasDe(p), t: minutos(p.tempo), al: p.alimenta === "todas" ? areas : p.alimenta.filter(a => areas.includes(a)) }))
+    .sort((x, y) => x.fase - y.fase || x.ord - y.ord);
+  const custo = custoConsumo(ids.length > 1 ? consumoUniao(ids) : consumoEfetivo(ids[0]));
+  L.forEach(p => p.custo = 0);
+  custo.linhas.forEach(l => { const us = L.filter(p => p.usa.includes(l.f.id)); us.forEach(p => p.custo += l.brl / us.length); });
+  return { L, areas, custo };
+}
 function telaProcesso(t) {
-  if (sel.passo[t.id] == null) sel.passo[t.id] = 1;
-  const n = { auto: 0, parcial: 0, manual: 0 }; t.processo.forEach(p => n[p.modo]++);
+  sel.somar = sel.somar || {}; sel.ppModo = sel.ppModo || "todas";
+  const outros = (sel.somar[t.id] || []).filter(id => id !== t.id && tipo(id));
+  const ids = [t.id, ...outros], { L, custo } = etapasUnidas(ids);
+  if (sel.passo[t.id] == null || sel.passo[t.id] >= L.length) sel.passo[t.id] = Math.min(1, L.length - 1);
+  const n = { auto: 0, parcial: 0, manual: 0 }; L.forEach(p => n[p.modo]++);
+  const hum = L.filter(p => p.modo !== "auto").reduce((s, p) => s + p.t.min, 0), maq = L.filter(p => p.modo === "auto").reduce((s, p) => s + p.t.min, 0), espera = Math.max(0, ...L.map(p => p.t.dias));
+  const usadas = RAIAS.filter(([k]) => L.some(p => p.raias.includes(k)));
+  const col = i => i + 2, cols = `grid-template-columns: var(--rotulo) repeat(${L.length}, minmax(0, 1fr)); min-width: calc(var(--rotulo) + ${L.length * 92}px)`;
+  const fases = FASES.map((f, k) => { const is = L.map((p, i) => p.fase === k ? i : -1).filter(i => i >= 0); return is.length ? `<div class="pp-fase" style="grid-column:${col(is[0])} / ${col(is[is.length - 1]) + 1}"><span>${pad(k)}</span>${f}</div>` : ""; }).join("");
+  const filtra = p => sel.ppModo === "todas" || p.modo === sel.ppModo;
   return cabTipo(t, "processo") + `
-  <div class="cab" style="margin-bottom:18px"><h2>Passo <b>a passo</b></h2><p class="lead">${t.processo.length} etapas: ${n.auto} automáticas, ${n.parcial} parciais e ${n.manual} manuais. Clique numa etapa para ver quem faz, as ferramentas e as áreas que ela alimenta.</p></div>
-  <ol class="proc">${t.processo.map((p, i) => { const al = p.alimenta === "todas" ? t.areas : (p.alimenta || []).filter(a => t.areas.includes(a)); return `<li class="${i === sel.passo[t.id] ? "on" : ""}" data-i="${i}">
-    <button type="button" data-passo-sel="${i}"><span class="n">${pad(i)}</span><span><b>${esc(p.nome)}</b><span class="small suave">${esc(p.faz)}</span></span><span class="modo">${p.conectado ? "Conectado · " : ""}${MODO[p.modo]}</span></button>
-    <div class="abre"><div class="grade4"><div><span class="cap">Quem faz</span><b>${esc(p.quem)}</b></div><div><span class="cap">Ferramenta</span><b>${esc(p.ferr)}</b></div><div><span class="cap">Tempo</span><b>${esc(p.tempo)}</b></div><div><span class="cap">Saída</span><b>${esc(p.saida)}</b></div></div>
-      <div><span class="over">${p.alimenta === "todas" ? "Usa todas as áreas" : "Alimenta estas áreas"}</span><div class="ligas" style="margin-top:6px">${al.length ? al.map(a => `<a href="#${t.id}-metodo" data-area="${a}" data-tipo="${t.id}" data-rolar="areas">${esc(AREAS[a].nome)}</a>`).join("") : `<span class="suave small">Etapa de preparação ou entrega</span>`}</div></div>
-      ${p.conectado ? `<div><span class="conectado">● Conectado: ${esc(p.conectado)}</span></div>` : ""}
-      ${(p.usa || []).length ? `<div><span class="over">Custo desta etapa vem de</span><div class="ligas" style="margin-top:6px">${p.usa.map(u => `<a href="#custos">${esc(FERRAMENTAS.find(f => f.id === u)?.nome || u)}</a>`).join("")}</div></div>` : ""}
-    </div></li>`; }).join("")}</ol>` + fimTipo();
+  <div class="cab" style="margin-bottom:22px"><h2>Passo <b>a passo</b></h2><p class="lead">Da entrada do pedido à entrega, quem faz cada etapa e quanto ela custa. Clique numa etapa, ou use ← e → no teclado.</p></div>
+  <div class="pp-kpis">
+    <div><span class="over">Etapas</span><b>${L.length}</b><span class="cap">${n.auto} auto · ${n.parcial} parciais · ${n.manual} manuais</span></div>
+    <div><span class="over">Tempo de gente</span><b>${fmtMin(hum)}</b><span class="cap">etapas manuais e parciais</span></div>
+    <div><span class="over">Tempo de máquina</span><b>${fmtMin(maq)}</b><span class="cap">${espera ? `+ ${n0(espera)} dia de espera (cliente oculto)` : "sem espera"}</span></div>
+    <div><span class="over">Custo variável</span><b>${brl(custo.total, 2)}</b><span class="cap">por diagnóstico${ids.length > 1 ? ", somados" : ""} · <a href="#custos">ver custos</a></span></div>
+  </div>
+  <div class="pp-ctrl">
+    <div><span class="over">Mostrar</span><div class="pp-chips">${[["todas", "Todas", L.length], ["auto", "Automáticas", n.auto], ["parcial", "Parciais", n.parcial], ["manual", "Manuais", n.manual]].map(([k, r, q]) => `<button type="button" data-pp-modo="${k}" class="${sel.ppModo === k ? "on" : ""}" ${q || k === "todas" ? "" : "disabled"}>${k !== "todas" ? `<i class="m-${k}"></i>` : ""}${r} <span>${q}</span></button>`).join("")}</div></div>
+    <div><span class="over">Somar com</span><div class="pp-chips">${TIPOS.filter(x => x.id !== t.id).map(x => `<button type="button" data-pp-somar="${x.id}" class="${outros.includes(x.id) ? "on" : ""}" aria-pressed="${outros.includes(x.id)}">${outros.includes(x.id) ? "✓ " : "+ "}${esc(x.nome)}</button>`).join("")}</div></div>
+  </div>
+  ${outros.length ? `<p class="small pp-nota">Somando <b>${ids.map(id => esc(tipo(id).nome)).join(" + ")}</b>: etapas iguais rodam uma vez só e a coleta é compartilhada. ${ids.reduce((s, id) => s + tipo(id).processo.length, 0) - L.length} etapas economizadas.</p>` : ""}
+  <div class="pp-mapa" role="region" aria-label="Mapa do processo" tabindex="0"><div class="pp-grade" style="${cols}">
+    <div class="pp-canto"></div>${fases}
+    <div class="pp-canto"></div>${L.map((p, i) => `<button type="button" class="pp-no m-${p.modo}${i === sel.passo[t.id] ? " on" : ""}${filtra(p) ? "" : " apaga"}" style="grid-column:${col(i)}" data-pp="${i}" aria-label="Etapa ${pad(i)}: ${esc(p.nome)}"><span class="n">${pad(i)}</span><b>${esc(p.nome)}</b>${p.conectado ? `<span class="pp-con" title="Conectado ao Apify">●</span>` : ""}</button>`).join("")}
+    ${usadas.map(([k, r, sub]) => `<div class="pp-raia"><b>${r}</b>${sub ? `<span class="cap">${sub}</span>` : ""}</div>${L.map((p, i) => `<button type="button" tabindex="-1" class="pp-cel${i === sel.passo[t.id] ? " on" : ""}${filtra(p) ? "" : " apaga"}" style="grid-column:${col(i)}" data-pp="${i}">${p.raias.includes(k) ? `<span class="bar m-${p.modo}">${esc(p.tempo.replace(/\s*\(.*\)/, ""))}</span>` : ""}</button>`).join("")}`).join("")}
+  </div></div>
+  <div class="pp-legenda cap"><span><i class="m-auto"></i>Automática</span><span><i class="m-parcial"></i>Parcial (máquina + gente)</span><span><i class="m-manual"></i>Manual</span><span><b class="pp-con">●</b> Conectada ao Apify</span></div>
+  <div id="pp-det" class="pp-det" aria-live="polite"></div>
+  <details class="pp-tudo"><summary>Ver a sequência inteira em lista</summary>
+    <div style="overflow-x:auto"><table class="t"><thead><tr><th>#</th><th>Etapa</th><th>Quem</th><th>Tempo</th><th>Saída</th><th class="r">Custo</th></tr></thead><tbody>${L.map((p, i) => `<tr data-pp="${i}" class="${filtra(p) ? "" : "apaga"}"><td class="num">${pad(i)}</td><td><b>${esc(p.nome)}</b><br><span class="cap">${MODO[p.modo]} · ${FASES[p.fase]}</span></td><td>${esc(p.quem)}</td><td>${esc(p.tempo)}</td><td>${esc(p.saida)}</td><td class="r num">${p.custo ? brl(p.custo, 2) : "—"}</td></tr>`).join("")}</tbody></table></div>
+  </details>` + fimTipo();
+}
+function detPasso(t) {
+  const ids = [t.id, ...((sel.somar || {})[t.id] || [])], { L } = etapasUnidas(ids), i = sel.passo[t.id], p = L[i], el = document.getElementById("pp-det");
+  if (!p || !el) return;
+  el.innerHTML = `<div class="pp-det-cab">
+      <span class="big-n">${pad(i)}</span>
+      <div><span class="over">${FASES[p.fase]} · <span class="pp-tag m-${p.modo}">${MODO[p.modo]}</span></span><h3>${esc(p.nome)}</h3></div>
+      <div class="pp-nav"><button type="button" data-pp-ir="-1" ${i ? "" : "disabled"} aria-label="Etapa anterior">←</button><span class="cap">${i + 1} de ${L.length}</span><button type="button" data-pp-ir="1" ${i < L.length - 1 ? "" : "disabled"} aria-label="Próxima etapa">→</button></div>
+    </div>
+    <p class="pp-faz">${esc(p.faz)}</p>
+    <div class="grade4"><div><span class="cap">Quem faz</span><b>${esc(p.quem)}</b></div><div><span class="cap">Ferramenta</span><b>${esc(p.ferr)}</b></div><div><span class="cap">Tempo</span><b>${esc(p.tempo)}</b></div><div><span class="cap">Custo da etapa</span><b>${p.custo ? "≈ " + brl(p.custo, 2) : "Sem custo variável"}</b></div></div>
+    <div class="pp-saida"><span class="over">Entrega desta etapa</span><b>${esc(p.saida)}</b></div>
+    ${p.conectado ? `<div><span class="conectado">● Conectado: ${esc(p.conectado)}</span></div>` : ""}
+    <div class="pp-blocos">
+      <div><span class="over">${p.alimenta === "todas" ? "Usa todas as áreas" : "Alimenta estas áreas"}</span><div class="ligas" style="margin-top:6px">${p.al.length ? p.al.map(a => `<a href="#${t.id}-metodo" data-area="${a}" data-tipo="${t.id}" data-rolar="areas">${esc(AREAS[a].nome)}</a>`).join("") : `<span class="suave small">Etapa de preparação ou entrega</span>`}</div></div>
+      ${p.usa.length ? `<div><span class="over">Ferramentas cobradas</span><div class="ligas" style="margin-top:6px">${p.usa.map(u => `<a href="#custos">${esc(FERRAMENTAS.find(f => f.id === u)?.nome || u)}</a>`).join("")}</div></div>` : ""}
+      ${ids.length > 1 ? `<div><span class="over">Serve a</span><div class="ligas" style="margin-top:6px">${p.de.map(id => `<span>${esc(tipo(id).nome)}</span>`).join("")}</div></div>` : ""}
+    </div>
+    ${i < L.length - 1 ? `<button type="button" class="pp-prox" data-pp-ir="1"><span class="cap">Depois</span><b>${pad(i + 1)} · ${esc(L[i + 1].nome)}</b><span>→</span></button>` : `<a class="pp-prox" href="#gerar" data-gerar="${t.id}"><span class="cap">Fim do processo</span><b>Gerar este diagnóstico</b><span>→</span></a>`}`;
+  document.querySelectorAll("[data-pp]").forEach(x => x.classList.toggle("on", +x.dataset.pp === i));
+  el.querySelectorAll("[data-pp-ir]").forEach(b => b.onclick = () => irPasso(t, +b.dataset.ppIr, true));
+}
+function irPasso(t, d, rolar) {
+  const ids = [t.id, ...((sel.somar || {})[t.id] || [])], N = etapasUnidas(ids).L.length;
+  sel.passo[t.id] = Math.max(0, Math.min(N - 1, sel.passo[t.id] + d)); detPasso(t);
+  const no = document.querySelector(`.pp-no[data-pp="${sel.passo[t.id]}"]`); if (no) no.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+  if (rolar) { const det = document.getElementById("pp-det"); if (det.getBoundingClientRect().top < 80) det.scrollIntoView({ behavior: "smooth" }); }
 }
 
 function telaEscopo(t) {
@@ -545,12 +722,12 @@ function telaEscopo(t) {
     <div class="v"><span class="over" style="color:var(--verde-texto)">O que mostrar ao cliente</span><h4>O que ele recebe</h4><ul class="setas">${t.mostrar.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></div>
     <div><span class="over" style="color:var(--suave)">Limites</span><h4>O que não afirmamos</h4><ul class="setas">${t.limites.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></div>
   </div>
-  <div class="secao"><div class="cab-linha"><div class="cab"><span class="over">Custo de produção</span><h2>Quanto custa um diagnóstico <b>${esc(t.nome)}</b></h2><p class="lead">Custo variável das ferramentas por diagnóstico, sem mensalidades e sem trabalho da equipe. Consumo estimado, a validar no piloto.</p></div>
+  <div class="secao"><div class="cab-linha"><div class="cab"><span class="over">Custo de produção</span><h2>Quanto custa um diagnóstico <b>${esc(t.nome)}</b></h2><p class="lead">O que sai do bolso a cada diagnóstico: só as ferramentas pagas por uso (Claude, ChatGPT, Gemini). Semrush, Apify, n8n e PDF.co saem das franquias já pagas, até o limite de cada plano. Consumo estimado, a validar no piloto.</p></div>
     <div><span class="cap">Por diagnóstico</span><div class="grande">${brl(c.total, 2)}</div></div></div>
     <div class="rolar"><table class="t"><thead><tr><th>Ferramenta</th><th>O que faz aqui</th><th>Consumo por diagnóstico</th><th class="r">Custo</th></tr></thead><tbody>
-    ${c.linhas.map(l => { const cons = consumoEfetivo(t.id)[l.f.id] || {}; const desc = l.f.itens.filter(it => cons[it.id]).map(it => `${n0(cons[it.id])} ${it.rot}`).join(" · "); return `<tr><td><b>${esc(l.f.nome)}</b></td><td class="suave">${esc(l.f.papel)}</td><td>${desc || `<span class="suave">não usa</span>`}</td><td class="r num">${l.faltando ? `<span class="alerta">na franquia</span>` : brl(l.brl, 2)}</td></tr>`; }).join("")}
-    <tr class="total"><td colspan="3">Total variável por diagnóstico</td><td class="r num">${brl(c.total, 2)}</td></tr></tbody></table></div>
-    <p class="cap" style="margin-top:12px">${t.finalidade === "produto" ? `Teto de custo do produto: ${brl(plan.tetoProduto)}. Com a reserva de ${plan.reserva}%, este diagnóstico custa ${brl(c.total * (1 + plan.reserva / 100), 2)}${c.total * (1 + plan.reserva / 100) > plan.tetoProduto ? " — ACIMA do teto" : " — dentro do teto"}. ` : "Diagnóstico de prospecção: feito em cada empresa abordada, por isso precisa ser barato. "}Mensalidades e franquias (Semrush, n8n, Firecrawl, PDF.co) estão em Metas e custos. "Na franquia" = incluído no plano até o limite.</p>
+    ${c.linhas.map(l => { const cons = consumoEfetivo(t.id)[l.f.id] || {}; const desc = l.f.itens.filter(it => cons[it.id]).map(it => `${n0(cons[it.id])} ${it.rot}`).join(" · "); return `<tr><td><b>${esc(l.f.nome)}</b></td><td class="suave">${esc(l.f.papel)}</td><td>${desc || `<span class="suave">não usa</span>`}</td><td class="r num">${!desc ? "—" : l.brl > 0 ? brl(l.brl, 2) : `<span class="ok-franq">na franquia</span>${l.franq ? `<br><span class="cap">vale ${brl(l.franq, 2)}</span>` : ""}`}</td></tr>`; }).join("")}
+    <tr class="total"><td colspan="3">Sai do bolso por diagnóstico</td><td class="r num">${brl(c.total, 2)}</td></tr></tbody></table></div>
+    <p class="cap" style="margin-top:12px">${t.finalidade === "produto" ? `Teto de custo do produto: ${brl(plan.tetoProduto)}. Com a reserva de ${plan.reserva}%, este diagnóstico custa ${brl(c.total * (1 + plan.reserva / 100), 2)}${c.total * (1 + plan.reserva / 100) > plan.tetoProduto ? " — ACIMA do teto" : " — dentro do teto"}. ` : "Diagnóstico de prospecção: feito em cada empresa abordada, por isso precisa ser barato. "}Quantos diagnósticos as franquias já pagam por mês está em <a href="#custos">Metas e custos</a>. "Na franquia" = incluído no plano até o limite; o "vale" é o preço que custaria fora dela.</p>
     <div class="acoes" style="margin-top:20px"><a class="btn" href="#gerar" data-gerar="${t.id}">Gerar um diagnóstico ${esc(t.nome)}</a><a class="btn sec" href="${t.proposta[1]}" target="_blank" rel="noopener">${esc(t.proposta[0])} ↗</a>${t.modelo ? `<a class="btn sec" href="${t.modelo[1]}" target="_blank" rel="noopener">${esc(t.modelo[0])} ↗</a>` : ""}</div></div>` + fimTipo();
 }
 
@@ -585,7 +762,7 @@ function telaCustos() {
 
   ${C.alertas.length ? `<section class="secao"><div class="cab"><span class="over" style="color:var(--medio)">Atenção</span><h2>Onde a operação <b>estoura o plano</b></h2></div><ul class="alertas">${C.alertas.map(a => `<li><span>${esc(a)}</span></li>`).join("")}</ul></section>` : ""}
 
-  <section class="secao"><div class="cab"><span class="over">O produto</span><h2>Diagnóstico Total: <b>preço, custo e margem</b></h2><p class="lead">O único diagnóstico vendido. O custo de ferramentas tem teto; a margem paga o tempo da equipe.</p></div>
+  <section class="secao"><div class="cab"><span class="over">O produto</span><h2>Diagnóstico Total: <b>preço, imposto e lucro</b></h2><p class="lead">O único diagnóstico vendido. Do preço saem o imposto, as taxas do Asaas e as ferramentas pagas por uso; o resto é lucro, que paga o tempo da equipe.</p></div>
     ${(() => { const E = economiaProduto(), acima = E.custo > E.teto, c = custoConsumo(CONSUMO.completo); return `
     <div class="campos" style="margin-bottom:24px">
       <div class="campo"><label>Preço total (R$)</label>${inp("precoProduto", plan.precoProduto, "1")}</div>
@@ -593,16 +770,24 @@ function telaCustos() {
       <div class="campo"><label>Dias até a 2ª parcela</label>${inp("diasSegundaParcela", plan.diasSegundaParcela, "1")}</div>
       <div class="campo"><label>Teto de custo (R$)</label>${inp("tetoProduto", plan.tetoProduto, "1")}</div>
       <div class="campo"><label>Taxas de cobrança por venda (R$)</label>${inp("taxasVenda", plan.taxasVenda, "0.01")}</div>
+      <div class="campo"><label>Imposto sobre a venda (%)</label>${inp("imposto", plan.imposto, "0.5")}</div>
     </div>
-    <div class="colunas cartoes" style="--n:4">
+    <div class="rolar"><table class="t conta"><tbody>
+      <tr><td>Preço · ${plan.parcelas}× ${brl(E.parcela)} (entrada e boleto em ${plan.diasSegundaParcela} dias)</td><td class="r num"><b>${brl(E.preco, 2)}</b></td><td class="r num">100%</td></tr>
+      <tr><td>− Imposto (${n1(Number(plan.imposto) || 0)}% sobre o preço)</td><td class="r num">− ${brl(E.imposto, 2)}</td><td class="r num">${E.preco ? n1(E.imposto / E.preco * 100) : 0}%</td></tr>
+      <tr><td>− Taxas do Asaas <span class="cap">· boleto ${brl(TAXAS_ASAAS.boleto, 2)} + Pix ${brl(TAXAS_ASAAS.pix, 2)} (Pix é grátis nos ${TAXAS_ASAAS.pixGratisMes} primeiros recebimentos do mês) · lido em ${TAXAS_ASAAS.lido}</span></td><td class="r num">− ${brl(E.taxas, 2)}</td><td class="r num">${E.preco ? n1(E.taxas / E.preco * 100) : 0}%</td></tr>
+      <tr><td>− Ferramentas pagas por uso, com reserva de ${plan.reserva}% <span class="cap">· Semrush, Apify, n8n e PDF.co saem das franquias já pagas</span></td><td class="r num">− ${brl(E.custo, 2)}</td><td class="r num">${E.preco ? n1(E.custo / E.preco * 100) : 0}%</td></tr>
+      <tr class="total"><td>Lucro por venda, antes do tempo da equipe</td><td class="r num">${brl(E.lucro, 2)}</td><td class="r num">${E.preco ? n1(E.lucro / E.preco * 100) : 0}%</td></tr>
+    </tbody></table></div>
+    <div class="colunas cartoes" style="--n:4;margin-top:24px">
       <div class="col"><span class="cap">Preço</span><span class="grande">${plan.parcelas}× ${brl(E.parcela)}</span><span class="small suave">${brl(E.parcela)} na entrada, ${brl(E.preco - E.parcela)} em ${plan.diasSegundaParcela} dias</span></div>
-      <div class="col"><span class="cap">Custo de ferramentas</span><span class="grande" style="color:${acima ? "var(--ruim)" : "var(--roxo)"}">${brl(E.custo, 2)}</span><span class="small suave">com reserva de ${plan.reserva}% · teto ${brl(E.teto)}</span></div>
-      <div class="col"><span class="cap">Taxas de cobrança</span><span class="grande">${brl(E.taxas, 2)}</span><span class="small suave">${E.taxas ? "informadas" : "preencha a taxa do Asaas (boleto e cartão)"}</span></div>
-      <div class="col destaque"><span class="over">Margem por venda</span><span class="grande">${brl(E.margem, 2)}</span><span class="small suave">${E.preco ? Math.round(E.margem / E.preco * 100) : 0}% do preço, antes do tempo da equipe</span></div>
+      <div class="col"><span class="cap">Imposto + taxas</span><span class="grande">${brl(E.imposto + E.taxas, 2)}</span><span class="small suave">${n1(Number(plan.imposto) || 0)}% de imposto e ${brl(E.taxas, 2)} do Asaas</span></div>
+      <div class="col"><span class="cap">Custo de ferramentas</span><span class="grande" style="color:${acima ? "var(--ruim)" : "var(--roxo)"}">${brl(E.custo, 2)}</span><span class="small suave">pago por uso · teto ${brl(E.teto)} · mais ${brl(c.franq * (1 + plan.reserva / 100), 2)} consumidos das franquias</span></div>
+      <div class="col destaque"><span class="over">Lucro por venda</span><span class="grande">${brl(E.lucro, 2)}</span><span class="small suave">${E.preco ? Math.round(E.lucro / E.preco * 100) : 0}% do preço, antes do tempo da equipe${(Number(plan.metas.completo) || 0) ? ` · ${brl(E.lucro * plan.metas.completo)} na meta de ${n0(plan.metas.completo)} vendas` : ""}</span></div>
     </div>
     ${acima ? `<ul class="alertas" style="margin-top:20px"><li><span>O custo estimado do Diagnóstico Total (${brl(E.custo, 2)}) passou do teto de ${brl(E.teto)}. Reduza a amostra (perguntas de IA, avaliações, termos) em Escopo, limites e custo.</span></li></ul>` : `<p class="fecho">Custo estimado ${brl(E.custo, 2)}, dentro do teto de ${brl(E.teto)}: sobram ${brl(E.teto - E.custo, 2)} de folga por diagnóstico.</p>`}
     <div class="rolar" style="margin-top:24px"><table class="t"><thead><tr><th>De onde vem o custo do Diagnóstico Total</th><th class="r">Por diagnóstico</th><th class="r">% do teto</th></tr></thead><tbody>
-    ${c.linhas.filter(l => l.brl > 0 || l.faltando).map(l => `<tr><td><b>${esc(l.f.nome)}</b> <span class="suave">· ${esc(l.f.papel)}</span></td><td class="r num">${l.faltando ? `<span class="alerta">na franquia</span>` : brl(l.brl, 2)}</td><td class="r num">${E.teto ? n1(l.brl / E.teto * 100) + "%" : "—"}</td></tr>`).join("")}
+    ${c.linhas.filter(l => l.brl > 0 || l.faltando || l.usaFranq).map(l => `<tr><td><b>${esc(l.f.nome)}</b> <span class="suave">· ${esc(l.f.papel)}</span></td><td class="r num">${l.brl > 0 ? brl(l.brl, 2) : `<span class="ok-franq">na franquia</span>${l.franq ? `<br><span class="cap">vale ${brl(l.franq, 2)}</span>` : ""}`}</td><td class="r num">${E.teto && l.brl ? n1(l.brl / E.teto * 100) + "%" : "—"}</td></tr>`).join("")}
     <tr><td>Reserva para novas tentativas (${plan.reserva}%)</td><td class="r num">${brl(c.total * plan.reserva / 100, 2)}</td><td class="r num">${E.teto ? n1(c.total * plan.reserva / 100 / E.teto * 100) + "%" : "—"}</td></tr>
     <tr class="total"><td>Total</td><td class="r num">${brl(E.custo, 2)}</td><td class="r num">${E.teto ? n1(E.custo / E.teto * 100) + "%" : "—"}</td></tr></tbody></table></div>`; })()}
   </section>
@@ -641,6 +826,9 @@ function telaCustos() {
     <tr class="total"><td>Total da prospecção</td><td class="r num">${n0(FM.linhas.filter(l => l.t.finalidade === "prospeccao").reduce((s, l) => s + l.meta, 0))}</td><td class="r num">${n0(FM.vendasMes)}</td><td class="r num">${n0(FM.reunioes)}</td><td class="r num">${n0(FM.abordagens)}</td><td class="r num">${n0(FM.abordagens / plan.diasUteis)}</td></tr></tbody></table></div>
     <p class="cap" style="margin-top:12px">Taxas iniciais do Plano Mestre: hipóteses ainda não comprovadas. A soma das ofertas pode contar a mesma empresa mais de uma vez.</p></section>
 
+  <section class="secao"><div class="cab"><span class="over">Franquias</span><h2>Quantos diagnósticos <b>já estão pagos</b></h2><p class="lead">As mensalidades já pagas incluem uma cota de uso. Esta é a conta de quantos diagnósticos cabem nelas por mês antes de gastar um real a mais. A ferramenta que acaba primeiro é o gargalo.</p></div>
+    ${franquiasHTML(C)}</section>
+
   <section class="secao"><div class="cab"><span class="over">Custo por ferramenta</span><h2>Para onde vai <b>cada real</b></h2><p class="lead">Mensalidade do plano + consumo acima da franquia, convertidos em reais. Edite o preço para simular outro plano.</p></div>
     <div class="campos" style="margin-bottom:24px">
       <div class="campo"><label>Câmbio R$ por US$</label>${inp("cambio", plan.cambio, "0.01")}</div>
@@ -648,6 +836,7 @@ function telaCustos() {
       <div class="campo"><label>Reserva para novas tentativas (%)</label>${inp("reserva", plan.reserva)}</div>
       <div class="campo"><label>Empresas por segmento e cidade</label>${inp("reusoMercado", plan.reusoMercado)}</div>
       <div class="campo"><label>% do Semrush que é de mercado</label>${inp("parteMercadoSemrush", plan.parteMercadoSemrush)}</div>
+      <div class="campo"><label>Semrush na prospecção</label><select data-plan-sel="semrushProspeccao"><option value="todos"${plan.semrushProspeccao !== "seo" ? " selected" : ""}>Em todos os diagnósticos</option><option value="seo"${plan.semrushProspeccao === "seo" ? " selected" : ""}>Só no SEO (e no Total)</option></select></div>
     </div>
     <div class="rolar"><table class="t"><thead><tr><th>Ferramenta</th><th>Plano</th><th class="r">Mensalidade</th><th>Consumo no mês</th><th class="r">Mês</th><th class="r">Semana</th><th class="r">Dia útil</th><th>Fonte</th></tr></thead><tbody>
     ${C.linhas.map(l => `<tr><td><b>${esc(l.f.nome)}</b><br><span class="cap">${esc(l.f.papel)}</span></td><td class="small">${esc(l.f.plano)}<br><span class="cap">${l.f.modo === "credito" ? "mensalidade vira crédito de uso" : l.f.modo === "franquia" ? "mensalidade + excedente" : "por uso"}</span></td>
@@ -663,7 +852,7 @@ function telaCustos() {
   <section class="secao"><div class="cab"><span class="over">Consumo por diagnóstico</span><h2>Quanto cada diagnóstico usa <b>de cada ferramenta</b></h2><p class="lead">Estimativas de planejamento para validar no piloto.</p></div>
     <div class="rolar"><table class="t"><thead><tr><th>Ferramenta · unidade</th>${TIPOS.map(t => `<th class="r">${esc(t.nome)}</th>`).join("")}</tr></thead><tbody>
     ${FERRAMENTAS.flatMap(f => f.itens.map(it => `<tr><td><b>${esc(f.nome)}</b> · ${esc(it.rot)}</td>${TIPOS.map(t => `<td class="r num">${n0(consumoEfetivo(t.id)[f.id]?.[it.id] || 0)}</td>`).join("")}</tr>`)).join("")}
-    <tr class="total"><td>Custo variável por diagnóstico</td>${TIPOS.map(t => `<td class="r num">${brl(custoConsumo(consumoEfetivo(t.id)).total, 2)}</td>`).join("")}</tr></tbody></table></div></section>`;
+    <tr class="total"><td>Sai do bolso por diagnóstico (fora das franquias)</td>${TIPOS.map(t => `<td class="r num">${brl(custoConsumo(consumoEfetivo(t.id)).total, 2)}</td>`).join("")}</tr></tbody></table></div></section>`;
 }
 
 /* ---------- Casos ---------- */
@@ -738,13 +927,52 @@ function resultado() {
     <div class="bl"><span class="over">As três urgências</span><ol class="urgs">${c.urg.map((a, i) => { const v = c.virada(a); return `<li><button type="button" data-ir="${a}"><span class="i">${i + 1}</span><b>${esc(AREAS[a].nome)}</b><span>${nota(r, a)}/10</span><span class="s">Resolve: <strong>${esc(AREAS[a].sol)}</strong>${v ? `<br>Vira o jogo: ${esc(v.p[0])}` : ""}</span></button></li>`; }).join("")}</ol></div>
     ${c.temValor ? `<div class="bl"><span class="over">Quanto vale por mês</span><span class="grande" style="font-size:var(--fs-h2)">${brl(c.total)}</span><span class="cap">${n0(r.valor.procura)} buscas × ${r.valor.contato}% = ${n0(c.contatos)} contatos × ${r.valor.fecha}% = ${n0(c.clientes)} clientes × ${brl(r.valor.ticket)}</span></div>` : ""}
     <div class="bl plano"><span class="over">Plano</span><div class="g"><b>Hoje · grátis</b>${lista(c.plano.hoje)}</div><div><b>Em 90 dias · ser encontrado</b>${lista(c.plano.d90)}</div><div><b>Em 6 meses · ser escolhido</b>${lista(c.plano.m6)}</div></div>
-    <div class="bl"><span class="over">Custo de produção deste diagnóstico</span><span class="grande" style="font-size:var(--fs-h3)">${brl(c.custo.total, 2)}</span><span class="cap">${r.tipos.length > 1 ? `Somados à parte custariam ${brl(c.soma, 2)}; a coleta compartilhada economiza ${brl(c.soma - c.custo.total, 2)}. ` : ""}Só ferramentas, sem mensalidades nem equipe.${custoColetas(r) ? ` Custo real das coletas do Apify: ${brl(emBRL(custoColetas(r), "USD"), 2)}.` : ""}</span>${r.tipos.includes("completo") ? (() => { const tot = c.custo.total * (1 + plan.reserva / 100); return `<span class="small" style="color:${tot > plan.tetoProduto ? "var(--ruim)" : "var(--verde-texto)"};font-weight:700">Com reserva: ${brl(tot, 2)} · teto do Diagnóstico Total ${brl(plan.tetoProduto)} · ${tot > plan.tetoProduto ? "acima do teto" : "dentro do teto"}</span>`; })() : ""}</div>
+    ${r.tipos.includes("completo") ? apresentacaoHTML(r, c) : ""}
+    <div class="bl"><span class="over">Custo de produção deste diagnóstico</span><span class="grande" style="font-size:var(--fs-h3)">${brl(c.custo.total, 2)}</span><span class="cap">${r.tipos.length > 1 ? `Somados à parte custariam ${brl(c.soma, 2)}; a coleta compartilhada economiza ${brl(c.soma - c.custo.total, 2)}. ` : ""}Só ferramentas pagas por uso; Semrush, Apify, n8n e PDF.co saem das franquias (valeriam ${brl(c.custo.franq, 2)}). Sem equipe.${custoColetas(r) ? ` Custo real das coletas do Apify: ${brl(emBRL(custoColetas(r), "USD"), 2)}.` : ""}</span>${r.tipos.includes("completo") ? (() => { const tot = c.custo.total * (1 + plan.reserva / 100); return `<span class="small" style="color:${tot > plan.tetoProduto ? "var(--ruim)" : "var(--verde-texto)"};font-weight:700">Com reserva: ${brl(tot, 2)} · teto do Diagnóstico Total ${brl(plan.tetoProduto)} · ${tot > plan.tetoProduto ? "acima do teto" : "dentro do teto"}</span>`; })() : ""}</div>
     <div class="bl"><span class="over">Propostas indicadas</span><div class="ligas">${r.tipos.map(id => `<a href="${tipo(id).proposta[1]}" target="_blank" rel="noopener">${esc(tipo(id).proposta[0])}</a>`).join("")}</div></div>
     <div class="acoes">${db ? `<button class="btn" type="button" id="b-salvar">${r.id ? "Salvar alterações" : "Salvar diagnóstico"}</button>` : ""}<button class="btn sec" type="button" id="b-copiar">Copiar texto</button></div>
     <p class="msg" id="msg">${db ? "" : "Para salvar, abra a página logado no claude.ai. Copiar funciona sempre."}</p>`;
   box.querySelectorAll("[data-ir]").forEach(b => b.onclick = () => iluminar(b.dataset.ir));
   document.getElementById("b-copiar").onclick = copiar;
   if (db) document.getElementById("b-salvar").onclick = salvar;
+}
+function apresentacao(r, c) { // roteiro do Diagnóstico Total no padrão Coalumaq, montado com os dados coletados
+  const C = coletasDe(r), m = C.mapa, it = m && m.alvo >= 0 ? m.itens[m.alvo] : null, top3 = m ? m.itens.slice(0, 3) : [];
+  const lider = top3.length ? top3.reduce((a, b) => ((b.reviewsCount || 0) > (a.reviewsCount || 0) ? b : a)) : null;
+  const s = C.site, g = C.insta, nome = r.empresa || "a empresa";
+  const funciona = c.med.filter(a => nota(r, a) >= 8), pouco = c.med.filter(a => nota(r, a) >= 5 && nota(r, a) < 8), some = c.med.filter(a => nota(r, a) < 5);
+  const numeros = [];
+  if (it) numeros.push([`${m.alvo + 1}º`, `no Google Maps para "${m.busca}" em ${m.cidade}`, m.alvo + 1 > 3]);
+  else if (m) numeros.push(["fora", `do top ${m.itens.length} do Google Maps para "${m.busca}"`, true]);
+  if (it && lider) numeros.push([`${n0(it.reviewsCount || 0)}`, `avaliações, contra ${n0(lider.reviewsCount || 0)} de ${lider.title}`, (it.reviewsCount || 0) < (lider.reviewsCount || 0) / 2]);
+  if (g) numeros.push([`${g.mes}`, `posts no Instagram em 30 dias${g.ultimoDias != null ? `; o último há ${g.ultimoDias} dias` : ""}`, g.mes < 8]);
+  if (s) numeros.push([`${s.semDescricao} de ${s.paginas}`, `páginas do site sem descrição para o Google`, s.semDescricao > 0]);
+  if (c.temValor) numeros.push([brl(c.total), "por mês é o tamanho da procura em jogo", false]);
+  const placar = [];
+  if (it) placar.push(["Posição no Google Maps", `${m.alvo + 1}º`, "top 3"]);
+  if (it && lider) placar.push(["Avaliações no Google", n0(it.reviewsCount || 0), `${n0(Math.max(lider.reviewsCount || 0, Math.ceil((it.reviewsCount || 0) * 1.5)))} ou mais`]);
+  if (it) placar.push(["Nota no Google", n1(it.totalScore || 0), "4,5 ou mais"]);
+  if (g) placar.push(["Posts no Instagram por mês", `${g.mes}`, "8 ou mais"]);
+  if (s) placar.push(["Páginas sem descrição", `${s.semDescricao} de ${s.paginas}`, "0"]);
+  c.urg.forEach(a => placar.push([`Nota: ${AREAS[a].nome}`, `${nota(r, a)}/10`, "8/10 ou mais"]));
+  return { nome, numeros, funciona, pouco, some, top3, placar, it, m };
+}
+function apresentacaoHTML(r, c) {
+  const A = apresentacao(r, c), lst = arr => arr.length ? arr.map(a => esc(AREAS[a].nome)).join(", ") : "—";
+  return `<div class="bl"><span class="over">Roteiro do Diagnóstico Total · padrão Coalumaq</span>
+    <ol class="roteiro">
+      <li><b>O objetivo.</b> Fazer ${esc(A.nome)} ser a empresa indicada quando alguém em ${esc((r.cidade || "").split("/")[0] || "sua cidade")} procura ${esc(r.apBusca || r.segmento || "o serviço")}.</li>
+      <li><b>Como o cliente procura hoje.</b> ${A.m ? `Busca "${esc(A.m.busca)}" no Google Maps: ${A.it ? `${esc(A.nome)} aparece em ${A.m.alvo + 1}º` : `${esc(A.nome)} não aparece entre os ${A.m.itens.length} primeiros`}.` : "Coletar o Google Maps na coleta do Apify."} Mostrar uma resposta real de IA à pergunta de compra.</li>
+      <li><b>Os números que importam.</b><div class="numeros-r">${A.numeros.map(([v, t, ruim]) => `<div><span style="color:${ruim ? "var(--ruim)" : "var(--roxo)"}">${esc(v)}</span><small>${esc(t)}</small></div>`).join("") || `<small class="suave">Faça a coleta do Apify para preencher.</small>`}</div></li>
+      <li><b>Onde aparece e onde some.</b> Funciona: ${lst(A.funciona)}. Aparece pouco: ${lst(A.pouco)}. Some: ${lst(A.some)}.</li>
+      <li><b>Por que isso acontece: três motivos.</b> ${c.urg.map((a, i) => `${i + 1}. ${esc(AREAS[a].nome)} (${nota(r, a)}/10)`).join(" · ")}.</li>
+      <li><b>Quem já ocupa o espaço.</b> ${A.top3.length ? A.top3.map((x, i) => `${i + 1}º ${esc(x.title)} (${x.totalScore != null ? n1(x.totalScore) : "—"}, ${n0(x.reviewsCount || 0)} avaliações)`).join(" · ") : "—"}.</li>
+      <li><b>A procura existe.</b> ${c.temValor ? `${n0(r.valor.procura)} buscas por mês na cidade, ${brl(c.total)} por mês em jogo.` : "Medir a procura no Semrush."}</li>
+      <li><b>O que a Atom faz, em três frentes.</b> Hoje e grátis: ${c.plano.hoje.length} ações · em 90 dias: ${c.plano.d90.length} · em 6 meses: ${c.plano.m6.length}.</li>
+    </ol>
+    <span class="over" style="margin-top:6px">Placar: hoje × meta</span>
+    <div class="rolar"><table class="t"><thead><tr><th>Indicador</th><th class="r">Hoje</th><th class="r">Meta</th></tr></thead><tbody>${A.placar.map(([k, h, mt]) => `<tr><td>${esc(k)}</td><td class="r num" style="color:var(--ruim);font-weight:700">${esc(h)}</td><td class="r num" style="color:var(--verde-texto);font-weight:700">${esc(mt)}</td></tr>`).join("")}</tbody></table></div>
+    <span class="cap">Todo mês, o cliente recebe este placar atualizado, sem jargão.</span></div>`;
 }
 function iluminar(a) { const el = document.getElementById("g-" + a); if (!el) return; el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("luz"); setTimeout(() => el.classList.remove("luz"), 1600); }
 function texto() {
@@ -756,6 +984,7 @@ function texto() {
   c.areas.filter(a => !r.dentro[a]).forEach(a => L.push(`${AREAS[a].nome}: não medida`));
   L.push("", "As três urgências:"); c.urg.forEach((a, i) => { const v = c.virada(a); L.push(`${i + 1}. ${AREAS[a].nome} (${nota(r, a)}/10) · resolve: ${AREAS[a].sol}${v ? ` · vira o jogo: ${v.p[0]}` : ""}`); });
   if (c.temValor) L.push("", `Quanto vale: ${brl(c.total)} por mês (${r.valor.procura} buscas × ${r.valor.contato}% × ${r.valor.fecha}% × ${brl(r.valor.ticket)}). É o tamanho da procura, não promessa de faturamento.`);
+  if (r.tipos.includes("completo")) { const A = apresentacao(r, c); L.push("", "PLACAR · HOJE × META"); A.placar.forEach(([k, h, mt]) => L.push(`${k}: ${h} → ${mt}`)); if (A.top3.length) L.push("", "Quem ocupa o espaço: " + A.top3.map((x, i) => `${i + 1}º ${x.title}`).join(" · ")); }
   L.push("", "Plano", "Hoje · grátis:"); c.plano.hoje.forEach(x => L.push("→ " + x)); L.push("Em 90 dias:"); c.plano.d90.forEach(x => L.push("→ " + x)); L.push("Em 6 meses:"); c.plano.m6.forEach(x => L.push("→ " + x));
   return L.join("\n");
 }
@@ -983,9 +1212,17 @@ function ligarMetodo(t) {
   document.querySelectorAll("[data-area-sel]").forEach(b => b.onclick = () => { sel.area[t.id] = b.dataset.areaSel; document.querySelectorAll("[data-area-sel]").forEach(x => x.classList.toggle("on", x === b)); detArea(t); if (matchMedia("(max-width:1000px)").matches) document.getElementById("d-area").scrollIntoView({ behavior: "smooth" }); });
   detPonto(t); detArea(t);
 }
+let ppTecla = null;
 function ligarProcesso(t) {
-  document.querySelectorAll("[data-passo-sel]").forEach(b => b.onclick = () => { const i = +b.dataset.passoSel; sel.passo[t.id] = i; document.querySelectorAll(".proc li").forEach(li => li.classList.toggle("on", +li.dataset.i === i)); });
-  const on = document.querySelector(".proc li.on"); if (on && sel.passo[t.id] > 1) setTimeout(() => on.scrollIntoView({ block: "center" }), 40);
+  const redesenha = () => { const y = scrollY; document.getElementById("tela").innerHTML = telaProcesso(t); ligarProcesso(t); scrollTo(0, y); };
+  document.querySelectorAll("[data-pp]").forEach(b => b.onclick = () => { sel.passo[t.id] = +b.dataset.pp; detPasso(t); if (b.tagName === "TR" || matchMedia("(max-width:1000px)").matches) document.getElementById("pp-det").scrollIntoView({ behavior: "smooth" }); });
+  document.querySelectorAll("[data-pp-modo]").forEach(b => b.onclick = () => { sel.ppModo = b.dataset.ppModo; const ids = [t.id, ...(sel.somar[t.id] || [])], L = etapasUnidas(ids).L; if (sel.ppModo !== "todas" && L[sel.passo[t.id]]?.modo !== sel.ppModo) sel.passo[t.id] = Math.max(0, L.findIndex(p => p.modo === sel.ppModo)); redesenha(); });
+  document.querySelectorAll("[data-pp-somar]").forEach(b => b.onclick = () => { const id = b.dataset.ppSomar, a = sel.somar[t.id] || []; sel.somar[t.id] = a.includes(id) ? a.filter(x => x !== id) : [...a, id].sort((x, y) => tipo(x).ordem - tipo(y).ordem); redesenha(); });
+  if (ppTecla) document.removeEventListener("keydown", ppTecla);
+  ppTecla = e => { if (!location.hash.endsWith("-processo") || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.altKey || e.metaKey || e.ctrlKey) return;
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); irPasso(t, e.key === "ArrowRight" ? 1 : -1, false); } };
+  document.addEventListener("keydown", ppTecla);
+  detPasso(t);
 }
 function ligarCasos() { document.querySelectorAll("[data-caso]").forEach(b => b.onclick = () => { casoSel = +b.dataset.caso; rota(); }); }
 function ligarCustos() {
@@ -1031,7 +1268,7 @@ rota();
   window.claude?.use?.("mcp").then(m => { mcp = m; if (location.hash === "#gerar") { const y = scrollY; rota(); scrollTo(0, y); } }).catch(() => {});
   try { db = await window.claude?.use?.("db"); const user = await window.claude?.use?.("user"); if (user) meuId = await user.id().catch(() => null); } catch (e) { db = null; }
   if (!db) return;
-  try { const s = await db.doc("config/planejamento").get(); if (s.exists && s.data().plan) { planDoc = s.data(); plan = { ...plan, ...JSON.parse(JSON.stringify(planDoc.plan)) }; } } catch (e) {}
+  try { const s = await db.doc("config/planejamento").get(); if (s.exists && s.data().plan) { planDoc = s.data(); const salvo = JSON.parse(JSON.stringify(planDoc.plan)); if (salvo.imposto == null) delete salvo.taxasVenda; plan = { ...plan, ...salvo }; } } catch (e) {}
   db.collection("diagnosticos").orderBy("criadoEm", "desc").limit(500).onSnapshot(s => { gerados = s.docs.map(d => ({ _id: d.id, ...d.data() })); dbPronto = true; if (["#gerados", "#custos"].includes(location.hash)) { const y = scrollY; rota(); scrollTo(0, y); } }, () => { dbPronto = true; if (location.hash === "#gerados") rota(); });
   if (["#custos", "#gerar", "#inicio", ""].includes(location.hash)) rota();
 })();
