@@ -99,3 +99,67 @@ test('n8n/code/metodo_motor.js está em dia com metodo/dados.js e metodo/motor.j
   const fonte = readFileSync(new URL('../metodo/dados.js', import.meta.url), 'utf8') + '\n' + readFileSync(new URL('../metodo/motor.js', import.meta.url), 'utf8');
   assert.ok(ger.includes(fonte), 'rode npm run metodo:motor');
 });
+
+// ---------- Coletas e as 3 informações da abordagem ----------
+const MAPA = [
+  { rank: 1, title: 'Sorriso Centro', totalScore: 4.9, reviewsCount: 320, categoryName: 'Dentista', imagesCount: 80, claimThisBusiness: false, website: 'https://sorrisocentro.com.br/' },
+  { rank: 2, title: 'Odonto Bem', totalScore: 4.7, reviewsCount: 95, categoryName: 'Dentista', imagesCount: 20, claimThisBusiness: false },
+  { rank: 3, title: 'Clínica Alfa', totalScore: 4.8, reviewsCount: 140, categoryName: 'Dentista', imagesCount: 12, claimThisBusiness: true },
+  { rank: 7, title: 'Clínica Exemplo', totalScore: 4.9, reviewsCount: 148, categoryName: 'Dentista', imagesCount: 27, claimThisBusiness: false, website: 'https://clinicaexemplo.com.br/' },
+];
+const EMP = { nome: 'Clínica Exemplo', site: 'clinicaexemplo.com.br', cidade: 'Goiânia' };
+const HOME = '<html><head><meta name="description" content="Implantes e ortodontia em Goiânia há 15 anos"></head><body><h1>Implantes dentários com quem é referência em Goiânia</h1><a href="https://wa.me/55629">WhatsApp</a><a href="tel:+5562">Ligue</a><a href="https://instagram.com/clinicaexemplo">ig</a></body></html>';
+
+test('lerMapa acha a empresa pelo site e ordena pelo rank', () => {
+  const m = MOTOR.lerMapa(MAPA, EMP, 'dentista', 'Goiânia', '2026-10-15');
+  assert.equal(m.alvo, 3);
+  assert.equal(m.itens[0].title, 'Sorriso Centro');
+});
+
+test('lerSite lê H1, descrição, WhatsApp, telefone, cidade, segmento e Instagram', () => {
+  const s = MOTOR.lerSite([{ url: 'https://clinicaexemplo.com.br/', 'metadata.title': 'Clínica Exemplo', 'metadata.description': 'x' }], HOME, { cidade: 'Goiânia/GO', segmento: 'implantes' }, 'https://clinicaexemplo.com.br/', '2026-10-15');
+  assert.match(s.h1, /Implantes/);
+  assert.equal(s.whatsapp, true);
+  assert.equal(s.tel, true);
+  assert.equal(s.citaCidade, true);
+  assert.equal(s.instagram, 'clinicaexemplo');
+});
+
+test('lerInsta calcula dias desde o último post com a data informada', () => {
+  const g = MOTOR.lerInsta({ username: 'x', followersCount: 1000, latestPosts: [{ timestamp: '2026-10-05T12:00:00Z', likesCount: 10, commentsCount: 0 }], externalUrl: 'https://wa.me/1' }, '2026-10-15T12:00:00Z');
+  assert.equal(g.ultimoDias, 10);
+  assert.equal(g.whatsappBio, true);
+  assert.equal(MOTOR.lerInsta({ error: 'not found' }, '2026-10-15'), null);
+});
+
+test('aplicarColetas marca critérios provados e registra evidência com fonte e data', () => {
+  const r = rascunho(['geral']);
+  const C = { mapa: MOTOR.lerMapa(MAPA, EMP, 'dentista', 'Goiânia', '2026-10-15') };
+  MOTOR.aplicarColetas(r, C);
+  assert.equal(r.marc.map[0], false);      // 4º, fora do top 3
+  assert.equal(r.marc.ava[0], true);       // nota 4,9
+  assert.equal(r.marc.ava[1], false);      // 148 < 320/2? não: 148 < 160
+  assert.match(r.evid.ava, /15\/10\/2026/);
+});
+
+test('3 informações: negócio, reputação e oportunidade, cada uma com fonte', () => {
+  const C = { mapa: MOTOR.lerMapa(MAPA, EMP, 'dentista', 'Goiânia', '2026-10-15'),
+    site: MOTOR.lerSite([], HOME, { cidade: 'Goiânia', segmento: 'implantes' }, 'https://clinicaexemplo.com.br/', '2026-10-15') };
+  const F = MOTOR.tresFatos(C, EMP);
+  assert.deepEqual(F.map(f => f.tipo), ['negocio', 'reputacao', 'oportunidade']);
+  assert.match(F[1].texto, /4,9.*148.*320/);
+  assert.match(F[2].texto, /4º/);
+  assert.ok(F.every(f => f.fonte && /2026/.test(f.fonte)));
+});
+
+test('3 informações: sem coleta, nada é inventado', () => {
+  assert.deepEqual(MOTOR.tresFatos({}, EMP), []);
+});
+
+test('mensagem de abordagem oferece o diagnóstico e nunca leva preço', () => {
+  const C = { mapa: MOTOR.lerMapa(MAPA, EMP, 'dentista', 'Goiânia', '2026-10-15') };
+  const msg = MOTOR.mensagemAbordagem(MOTOR.tresFatos(C, EMP), EMP, 'o Thiago');
+  assert.match(msg, /diagnóstico gratuito/);
+  assert.doesNotMatch(msg, /R\$|preço/i);
+  assert.throws(() => MOTOR.mensagemAbordagem([{ texto: 'Custa R$ 100.' }], EMP));
+});

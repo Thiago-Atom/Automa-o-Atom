@@ -404,6 +404,9 @@ table.t input { width: 100px; padding: 6px 8px; border: 1px solid var(--fio-fort
 .po-preco { display: grid; justify-items: end; gap: 2px; } .po-preco b { font-size: var(--fs-h3); color: var(--roxo); font-variant-numeric: tabular-nums; }
 .prop-passos { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: var(--fs-small); }
 
+.fatos-ab { border-top: 3px solid var(--verde); background: var(--fundo); padding: 14px 16px; display: grid; gap: 10px; }
+.fatos-ab ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; } .fatos-ab li { display: grid; gap: 2px; font-size: var(--fs-small); } .fatos-ab li b { font-weight: 500; }
+.msg-ab { border-left: 3px solid var(--roxo); padding: 8px 12px; display: grid; gap: 4px; } .msg-ab p { font-size: var(--fs-small); }
 /* Coleta Apify */
 .coleta { background: var(--tom); border-top: 3px solid var(--roxo); padding: 18px 20px; display: grid; gap: 14px; }
 .coleta .linha { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
@@ -1243,12 +1246,6 @@ const diasDesde = iso => iso ? Math.floor((Date.now() - new Date(iso).getTime())
 const coletasDe = r => { r.coletas = r.coletas || {}; if (r.coleta && !r.coletas.mapa) { r.coletas.mapa = r.coleta; } delete r.coleta; return r.coletas; };
 const custoColetas = r => Object.values(coletasDe(r)).reduce((s, c) => s + (c?.custoUSD || 0), 0);
 
-function acharEmpresa(r, itens) {
-  const d = dominio(r.site), nome = normal(r.empresa).replace(/\b(ltda|me|eireli|sa)\b/g, "").trim();
-  let i = d ? itens.findIndex(x => dominio(x.website) && dominio(x.website) === d) : -1;
-  if (i < 0 && nome.length > 2) i = itens.findIndex(x => normal(x.title).includes(nome) || nome.includes(normal(x.title)));
-  return i;
-}
 async function rodar(actor, input, callOptions, msgEl, rotulo) {
   let run = (await mcp.callTool(APIFY, "call-actor", { actor, input, callOptions, waitSecs: 45 }, { cache: false })).payload;
   for (let k = 0; k < 4 && run && !["SUCCEEDED", "FAILED", "ABORTED", "TIMED-OUT"].includes(run.status); k++) {
@@ -1262,75 +1259,32 @@ const itensDe = async (run, fields, limit, offset = 0) => (await mcp.callTool(AP
 
 async function coletarMapa(r, busca, cidade, n, msgEl) {
   const run = await rodar(ACT.mapa, { searchStringsArray: [busca], locationQuery: `${cidade}, Brasil`, maxCrawledPlacesPerSearch: n, language: "pt-BR" }, { maxItems: n }, msgEl, "Google Maps");
-  const itens = (await itensDe(run, "rank,title,totalScore,reviewsCount,categoryName,imagesCount,claimThisBusiness,phone,website,url", n)).filter(x => x && x.title).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
-  const c = { fonte: "Apify · Google Maps Scraper", busca, cidade, data: hoje(), itens, alvo: -1, custoUSD: itens.length * 0.003, runId: run.runId };
-  c.alvo = acharEmpresa(r, itens);
-  return c;
+  const itens = await itensDe(run, "rank,title,totalScore,reviewsCount,categoryName,imagesCount,claimThisBusiness,phone,website,url", n);
+  return { ...MOTOR.lerMapa(itens, { nome: r.empresa, site: r.site }, busca, cidade, hoje()), runId: run.runId };
 }
 async function coletarSite(r, url, msgEl) {
   const run = await rodar(ACT.site, { startUrls: [{ url }], maxCrawlPages: 10, maxCrawlDepth: 1, crawlerType: "cheerio", saveMarkdown: false, saveHtml: true, removeCookieWarnings: true }, { memory: 1024, timeout: 180 }, msgEl, "Site");
   const pags = await itensDe(run, "url,metadata.title,metadata.description,metadata.jsonLd,crawl.depth", 10);
   const home = (await itensDe(run, "url,html", 1))[0] || {};
-  const html = String(home.html || ""), low = html.toLowerCase();
-  const tipos = [...new Set(pags.flatMap(p => (JSON.stringify(p["metadata.jsonLd"] || "").match(/"@type":"([A-Za-z]+)"/g) || []).map(m => m.slice(9, -1))))];
-  const texto = normal(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ")).slice(0, 4000);
-  const h1 = ((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-  const insta = ((html.match(/instagram\.com\/([A-Za-z0-9_.]{2,30})/i) || [])[1] || "").replace(/^(p|reel|explore|accounts)$/i, "");
-  const cidade = normal(r.cidade.split("/")[0] || r.apCidade || "");
-  const seg = normal(r.segmento || r.apBusca || "").split(" ")[0] || "";
-  return {
-    fonte: "Apify · Website Content Crawler", url, data: hoje(), runId: run.runId, custoUSD: (run.stats?.computeUnits || 0) * CU_USD,
-    paginas: pags.length, semDescricao: pags.filter(p => !p["metadata.description"]).length, semTitulo: pags.filter(p => !p["metadata.title"]).length,
-    titulo: pags[0]?.["metadata.title"] || "", h1, tipos,
-    whatsapp: /wa\.me\/|api\.whatsapp\.com|whatsapp:\/\//.test(low), tel: /href=["']tel:/.test(low),
-    ga4: /gtag\/js\?id=g-|googletagmanager\.com\/gtag/.test(low), gtm: /googletagmanager\.com\/gtm\.js|gtm-[a-z0-9]{4,}/.test(low), pixel: /connect\.facebook\.net|fbq\(/.test(low),
-    cms: /wp-content|wp-includes/.test(low) ? "WordPress" : /wix\.com|wixstatic/.test(low) ? "Wix" : /cdn\.shopify/.test(low) ? "Shopify" : /nuvemshop|lojanuvem/.test(low) ? "Nuvemshop" : "",
-    citaCidade: cidade ? texto.includes(cidade) : null, citaSegmento: seg ? texto.includes(seg) : null, instagram: insta
-  };
+  return { ...MOTOR.lerSite(pags, home.html, { cidade: r.cidade || r.apCidade || "", segmento: r.segmento || r.apBusca || "" }, url, hoje()), runId: run.runId, custoUSD: (run.stats?.computeUnits || 0) * CU_USD };
 }
 async function coletarInsta(user, msgEl) {
   const run = await rodar(ACT.insta, { usernames: [user] }, {}, msgEl, "Instagram");
   const p = (await itensDe(run, "username,biography,externalUrl,followersCount,postsCount,isBusinessAccount,businessCategoryName,private,latestPosts", 1))[0];
-  if (!p || p.error || !p.username) throw { code: "run", message: `Instagram: perfil @${user} não encontrado ou privado.` };
-  const posts = (p.latestPosts || []).filter(x => !x.isPinned).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  const em30 = posts.filter(x => diasDesde(x.timestamp) <= 30);
-  const eng = posts.length && p.followersCount ? posts.slice(0, 12).reduce((s, x) => s + (x.likesCount || 0) + (x.commentsCount || 0), 0) / Math.min(12, posts.length) / p.followersCount * 100 : null;
-  const bio = `${p.biography || ""} ${p.externalUrl || ""}`.toLowerCase();
-  return { fonte: "Apify · Instagram Profile Scraper", usuario: p.username, data: hoje(), runId: run.runId, custoUSD: 0.0023,
-    seguidores: p.followersCount, posts: p.postsCount, comercial: p.isBusinessAccount, categoria: p.businessCategoryName, privado: p.private,
-    ultimoDias: posts[0] ? diasDesde(posts[0].timestamp) : null, mes: em30.length, reelsMes: em30.filter(x => x.productType === "clips" || x.type === "Video").length,
-    engajamento: eng, link: !!p.externalUrl, whatsappBio: /wa\.me|whatsapp|api\.whatsapp/.test(bio), bio: p.biography || "" };
+  const g = MOTOR.lerInsta(p, new Date().toISOString());
+  if (!g) throw { code: "run", message: `Instagram: perfil @${user} não encontrado ou privado.` };
+  return { ...g, data: hoje(), runId: run.runId };
 }
+function aplicarColetas(r) { MOTOR.aplicarColetas(r, coletasDe(r)); }
 
-function aplicarColetas(r) {
-  const C = coletasDe(r), areas = areasDe(r), tem = a => areas.includes(a);
-  const m = C.mapa;
-  if (m && m.alvo >= 0) {
-    const it = m.itens[m.alvo], pos = m.alvo + 1, top3 = m.itens.slice(0, 3);
-    const maxAv = Math.max(0, ...top3.map(x => x.reviewsCount || 0)), lider = top3.find(x => (x.reviewsCount || 0) === maxAv) || top3[0];
-    const f = `Apify · Google Maps, busca "${m.busca}" em ${m.cidade}, ${dataBR(m.data)}`;
-    if (tem("map")) { r.marc.map[0] = pos <= 3; r.marc.map[1] = it.claimThisBusiness === false; r.marc.map[3] = (it.imagesCount || 0) >= 50; r.dentro.map = true;
-      r.evid.map = `${f}: ${pos}º de ${m.itens.length}; perfil ${it.claimThisBusiness ? "não reivindicado" : "reivindicado"}; ${it.imagesCount ?? 0} fotos; categoria "${it.categoryName || "—"}"; telefone ${it.phone || "não informado"}. Conferir horário e categoria.`; }
-    if (tem("ava")) { r.marc.ava[0] = (it.totalScore || 0) >= 4.5; r.marc.ava[1] = maxAv ? (it.reviewsCount || 0) >= maxAv / 2 : false; r.dentro.ava = true;
-      r.evid.ava = `${f}: nota ${it.totalScore ?? "—"} com ${it.reviewsCount ?? 0} avaliações. Maior volume do top 3: ${lider ? `${lider.title}, ${lider.totalScore ?? "—"} com ${lider.reviewsCount ?? 0}` : "—"}.`; }
-  }
-  const s = C.site;
-  if (s) {
-    const f = `Apify · leitura de ${s.paginas} páginas de ${dominio(s.url)}, ${dataBR(s.data)}`;
-    if (tem("sit")) { r.marc.sit[1] = !!(s.citaCidade && s.citaSegmento); r.marc.sit[2] = s.whatsapp; r.marc.sit[3] = s.tel; r.dentro.sit = true;
-      r.evid.sit = `${f}: título "${s.titulo || "—"}"; H1 "${s.h1 || "sem H1"}"; ${s.citaSegmento ? "cita" : "não cita"} o segmento e ${s.citaCidade ? "cita" : "não cita"} a cidade; WhatsApp ${s.whatsapp ? "com link" : "sem link"}; telefone ${s.tel ? "clicável" : "não clicável"}. Velocidade: medir no PageSpeed.`; }
-    if (tem("est")) { r.marc.est[2] = s.paginas > 0 && s.semDescricao === 0 && s.semTitulo === 0; r.marc.est[3] = s.tipos.some(x => /LocalBusiness|Organization|Dentist|MedicalBusiness|Store|ProfessionalService|Service/.test(x)); r.dentro.est = true;
-      r.evid.est = `${f}: ${s.semDescricao} de ${s.paginas} páginas sem descrição; dados estruturados: ${s.tipos.length ? s.tipos.join(", ") : "nenhum"}.`; }
-    if (tem("conv")) { r.marc.conv[3] = s.ga4 || s.gtm; r.dentro.conv = true;
-      r.evid.conv = `${f}: ${[s.ga4 && "GA4", s.gtm && "Tag Manager", s.pixel && "Meta Pixel"].filter(Boolean).join(", ") || "nenhuma tag de medição"} instalado(s). Conferir se as conversões estão configuradas.`; }
-  }
-  const g = C.insta;
-  if (g && tem("ins")) {
-    r.marc.ins[0] = g.ultimoDias != null && g.ultimoDias <= 7; r.marc.ins[1] = g.mes >= 8; r.marc.ins[2] = g.reelsMes > 0; r.marc.ins[3] = g.whatsappBio; r.marc.ins[4] = g.link; r.dentro.ins = true;
-    r.evid.ins = `Apify · Instagram @${g.usuario}, ${dataBR(g.data)}: ${n0(g.seguidores || 0)} seguidores; último post há ${g.ultimoDias ?? "—"} dias; ${g.mes} posts e ${g.reelsMes} Reels em 30 dias; engajamento médio ${g.engajamento != null ? n1(g.engajamento) + "%" : "—"}; ${g.link ? "tem link na bio" : "sem link na bio"}${g.whatsappBio ? " e WhatsApp" : ""}.`;
-  }
+function fatosHTML(r) {
+  const C = coletasDe(r); if (!C.mapa && !C.site && !C.insta) return "";
+  const emp = { nome: r.empresa || "empresa", cidade: (r.cidade || "").split("/")[0] }, F = MOTOR.tresFatos(C, emp);
+  if (!F.length) return "";
+  let msg = ""; try { msg = MOTOR.mensagemAbordagem(F, emp, "o Thiago"); } catch (e) { msg = ""; }
+  return `<div class="fatos-ab"><span class="over">As ${F.length} informações da abordagem</span><ol>${F.map(f => `<li><b>${esc(f.texto)}</b><span class="cap">${esc(f.fonte)}</span></li>`).join("")}</ol>
+    ${msg ? `<div class="msg-ab"><span class="cap">Primeira mensagem (sem preço, você aprova antes de enviar)</span><p>${esc(msg)}</p></div>` : ""}</div>`;
 }
-
 function coletaHTML(r, areas) {
   const usaMapa = areas.includes("map") || areas.includes("ava"), usaSite = ["sit", "est", "conv"].some(a => areas.includes(a)), usaInsta = areas.includes("ins");
   if (!usaMapa && !usaSite && !usaInsta) return "";
@@ -1351,6 +1305,7 @@ function coletaHTML(r, areas) {
         <button class="btn" type="button" id="b-apify"${mcp ? "" : " disabled"}>Coletar no Apify</button></div>
       <p class="estado-msg" id="ap-msg">${mcp ? `Custo estimado desta coleta: ${brl(emBRL(custoEst, "USD"), 2)}. Na primeira vez, o claude.ai pede para você permitir o Apify nesta página.` : "Conector indisponível nesta visualização. Abra a página logado no claude.ai com o conector Apify adicionado."}</p>
       ${pMapa}${pSite || pInsta ? `<div class="paineis-c">${pSite}${pInsta}</div>` : ""}
+      ${fatosHTML(r)}
       ${custoColetas(r) ? `<p class="cap"><b>Custo real das coletas deste diagnóstico: ${brl(emBRL(custoColetas(r), "USD"), 2)}</b></p>` : ""}</div></div>`;
 }
 /* ---------- Pipedrive ---------- */
