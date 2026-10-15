@@ -593,6 +593,46 @@ function franquiasHTML(C) {
     <p class="cap" style="margin-top:12px">Cada coluna supõe o mês inteiro só com aquele diagnóstico; a célula marcada é a franquia que acaba primeiro. Semrush: 2 milhões de unidades do plano atual. Apify: os US$ ${n0(mensalDe(apify))} da mensalidade viram crédito, e o limite de gasto da conta está em US$ ${CONTA_APIFY.limite}. Gemini: 5.000 consultas com busca grátis por mês. Claude e ChatGPT não têm franquia: são o custo que sai do bolso a cada diagnóstico.</p>`;
 }
 
+function receita(C) { // caixa, impostos e lucro mês a mês no cenário escolhido
+  const F = C.F, V = plan.vendas || {}, E = plan.entrega || {}, imp = (Number(plan.imposto) || 0) / 100, tx = Number(TAXAS_ASAAS.boleto) || 0;
+  const linhas = F.linhas.map(l => {
+    const pr = l.t.finalidade === "produto";
+    const preco = pr ? Number(plan.precoProduto) || 0 : Number(V[l.t.id]?.preco) || 0, parc = pr ? 1 : Math.max(1, Number(V[l.t.id]?.parcelas) || 1);
+    return { t: l.t, v: l.vendasMes, preco, parc, mensal: preco / parc, entrega: pr ? 0 : Number(E[l.t.id]) || 0, cobr: pr ? Math.max(1, plan.parcelas || 1) : parc, semPreco: !preco && l.vendasMes > 0 };
+  });
+  const meses = [];
+  for (let m = 1; m <= plan.meses; m++) {
+    const caixa = linhas.reduce((s, l) => s + l.v * l.mensal * Math.min(m, l.parc), 0);
+    const cobrancas = linhas.reduce((s, l) => s + l.v * (l.t.finalidade === "produto" ? l.cobr : Math.min(m, l.parc)), 0);
+    const imposto = caixa * imp, taxas = cobrancas * tx, entrega = linhas.reduce((s, l) => s + l.v * l.entrega, 0), ferr = C.total;
+    meses.push({ m, caixa, imposto, taxas, entrega, ferr, lucro: caixa - imposto - taxas - entrega - ferr });
+  }
+  const contratado = linhas.reduce((s, l) => s + l.v * l.preco, 0), soma = k => meses.reduce((s, x) => s + x[k], 0);
+  return { linhas, meses, contratado, total: { caixa: soma("caixa"), lucro: soma("lucro"), imposto: soma("imposto"), ferr: soma("ferr") }, semPreco: linhas.filter(l => l.semPreco), semEntrega: linhas.every(l => !l.entrega) };
+}
+function receitaHTML(C) {
+  const R = receita(C), F = C.F, ult = R.meses[R.meses.length - 1], ac = R.total, mrr = R.linhas.filter(l => l.parc > 1).reduce((s, l) => s + l.v * l.mensal * l.parc, 0) / Math.max(1, plan.meses);
+  const pin = (id, k, v, step) => `<input type="number" data-venda="${id}" data-k="${k}" value="${v}" step="${step}" min="0" aria-label="${k} ${id}">`;
+  return `<div class="colunas cartoes" style="--n:4">
+      <div class="col destaque"><span class="over">Lucro em ${plan.meses} meses</span><span class="grande">${brl(ac.lucro)}</span><span class="small suave">caixa ${brl(ac.caixa)} − imposto, taxas${R.semEntrega ? "" : ", entrega"} e ferramentas</span></div>
+      <div class="col"><span class="cap">Vendido por mês</span><span class="grande">${brl(R.contratado)}</span><span class="small suave">valor dos contratos fechados no mês, ${n0(F.vendasMes + (F.produto?.vendasMes || 0))} vendas</span></div>
+      <div class="col"><span class="cap">Caixa no mês ${ult.m}</span><span class="grande">${brl(ult.caixa)}</span><span class="small suave">no mês 1: ${brl(R.meses[0].caixa)} · cresce com as parcelas do SEO</span></div>
+      <div class="col"><span class="cap">Lucro no mês ${ult.m}</span><span class="grande" style="color:${ult.lucro < 0 ? "var(--ruim)" : "var(--verde-texto)"}">${brl(ult.lucro)}</span><span class="small suave">no mês 1: ${brl(R.meses[0].lucro)}</span></div>
+    </div>
+    <div class="rolar" style="margin-top:24px"><table class="t"><thead><tr><th>Oferta</th><th class="r">Preço de venda (R$)</th><th class="r">Parcelas (meses)</th><th class="r">Custo de entrega por venda (R$)</th><th class="r">Vendas por mês</th><th class="r">Vendido por mês</th><th class="r">Lucro por venda</th></tr></thead><tbody>
+    ${R.linhas.map(l => { const pr = l.t.finalidade === "produto", imp = l.preco * (Number(plan.imposto) || 0) / 100, lv = l.preco - imp - l.cobr * (TAXAS_ASAAS.boleto || 0) - l.entrega; return `<tr><td><b>${esc(l.t.nome)}</b><br><span class="cap">${esc(l.t.oferta)}</span></td>
+      <td class="r">${pr ? `<span class="num">${brl(l.preco)}</span><br><span class="cap">em Diagnóstico Total</span>` : pin(l.t.id, "preco", l.preco, "100")}${l.semPreco ? `<br><span class="alerta">preencha o preço</span>` : ""}</td>
+      <td class="r">${pr ? `<span class="num">${plan.parcelas}× em ${plan.diasSegundaParcela} dias</span>` : pin(l.t.id, "parcelas", l.parc, "1")}${l.parc > 1 ? `<br><span class="cap">${brl(l.mensal)} por mês</span>` : ""}</td>
+      <td class="r">${pr ? `<span class="suave">ferramentas</span>` : `<input type="number" data-entrega="${l.t.id}" value="${l.entrega}" step="50" min="0" aria-label="Custo de entrega ${esc(l.t.nome)}">`}</td>
+      <td class="r num">${n1(l.v)}</td><td class="r num">${brl(l.v * l.preco)}</td><td class="r num"><b>${l.preco ? brl(lv) : "—"}</b><br><span class="cap">${l.preco ? n0(lv / l.preco * 100) + "% do preço" : ""}</span></td></tr>`; }).join("")}
+    </tbody></table></div>
+    <div class="rolar" style="margin-top:24px"><table class="t"><thead><tr><th>Mês</th><th class="r">Caixa</th><th class="r">Imposto (${n1(Number(plan.imposto) || 0)}%)</th><th class="r">Taxas Asaas</th>${R.semEntrega ? "" : `<th class="r">Entrega</th>`}<th class="r">Ferramentas</th><th class="r">Lucro</th><th class="r">Lucro acumulado</th></tr></thead><tbody>
+    ${(() => { let acc = 0; return R.meses.map(x => { acc += x.lucro; return `<tr><td>Mês ${x.m}</td><td class="r num">${brl(x.caixa)}</td><td class="r num">− ${brl(x.imposto)}</td><td class="r num">− ${brl(x.taxas)}</td>${R.semEntrega ? "" : `<td class="r num">− ${brl(x.entrega)}</td>`}<td class="r num">− ${brl(x.ferr)}</td><td class="r num" style="color:${x.lucro < 0 ? "var(--ruim)" : "inherit"}"><b>${brl(x.lucro)}</b></td><td class="r num">${brl(acc)}</td></tr>`; }).join(""); })()}
+    <tr class="total"><td>${plan.meses} meses</td><td class="r num">${brl(ac.caixa)}</td><td class="r num">− ${brl(ac.imposto)}</td><td class="r num">− ${brl(R.meses.reduce((s, x) => s + x.taxas, 0))}</td>${R.semEntrega ? "" : `<td class="r num">− ${brl(R.meses.reduce((s, x) => s + x.entrega, 0))}</td>`}<td class="r num">− ${brl(ac.ferr)}</td><td class="r num">${brl(ac.lucro)}</td><td></td></tr></tbody></table></div>
+    <p class="fecho">${plan.cenario === "capacidade" ? `Com ${n0(plan.reunioesDia)} reuniões por dia, ${n1(plan.taxaReuniao)}% das abordagens viram reunião e ${n1(plan.taxaFechamento)}% das reuniões viram venda.` : `Pelas metas, com ${n1(plan.taxaFechamento)}% de fechamento.`} Cada ponto de fechamento a mais vale ${brl(R.contratado / Math.max(0.01, plan.taxaFechamento))} por mês em vendas.</p>
+    <ul class="alertas" style="margin-top:16px">${R.semPreco.length ? `<li><span>Sem preço de venda: ${R.semPreco.map(l => esc(l.t.nome)).join(", ")}. As vendas dessa oferta não entram na receita até o preço ser preenchido.</span></li>` : ""}${R.semEntrega ? `<li><span>O custo de entrega (equipe, produção do site, operação do SEO) ainda está em zero: o lucro acima é antes de entregar o que foi vendido. Preencha por venda na tabela.</span></li>` : ""}<li><span>SEO entra no caixa em ${plan.vendas?.seo?.parcelas || 6} parcelas: a receita recorrente chega a ${brl(R.linhas.filter(l => l.parc > 1).reduce((s, l) => s + l.v * l.mensal * Math.min(plan.meses, l.parc), 0))} por mês no mês ${plan.meses}. Imposto de ${n1(Number(plan.imposto) || 0)}% sobre todo o caixa; taxa do Asaas de ${brl(TAXAS_ASAAS.boleto, 2)} por cobrança.</span></li></ul>`;
+}
+
 /* ======================= TELAS ======================= */
 const regua = () => `<div class="colunas" style="--n:3">${[["0–4", "Perdendo cliente", "Até 2 critérios atendidos. A empresa perde venda para o concorrente nesta área.", "var(--ruim)"], ["5–7", "Pode melhorar", "3 critérios atendidos. Funciona, mas abaixo de quem disputa o mesmo cliente.", "#e0a030"], ["8–10", "Funciona", "4 ou 5 critérios atendidos. Está no nível dos líderes.", "var(--verde)"]].map(([n, t, d, c]) => `<div class="col" style="border-top-color:${c}"><span class="grande" style="color:${c}">${n}</span><h4>${t}</h4><p class="small suave">${d}</p></div>`).join("")}</div>`;
 
@@ -853,6 +893,9 @@ function telaCustos() {
       <div class="col"><span class="cap">Por dia útil</span><span class="grande">${brl(C.dia)}</span><span class="small suave">${plan.diasUteis} dias úteis</span></div>
       <div class="col"><span class="cap">Médio por diagnóstico</span><span class="grande">${brl(C.porDiag, 2)}</span><span class="small suave">${n0(F.diags)} diagnósticos no mês</span></div>
     </div></section>
+
+  <section class="secao"><div class="cab"><span class="over">Receita e lucro</span><h2>O que a operação <b>coloca no bolso</b></h2><p class="lead">Vendas do funil × preço de cada oferta, mês a mês: o caixa que entra, o imposto, as taxas e as ferramentas que saem, e o lucro que sobra.</p></div>
+    ${receitaHTML(C)}</section>
 
   ${C.alertas.length ? `<section class="secao"><div class="cab"><span class="over" style="color:var(--medio)">Atenção</span><h2>Onde a operação <b>estoura o plano</b></h2></div><ul class="alertas">${C.alertas.map(a => `<li><span>${esc(a)}</span></li>`).join("")}</ul></section>` : ""}
 
@@ -1445,6 +1488,8 @@ function ligarCustos() {
   document.querySelectorAll("[data-plan]").forEach(i => i.onchange = () => { plan[i.dataset.plan] = Math.max(0, parseFloat(i.value) || 0); redesenha(`[data-plan="${i.dataset.plan}"]`); });
   document.querySelectorAll("[data-plan-sel]").forEach(i => i.onchange = () => { plan[i.dataset.planSel] = i.value; redesenha(); });
   document.querySelectorAll("[data-meta]").forEach(i => i.onchange = () => { plan.metas[i.dataset.meta] = Math.max(0, parseFloat(i.value) || 0); redesenha(`[data-meta="${i.dataset.meta}"]`); });
+  document.querySelectorAll("[data-venda]").forEach(i => i.onchange = () => { plan.vendas = plan.vendas || {}; const id = i.dataset.venda; plan.vendas[id] = { ...(plan.vendas[id] || {}), [i.dataset.k]: Math.max(i.dataset.k === "parcelas" ? 1 : 0, parseFloat(i.value) || 0) }; redesenha(`[data-venda="${id}"][data-k="${i.dataset.k}"]`); });
+  document.querySelectorAll("[data-entrega]").forEach(i => i.onchange = () => { plan.entrega = { ...(plan.entrega || {}), [i.dataset.entrega]: Math.max(0, parseFloat(i.value) || 0) }; redesenha(`[data-entrega="${i.dataset.entrega}"]`); });
   document.querySelectorAll("[data-mensal]").forEach(i => i.onchange = () => { plan.mensal[i.dataset.mensal] = Math.max(0, parseFloat(i.value) || 0); redesenha(`[data-mensal="${i.dataset.mensal}"]`); });
   document.getElementById("b-plan-reset").onclick = () => { plan = JSON.parse(JSON.stringify(PLANEJAMENTO_PADRAO)); plan.cambioEUR = 5.80; plan.precos = {}; plan.mensal = {}; redesenha(); document.getElementById("msg-plan").textContent = "Cenário inicial restaurado (ainda não salvo)."; };
   const bs = document.getElementById("b-plan-salvar");
@@ -1489,7 +1534,7 @@ rota();
   window.claude?.use?.("mcp").then(m => { mcp = m; if (location.hash === "#gerar") { const y = scrollY; rota(); scrollTo(0, y); } }).catch(() => {});
   try { db = await window.claude?.use?.("db"); const user = await window.claude?.use?.("user"); if (user) meuId = await user.id().catch(() => null); } catch (e) { db = null; }
   if (!db) return;
-  try { const s = await db.doc("config/planejamento").get(); if (s.exists && s.data().plan) { planDoc = s.data(); const salvo = JSON.parse(JSON.stringify(planDoc.plan)); if (salvo.imposto == null) delete salvo.taxasVenda; plan = { ...plan, ...salvo }; } } catch (e) {}
+  try { const s = await db.doc("config/planejamento").get(); if (s.exists && s.data().plan) { planDoc = s.data(); const salvo = JSON.parse(JSON.stringify(planDoc.plan)); if (salvo.imposto == null) delete salvo.taxasVenda; plan = { ...plan, ...salvo, vendas: { ...plan.vendas, ...(salvo.vendas || {}) }, entrega: { ...plan.entrega, ...(salvo.entrega || {}) } }; } } catch (e) {}
   db.collection("diagnosticos").orderBy("criadoEm", "desc").limit(500).onSnapshot(s => { gerados = s.docs.map(d => ({ _id: d.id, ...d.data() })); dbPronto = true; if (["#gerados", "#custos"].includes(location.hash)) { const y = scrollY; rota(); scrollTo(0, y); } }, () => { dbPronto = true; if (location.hash === "#gerados") rota(); });
   if (["#custos", "#gerar", "#inicio", ""].includes(location.hash)) rota();
 })();

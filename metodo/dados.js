@@ -297,7 +297,7 @@ const PIPEDRIVE = { // lido na conta em 15/10/2026 (funis, etapas e campos "ATOM
     versao: "75287c565520bdc7f0d50ed7798f1a30e9f5938c", pendencias: "00d36a85250066580dbb4302abd87732c99067ac"
   },
   // "ATOM · Oferta de interesse" decide o diagnóstico de prospecção; o Total entra quando a 1ª parcela é paga
-  oferta: { "Site": ["site"], "Marketing com IA": ["seo"], "Agente de IA": ["atendimento"], "Clínica completa": ["geral"] },
+  oferta: { "Site": ["site"], "Marketing com IA": ["seo"], "Agente de IA": ["atendimento"], "Clínica completa": ["geral", "site"] },
   semOferta: ["geral"],
   pago: /pago|paga|confirmad|recebid/i
 };
@@ -308,5 +308,8 @@ const PLANEJAMENTO_PADRAO = {
   taxaReuniao: 7, taxaFechamento: 20, reunioesDia: 18, cenario: "capacidade", reusoMercado: 20, parteMercadoSemrush: 70, semrushProspeccao: "todos",
   metas: { site: 1000, seo: 90, geral: 120, atendimento: 0, completo: 0 },
   precoProduto: 396, parcelas: 2, diasSegundaParcela: 15, tetoProduto: 50, taxasVenda: 3.98, imposto: 16,
+  // preço de venda de cada oferta (o que o cliente paga à Atom); parcelas = meses em que o valor entra no caixa
+  vendas: { site: { preco: 2300, parcelas: 1 }, seo: { preco: 12000, parcelas: 6 }, geral: { preco: 0, parcelas: 1 }, atendimento: { preco: 0, parcelas: 1 } },
+  entrega: { site: 0, seo: 0, geral: 0, atendimento: 0 }, // custo para entregar cada venda (equipe, produção); a informar
   cambio: 5.00, reserva: 20
 };
