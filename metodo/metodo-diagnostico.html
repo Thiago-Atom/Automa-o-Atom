@@ -262,6 +262,15 @@ h4.sub { font-family: var(--mono); font-weight: 500; font-size: .74rem; letter-s
 .hist .v b { display: block; color: var(--verde-texto); font-weight: 500; font-size: .85rem; }
 .hist ul { margin: 6px 0 0; padding-left: 18px; font-size: .9rem; color: var(--suave); }
 
+
+/* Os 12 pontos */
+.doze { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 0 32px; }
+.doze li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 16px 0; border-top: 1px solid var(--linha); }
+.doze .n { font-size: 1.7rem; font-weight: 300; line-height: 1; color: var(--roxo-texto); font-variant-numeric: tabular-nums; }
+.doze li:nth-child(-n+3) .n { color: var(--verde-texto); font-weight: 500; }
+.doze b { display: block; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
+.doze p { font-size: .9rem; color: var(--suave); }
+
 footer { padding-block: 32px 48px; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: .85rem; color: var(--suave); }
 footer .url { font-family: var(--mono); letter-spacing: .2em; }
@@ -306,7 +315,7 @@ footer .url { font-family: var(--mono); letter-spacing: .2em; }
 
   <section>
     <div class="wrap">
-      <div class="cab"><div class="etq">Apresentações por serviço</div><h2>Decks <b>com e sem preço</b></h2><p>As seis apresentações da biblioteca da Atom. Os PDFs ficam na biblioteca.</p></div>
+      <div class="cab"><div class="etq">Apresentações por serviço</div><h2>Decks <b>com e sem preço</b></h2><p>As seis apresentações da biblioteca da Atom, cada uma com os 12 pontos do canal.</p></div>
       <div class="quadros tres" id="q-serv"></div>
     </div>
   </section>
@@ -332,6 +341,12 @@ footer .url { font-family: var(--mono); letter-spacing: .2em; }
     </div>
   </header>
   <section>
+    <div class="wrap">
+      <div class="cab"><div class="etq">Pontos de convergência</div><h2>Os 12 pontos que <b>mudam o jogo</b></h2><p>O que realmente decide o sucesso do negócio em <span id="m-canal"></span>, em ordem de peso. Os três primeiros são os que mais custam venda quando faltam.</p></div>
+      <ol class="doze" id="m-doze"></ol>
+    </div>
+  </section>
+  <section>
     <div class="wrap ficha">
       <div class="bloco" id="m-esq"></div>
       <div>
@@ -347,7 +362,7 @@ footer .url { font-family: var(--mono); letter-spacing: .2em; }
   <header class="abertura">
     <div class="lasca" aria-hidden="true"></div>
     <div class="wrap">
-      <div class="etq">Método em construção · v0.3</div>
+      <div class="etq">Método em construção · v0.4</div>
       <h1>Diagnóstico de <b>marketing e vendas.</b></h1>
       <p class="lead">Como a Atom olha uma empresa de fora para dentro, mede onde ela perde clientes e transforma isso em um plano. A régua é a mesma do Diagnóstico Digital, Modelo Unificado, e o método estende essa régua para vendas e gestão.</p>
       <div class="seq"><span class="st st-ok">Definido</span><span class="st st-disc">Em discussão</span><span class="st st-adef">Proposta, a definir</span></div>
@@ -365,6 +380,13 @@ footer .url { font-family: var(--mono); letter-spacing: .2em; }
         <div class="etapa"><div class="fio"></div><h3>Plano</h3><p>Hoje e grátis, 90 dias para ser encontrado, 6 meses para ser escolhido. Daí sai a proposta.</p><div class="quando">Entrega + proposta</div></div>
       </div>
       <p class="frase">Nenhuma nota sem dado. Toda página cita a fonte e a data da coleta.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cab"><div class="etq">Pontos de convergência</div><h2>Os 12 pontos que <b>mudam o jogo</b></h2><p>O que realmente decide o sucesso em marketing e vendas, em ordem de peso. Os três primeiros são os que mais custam venda quando faltam.</p></div>
+      <ol class="doze" id="doze-metodo"></ol>
     </div>
   </section>
 
@@ -451,6 +473,7 @@ footer .url { font-family: var(--mono); letter-spacing: .2em; }
       <div>
         <div class="cab"><div class="etq">Histórico</div><h2>Alterações <b>no método</b></h2></div>
         <ol class="hist">
+          <li><span class="v"><b>v0.4</b>15/10/2026</span><div>Os 12 pontos que mudam o jogo em cada modelo.<ul><li>Método, Modelo Unificado, proposta de site e loja virtual.</li><li>Os seis decks de serviço ganharam ficha própria com os 12 pontos do canal.</li></ul></div></li>
           <li><span class="v"><b>v0.3</b>15/10/2026</span><div>Visual da apresentação Atom 2026 · Agência de IA e régua do Modelo Unificado.<ul><li>Régua trocada para 5 critérios de 2 pontos por área, faixas 0–4, 5–7 e 8–10.</li><li>As 8 áreas do Modelo Unificado viram a base; vendas e gestão entram como proposta.</li><li>Simulador por critério e boletim com barras, como na página 11 do modelo.</li><li>Quanto vale com arredondamento a cada etapa e plano em três passos.</li><li>Central com os modelos reais: Modelo Unificado, proposta de site, loja virtual e os seis decks.</li></ul></div></li>
           <li><span class="v"><b>v0.2</b>15/10/2026</span><div>Tela inicial com os quadros dos modelos de diagnóstico e de proposta.</div></li>
           <li><span class="v"><b>v0.1</b>15/10/2026</span><div>Primeira versão: etapas, dimensões, régua, simulador e cálculo de impacto.</div></li>
@@ -563,36 +586,186 @@ valor();
 /* ---------- Central: modelos ---------- */
 const pgs = (pasta, n, nomes) => Array.from({ length: n }, (_, i) => ({ src: `${pasta}/${String(i + 1).padStart(2, "0")}.jpg`, t: nomes[i] || `Página ${i + 1}` }));
 const MODELOS = [
-  { id: "metodo", g: "diag", largo: true, destaque: true, tag: "Método · em construção", nome: "Diagnóstico de marketing e vendas",
+  { id: "metodo", g: "diag", largo: true, destaque: true, tag: "Método · em construção", nome: "Diagnóstico de marketing e vendas", canal: "marketing e vendas",
     resumo: "O método por trás dos diagnósticos: cinco etapas, a régua de 5 critérios por área, o boletim, quanto vale e o plano em três passos.",
-    capa: { grande: "8 + 5", peq: "áreas definidas + propostas" }, pe: "v0.3", st: "disc" },
-  { id: "unificado", g: "diag", tag: "Modelo oficial · 36 páginas", nome: "Diagnóstico Digital · Modelo Unificado",
+    capa: { grande: "8 + 5", peq: "áreas definidas + propostas" }, st: "disc",
+    pontos: [
+      ["Velocidade de resposta ao lead", "Quem responde primeiro leva a maior parte das vendas. Minutos pesam mais que qualquer anúncio."],
+      ["Aparecer quando o cliente procura", "A procura que já existe no Google e no mapa é o cliente mais barato. Estar fora dela é perder venda todo dia."],
+      ["Prova social", "Nota e volume de avaliações decidem entre você e o concorrente ao lado no mapa."],
+      ["Oferta clara em segundos", "O que faz, para quem e onde, na primeira tela e na primeira mensagem."],
+      ["Caminho curto até o contato", "WhatsApp e telefone visíveis, a um clique. Cada passo a mais perde gente."],
+      ["Todo lead registrado", "O que não está no CRM não é cobrado, não é medido e não melhora."],
+      ["Follow-up com cadência", "A maioria das vendas não fecha no primeiro contato. Sem retorno programado, o lead esfria."],
+      ["Origem de cada cliente", "Saber de onde vem cada venda é o que permite cortar o que não vende e dobrar o que vende."],
+      ["Taxa de fechamento e motivo de perda", "Sem esses dois números, a empresa melhora o marketing quando o problema está na venda."],
+      ["Pós-venda que gera a próxima venda", "Pedir avaliação, indicação e recompra custa pouco e alimenta o topo do funil."],
+      ["Dados iguais em todo lugar", "Mesmo nome, endereço e telefone no site, no Google e nas redes. É a base para Google e IAs confiarem."],
+      ["Rotina de números", "Meta mensal e painel lido toda semana. O que é visto toda semana é corrigido a tempo."]
+    ] },
+  { id: "unificado", g: "diag", tag: "Modelo oficial · 36 páginas", nome: "Diagnóstico Digital · Modelo Unificado", canal: "presença digital do negócio local",
     resumo: "Junta o Diagnóstico Geral e o SEO/GEO em uma apresentação: oito notas, três urgências, quanto vale e o plano.",
-    capa: { grande: "8 notas", peq: "3 urgências · 1 plano" }, pe: "Slides · 13/10", st: "ok",
+    capa: { grande: "8 notas", peq: "3 urgências · 1 plano" }, st: "ok",
     link: "https://claude.ai/artifact/D4nRYRo3UYeZnn6x7i8M5t", linkTxt: "Abrir o modelo",
     estrutura: ["Páginas fixas do modelo Atom 2026, iguais em toda apresentação.", "Abertura, como ler os números, glossário, a frase-síntese e o boletim com as oito notas.", "Como o Google mostra a empresa: procura, posições, origem e evolução das visitas.", "Reputação, site e atendimento: mapa, concorrentes, avaliações, site e estrutura, Instagram, IA e WhatsApp.", "Quanto vale a procura, o plano, a proposta, indicadores, investimento e próximos passos.", "Fechamento e página final."],
     fatos: [["Formato", "Slides 1920×1080, Roboto e IBM Plex Mono"], ["Régua", "5 critérios de 2 pontos por área; 0–4, 5–7, 8–10"], ["Origem", "Diagnóstico Geral (15 págs.) + SEO/GEO (27 págs.)"], ["Automação", "ATOM_14, disparado pelo Pipedrive"]],
-    pend: [["Áreas de vendas e gestão", "Decidir se as áreas propostas no método entram no boletim."], ["Visual", "O modelo usa o roxo #604485 do Atom 2026; os decks novos usam o roxo profundo e o verde. Alinhar."], ["Cliente oculto", "Quem faz o teste de WhatsApp e onde registra."]] },
-  { id: "site", g: "prop", largo: true, destaque: true, tag: "Modelo definitivo · 16 páginas", nome: "Proposta de site",
+    pend: [["Áreas de vendas e gestão", "Decidir se as áreas propostas no método entram no boletim."], ["Visual", "O modelo usa o roxo #604485 do Atom 2026; os decks novos usam o roxo profundo e o verde. Alinhar."], ["Cliente oculto", "Quem faz o teste de WhatsApp e onde registra."]],
+    pontos: [
+      ["Top 3 do mapa na busca principal", "Para negócio local, o mapa aparece antes da lista. Fora do top 3, quase ninguém vê."],
+      ["1ª página na busca principal", "Com uma página própria para o serviço, não só a home."],
+      ["Nota 4,5 ou mais, com volume perto do líder", "Nota alta com poucas avaliações não convence. O volume pesa tanto quanto a nota."],
+      ["Responder as avaliações", "Principalmente as negativas. Quem lê a resposta decide pela empresa, não pela reclamação."],
+      ["Perfil do Google completo e certo", "Categoria principal, telefone, horário e fotos. Dado errado manda o cliente para o concorrente."],
+      ["Site rápido no celular", "Abre em até 3 segundos e diz o que faz e onde na primeira tela."],
+      ["WhatsApp visível em todo lugar", "No site, na bio, no perfil do Google. É por onde o cliente local quer falar."],
+      ["Responder no WhatsApp em minutos", "O teste de cliente oculto costuma ser a urgência que mais custa cliente."],
+      ["Ser citado pelas IAs", "ChatGPT, Gemini e Google Modo IA indicam quem tem dados estruturados e informações consistentes."],
+      ["Ser dono da busca pelo próprio nome", "Quem busca a marca tem de cair no site, não em um agregador ou no concorrente."],
+      ["Instagram com sinal de vida", "Post recente e link na bio mostram que a empresa está ativa."],
+      ["Mostrar a procura em reais", "O \"quanto vale\" transforma nota em decisão: é o que move o dono a agir."]
+    ] },
+  { id: "site", g: "prop", largo: true, destaque: true, tag: "Modelo definitivo · 16 páginas", nome: "Proposta de site", canal: "site",
     resumo: "Modelo oficial para todas as propostas de site: abertura padrão, capa com o logo do cliente, o que inclui, projetos, vitrine, depoimentos, \"site sem visitas não vende\" e o preço. Exemplo: Labeza.",
-    img: "site/04.jpg", pe: "Exemplo: Labeza", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
+    img: "site/04.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
     paginas: pgs("site", 16, ["Capa Atom", "Atom em números", "Marcas que confiam", "Capa do cliente"]),
     fatos: [["Cliente exemplo", "Labeza"], ["Abertura", "Capa, Atom em números e marcas, iguais em toda proposta"], ["Versões", "PDF de exemplo na biblioteca"]],
-    pend: [["Ligação com o diagnóstico", "Quais achados do boletim entram na proposta e em que página."]] },
-  { id: "loja", g: "prop", tag: "Modelo · Nuvemshop · 17 páginas", nome: "Proposta de loja virtual",
+    pend: [["Ligação com o diagnóstico", "Quais achados do boletim entram na proposta e em que página."]],
+    pontos: [
+      ["Primeira tela que explica", "O que faz, para quem e onde, antes de qualquer rolagem."],
+      ["Uma ação principal, repetida", "WhatsApp ou orçamento, sempre à vista. Várias ações competindo confundem."],
+      ["Velocidade no celular", "Carregamento principal em até 2,5 s, a referência do Google para uma boa experiência."],
+      ["Feito para o celular primeiro", "É onde está a maior parte das visitas de quem procura serviço."],
+      ["Uma página por serviço e por cidade", "É o que permite aparecer em cada busca que vende, não só na busca pela marca."],
+      ["Prova real", "Cases, depoimentos, logos de clientes e fotos reais da empresa."],
+      ["Responder as dúvidas de quem compra", "Como funciona, prazo, faixa de preço, área atendida. Dúvida sem resposta vira saída."],
+      ["Estrutura técnica limpa", "Títulos, descrições, H1, sitemap e dados estruturados para Google e IAs entenderem."],
+      ["Conversão rastreada até a venda", "Cliques no WhatsApp e formulários medidos e ligados ao CRM."],
+      ["Lead cai direto no funil", "Integração com o CRM: nenhum contato se perde entre o site e o vendedor."],
+      ["Fácil de atualizar", "A equipe muda texto, foto e preço sem depender de ninguém."],
+      ["Visitas planejadas desde o dia 1", "Site sem visitas não vende: SEO de base e um plano de tráfego junto com a entrega."]
+    ] },
+  { id: "loja", g: "prop", tag: "Modelo · Nuvemshop · 17 páginas", nome: "Proposta de loja virtual", canal: "loja virtual",
     resumo: "Loja na Nuvemshop: abertura padrão, capa do cliente, três páginas no estilo Nuvemshop, o que inclui, vitrine, depoimentos, criação por R$ 1.800 (3× R$ 600) e o plano recomendado.",
-    img: "loja/04.jpg", pe: "R$ 1.800 · 3× R$ 600", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
+    img: "loja/04.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "Baixar na biblioteca",
     paginas: pgs("loja", 17, ["Capa Atom", "Atom em números", "Marcas que confiam", "Capa do cliente"]),
     fatos: [["Cliente exemplo", "Labeza"], ["Criação", "R$ 1.800, em 3× R$ 600"], ["Mensalidade", "Plano da Nuvemshop, com recomendação"], ["Versões", "PDF com preço e sem preço"]],
-    pend: [] }
-];
-const SERVICOS = [
-  { id: "inst", nome: "Atom 2026 · Agência de IA", tag: "Institucional · 20 páginas", resumo: "Quem é a Atom, números, máquina de vendas, serviços, Nuvemshop, cases e contato.", img: "img/inst.jpg" },
-  { id: "seo", nome: "SEO, GEO e AEO", tag: "Serviço · 16 páginas", resumo: "Topo do Google e presença nas respostas das IAs. Cases Tetracon, Siguimi, RCO e Griffe.", img: "img/seo.jpg" },
-  { id: "trafego", nome: "Tráfego pago", tag: "Serviço · 15 páginas", resumo: "Google, Meta e LinkedIn Ads com IA em todas as contas e rastreamento até a venda.", img: "img/trafego.jpg" },
-  { id: "sites", nome: "Sites, landing pages e lojas", tag: "Serviço · 16 páginas", resumo: "Sites exclusivos, páginas de conversão e lojas na Nuvemshop.", img: "img/sites.jpg" },
-  { id: "agentes", nome: "Agentes de IA", tag: "Serviço · 15 páginas", resumo: "Atendimento e qualificação 24h no WhatsApp, integrados ao CRM.", img: "img/agentes.jpg" },
-  { id: "bi", nome: "BI em tempo real", tag: "Serviço · 15 páginas", resumo: "Painel com receita, margem, CAC, pipeline e insights da IA.", img: "img/bi.jpg" }
+    pend: [],
+    pontos: [
+      ["Página de produto que vende", "Fotos boas, descrição que responde dúvidas, medidas e variações claras."],
+      ["Checkout curto", "Poucos passos, Pix e parcelamento. Cada campo a mais derruba a conversão."],
+      ["Frete claro e cedo", "Calculado na página do produto. Frete surpresa no fim é o maior motivo de abandono."],
+      ["Confiança", "Avaliações de produto, política de troca, CNPJ e contato visíveis."],
+      ["Velocidade no celular", "A maior parte das compras começa no celular."],
+      ["Catálogo fácil de navegar", "Categorias que fazem sentido para o cliente e uma busca interna que acha."],
+      ["Canais conectados", "Google Shopping, Instagram e Facebook e WhatsApp vendendo o mesmo catálogo."],
+      ["Recuperar carrinho abandonado", "Mensagem automática para quem parou no meio. Venda quase pronta."],
+      ["Estoque e preço sincronizados", "Vender o que não tem gera cancelamento e avaliação ruim."],
+      ["SEO de categoria e produto", "Para aparecer na busca sem pagar por cada clique."],
+      ["Anúncios por produto, com retorno medido", "Investimento acompanhado pelo retorno por real investido (ROAS)."],
+      ["Base própria e recompra", "E-mail e WhatsApp pós-compra e cupom de volta. Cliente que volta custa menos."]
+    ] },
+  { id: "inst", g: "serv", tag: "Institucional · 20 páginas", nome: "Atom 2026 · Agência de IA", canal: "máquina de vendas",
+    resumo: "Quem é a Atom, números, máquina de vendas, serviços, Nuvemshop, cases e contato.", img: "img/inst.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
+    fatos: [["Versões", "PDF com preço e sem preço"], ["Uso", "Abertura de reunião e envio a clientes"]], pend: [],
+    pontos: [
+      ["Atrair quem já procura", "SEO, GEO e anúncios colocam a marca na frente de quem compra."],
+      ["Converter a visita em contato", "Sites e landing pages feitos para vender, não só para existir."],
+      ["Qualificar em segundos", "Agentes de IA respondem e qualificam 24 horas por dia."],
+      ["Entregar o lead pronto ao vendedor", "Integrado ao CRM, com histórico e próximo passo."],
+      ["Medir até a venda", "O BI mostra o que gera venda e onde o funil precisa de ajuste."],
+      ["Cada ciclo ajusta o próximo", "Os dados de um mês decidem onde investir no seguinte."],
+      ["Tudo conectado", "Canais, CRM e painel falando entre si. Ferramenta solta não vira máquina."],
+      ["Reputação como ativo", "Avaliações e cases sustentam todos os outros canais."],
+      ["Presença nas IAs", "A próxima busca já acontece no ChatGPT e no Gemini."],
+      ["Processo comercial com cadência", "Follow-up programado: a máquina não depende da memória de ninguém."],
+      ["Decisão com dados", "Receita, margem e CAC à vista substituem o achismo."],
+      ["Prova antes da promessa", "Números, marcas atendidas e cases antes do preço."]
+    ] },
+  { id: "seo", g: "serv", tag: "Serviço · 16 páginas", nome: "SEO, GEO e AEO", canal: "busca orgânica e IAs",
+    resumo: "Topo do Google e presença nas respostas das IAs. Cases Tetracon, Siguimi, RCO e Griffe.", img: "img/seo.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
+    fatos: [["Versões", "PDF com preço e sem preço"], ["Cases", "Tetracon, Siguimi, RCO e Griffe"]], pend: [],
+    pontos: [
+      ["A página certa para cada busca que vende", "Atender a intenção de quem busca, não só repetir a palavra."],
+      ["Uma página forte por tema, sem canibalização", "Duas páginas disputando a mesma busca enfraquecem as duas."],
+      ["SEO local", "Perfil do Google bem cuidado e páginas por cidade e unidade."],
+      ["Saúde técnica", "Indexação, velocidade, celular e HTTPS. Sem isso, o conteúdo não aparece."],
+      ["Conteúdo útil e com experiência real", "Responde perguntas reais com conhecimento de quem faz. É o que o Google chama de E-E-A-T."],
+      ["Autoridade", "Links e menções de sites relevantes do setor e da região."],
+      ["Dados estruturados", "Empresa, negócio local, serviços e perguntas frequentes marcados para máquinas lerem."],
+      ["Entidade consistente na web", "Mesmo nome, endereço, telefone e descrição em todo lugar. É a base do GEO."],
+      ["Estar nas fontes que as IAs leem", "Portais, listas, avaliações e diretórios do setor."],
+      ["Respostas diretas (AEO)", "Pergunta clara e resposta curta no começo do texto, fácil de citar."],
+      ["Medir por buscas que vendem", "Leads e vendas de busca orgânica, não só volume de visitas."],
+      ["Constância", "SEO é composto: o trabalho de cada mês soma ao anterior."]
+    ] },
+  { id: "trafego", g: "serv", tag: "Serviço · 15 páginas", nome: "Tráfego pago", canal: "mídia paga",
+    resumo: "Google, Meta e LinkedIn Ads com IA em todas as contas e rastreamento até a venda.", img: "img/trafego.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
+    fatos: [["Versões", "PDF com preço e sem preço"], ["Plataformas", "Google Ads, Meta Ads e LinkedIn Ads"]], pend: [],
+    pontos: [
+      ["Rastreamento até a venda", "Otimizar para venda fechada, não para clique ou formulário."],
+      ["Oferta e página por campanha", "O anúncio promete, a página cumpre a mesma promessa."],
+      ["Dados de conversão corretos", "Os lances automáticos só são tão bons quanto os dados que recebem."],
+      ["Intenção no Google", "Palavras de quem quer comprar e uma lista firme de termos negativos."],
+      ["Criativo é a segmentação na Meta", "Volume e variação de criativos encontram o público certo."],
+      ["Atender rápido quem chega", "Lead pago que espera é dinheiro jogado fora."],
+      ["Remarketing", "Voltar a falar com quem já demonstrou interesse custa menos."],
+      ["Verba onde está a demanda", "Região, horário e sazonalidade de cada negócio."],
+      ["Estrutura simples", "Poucas campanhas com verba concentrada aprendem mais rápido."],
+      ["Métricas de negócio", "Custo por venda, CAC e retorno sobre investimento, não só CPC."],
+      ["Testes com hipótese", "Um teste por vez, com o que se quer aprender escrito antes."],
+      ["Relatório que liga verba a receita", "Toda semana, com a decisão que vem dele."]
+    ] },
+  { id: "sites", g: "serv", tag: "Serviço · 16 páginas", nome: "Sites, landing pages e lojas", canal: "páginas de conversão",
+    resumo: "Sites exclusivos, páginas de conversão e lojas na Nuvemshop.", img: "img/sites.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
+    fatos: [["Versões", "PDF com preço e sem preço"], ["Modelos ligados", "Proposta de site e proposta de loja virtual"]], pend: [],
+    pontos: [
+      ["Uma página, um objetivo", "Landing page sem menu e sem saídas para outros assuntos."],
+      ["Título que repete o anúncio", "Quem clicou precisa reconhecer na hora a promessa que viu."],
+      ["Ação acima da dobra e repetida", "O botão aparece sem rolar e volta a cada bloco."],
+      ["Formulário curto", "Só o que o vendedor precisa para o primeiro contato."],
+      ["Prova perto do botão", "Depoimento, nota ou logo de cliente onde a decisão acontece."],
+      ["Responder objeções", "Preço, prazo, garantia e área atendida antes que virem dúvida."],
+      ["Velocidade e celular", "Página lenta paga o clique e perde a visita."],
+      ["Design exclusivo da marca", "Template genérico transmite empresa genérica."],
+      ["Página de obrigado com próximo passo", "Agendar, chamar no WhatsApp ou ver um case."],
+      ["Pixel e conversões instalados", "Sem medir, não há como otimizar a mídia."],
+      ["Testes A/B", "Título, oferta e imagem testados com dados, não com opinião."],
+      ["SEO e GEO de base", "Para não depender só de anúncio para ter visita."]
+    ] },
+  { id: "agentes", g: "serv", tag: "Serviço · 15 páginas", nome: "Agentes de IA", canal: "atendimento e qualificação",
+    resumo: "Atendimento e qualificação 24h no WhatsApp, integrados ao CRM.", img: "img/agentes.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
+    fatos: [["Versões", "PDF com preço e sem preço"], ["Canal", "WhatsApp, integrado ao CRM"]], pend: [],
+    pontos: [
+      ["Resposta em segundos, 24 h", "Inclusive à noite e no fim de semana, quando o concorrente não responde."],
+      ["Base de conhecimento correta", "Serviços, preços, regras e área atendida, mantidos atualizados."],
+      ["Perguntas de qualificação certas", "Necessidade, prazo, orçamento e região, sem virar interrogatório."],
+      ["Passagem para humano no momento certo", "Com o resumo da conversa, para o vendedor não recomeçar."],
+      ["Cada conversa vira lead no CRM", "Com origem, etapa e próximo passo registrados."],
+      ["Agendar direto na agenda", "Reunião marcada na conversa, sem troca de mensagens."],
+      ["Tom de voz da marca", "Natural, curto e no jeito que a empresa fala."],
+      ["Follow-up automático", "Retomar quem parou de responder, no tempo certo."],
+      ["Limites claros", "Não inventa preço, não promete o que a empresa não faz."],
+      ["LGPD e regras do WhatsApp", "Consentimento, opção de sair e uso dentro das políticas do canal."],
+      ["Métricas de atendimento", "Tempo de resposta, taxa de qualificação, agendamentos e vendas."],
+      ["Revisão semanal das conversas", "O agente melhora com o que as conversas reais mostram."]
+    ] },
+  { id: "bi", g: "serv", tag: "Serviço · 15 páginas", nome: "BI em tempo real", canal: "gestão por dados",
+    resumo: "Painel com receita, margem, CAC, pipeline e insights da IA.", img: "img/bi.jpg", st: "ok", link: BIBLIOTECA, linkTxt: "PDF na biblioteca",
+    fatos: [["Versões", "PDF com preço e sem preço"], ["Indicadores", "Receita, margem, CAC, pipeline"]], pend: [],
+    pontos: [
+      ["Uma fonte da verdade", "CRM, financeiro e mídia integrados em um lugar só."],
+      ["Poucos indicadores que decidem", "Receita, margem, CAC, ticket e conversão. Painel com tudo não mostra nada."],
+      ["Origem de cada venda", "Qual canal trouxe cada cliente e quanto custou."],
+      ["Funil completo", "Do lead à oportunidade à venda, com a taxa de cada passagem."],
+      ["Atualização automática", "Sem planilha montada à mão no fim do mês."],
+      ["Meta contra realizado", "Visível todo dia, para corrigir o rumo dentro do mês."],
+      ["Margem por produto e cliente", "Vender mais do que dá prejuízo é crescer para trás."],
+      ["Caixa e previsão", "O que entra e sai nas próximas semanas."],
+      ["Alertas", "Aviso quando um número sai do padrão, antes de virar problema."],
+      ["Visão por papel", "Dono, comercial e marketing veem o que cada um decide."],
+      ["Rotina de leitura", "Reunião semanal com o painel aberto."],
+      ["Insight que vira ação", "A IA aponta o que fazer, não só o que aconteceu."]
+    ] }
 ];
 const TRABALHOS = [
   { nome: "Coalumaq", tipo: "Diagnóstico", det: "Diagnóstico Digital ATOM · out/2026", url: "https://claude.ai/artifact/1MfJSLV1C7u35KJMXyHZZA" },
@@ -612,19 +785,15 @@ const quadro = m => `
       <span class="tag">${esc(m.tag)}</span>
       <h3>${esc(m.nome)}</h3>
       <p>${esc(m.resumo)}</p>
-      <div class="pe"><span class="st ${STC[m.st][0]}">${STC[m.st][1]}</span><span class="ir">Abrir →</span></div>
+      <div class="pe"><span class="st ${STC[m.st][0]}">${STC[m.st][1]}</span><span class="ir">12 pontos · abrir →</span></div>
     </div>
   </a>`;
-document.getElementById("q-diag").innerHTML = MODELOS.filter(m => m.g === "diag").map(quadro).join("");
-document.getElementById("q-prop").innerHTML = MODELOS.filter(m => m.g === "prop").map(quadro).join("");
-document.getElementById("q-serv").innerHTML = SERVICOS.map(s => `
-  <a class="quadro" href="${BIBLIOTECA}" target="_blank" rel="noopener">
-    <img src="${s.img}" alt="${esc(s.nome)}" loading="lazy" width="640" height="360">
-    <div class="corpo"><span class="tag">${esc(s.tag)}</span><h3>${esc(s.nome)}</h3><p>${esc(s.resumo)}</p>
-      <div class="pe"><span class="suave">com e sem preço</span><span class="ir">Biblioteca ↗</span></div></div>
-  </a>`).join("");
+["diag", "prop", "serv"].forEach(g => document.getElementById("q-" + g).innerHTML = MODELOS.filter(m => m.g === g).map(quadro).join(""));
 document.getElementById("trabalhos").innerHTML = TRABALHOS.map(t => `
   <li><a href="${t.url}" target="_blank" rel="noopener"><span><b>${esc(t.nome)}</b><small>${esc(t.det)}</small></span><em>${esc(t.tipo)} ↗</em></a></li>`).join("");
+
+const doze = m => m.pontos.map(([t, d], i) => `<li><span class="n">${String(i + 1).padStart(2, "0")}</span><div><b>${esc(t)}</b><p>${esc(d)}</p></div></li>`).join("");
+document.getElementById("doze-metodo").innerHTML = doze(MODELOS[0]);
 
 function abrirModelo(m) {
   document.getElementById("m-tag").textContent = m.tag;
@@ -632,11 +801,15 @@ function abrirModelo(m) {
   document.getElementById("m-resumo").textContent = m.resumo;
   document.getElementById("m-status").innerHTML = `<span class="st ${STC[m.st][0]}">${STC[m.st][1]}</span>`;
   document.getElementById("m-acoes").innerHTML = m.link ? `<a class="botao" href="${m.link}" target="_blank" rel="noopener">${esc(m.linkTxt)} ↗</a>` : "";
+  document.getElementById("m-canal").textContent = m.canal;
+  document.getElementById("m-doze").innerHTML = doze(m);
   const esq = document.getElementById("m-esq");
   if (m.paginas) {
     esq.innerHTML = `<h4 class="sub">As ${m.paginas.length} páginas</h4><div class="paginas">${m.paginas.map((p, i) => `<figure><img src="${p.src}" alt="${esc(m.nome)}, página ${i + 1}" loading="lazy" width="640" height="360"><figcaption>${String(i + 1).padStart(2, "0")} · ${esc(p.t)}</figcaption></figure>`).join("")}</div>`;
-  } else {
+  } else if (m.estrutura) {
     esq.innerHTML = `<h4 class="sub">Estrutura</h4><ol class="estrutura">${m.estrutura.map(t => `<li><span>${esc(t)}</span></li>`).join("")}</ol>`;
+  } else {
+    esq.innerHTML = `<h4 class="sub">Capa</h4><img class="capa-grande" src="${m.img}" alt="${esc(m.nome)}" width="640" height="360">`;
   }
   document.getElementById("m-fatos").innerHTML = m.fatos.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
   document.getElementById("m-pend-bloco").hidden = !m.pend.length;
