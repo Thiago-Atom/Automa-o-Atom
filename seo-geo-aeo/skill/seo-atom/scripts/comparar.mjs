@@ -3,6 +3,7 @@
 // regressão, melhoria e mudança neutra. Usado na verificação pós-aplicação e no aceite de cada lote.
 //
 // Uso: node comparar.mjs <antes/estado.json> <depois/estado.json> [--saida comparacao.md]
+// Compare build com build e rastreio com rastreio, gerados com as mesmas opções (recusa com código 2 se diferirem).
 // Código de saída 1 quando há regressão crítica (página sumiu, link quebrado novo, noindex novo,
 // canonical passou a apontar para outra página, nova órfã total, JSON-LD inválido novo).
 import fs from 'node:fs';
@@ -14,13 +15,26 @@ const CRITICOS = new Set(['noindex', 'canonical-para-outra-pagina', 'canonical-o
 const igual = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 const base = (p) => p.replace(/=.*$/, '');
 
+// Snapshots com configuração diferente (URLs limpas, com/sem rastreio, parcial) geram "páginas removidas" falsas.
+export function configuracaoIncompativel(antes, depois) {
+  const a = antes.config || {}, d = depois.config || {};
+  const dif = ['urls_limpas', 'com_respostas', 'blog'].filter((k) => (a[k] ?? null) !== (d[k] ?? null));
+  return dif.length ? 'snapshots com configuração diferente (' + dif.join(', ') + '): gere os dois com as mesmas opções' : '';
+}
+
 export function comparar(antes, depois) {
   const r = { regressoes: [], melhorias: [], mudancas: [], criticas: 0 };
+  const parcial = !!((antes.config || {}).parcial || (depois.config || {}).parcial);
   const reg = (critica, url, o) => { r.regressoes.push({ url, critica, ...o }); if (critica) r.criticas++; };
 
   for (const [url, a] of Object.entries(antes.paginas)) {
     const d = depois.paginas[url];
-    if (!d) { reg(true, url, { item: 'pagina', de: 'existia', para: 'removida', nota: 'exige aprovação de remoção/redirecionamento registrada' }); continue; }
+    if (!d) {
+      // Em universo parcial, a página pode só ter ficado fora da amostra.
+      if (parcial) r.mudancas.push({ url, item: 'pagina', de: 'existia', para: 'ausente no snapshot parcial (confirme o status na URL pública)' });
+      else reg(true, url, { item: 'pagina', de: 'existia', para: 'removida', nota: 'exige aprovação de remoção/redirecionamento registrada' });
+      continue;
+    }
     const pa = new Set(a.problemas.map(base)), pd = new Set(d.problemas.map(base));
     for (const p of pd) if (!pa.has(p)) reg(CRITICOS.has(p), url, { item: 'problema novo', de: '', para: d.problemas.find((x) => base(x) === p) });
     for (const p of pa) if (!pd.has(p)) r.melhorias.push({ url, item: 'problema resolvido', de: a.problemas.find((x) => base(x) === p), para: '' });
@@ -61,6 +75,8 @@ function main() {
   if (a._.length < 2) { console.error('uso: node comparar.mjs <antes/estado.json> <depois/estado.json> [--saida arquivo.md]'); process.exit(2); }
   const antes = JSON.parse(fs.readFileSync(a._[0], 'utf8'));
   const depois = JSON.parse(fs.readFileSync(a._[1], 'utf8'));
+  const incompativel = configuracaoIncompativel(antes, depois);
+  if (incompativel) { console.error('Comparação recusada: ' + incompativel + '.'); process.exit(2); }
   const r = comparar(antes, depois);
   const md = paraMarkdown(r, antes, depois);
   if (typeof a.saida === 'string') { fs.mkdirSync(path.dirname(a.saida), { recursive: true }); fs.writeFileSync(a.saida, md); }

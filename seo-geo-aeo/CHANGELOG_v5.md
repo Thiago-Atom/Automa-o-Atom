@@ -19,7 +19,7 @@ Motivo: requisito novo, um procedimento curinga para qualquer cliente, segmento 
 | Ambiente | dados da Atom misturados às regras | isolados em um arquivo editável | `referencias/ambiente-agencia.md` |
 | Fora do Brasil | não previsto | base SEMrush por país, regras do setor no país | `semrush.md`, `setores-regulados.md` |
 | Registros | sempre no repositório do site | no repositório só no modo A; nos demais, fora do site e em local privado | `git-aprovacoes-e-registros.md` |
-| Testes | 8 | 11 (tipos de página, robots.txt, rastreador contra servidor local) | `tests/seo_atom.test.js` |
+| Testes | 8 | 12 (tipos de página, robots.txt, rastreador e rastreio por seção contra servidor local, snapshots incompatíveis, tabela da skill × gerador) | `tests/seo_atom.test.js` |
 
 ## Mantido da v4.1
 Cadeia de evidência, classes medido/estimativa/inferência/hipótese, GSC como fonte principal, orçamento SEMrush com `database` explícita, limiares padrão, aprovações AP e pedidos PI, estados e aceite A/B, LIMITES DESTA ETAPA, verificação pós-aplicação baseada em mudanças, GEO (robôs, Google-Extended, snippet, protocolo de medição), setores regulados.
@@ -27,3 +27,28 @@ Cadeia de evidência, classes medido/estimativa/inferência/hipótese, GSC como 
 ## Arquivos renomeados
 - `fases/03_ecossistema_e_canibalizacao.md` → `fases/03_arquitetura_e_canibalizacao.md`
 - `fases/06_links_imagens_tecnico.md` → `fases/06_tecnico_links_midia.md`
+
+## Correções da revisão independente (20 achados, todos tratados)
+
+| # | Achado | Correção |
+|---|---|---|
+| 1 | Aceite com opções diferentes da fase 1 gerava "páginas removidas" falsas | opções registradas e repetidas; `comparar.mjs` recusa snapshots com configuração diferente (código 2) |
+| 2 | Rastreio "por seção/amostra" citado, mas inexistente | `--prefixo` e `--amostra-sitemap`; universo parcial sem órfãs/profundidade falsas |
+| 3 | N2 de 100% dos artigos impossível em portais | regra por porte: no porte Muito grande, 80% de cliques/impressões + amostra |
+| 4 | Idioma fixo em pt-BR | idioma/variante do mercado definido na fase 0 |
+| 5 | Todo e-commerce bloqueado como "regulado" | e-commerce só checa conformidade; bloqueio só para saúde/jurídico/financeiro |
+| 6 | SPA: inventário inteiro errado | alerta automático no `resumo.json` e regra de suspender o N1 automático |
+| 7 | Terceiro rastreado mais rápido que o declarado | `--concorrencia 1` nos comandos de terceiro |
+| 8 | User-agent dizia "autorizada" e tinha o nome da agência | `SeoAuditBot/1.0` neutro + `--ua` |
+| 9 | Nome do mapa divergente | `mapa-do-site.md` em todos os arquivos |
+| 10 | Tabela "Lê antes" divergente do gerador | sincronizada e coberta por teste |
+| 11 | Modo C ora com valor final, ora só recomendação | regra única em `modos-de-acesso.md` |
+| 12 | "Não indexar" + "bloquear rastreio" sem aviso | noindex com rastreio liberado até sair; bloqueio só depois |
+| 13 | Produto da Shopify classificado como categoria; facetas não medidas | ordem dos padrões corrigida; rastreio-amostra com parâmetros |
+| 14 | Teste de vazamento só por `grep` | `find` por nomes de registro + `grep` |
+| 15 | Saída padrão no diretório atual (risco de repositório público) | `--saida` obrigatória em `rastrear`, `inventario` e `gsc` |
+| 16 | GSC/Inspeção/Bing exigidos em modos sem acesso | "não verificável de fora" nos modos C sem acesso e D |
+| 17 | SERP local sem método | linha de fonte para SERP local, ou decisão provisória |
+| 18 | Perfil editorial sem regras de notícias | sitemap de notícias, `max-image-preview:large`, NewsArticle, Discover |
+| 19 | Controles de snippet/WAF fora da lista de aprovação | incluídos no `SKILL.md` |
+| 20 | Pequenos defeitos (lista quebrada, CNPJ, corte da similaridade) | corrigidos |

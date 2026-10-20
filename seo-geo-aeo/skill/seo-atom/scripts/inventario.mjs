@@ -4,8 +4,8 @@
 // imagens, metadados, órfãs, profundidade, links quebrados, sitemap e pares de conteúdo parecido (triagem).
 //
 // Uso:
-//   node inventario.mjs --dir dist --base https://www.cliente.com.br [--saida docs/seo-atom/auditoria/AAAA-MM-DD]
-//                       [--urls-limpas] [--sitemap dist/sitemap.xml] [--respostas respostas.csv] [--blog /blog/] [--similares 0.25]
+//   node inventario.mjs --dir dist --base https://www.cliente.com.br --saida <pasta privada>/auditoria/AAAA-MM-DD
+//                       [--urls-limpas] [--sitemap dist/sitemap.xml] [--respostas respostas.csv] [--blog /blog/] [--similares 0.25] [--parcial]
 //
 // --dir         pasta com o HTML servido. Não altera nada nela.
 // --urls-limpas o servidor publica /pagina.html como /pagina (Netlify, Vercel, Cloudflare Pages, espelho do rastreador).
@@ -27,8 +27,9 @@ const MAX_POR_TIPO_SIMILARES = 1500;
 // quando o projeto usar outro padrão. Dados estruturados da própria página têm prioridade.
 const PADROES = [
   ['listagem', /\/(categoria|categorias|category|categories|tag|tags|etiqueta|autor|autores|author|authors|page|pagina|paginas|arquivo|archive)\/|\/page\/\d+|\/pagina\/\d+/i],
-  ['categoria-produto', /\/(categoria-produto|product-category|colecao|colecoes|collections?|departamento|departamentos|c)\//i],
-  ['produto', /\/(produto|produtos|product|products|p|item|itens|items|loja|shop|tienda)\/[^/]+/i],
+  // Produto antes de categoria: /collections/x/products/y (Shopify) é produto.
+  ['produto', /\/(produto|produtos|product|products|p|item|itens|items|tienda)\/[^/]+/i],
+  ['categoria-produto', /\/(categoria-produto|product-category|colecao|colecoes|collections?|departamento|departamentos|c|loja|shop)\//i],
   ['local', /\/(cidade|cidades|unidade|unidades|locais|local|lojas|filiais|locations?|onde-estamos|sucursales?)\/[^/]+/i],
   ['servico', /\/(servico|servicos|serviços|service|services|solucao|solucoes|solutions?|tratamentos?|especialidades?|areas-de-atuacao|practice-areas?)\/[^/]+/i],
   ['artigo', /\/(blog|artigo|artigos|noticia|noticias|news|conteudo|conteudos|materia|materias|post|posts|insights|guias?|tudo-sobre-[^/]+)\/[^/]+/i],
@@ -96,7 +97,12 @@ function lerSitemap(arquivo, dirBase, visitados = new Set()) {
   });
 }
 
-export function inventariar({ dir, base, blog = '', urlsLimpas = false, sitemap = '', respostas = [], similares = 0 }) {
+function linhasPaginasVazias(paginas) {
+  const vazias = [...paginas.values()].filter((p) => !p.titulo || !p.h1.length || p.palavras < 20).length;
+  return vazias / paginas.size > 0.5;
+}
+
+export function inventariar({ dir, base, blog = '', urlsLimpas = false, sitemap = '', respostas = [], similares = 0, parcial = false }) {
   if (!dir || !fs.existsSync(dir)) throw new Error('pasta inexistente: ' + dir);
   const origem = new URL(base || 'https://exemplo.invalid/');
   const hostSemWww = origem.host.replace(/^www\./, '');
@@ -230,11 +236,12 @@ export function inventariar({ dir, base, blog = '', urlsLimpas = false, sitemap 
     const semDim = p.imagens.filter((i) => !i.largura || !i.altura).length;
     if (semAlt) problemas.push('imagens-sem-alt=' + semAlt);
     if (semDim) problemas.push('imagens-sem-dimensoes=' + semDim);
-    if (p.chave !== inicio && p.tipo !== 'erro') {
+    // Rastreio parcial (limite atingido ou por seção): ausência de link de entrada não prova órfã.
+    if (!parcial && p.chave !== inicio && p.tipo !== 'erro') {
       if (p.entradasTotal.size === 0) problemas.push('orfa-total');
       else if (p.entradasCorpo.size === 0 && PEDEM_LINK_EDITORIAL.has(p.tipo)) problemas.push('orfa-editorial');
     }
-    if (inicio && !profundidade.has(p.chave) && p.tipo !== 'erro') problemas.push('inalcancavel-a-partir-da-home');
+    if (!parcial && inicio && !profundidade.has(p.chave) && p.tipo !== 'erro') problemas.push('inalcancavel-a-partir-da-home');
     linhasPaginas.push({
       url: urlAbsoluta(p.chave), arquivo: p.arquivo, tipo_heuristico: p.tipo, modelo: p.modelo, titulo: p.titulo, descricao: p.descricao,
       h1: p.h1, h2: p.h2, canonical: p.canonical, robots: robots.trim(), lang: p.lang, hreflang: p.hreflang,
@@ -292,7 +299,7 @@ export function inventariar({ dir, base, blog = '', urlsLimpas = false, sitemap 
       }
       return { loc, pagina_local: p ? p.arquivo : '', avisos };
     });
-    for (const p of paginas.values()) {
+    for (const p of parcial ? [] : paginas.values()) {
       if (!noSitemap.has(p.chave) && !['erro', 'listagem'].includes(p.tipo) && !/noindex/i.test(p.robots) && !p.refresh) {
         linhasSitemap.push({ loc: urlAbsoluta(p.chave), pagina_local: p.arquivo, avisos: ['fora-do-sitemap'] });
       }
@@ -331,6 +338,8 @@ export function inventariar({ dir, base, blog = '', urlsLimpas = false, sitemap 
       'HTML lido sem executar JavaScript: conteúdo e links injetados no navegador não aparecem.',
       respostas.length ? 'Status HTTP vindos do rastreio (respostas.csv).' : 'Sem respostas.csv: status HTTP, redirecionamentos e robots.txt publicados não foram verificados.',
       'tipo_heuristico vem de dados estruturados e do padrão da URL; corrija no inventário quando o site usar outro padrão.',
+      ...(parcial ? ['Universo PARCIAL (limite de rastreio, seção ou amostra): órfãs, profundidade e "fora do sitemap" não foram calculados; compare só com snapshots da mesma configuração.'] : []),
+      ...(paginas.size > 0 && linhasPaginasVazias(paginas) ? ['Mais da metade das páginas sem title/H1 ou com menos de 20 palavras: provável conteúdo montado por JavaScript. O N1 automático não vale para links, órfãs, metadados e palavras (ver modos-de-acesso.md).'] : []),
       'Pares similares são triagem textual dentro do mesmo tipo; conflito só se confirma lendo o conteúdo e, havendo, com dados do GSC.',
       ...avisosSimilares,
     ],
@@ -359,6 +368,8 @@ export function inventariar({ dir, base, blog = '', urlsLimpas = false, sitemap 
 
   const estado = {
     gerado_em: resumo.gerado_em, base: origem.href,
+    // Snapshots só são comparáveis com a mesma configuração (comparar.mjs confere).
+    config: { urls_limpas: !!urlsLimpas, com_respostas: respostas.length > 0, parcial: !!parcial, blog: blog || '' },
     paginas: Object.fromEntries(linhasPaginas.map((l) => [l.url, {
       titulo: l.titulo, descricao: l.descricao, canonical: l.canonical, robots: l.robots, h1: l.h1, jsonld_tipos: l.jsonld_tipos,
       palavras: l.palavras, links_entrada_corpo: l.links_entrada_corpo, profundidade: l.profundidade, problemas: l.problemas,
@@ -382,17 +393,18 @@ export function gravarInventario(r, saida) {
 
 function main() {
   const a = lerArgs(process.argv.slice(2));
-  if (!a.dir || !a.base) {
-    console.error('uso: node inventario.mjs --dir <pasta-html> --base <https://dominio> [--saida pasta] [--urls-limpas] [--sitemap arquivo] [--respostas respostas.csv] [--blog /prefixo/] [--similares 0.25]');
+  if (!a.dir || !a.base || typeof a.saida !== 'string') {
+    // --saida obrigatória: evita gravar dados de cliente no diretório atual (que pode ser um repositório público).
+    console.error('uso: node inventario.mjs --dir <pasta-html> --base <https://dominio> --saida <pasta privada> [--urls-limpas] [--sitemap arquivo] [--respostas respostas.csv] [--blog /prefixo/] [--similares 0.25] [--parcial]');
     process.exit(2);
   }
   const r = inventariar({
     dir: a.dir, base: a.base, blog: typeof a.blog === 'string' ? a.blog : '', urlsLimpas: !!a['urls-limpas'],
     sitemap: typeof a.sitemap === 'string' ? a.sitemap : '',
     respostas: typeof a.respostas === 'string' ? lerCsv(fs.readFileSync(a.respostas, 'utf8')) : [],
-    similares: a.similares === true ? 0.25 : Number(a.similares || 0),
+    similares: a.similares === true ? 0.25 : Number(a.similares || 0), parcial: !!a.parcial,
   });
-  const saida = typeof a.saida === 'string' ? a.saida : path.join('docs', 'seo-atom', 'auditoria', new Date().toISOString().slice(0, 10));
+  const saida = a.saida;
   gravarInventario(r, saida);
   console.log(JSON.stringify({ saida, ...r.resumo, titles_duplicados: r.resumo.titles_duplicados.length, descriptions_duplicadas: r.resumo.descriptions_duplicadas.length }, null, 2));
 }

@@ -9,6 +9,14 @@ Defina o modo na fase 0 e registre. Ele decide **onde** você lê, **o que** pod
 | **C. URL pública** | Só o endereço do site (cliente sem acesso técnico ainda) | Rastreio público + dados autorizados (GSC/GA4 se concedidos) | Nenhuma | Diagnóstico + alterações propostas por URL/modelo |
 | **D. Terceiro** | Prospect, concorrente, site de referência | Rastreio público + SEMrush (estimado) | Nenhuma | Diagnóstico de oportunidade, sem dados privados; não prometer o que só dados internos mostrariam |
 
+## Formato da entrega por modo
+
+- **A:** commits + registros.
+- **B e C:** `alteracoes-propostas.csv` com o **valor final pronto para aplicar** (texto, título, link, regra).
+- **D:** recomendações sem valor final (não há acesso nem dados internos para fechá-lo).
+
+As fases 4 e 6 seguem esta regra.
+
 ## Regras por modo
 
 **A. Código.** Edite fontes, não a saída do build. Em HTML puro, não invente build. Valide com o build local e `inventario.mjs` sobre a saída. O git segue `git-aprovacoes-e-registros.md`.
@@ -24,7 +32,7 @@ Defina o modo na fase 0 e registre. Ele decide **onde** você lê, **o que** pod
 
 **D. Terceiro.**
 - Use só informação pública e dados de ferramentas.
-- Não acesse áreas restritas, não teste formulários e não faça rastreio pesado (máximo padrão de 200 páginas, intervalo ≥ 1 s).
+- Não acesse áreas restritas, não teste formulários e não faça rastreio pesado: `--max 200 --atraso 1000 --concorrencia 1` (o intervalo vale por trabalhador).
 - Diferencie o que é visível de fora do que exigiria GSC/GA4.
 - Nada de afirmações sobre tráfego real: SEMrush é estimativa.
 
@@ -36,3 +44,4 @@ Se o site monta conteúdo no navegador (SPA, React/Vue/Angular sem renderizaçã
 1. Compare, numa amostra de cada modelo de página, o HTML bruto com o HTML renderizado (navegador, Playwright ou serviço de renderização autorizado).
 2. Registre o que só existe após o JavaScript: texto, links, canonical, título, dados estruturados.
 3. Diferenças em conteúdo essencial, links ou metadados viram achado técnico (fase 6).
+4. Se título, links ou texto só existem depois do JavaScript (o `resumo.json` avisa quando mais da metade das páginas vem vazia), o N1 automático **não vale** para links, órfãs, metadados e palavras. Registre como achado crítico (fase 6.1), audite pelo HTML renderizado de uma amostra por modelo e não use o `comparar.mjs` como aceite até haver renderização no servidor ou pré-renderização.

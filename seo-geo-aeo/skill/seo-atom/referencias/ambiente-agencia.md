@@ -6,7 +6,8 @@ O único arquivo da skill com dados de uma agência específica. Para usar em ou
 
 **Conectores de dados (MCP)**
 - **Windsor.ai:** `searchconsole`, `googleanalytics4`, `bing_webmaster`, `google_pagespeed`, `google_my_business`, `google_ads`.
-  - O Search Console só tinha a propriedade `sc-domain:atomdigital.com.br`. Para outro cliente, peça ao responsável que conecte a propriedade (link gerado por `get_connector_connect_info`). Nunca peça senha ou token no chat.- **Supermetrics:** pode estar disponível como alternativa (não respondeu no teste de 20/10/2026).
+  - O Search Console só tinha a propriedade `sc-domain:atomdigital.com.br`. Para outro cliente, peça ao responsável que conecte a propriedade (link gerado por `get_connector_connect_info`). Nunca peça senha ou token no chat.
+- **Supermetrics:** pode estar disponível como alternativa (não respondeu no teste de 20/10/2026).
 - **SEMrush (MCP):**
   - Havia duas conexões na sessão ("Semrush" e uma duplicada). Use uma e registre qual.
   - Relatórios de AI Visibility não estavam expostos.

@@ -4,8 +4,8 @@
 // a alteração deve ser registrada em contexto-e-progresso.md.
 //
 // Uso:
-//   node gsc.mjs conflitos     --csv consulta_pagina[_data].csv [--min-impressoes 100] [--min-participacao 0.2] [--max-posicao 20] [--marca "nomedamarca|variacao"] [--saida pasta]
-//   node gsc.mjs oportunidades --csv pagina[_consulta].csv [--anterior periodo_anterior.csv] [--min-impressoes 200] [--saida pasta]
+//   node gsc.mjs conflitos     --csv consulta_pagina[_data].csv [--min-impressoes 100] [--min-participacao 0.2] [--max-posicao 20] [--marca "nomedamarca|variacao"] --saida <pasta privada>
+//   node gsc.mjs oportunidades --csv pagina[_consulta].csv [--anterior periodo_anterior.csv] [--min-impressoes 200] --saida <pasta privada>
 //
 // Colunas aceitas (maiúsculas/minúsculas indiferentes): query|consulta, page|pagina|página, clicks|cliques,
 // impressions|impressoes|impressões, position|posicao|posição, date|data (opcional).
@@ -133,12 +133,12 @@ export function oportunidades(linhas, { anterior = null, minImpressoes = 200, mi
 function main() {
   const a = lerArgs(process.argv.slice(2));
   const cmd = a._[0];
-  if (!['conflitos', 'oportunidades'].includes(cmd) || typeof a.csv !== 'string') {
-    console.error('uso: node gsc.mjs conflitos|oportunidades --csv arquivo.csv [opções]  (ver cabeçalho do script)');
+  if (!['conflitos', 'oportunidades'].includes(cmd) || typeof a.csv !== 'string' || typeof a.saida !== 'string') {
+    console.error('uso: node gsc.mjs conflitos|oportunidades --csv arquivo.csv --saida <pasta privada> [opções]  (ver cabeçalho do script)');
     process.exit(2);
   }
   const ler = (f) => normalizarLinhas(lerCsv(fs.readFileSync(f, 'utf8')));
-  const saida = typeof a.saida === 'string' ? a.saida : path.join('docs', 'seo-atom', 'evidencias', 'gsc');
+  const saida = a.saida;
   if (cmd === 'conflitos') {
     const r = conflitos(ler(a.csv), {
       minImpressoes: Number(a['min-impressoes'] || 100), minParticipacao: Number(a['min-participacao'] || 0.2),

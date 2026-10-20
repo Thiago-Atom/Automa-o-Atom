@@ -13,6 +13,7 @@
 | Bing/Copilot enxergam o site? | Bing Webmaster Tools | — | rastreio público |
 | Carregamento real | CrUX/PageSpeed (campo) | Lighthouse (laboratório) | CrUX público, se houver dados |
 | Status, redirecionamentos, robots | `rastrear.mjs` | Site Audit do SEMrush (projeto configurado) | `rastrear.mjs` |
+| SERP local (cidade/bairro) | navegador autorizado com a localização definida, serviço de SERP autorizado com parâmetro de localização ou Position Tracking com projeto local | GSC filtrado por consultas com o nome do local | idem; sem ferramenta: "SERP local não observada", decisão provisória |
 
 ## Como acessar
 

@@ -3,8 +3,8 @@
 **LIMITES DESTA ETAPA**
 - Pode:
   - **Modo A:** corrigir erros reproduzíveis, links, mídia e metadados; ajustar templates com piloto; rodar build/testes sem efeito externo; commitar.
-  - **Modo B:** preparar cada mudança pronta para o CMS/tema em `alteracoes-propostas.csv`.
-  - **Modos C/D:** recomendações por URL ou modelo.
+  - **Modos B/C:** cada mudança pronta para aplicar (CMS/tema/servidor) em `alteracoes-propostas.csv`.
+  - **Modo D:** recomendações por URL ou modelo (formato de entrega em `modos-de-acesso.md`).
 - Não pode:
   - mudar URL, redirecionamento, noindex, canonical entre páginas distintas, robots, indexação de modelos, domínio ou plataforma sem aprovação;
   - adicionar dependência, plugin ou app sem necessidade e autorização;
@@ -18,9 +18,11 @@ Trate primeiro o que se repete no **modelo** (`modelos.csv`): uma correção no 
 ## 6.1 Achados críticos (antes de tudo)
 - **Site ou seção inteira fora do índice:** noindex em massa, robots bloqueando, canonical para outro domínio/staging.
 - **Spam injetado ou site hackeado:** URLs desconhecidas com impressões, páginas de produtos/remédios/cassino que o negócio não tem, redirecionamentos estranhos para quem vem do buscador. Ação:
-  1. Registre a evidência (GSC, status atual e HTML).
-  2. Confira o relatório de problemas de segurança do GSC.
+  1. Registre a evidência (GSC quando houver acesso; senão status atual, HTML e resultados públicos).
+  2. Com acesso, confira o relatório de problemas de segurança do GSC.
   3. Avise o responsável **imediatamente**.
+
+  Sem acesso (modos C/D), registre "não verificável de fora". A pesquisa `site:` não é métrica.
 
   Limpeza do servidor e troca de senhas são do responsável técnico. As URLs limpas devem responder 404/410; peça nova análise no GSC quando houver ação manual ou alerta.
 - **Ambiente de teste/staging indexável**, ou o mesmo site em vários domínios/hosts sem redirecionamento.
@@ -61,7 +63,7 @@ Trate primeiro o que se repete no **modelo** (`modelos.csv`): uma correção no 
 ## 6.4 Verificações técnicas (só as pertinentes ao site)
 **Respostas e URLs**
 - Status HTTP, soft 404, cadeias e loops de redirecionamento (`respostas.csv`; Site Audit se houver projeto).
-- Host/protocolo/barra final/parâmetros; canonicals coerentes. Declarado ≠ selecionado pelo Google (Inspeção de URL no GSC). Não normalize unindo páginas legítimas distintas.
+- Host/protocolo/barra final/parâmetros; canonicals coerentes. Declarado ≠ selecionado pelo Google (Inspeção de URL no GSC, só com acesso à propriedade). Não normalize unindo páginas legítimas distintas.
 - Divergências entre sitemap, redirecionamento, canonical e links internos (`sitemap.csv`).
 
 **Indexação e rastreio**

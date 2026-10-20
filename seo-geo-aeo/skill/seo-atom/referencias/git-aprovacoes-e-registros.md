@@ -16,7 +16,7 @@ Modo A: proposta `docs/seo-atom/` no repositório do site. Modos B, C e D: pasta
 
 1. Leia a configuração do gerador e do host: pastas copiadas como estáticas (`public/`, `static/`, `assets/`), padrões de conteúdo (ex.: Astro/Next/Eleventy/Hugo/Jekyll leem `*.md` de pastas configuradas), `include`/`exclude`, `_config.yml`, `netlify.toml`, `vercel.json`.
 2. Em HTML puro servido da raiz do repositório, **qualquer arquivo commitado é público**. Use uma pasta fora do repositório ou peça um repositório/armazenamento privado.
-3. Depois do primeiro build local, confirme que nenhum arquivo de `docs/seo-atom/` aparece na saída: `grep -rl "seo-atom" <pasta-do-build>` vazio, e que não entrou no sitemap nem em feed.
+3. Depois do primeiro build local, confirme que nenhum registro aparece na saída: `find <build> -path '*seo-atom*' -o -name 'contexto-e-progresso.md' -o -name 'inventario.csv' -o -name 'aprovacoes-pendentes.md' -o -name 'alteracoes-*'` e `grep -rl "seo-atom" <build>` vazios; nada no sitemap nem em feed.
 4. Exportações: remova dados pessoais (nome, e-mail, telefone de leads) e segredos antes de salvar.
 
 ## Arquivos de registro
@@ -29,7 +29,7 @@ Modo A: proposta `docs/seo-atom/` no repositório do site. Modos B, C e D: pasta
 | `alteracoes-propostas.csv` | modos B/C/D: mudança por URL/campo, pronta para aplicar |
 | `evidencias/` | `semrush-log.csv`, resultados, exportações do GSC, `gsc/` |
 | `oportunidades.csv` | ID, consulta/tema, evidência (IDs), fonte/data/base, intenção, relevância comercial, URL atual/proposta, ação, dependências, esforço, risco, prioridade, métrica, status |
-| `mapa-ecossistema.md` | núcleos, papéis, relações, provas, conexões comerciais, lacunas (atualize um `mapa-semantico.md` existente, não duplique) |
+| `mapa-do-site.md` | arquitetura, modelos, decisões de indexação, núcleos, papéis, relações, provas, conexões comerciais, lacunas (atualize um mapa existente, como `mapa-semantico.md`, sem duplicar) |
 | `conflitos.csv` | grupo, URLs, evidência, URL preferencial e motivo, ação, aprovação |
 | `verificacao-factual.csv` | página, afirmação, fonte/URL, data da fonte, data da consulta, status (confirmada/parcial/contradita/não verificada), correção + campos de `setores-regulados.md` quando aplicável |
 | `links-internos.csv` | origem, seção/trecho, destino, âncora, justificativa, antes/depois, status |

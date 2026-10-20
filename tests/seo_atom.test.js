@@ -8,7 +8,7 @@ import { analisarHtml, lerCsv, numero, paraCsv } from '../seo-geo-aeo/skill/seo-
 import http from 'node:http';
 import { inventariar, classificarTipo, modeloDeUrl } from '../seo-geo-aeo/skill/seo-atom/scripts/inventario.mjs';
 import { rastrear, lerRobots, arquivoDoEspelho } from '../seo-geo-aeo/skill/seo-atom/scripts/rastrear.mjs';
-import { comparar } from '../seo-geo-aeo/skill/seo-atom/scripts/comparar.mjs';
+import { comparar, configuracaoIncompativel } from '../seo-geo-aeo/skill/seo-atom/scripts/comparar.mjs';
 import { normalizarLinhas, conflitos, oportunidades } from '../seo-geo-aeo/skill/seo-atom/scripts/gsc.mjs';
 import { gerar, arquivosDaFase } from '../seo-geo-aeo/skill/seo-atom/scripts/gerar_prompt_unico.mjs';
 
@@ -90,6 +90,16 @@ test('seo-atom: comparar aponta canonical desviado como regressão crítica', ()
   assert.equal(r.criticas, 1);
   assert.equal(r.regressoes[0].para, 'canonical-para-outra-pagina');
   assert.ok(r.mudancas.some((m) => m.item === 'canonical'));
+  // Snapshot com outra configuração é recusado; snapshot parcial não acusa página "removida".
+  const a = inventariar({ dir: d1, base: BASE, blog: '/blog/' }).estado;
+  const b = inventariar({ dir: d1, base: BASE, blog: '/blog/', urlsLimpas: true }).estado;
+  assert.match(configuracaoIncompativel(a, b), /urls_limpas/);
+  const parcial = inventariar({ dir: d1, base: BASE, blog: '/blog/', parcial: true }).estado;
+  delete parcial.paginas[BASE + '/contato/'];
+  const rp = comparar(a, parcial);
+  assert.equal(rp.regressoes.filter((x) => x.item === 'pagina').length, 0);
+  assert.ok(rp.mudancas.some((m) => /parcial/.test(m.para)));
+  assert.ok(!Object.values(parcial.paginas).some((p) => p.problemas.some((x) => x.startsWith('orfa'))));
   for (const d of [d1, d2]) fs.rmSync(d, { recursive: true, force: true });
 });
 
@@ -152,7 +162,7 @@ test('seo-atom: prompt único gerado da fonte única, sem frontmatter', () => {
 test('seo-atom: tipos de página e modelos de URL para qualquer segmento', () => {
   const casos = {
     '/': 'home', '/produto/tenis-azul-42': 'produto', '/products/blue-shoe': 'produto', '/categoria-produto/tenis/': 'categoria-produto',
-    '/collections/shoes': 'categoria-produto', '/servicos/implante-dentario/': 'servico', '/practice-areas/family-law': 'servico',
+    '/collections/shoes': 'categoria-produto', '/collections/shoes/products/blue-shoe': 'produto', '/servicos/implante-dentario/': 'servico', '/practice-areas/family-law': 'servico',
     '/unidades/goiania/': 'local', '/blog/como-escolher/': 'artigo', '/blog/': 'listagem', '/blog/page/2/': 'listagem',
     '/tag/seo/': 'listagem', '/sobre/': 'institucional', '/contact': 'institucional', '/planos/': 'pagina',
   };
@@ -171,7 +181,7 @@ test('seo-atom: robots.txt com grupo específico, Allow mais longo e curingas', 
   assert.equal(r.permitido('/a.pdf'), false);
   assert.equal(r.permitido('/a.pdf?x'), true);
   assert.deepEqual(r.sitemaps, ['https://x.com/sm.xml']);
-  assert.equal(lerRobots('User-agent: SeoAtomBot\nDisallow: /\n\nUser-agent: *\nDisallow:\n').permitido('/a'), false);
+  assert.equal(lerRobots('User-agent: SeoAuditBot\nDisallow: /\n\nUser-agent: *\nDisallow:\n').permitido('/a'), false);
   assert.equal(arquivoDoEspelho(new URL('https://x.com/a/b')), path.join('a', 'b.html'));
   assert.equal(arquivoDoEspelho(new URL('https://x.com/a/b/')), path.join('a', 'b', 'index.html'));
 });
@@ -200,6 +210,11 @@ test('seo-atom: rastreador público (servidor local) registra status, redirecion
   const saida = fs.mkdtempSync(path.join(os.tmpdir(), 'seo-atom-rastreio-'));
   try {
     const r = await rastrear({ url: `http://127.0.0.1:${porta}/`, atraso: 0, saida, max: 50 });
+    assert.equal(r.resumo.parcial, false);
+    // Rastreio por seção: só /servicos/, universo marcado como parcial.
+    const sec = await rastrear({ url: `http://127.0.0.1:${porta}/`, atraso: 0, saida: path.join(saida, 'secao'), max: 50, prefixo: '/servicos/', usarSitemap: false });
+    assert.deepEqual(sec.respostas.filter((x) => x.status !== '').map((x) => new URL(x.url).pathname), ['/servicos/', '/servicos/a/']);
+    assert.equal(sec.resumo.parcial, true);
     const st = Object.fromEntries(r.respostas.map((x) => [new URL(x.url).pathname + new URL(x.url).search, x]));
     assert.equal(st['/'].status, 200);
     assert.equal(st['/antigo'].status, 301);
@@ -219,5 +234,17 @@ test('seo-atom: rastreador público (servidor local) registra status, redirecion
   } finally {
     srv.close();
     fs.rmSync(saida, { recursive: true, force: true });
+  }
+});
+
+test('seo-atom: tabela "Lê antes" do SKILL.md coincide com as referências do gerador de prompt único', () => {
+  const skill = fs.readFileSync(path.join(SKILL, 'SKILL.md'), 'utf8');
+  for (const fase of ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'verificacao']) {
+    const arquivoFase = arquivosDaFase(fase).find((f) => f.startsWith('fases/'));
+    const linha = skill.split('\n').findLast((l) => l.startsWith('|') && l.includes('`' + arquivoFase + '`'));
+    assert.ok(linha, 'linha da fase ' + fase);
+    for (const ref of arquivosDaFase(fase).filter((f) => f.startsWith('referencias/'))) {
+      assert.ok(linha.includes('`' + ref.slice('referencias/'.length) + '`'), `fase ${fase}: SKILL.md não cita ${ref}`);
+    }
   }
 });

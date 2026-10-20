@@ -1,6 +1,6 @@
 # Temas sensíveis e setores regulados
 
-Vale para saúde, direito, finanças, segurança, alimentos/suplementos, estética, comércio eletrônico e qualquer orientação que possa causar dano. O módulo é ativado na fase 0 quando o site atua nesses setores (`segmentos.md`).
+Vale para saúde, direito, finanças, segurança, alimentos/suplementos, estética e qualquer orientação que possa causar dano. Comércio eletrônico comum não é setor regulado para este módulo: a linha do Decreto 7.962/2013 é checagem de conformidade da loja (dados obrigatórios), sem bloqueio de conteúdo. O módulo é ativado na fase 0 quando o site atua nesses setores (`segmentos.md`).
 
 ## Normas a conferir (Brasil)
 
@@ -24,7 +24,7 @@ As referências abaixo são ponto de partida. **Confira o texto vigente na data*
 
 - Afirmação de saúde, jurídica ou financeira precisa de fonte primária (órgão regulador, diretriz de sociedade científica, lei, estudo original) aberta e lida.
 - Não crie depoimento, caso clínico, antes/depois, número de pacientes atendidos ou credencial.
-- Revisão profissional: registre quem revisa (nome e registro profissional, quando informados pelo cliente). Sem revisor identificado, o conteúdo fica **bloqueado para publicação**, não "aprovado".
+- Revisão profissional: registre quem revisa (nome e registro profissional, quando informados pelo cliente). Sem revisor identificado, o conteúdo com afirmação de saúde, jurídica ou financeira fica **bloqueado para publicação**, não "aprovado".
 - Imagens de pacientes/casos só com autorização documentada pelo cliente. Na dúvida, não use.
 
 ## Campos extras em `verificacao-factual.csv` para conteúdo regulado

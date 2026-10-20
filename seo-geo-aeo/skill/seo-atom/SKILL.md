@@ -61,7 +61,7 @@ Detalhes: `referencias/fontes-de-dados.md` e `referencias/semrush.md`.
 - Ausência de dado não é zero. Campo indisponível fica vazio, com motivo.
 - Não invente números, fontes, autores, casos, depoimentos, avaliações, preços, credenciais, URLs ou acesso.
 - Só altere o que o modo de acesso permite e o que foi autorizado. No modo URL pública e em site de terceiro: **nunca altere nada**, só entregue diagnóstico e alterações propostas.
-- Antes de remover/consolidar páginas, mudar URL publicada, aplicar `noindex`, mudar redirecionamentos, canonical entre páginas distintas, `robots.txt`, facetas indexáveis ou política de robôs: prepare a mudança exata, evidência, impacto e reversão em `aprovacoes-pendentes.md`. Não execute sem aprovação registrada; a aprovação vale só para o ID aprovado.
+- Antes de remover/consolidar páginas, mudar URL publicada, aplicar `noindex`, mudar redirecionamentos, canonical entre páginas distintas, `robots.txt`, facetas indexáveis, política de robôs, regras de WAF/CDN para robôs ou controles de snippet (`nosnippet`, `max-snippet`, `data-nosnippet`): prepare a mudança exata, evidência, impacto e reversão em `aprovacoes-pendentes.md`. Não execute sem aprovação registrada; a aprovação vale só para o ID aprovado.
 - Não publique, não faça deploy, não faça `git push`, não salve nem publique no painel do CMS, não altere contas externas e não gaste além do orçamento sem autorização. Leia os scripts antes de rodar: build, push e hooks podem publicar.
 - Não altere domínio, plataforma, layout geral, consentimento, rastreamento, preços, ofertas ou posicionamento comercial sem necessidade demonstrada e autorização.
 - Rastreie com educação: respeite robots.txt, limite de páginas e intervalo entre requisições; não envie formulários nem faça login sem autorização.
@@ -84,16 +84,16 @@ Por execução, dois veredictos independentes:
 
 | Fase | Arquivo | Lê antes | Produz |
 |---|---|---|---|
-| 0 Contexto e acessos | `fases/00_contexto_e_acessos.md` | `modos-de-acesso.md`, `segmentos.md`, `fontes-de-dados.md`, `semrush.md`, `capacidade-e-lotes.md`, `ambiente-agencia.md` | modo, segmento, mercado, acessos, orçamento, pasta segura |
-| 1 Inventário e baseline | `fases/01_inventario_e_baseline.md` | `scripts/rastrear.mjs`, `scripts/inventario.mjs`, `scripts/gsc.mjs` | universo congelado, modelos de página, baseline |
+| 0 Contexto e acessos | `fases/00_contexto_e_acessos.md` | `modos-de-acesso.md`, `segmentos.md`, `fontes-de-dados.md`, `semrush.md`, `capacidade-e-lotes.md`, `git-aprovacoes-e-registros.md`, `ambiente-agencia.md` | modo, segmento, mercado, acessos, orçamento, pasta segura |
+| 1 Inventário e baseline | `fases/01_inventario_e_baseline.md` | `modos-de-acesso.md`, `capacidade-e-lotes.md`, `fontes-de-dados.md`, `scripts/rastrear.mjs`, `scripts/inventario.mjs`, `scripts/gsc.mjs` | universo congelado, modelos de página, baseline |
 | 2 Pesquisa | `fases/02_pesquisa.md` | `semrush.md`, `fontes-de-dados.md`, `limiares-padrao.md` | evidências, oportunidades priorizadas |
 | 3 Arquitetura e canibalização | `fases/03_arquitetura_e_canibalizacao.md` | `segmentos.md`, `limiares-padrao.md` | mapa do site e do conteúdo, conflitos, backlog |
-| 4 Conteúdo e fatos | `fases/04_conteudo_e_fatos.md` | `revisao-editorial.md`, `setores-regulados.md` | briefs, revisões/propostas, checagem |
-| 5 GEO e AEO | `fases/05_geo_e_aeo.md` | `geo-plataformas.md` | mapa pergunta→URL, acesso de robôs, protocolo de IA |
-| 6 Técnico, links e mídia | `fases/06_tecnico_links_midia.md` | `segmentos.md`, `limiares-padrao.md` | alterações ou propostas por modelo/URL |
-| 7 Aceite do lote | `fases/07_aceite.md` | `scripts/comparar.mjs` | aceite A/B com evidência |
+| 4 Conteúdo e fatos | `fases/04_conteudo_e_fatos.md` | `revisao-editorial.md`, `setores-regulados.md`, `modos-de-acesso.md` | briefs, revisões/propostas, checagem |
+| 5 GEO e AEO | `fases/05_geo_e_aeo.md` | `geo-plataformas.md`, `modos-de-acesso.md` | mapa pergunta→URL, acesso de robôs, protocolo de IA |
+| 6 Técnico, links e mídia | `fases/06_tecnico_links_midia.md` | `segmentos.md`, `limiares-padrao.md`, `capacidade-e-lotes.md`, `modos-de-acesso.md` | alterações ou propostas por modelo/URL |
+| 7 Aceite do lote | `fases/07_aceite.md` | `capacidade-e-lotes.md`, `scripts/comparar.mjs` | aceite A/B com evidência |
 | 8 Relatório e continuidade | `fases/08_relatorio_e_continuidade.md` | `git-aprovacoes-e-registros.md` | relatório, medição, plano, guia |
-| Verificação | `fases/verificacao.md` | `scripts/comparar.mjs` | regressões, correções, pendências |
+| Verificação | `fases/verificacao.md` | `git-aprovacoes-e-registros.md`, `limiares-padrao.md`, `scripts/comparar.mjs` | regressões, correções, pendências |
 
 Fontes oficiais para conferir na data: `referencias/fontes-oficiais.md`.
 

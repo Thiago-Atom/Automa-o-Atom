@@ -52,7 +52,15 @@ Na fase 0, marque um ou mais perfis (um site pode ser negócio local + editorial
   - artigos órfãos;
   - paginação.
 - **Dados estruturados:** Article/BlogPosting/NewsArticle, Person (autor), BreadcrumbList.
-- **Atenção:** em volume, priorize por GSC; datas só mudam com mudança real; notícias mantêm contexto histórico.
+- **Atenção:**
+  - Em volume, priorize por GSC.
+  - Datas só mudam com mudança real; notícias mantêm o contexto histórico.
+  - Notícias:
+    - sitemap de notícias com artigos das últimas 48 h (até 1.000 URLs);
+    - `max-image-preview:large` e imagem de destaque grande;
+    - NewsArticle com `datePublished`/`dateModified` e autor;
+    - relatório Discover do GSC como fonte;
+    - páginas de tag/tema só com curadoria real.
 
 ### Marketplace / classificados / diretório / UGC
 - **Páginas-chave:** listagens por categoria × local, anúncios, perfis.

@@ -21,11 +21,11 @@ Na fase 1, congele o universo em `inventario.csv`, com data do snapshot e regra 
 | Nível | O que é | Cobertura no diagnóstico global |
 |---|---|---|
 | N1 técnico | `rastrear.mjs`/`inventario.mjs`: status, metadados, links, imagens, canonical, sitemap, órfãs, profundidade, modelos | 100% do universo rastreado |
-| N2 leitura | Leitura integral: tema, intenção, público, função, problemas, contribuição | Páginas únicas (home, serviço, local, institucional, artigo): 100% ao longo das sessões. Páginas em série (produto, listagem, anúncio): amostra por modelo |
+| N2 leitura | Leitura integral: tema, intenção, público, função, problemas, contribuição | Home, serviço, local e institucional: 100%. Artigos: 100% até o porte Grande; no porte Muito grande, os que somam 80% dos cliques/impressões no GSC + amostra por modelo/editoria, com o restante declarado fora do N2. Páginas em série (produto, listagem, anúncio): amostra por modelo |
 | N3 factual | Checagem das afirmações materiais | Páginas de cada lote de alteração + todo conteúdo regulado/sensível + suspeitas do N2 |
 | N4 mídia | Inspeção visual das imagens | Imagens das páginas do lote, imagem de destaque/LCP de cada modelo, imagens com alerta automático |
 
-A extração automática comprova N1, não N2–N4.
+A extração automática comprova N1, não N2–N4. A triagem de pares similares compara até 1.500 páginas por tipo; acima disso, o `resumo.json` registra o corte e a cobertura declara o restante como não triado.
 
 ## Amostra por modelo (páginas em série)
 
@@ -43,8 +43,8 @@ Problema confirmado na amostra é tratado no modelo (template, regra, campo do C
 |---|---|---|
 | Pequeno | até 50 | N2 completo numa sessão |
 | Médio | 51–500 | N2 em lotes de leitura; páginas em série por amostra |
-| Grande | 501–10.000 | Rastreio por seção (`--max` por pasta); prioridade por GSC; modelos + amostra |
-| Muito grande | > 10.000 | Rastreio por amostra de seções + sitemaps + GSC/Site Audit; diagnóstico por modelo; declarar a cobertura com clareza |
+| Grande | 501–10.000 | `rastrear.mjs --amostra-sitemap 20` + `--prefixo` por seção prioritária; prioridade por GSC; modelos + amostra |
+| Muito grande | > 10.000 | Amostra de sitemaps + seções + GSC/Site Audit; diagnóstico por modelo; declarar a cobertura com clareza |
 | Novo / sem conteúdo | 0–5 | Base técnica, arquitetura mínima, primeiro lote de páginas/rascunhos |
 
 ## Tamanho dos lotes (padrão)
@@ -80,7 +80,7 @@ Não comece um lote que não cabe no que resta da sessão.
 ## Orçamento por execução (padrão)
 
 - SEMrush: `semrush.md` (40 chamadas na execução completa, 15 numa fase).
-- Rastreio: `--max 500` e `--atraso 300` ms no próprio cliente. Site de terceiro: `--max 200` e `--atraso 1000`. Aumente por seção quando necessário, sem sobrecarregar o servidor.
+- Rastreio: `--max 500` e `--atraso 300` ms no próprio cliente. Site de terceiro: `--max 200 --atraso 1000 --concorrencia 1`. Aumente por seção quando necessário, sem sobrecarregar o servidor.
 - Checagem factual: abrir a fonte de cada afirmação material do lote.
 - Renderização por serviço externo (ex.: Apify): só amostra por modelo.
 

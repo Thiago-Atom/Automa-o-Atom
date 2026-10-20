@@ -10,16 +10,17 @@ Cada critério: **passou · falhou · não aplicável · não verificado**, com 
 
 ## Validação automática do lote
 ```
-# modo A (build local)
-node <skill>/scripts/inventario.mjs --dir <build> --base https://<dominio> --saida <registros>/auditoria/<data>-L<NN>
-# modo B ou depois de publicar (site público)
-node <skill>/scripts/rastrear.mjs --url https://<dominio> --saida <registros>/rastreio/<data>-L<NN>
+# modo A (build local): as MESMAS opções do snapshot de antes (--urls-limpas, --respostas, --blog), registradas em contexto-e-progresso.md
+node <skill>/scripts/inventario.mjs --dir <build> --base https://<dominio> <mesmas opções> --saida <registros>/auditoria/<data>-L<NN>
+# modo B ou depois de publicar (site público): mesmas opções do rastreio de antes (--max, --prefixo, --amostra-sitemap)
+node <skill>/scripts/rastrear.mjs --url https://<dominio> <mesmas opções> --saida <registros>/rastreio/<data>-L<NN>
 node <skill>/scripts/comparar.mjs <estado.json de antes> <estado.json de depois> --saida <registros>/comparacao-L<NN>.md
 ```
-Código de saída 1 = regressão crítica: corrija antes de aceitar. Toda "mudança a revisar" precisa estar prevista no lote. Modo A: confirme também que nenhum arquivo de registro aparece no build (`grep -rl "seo-atom" <build>` vazio). Modos C/D: não há lote de implementação; o aceite B se aplica quando alguém aplicar as propostas.
+Compare build com build e rastreio com rastreio; o `comparar.mjs` recusa (código 2) snapshots com configuração diferente.
+Código de saída 1 = regressão crítica: corrija antes de aceitar. Toda "mudança a revisar" precisa estar prevista no lote. Modo A: confirme que nenhum registro foi para o build: `find <build> -path '*seo-atom*' -o -name 'contexto-e-progresso.md' -o -name 'inventario.csv' -o -name 'aprovacoes-pendentes.md' -o -name 'alteracoes-*'` e `grep -rl "seo-atom" <build>` vazios. Modos C/D: não há lote de implementação; o aceite B se aplica quando alguém aplicar as propostas.
 
 ## A. Diagnóstico global (avaliado uma vez, atualizado quando mudar)
-1. Universo congelado; N1 100%; N2 realizado/total declarado com exceções. Com N2 incompleto: "diagnóstico parcial", sem alegar revisão editorial completa.
+1. Universo congelado (ou declarado parcial); N1 sobre o universo rastreado; N2 conforme a regra de porte de `capacidade-e-lotes.md`, com realizado/total e exceções. Abaixo da regra: "diagnóstico parcial", sem alegar revisão completa.
 2. Prioridades ligadas a evidência real, base e data. Pesquisa SEMrush indisponível ou incompleta aparece como tal, com a fonte alternativa e o status provisório.
 3. Ecossistema com papéis, relações, provas, lacunas e próximos passos; toda URL do universo com função; conflitos com decisão proposta ou pendência explícita.
 

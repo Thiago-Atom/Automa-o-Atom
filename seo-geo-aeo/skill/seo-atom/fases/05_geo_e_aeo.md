@@ -15,7 +15,7 @@ Perguntas reais do GSC, `phrase_questions` e atendimento autorizado: dúvida, co
 Resposta clara no contexto da página, com as condições e ressalvas que mudam o sentido logo junto (um trecho citado isoladamente não pode enganar). Nomes inequívocos, tabelas comparáveis, passos corretos quando úteis. É critério editorial para o leitor: não há tamanho universal, "chunking" obrigatório nem garantia de citação. FAQ só com utilidade real.
 
 ## 5.3 Acesso e plataformas
-Siga o diagnóstico de acesso de `geo-plataformas.md`: robots por user-agent, WAF/CDN, conteúdo no HTML servido, controles de snippet, Bing Webmaster Tools. Diferencie busca, acesso iniciado pelo usuário e treinamento. `Google-Extended` não controla AI Overviews; `OAI-SearchBot` ≠ `GPTBot`. Conflito com a política do cliente vira proposta, não mudança.
+Siga o diagnóstico de acesso de `geo-plataformas.md`: robots por user-agent, WAF/CDN, conteúdo no HTML servido, controles de snippet, Bing Webmaster Tools (só com acesso; sem ele, use status/HTML público e registre o resto como "não verificável de fora"). Diferencie busca, acesso iniciado pelo usuário e treinamento. `Google-Extended` não controla AI Overviews; `OAI-SearchBot` ≠ `GPTBot`. Conflito com a política do cliente vira proposta, não mudança.
 
 ## 5.4 Marca e entidades
 Consistência factual de empresa, serviços, produtos, autores, contatos e perfis oficiais no site. Corrija ambiguidades reais; entidades servem para esclarecer, não para repetir nomes. Proponha ativos citáveis viáveis: comparações verificadas, guias específicos, dados próprios autorizados, exemplos demonstráveis. Oportunidades externas viram tarefas com evidência, sem publicar mensagens nem inventar menções.

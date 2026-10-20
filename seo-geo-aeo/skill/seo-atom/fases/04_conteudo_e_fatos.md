@@ -1,7 +1,7 @@
 # Fase 4 — Conteúdo, veracidade e experiência do leitor
 
 **LIMITES DESTA ETAPA**
-- Pode: escrever briefs, revisar páginas do lote, criar rascunhos (sem publicar), checar fontes. Modo A: editar fontes e commitar localmente. Modos B/C: preparar o texto final por página em `alteracoes-propostas.csv`. Modo D: só recomendações.
+- Pode: escrever briefs, revisar páginas do lote, criar rascunhos (sem publicar), checar fontes. Modo A: editar fontes e commitar localmente. Modos B/C: texto final por página em `alteracoes-propostas.csv`. Modo D: recomendações (formato de entrega em `modos-de-acesso.md`).
 - Não pode: publicar, mudar URL/slug, consolidar, inventar dados, credenciais ou casos, alterar páginas fora do lote.
 - Depende de: fase 3 (função da URL e conflitos) para a página do lote. Correção factual urgente pode vir antes, registrada.
 - Entrega: páginas revisadas ou propostas do lote, briefs, `verificacao-factual.csv`, pendências e commits/registros.

@@ -28,6 +28,12 @@ Compare com a demanda (fase 2) e com o segmento (`segmentos.md`). Pergunte:
 
 A decisão usa evidência (GSC/SEMrush, conteúdo próprio, duplicação). Mudança de indexação em massa vai para aprovação.
 
+**Noindex e robots.txt não se combinam.** Com `Disallow`, o Google não lê o `noindex`, e URLs já indexadas podem continuar no índice só como endereço. Para tirar do índice:
+1. Aplique `noindex` com o rastreio liberado até as URLs saírem.
+2. Só depois bloqueie no robots.txt, se ainda for útil para poupar rastreio.
+
+Bloqueie direto só o que nunca foi indexado.
+
 ## 3.2 Ecossistema de conteúdo
 Relacione necessidade do público, oferta, tema, intenção, entidade, página, evidência e próximo passo. Links recíprocos entre páginas não bastam.
 - **Papel de cada página:** descoberta, explicação, aplicação, comparação, prova, decisão comercial, transação, suporte pós-compra, institucional. Não imponha jornada linear.

@@ -17,7 +17,7 @@ Respeite o gênero (notícia, tutorial, análise, comparação, opinião, explic
 | Produto | Especificações reais, uso, compatibilidade, diferenças entre variações, preço/disponibilidade coerentes com o feed e os dados estruturados, perguntas de compra | Descrição copiada do fabricante; avaliações inventadas; especificação divergente |
 | Categoria / listagem comercial | Ajudar a escolher dentro da categoria (critérios, tipos, guias) sem empurrar os produtos para baixo da dobra | Texto genérico só para palavra-chave; filtros indexáveis sem demanda |
 | Local / unidade | Endereço, horário, contato, serviços daquela unidade, equipe local, como chegar, informações locais úteis | Troca do nome da cidade num texto igual (doorway) |
-| Institucional | Identidade verificável: razão social, CNPJ/registro quando aplicável, endereço, responsáveis, políticas | Informação desatualizada ou inconsistente com outros canais |
+| Institucional | Identidade verificável: razão social, registro da empresa quando aplicável (ex.: CNPJ no Brasil), endereço, responsáveis, políticas | Informação desatualizada ou inconsistente com outros canais |
 | Artigo / guia | Responder a uma dúvida real ligada ao negócio, com contribuição própria e ligação à oferta quando pertinente | Tema sem relação com o negócio; texto parafraseado de concorrentes |
 
 ## Checagem de fatos
@@ -36,7 +36,7 @@ Link perto da afirmação, com âncora descritiva e a instituição quando relev
 ## Escrita e rapport
 
 - Comece pela situação ou dúvida concreta do leitor e entregue valor cedo. Nada de "no mundo atual", "mercado cada vez mais competitivo", "solução revolucionária", "você sabia?" mecânico.
-- Português brasileiro correto, vocabulário do público, termo técnico explicado na primeira ocorrência. Parágrafos encadeados, ritmo variado.
+- Idioma e variante do mercado registrados na fase 0 (ex.: pt-BR, pt-PT, en-US, es-MX), corretos e no vocabulário do público; termo técnico explicado na primeira ocorrência. Parágrafos encadeados, ritmo variado.
 - Mostre consequências práticas: por que importa, quando se aplica, que erro evita, quando exige cautela.
 - Acolha dúvidas sem fingir intimidade ("sei exatamente como você se sente"), sem medo, culpa ou pressão comercial.
 - Exemplo inventado para ensinar é identificado como hipotético. Nunca como caso real ou cliente atendido.

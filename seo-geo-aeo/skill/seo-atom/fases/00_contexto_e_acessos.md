@@ -22,7 +22,7 @@ Marque os perfis de `referencias/segmentos.md` que se aplicam e registre os dema
 Defina A (código), B (CMS), C (URL pública) ou D (terceiro), ou uma combinação, conforme `referencias/modos-de-acesso.md`. Identifique a plataforma pelo HTML público (gerador, tema, plugins/apps) e pelo projeto. Registre o que o modo permite alterar.
 
 ## 0.4 Acessos (teste real, registre resultado e data)
-- **Search Console, GA4, Bing Webmaster, PageSpeed:** `referencias/fontes-de-dados.md` e `referencias/ambiente-agencia.md`. Confira se a **propriedade deste site** está conectada.
+- **Search Console, GA4, Bing Webmaster, PageSpeed:** `referencias/fontes-de-dados.md` e `referencias/ambiente-agencia.md`. Confira se a **propriedade deste site** está conectada. Sem acesso (modo D, ou C sem concessão): registre "não verificável de fora" para tudo que depende dessas contas.
 - **SEMrush:** liste os relatórios expostos e faça **uma** consulta barata (ex.: `domain_rank` do domínio na base escolhida). Consulta de conexão não é pesquisa.
 - **Site público:** `robots.txt` e sitemap respondem? O site bloqueia rastreadores (WAF/CDN)?
 - **Falhou:** registre, tente a alternativa permitida e siga. Use a tabela "O SEMrush não sustenta a decisão" de `semrush.md`.

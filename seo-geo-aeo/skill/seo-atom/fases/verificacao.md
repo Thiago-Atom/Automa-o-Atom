@@ -12,7 +12,7 @@ Confere o que a execução anterior fez. **Não refaz a auditoria nem a estraté
 
 ## Passos
 1. **Reconstituir o que mudou.** Modo A: leia `alteracoes-e-validacao.md` e rode `git log --oneline <checkpoint>..HEAD` e `git diff --stat <checkpoint>..HEAD`; liste commits sem registro e registros sem commit. Modo B/C: compare `alteracoes-propostas.csv` com o site público (rastreio novo): o que foi aplicado, o que não foi, o que foi aplicado diferente. As divergências são achados.
-2. **Comparar estados.** Gere um inventário novo e rode `comparar.mjs` contra o snapshot de antes da primeira alteração e contra o do último lote. Regressão crítica = corrigir agora (reversível) ou registrar bloqueio.
+2. **Comparar estados.** Gere um snapshot novo com as **mesmas opções** registradas (`inventario.mjs --dir <build> ... --saida <registros>/auditoria/<data>-verif` no modo A; `rastrear.mjs --url ... --saida <registros>/rastreio/<data>-verif` nos demais). Rode `comparar.mjs` contra o snapshot de antes da primeira alteração e contra o do último lote. Regressão crítica = corrigir agora (reversível) ou registrar bloqueio.
 3. **Conferir os registros contra o código ou o site publicado, item a item:**
    - Item marcado como implementado ou aplicado: a mudança está no arquivo ou na página?
    - Link registrado: existe, aponta para a URL canônica e está no corpo?
