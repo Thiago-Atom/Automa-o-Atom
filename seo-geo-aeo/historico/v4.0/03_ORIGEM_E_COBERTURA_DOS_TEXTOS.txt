@@ -1,0 +1,22 @@
+ORIGEM DOS ARQUIVOS
+
+prompts/01_Prompt_Mestre_SEO_GEO_AEO_v4.0.txt
+Fonte: arquivo atual Prompt_Claude_SEO_Blogs_Sem_CMS.txt. Conteúdo integral da versão 4.0. Cópia conferida com o texto atual recuperado; 52.615 bytes UTF-8.
+
+prompts/02_Prompt_Revisao_Editorial_Original.txt
+Fonte: arquivo Prompt_Claude_Code_Revisao_Editorial_SEO_GEO.txt. Texto integral recuperado, 16.162 bytes UTF-8. Mantidas as referências do contexto original.
+
+historico/Prompt_Inicial_Expodonto_Editado.txt
+Fonte: bloco de texto editado pelo usuário, disponível nesta conversa. Conteúdo preservado para análise histórica. CMS e cliente fixo não representam os requisitos atuais.
+
+etapas/00...08
+Origem: separação das fases 0–8 do mestre 4.0, com suas regras comuns e referências. Foram acrescentadas instruções de escopo para execução seletiva. Não são versões históricas anteriores.
+
+prompts/03_Prompt_Verificacao_Pos_Aplicacao_v4.0.txt
+Origem: compilação para este pacote usando as fases pertinentes do mestre 4.0 e uma instrução específica de revisão após aplicação. Não é reprodução literal do segundo prompt histórico.
+
+00_LEIA_ME.txt, 01_CONTEXTO_E_REQUISITOS.txt e 02_PROMPT_PARA_AVALIAR_EM_OUTRA_IA.txt
+Origem: documentos de orientação preparados para a exportação solicitada pelo usuário.
+
+LIMITES DO HISTÓRICO
+Não foram exportados como originais textos intermediários sem cópia integral verificável nesta montagem, incluindo a versão 3.0 e o segundo prompt histórico de Expodonto. A existência de referência ou resumo não foi tratada como recuperação do texto.

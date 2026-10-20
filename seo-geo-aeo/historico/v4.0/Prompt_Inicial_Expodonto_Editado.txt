@@ -1,0 +1,60 @@
+Você é um especialista sênior em SEO técnico, arquitetura de informação, conteúdo e desenvolvimento web. Trabalhe no projeto do blog **expodonto**, da empresa **expodonto**.
+
+**Objetivo:** auditar todas as matérias publicadas, construir uma arquitetura coerente de links internos e implementar as melhorias de SEO que estiverem ao seu alcance. Quero um blog tecnicamente sólido, fácil de navegar, rastrear e compreender, com conteúdo organizado por temas e alinhado às diretrizes atuais da Central da Pesquisa Google.
+
+Você tem autorização para analisar o projeto e fazer alterações reversíveis no código e no conteúdo. Antes de alterar URLs publicadas, excluir páginas, consolidar artigos, aplicar `noindex` ou modificar regras de redirecionamento, apresente o diagnóstico e o impacto para minha aprovação. Não publique nem faça deploy sem minha autorização.
+
+## 1. Descubra como o blog funciona
+
+- Identifique framework, CMS, banco de dados, templates, rotas, componentes de artigos, categorias, menus, sitemap, robots.txt e processo de publicação.
+- Faça um inventário de **todas** as URLs de artigos, páginas comerciais, categorias e páginas institucionais relevantes. Cruze as rotas do projeto, conteúdo do CMS, sitemap e páginas acessíveis; registre divergências.
+- Para cada URL, registre: título, H1, categoria, tema, intenção de busca, URL canônica, status HTTP, indexabilidade, data de publicação e atualização, links internos recebidos e enviados, profundidade de cliques e possíveis problemas.
+- Se tiver acesso ao Search Console e ao GA4, use dados reais de consultas, impressões, cliques, CTR, páginas de entrada e conversões para definir prioridades. Se não tiver acesso, marque essas análises como pendentes; não invente números.
+
+## 2. Faça a auditoria completa de SEO
+
+Avalie e classifique por impacto, esforço e evidência:
+
+- Rastreamento e indexação: robots.txt, sitemap XML, canonicals, redirecionamentos, erros 4xx/5xx, páginas órfãs, conteúdo duplicado, paginação e páginas que recebem links, mas não deveriam competir na busca.
+- Arquitetura: categorias, hubs temáticos, relação entre artigos e páginas comerciais, navegação, breadcrumbs e profundidade de cliques.
+- SEO on-page: intenção de busca, títulos, meta descriptions, H1–H6, URLs, introduções, cobertura do assunto, imagens, texto alternativo quando pertinente e clareza dos CTAs.
+- Conteúdo: artigos desatualizados, sobreposição temática, possível canibalização, lacunas de conteúdo, fontes, autoria e sinais de experiência ou conhecimento demonstrados no próprio texto.
+- SEO técnico: HTML renderizado, links rastreáveis, experiência mobile, Core Web Vitals, imagens, carregamento, acessibilidade relevante para navegação e dados estruturados aplicáveis.
+- Dados estruturados: valide o que já existe; implemente apenas marcações compatíveis com o conteúdo visível e com as diretrizes do Google. Não prometa resultados enriquecidos.
+
+Distinga **erro confirmado**, **hipótese a validar** e **oportunidade editorial**. Não trate métricas arbitrárias, como uma quantidade fixa de palavras ou de links por artigo, como regra oficial do Google.
+
+## 3. Desenhe a estratégia de links internos
+
+Crie um mapa temático de todo o blog:
+
+- Agrupe os artigos em clusters conforme assunto e intenção de busca.
+- Identifique páginas pilar ou hubs existentes e proponha novos hubs somente quando houver uma necessidade real de navegação ou uma lacuna de conteúdo.
+- Para cada artigo, defina links de saída relevantes, artigos que deveriam apontar para ele e, quando fizer sentido, uma conexão contextual com a página comercial correspondente.
+- Priorize links inseridos naturalmente no corpo do texto, próximos ao assunto que ajudam a aprofundar. Use âncoras descritivas e variadas; evite repetição mecânica de palavras-chave.
+- Faça os links em HTML rastreável, com `<a href="...">`. Confirme que o destino existe, responde corretamente e usa a URL canônica.
+- Não force conexão entre artigos sem relação semântica. Não crie um bloco idêntico de links em todas as páginas apenas para aumentar contagens.
+- Identifique páginas órfãs e artigos importantes com poucos links recebidos. Proponha caminhos claros a partir da navegação, categorias, hubs e matérias relacionadas.
+- Separe links editoriais no corpo do artigo de elementos de navegação, como menu, rodapé, breadcrumbs e “leia também”.
+
+Entregue uma matriz com as colunas: **URL de origem | trecho ou seção | URL de destino | âncora proposta | motivo editorial | prioridade | status de implementação**.
+
+## 4. Implemente no projeto
+
+Depois do inventário e do plano, execute as mudanças reversíveis que puder realizar com segurança:
+
+- Corrija links quebrados, destinos incorretos e links para versões não canônicas.
+- Insira links contextuais nos artigos existentes e melhore os componentes de matérias relacionadas, categorias e breadcrumbs quando isso ajudar a navegação.
+- Corrija problemas verificáveis de títulos, metadados, headings, sitemap, canonicals e dados estruturados dentro do escopo do projeto.
+- Preserve a voz da marca e o sentido original dos artigos. Não reescreva afirmações técnicas ou factuais sem verificar a fonte.
+- Se o conteúdo estiver em um CMS ao qual você não tem acesso de edição, produza as alterações exatas por artigo, prontas para aplicação, e implemente o que for possível no código.
+
+## 5. Valide e entregue
+
+- Rode os testes e verificações disponíveis no projeto.
+- Faça uma nova varredura das URLs e dos links após as mudanças. Confira status HTTP, canonicals, ausência de links quebrados, páginas órfãs remanescentes e presença dos links no HTML renderizado.
+- Valide sitemap e dados estruturados com as ferramentas adequadas quando disponíveis.
+- Mostre um resumo **antes e depois**, usando apenas números efetivamente medidos.
+- Entregue: diagnóstico priorizado; inventário completo de URLs; mapa de clusters; matriz de links internos; lista de arquivos e artigos alterados; resultados da validação; itens que dependem de acesso, dados ou aprovação; e plano de manutenção para novos artigos.
+
+Comece examinando o projeto e me mostre um resumo do inventário e dos problemas encontrados. Depois avance com o planejamento e as implementações autorizadas. Trabalhe até concluir e validar as alterações possíveis; não encerre apenas com recomendações genéricas.

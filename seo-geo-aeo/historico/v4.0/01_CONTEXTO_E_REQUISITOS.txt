@@ -1,0 +1,24 @@
+CONTEXTO DO PROJETO PARA AVALIAÇÃO
+
+Solicitante: Thiago Mota / Atom Digital.
+Finalidade: criar um conjunto reutilizável de prompts para Claude Code auditar e melhorar blogs de todos os clientes, do início a grandes acervos, com rigor de SEO sênior avançado.
+
+REQUISITOS DECLARADOS
+1. Nenhum site utiliza CMS. O trabalho deve ocorrer nos arquivos e no código reais do projeto.
+2. O procedimento deve ser universal e adaptar decisões ao cliente, ao mercado, à maturidade, à tecnologia e aos dados acessíveis.
+3. Deve haver pesquisa real. O usuário tem SEMrush integrado à Claude e exige oportunidades, demanda e movimentos sustentados por dados reais.
+4. Deve avaliar todo o acervo, conteúdo, veracidade, imagens, arquitetura semântica e links internos.
+5. Deve construir um ecossistema de conteúdo com papéis claros, conexões úteis e relação com o negócio.
+6. Deve investigar e resolver conflitos prejudiciais de intenção/canibalização sem excluir páginas por similaridade superficial.
+7. Deve cobrir SEO, GEO e AEO, distinguindo diretriz oficial, prática editorial, inferência e experimento.
+8. Deve implementar o que está autorizado, validar mudanças e manter registros para continuar em lotes.
+9. Deve permitir execução por etapas, sem exigir copiar e colar um grande texto a cada sessão.
+10. Deve haver um roteiro de verificação detalhada após a primeira aplicação.
+
+COMO INTERPRETAR A AMBIÇÃO
+Expressões do usuário como “100%”, “imbatível” e “20 anos de experiência” expressam o nível de rigor desejado. Não autorizam promessas de ranking, certificação, ausência eterna de canibalização ou citações garantidas em IA.
+A avaliação deve verificar se as instruções produzem boas decisões e trabalho verificável, não se o texto usa muitos termos avançados.
+
+ESTADO DO PROJETO
+A versão 4.0 foi preparada e revisada como prompt. Este pacote não contém uma auditoria executada em um site de cliente, resultados de campanha, credenciais ou prova de eficácia em produção.
+A consulta real ao SEMrush é uma obrigação da futura execução; a simples presença dessa instrução não comprova pesquisa já realizada para um cliente.

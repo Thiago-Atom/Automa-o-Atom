@@ -1,0 +1,31 @@
+PROJETO DE PROMPTS — SEO, GEO E AEO — VERSÃO 4.0
+Pacote organizado em 20/10/2026 para avaliação em outra IA.
+
+POR ONDE COMEÇAR
+Para avaliar: leia 01_CONTEXTO_E_REQUISITOS.txt e use 02_PROMPT_PARA_AVALIAR_EM_OUTRA_IA.txt como instrução. O principal objeto da avaliação é prompts/01_Prompt_Mestre_SEO_GEO_AEO_v4.0.txt.
+Para executar: use o prompt mestre 4.0 com acesso ao projeto do cliente. Ele já contém todas as fases; não é necessário executar todos os arquivos em sequência depois dele.
+Para executar em etapas: use os arquivos de etapas/ na ordem 00–08, preservando os registros entre sessões. Cada arquivo inclui regras comuns, sua fase e referências.
+Para conferir uma execução já feita: use prompts/03_Prompt_Verificacao_Pos_Aplicacao_v4.0.txt.
+
+CONTEÚDO
+- Prompt mestre 4.0 completo, sem alteração nesta exportação.
+- Prompt separado de revisão editorial completo, preservado no texto original.
+- Prompt de verificação pós-aplicação, compilado agora com base na 4.0.
+- Nove prompts por etapa, extraídos agora da 4.0.
+- Rascunho inicial editado de Expodonto, preservado como histórico.
+- Contexto, requisitos, instrução para avaliação e registro de origem dos textos.
+- SHA256SUMS.txt para conferência da integridade dos arquivos.
+
+QUAL TEXTO PREVALECE
+A versão 4.0 é a referência atual, universal e sem CMS. Os arquivos por etapa e a verificação pós-aplicação derivam dela e não representam estratégias adicionais concorrentes.
+O prompt editorial original menciona aproximadamente 80 matérias e lotes de três/cinco. Essas referências pertencem ao contexto em que foi criado. Ao usá-lo com a 4.0, confirme o tamanho real do acervo e aplique a adaptação de escopo e capacidade do mestre.
+O rascunho histórico cita Expodonto e CMS. Foi incluído para permitir avaliar a evolução; essas referências foram superadas pelo requisito posterior de universalidade e ausência de CMS. Não é o prompt vigente para execução.
+
+COBERTURA DO HISTÓRICO
+Este pacote reúne os textos integrais recuperados e as divisões explicitamente identificadas como derivadas. Não é uma transcrição integral de toda a conversa.
+Não foi recuperada nesta exportação uma cópia integral verificável da versão 3.0, de versões intermediárias anteriores ou do segundo prompt histórico de Expodonto. Eles não foram recriados como se fossem originais. O roteiro pós-aplicação incluído é uma compilação atual da 4.0.
+O escopo do pacote é o projeto de prompts de blogs SEO/GEO/AEO. Não inclui os projetos separados de Google Ads, Google Meu Negócio ou branding.
+
+USO EM OUTRA IA
+Descompacte o ZIP e envie os arquivos à IA avaliadora. Se ela não puder receber pastas, envie primeiro contexto, instrução de avaliação e mestre 4.0; depois os complementares e o histórico.
+Para avaliar o desenho dos prompts não é necessário dar acesso às contas de clientes. Para executar auditorias reais serão necessários os acessos e arquivos descritos no próprio prompt.

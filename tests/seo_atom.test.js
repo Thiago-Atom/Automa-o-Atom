@@ -1,0 +1,145 @@
+// Scripts da skill seo-atom (seo-geo-aeo/skill/seo-atom/scripts): inventário, comparação e triagem do GSC.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { analisarHtml, lerCsv, numero, paraCsv } from '../seo-geo-aeo/skill/seo-atom/scripts/_comum.mjs';
+import { inventariar } from '../seo-geo-aeo/skill/seo-atom/scripts/inventario.mjs';
+import { comparar } from '../seo-geo-aeo/skill/seo-atom/scripts/comparar.mjs';
+import { normalizarLinhas, conflitos, oportunidades } from '../seo-geo-aeo/skill/seo-atom/scripts/gsc.mjs';
+import { gerar, arquivosDaFase } from '../seo-geo-aeo/skill/seo-atom/scripts/gerar_prompt_unico.mjs';
+
+const SKILL = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'seo-geo-aeo', 'skill', 'seo-atom');
+
+const BASE = 'https://www.cliente.com.br';
+const TEXTO = 'O clareamento dental de consultório usa gel de peróxido em concentração alta, aplicado pelo dentista com proteção da gengiva e controle de sensibilidade durante toda a sessão de tratamento clínico. ';
+
+function pagina({ titulo, canonical, corpo = '', robots = '', h1 = titulo, nav = '<a href="/">Início</a> <a href="/blog/">Blog</a>' }) {
+  return `<!doctype html><html lang="pt-BR"><head><title>${titulo}</title>
+<meta name="description" content="Descrição de ${titulo}">${robots ? `<meta name="robots" content="${robots}">` : ''}
+<link rel="canonical" href="${canonical}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","datePublished":"2025-01-10"}</script>
+</head><body><header><nav>${nav}</nav></header><main><article><h1>${h1}</h1>${corpo}</article></main>
+<footer><a href="/contato/">Contato</a></footer></body></html>`;
+}
+
+function montarSite(dir, { alterado = false } = {}) {
+  const w = (rel, html) => { fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true }); fs.writeFileSync(path.join(dir, rel), html); };
+  w('index.html', pagina({ titulo: 'Clínica', canonical: BASE + '/', corpo: '<p>Home</p><a href="/blog/clareamento/">Clareamento</a>' }));
+  w('blog/index.html', pagina({ titulo: 'Blog', canonical: BASE + '/blog/', corpo: '<a href="/blog/clareamento/">a</a><a href="/blog/clareamento-caseiro/">b</a><a href="/blog/orfao/">c</a>' }));
+  w('blog/clareamento/index.html', pagina({
+    titulo: 'Clareamento dental', canonical: BASE + '/blog/clareamento/',
+    corpo: `<p>${TEXTO.repeat(4)}</p><a href="/blog/clareamento-caseiro/">clareamento caseiro</a><a href="/blog/nao-existe/">quebrado</a><img src="/img/a.jpg" alt="Gel" width="10" height="10"><img src="/img/b.jpg">`,
+  }));
+  w('blog/clareamento-caseiro/index.html', pagina({
+    titulo: 'Clareamento caseiro', canonical: alterado ? BASE + '/blog/clareamento/' : BASE + '/blog/clareamento-caseiro/',
+    corpo: `<p>${TEXTO.repeat(4)} Moldeira em casa.</p><a href="/blog/clareamento/"><img src="/img/c.jpg" alt="Consultório"></a>`,
+  }));
+  w('blog/orfao/index.html', pagina({ titulo: 'Sem links no corpo', canonical: BASE + '/blog/orfao/', corpo: '<p>Texto curto.</p>' }));
+  w('contato/index.html', pagina({ titulo: 'Contato', canonical: BASE + '/contato/' }));
+  w('sitemap.xml', `<?xml version="1.0"?><urlset><url><loc>${BASE}/</loc></url><url><loc>${BASE}/blog/clareamento/</loc></url><url><loc>${BASE}/removida/</loc></url></urlset>`);
+}
+
+test('seo-atom: analisarHtml separa links de corpo e de navegação, h1 com link interno, alt ausente x vazio', () => {
+  const p = analisarHtml('<html><head><title>T &amp; C</title></head><body><nav><a href="/a">A</a></nav><h1><a href="/x">Título</a></h1><p><a href="/b">B</a><img src="i.png" alt=""><img src="j.png"></p></body></html>');
+  assert.equal(p.titulo, 'T & C');
+  assert.deepEqual(p.h1, ['Título']);
+  assert.deepEqual(p.links.map((l) => [l.href, l.contexto]), [['/a', 'navegacao:nav'], ['/x', 'corpo'], ['/b', 'corpo']]);
+  assert.deepEqual(p.imagens.map((i) => i.alt), ['', null]);
+});
+
+test('seo-atom: CSV lê ponto e vírgula, aspas e números pt-BR', () => {
+  const l = lerCsv('﻿Consulta;Impressões\n"a; b";1.234,5\n');
+  assert.deepEqual(l, [{ consulta: 'a; b', 'impressões': '1.234,5' }]);
+  assert.equal(numero('1.234,5'), 1234.5);
+  assert.equal(numero(''), null);
+  assert.equal(paraCsv([{ a: 'x,y', b: ['1', '2'] }]), 'a,b\n"x,y",1 | 2\n');
+});
+
+test('seo-atom: inventário encontra quebrado, órfã, alt ausente, sitemap e par similar', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'seo-atom-'));
+  montarSite(dir);
+  const r = inventariar({ dir, base: BASE, blog: '/blog/', similares: 0.3 });
+  const por = Object.fromEntries(r.paginas.map((p) => [p.url, p]));
+  assert.equal(r.resumo.paginas, 6);
+  assert.equal(por[BASE + '/blog/clareamento/'].tipo_heuristico, 'artigo');
+  assert.equal(por[BASE + '/blog/'].tipo_heuristico, 'blog-indice');
+  assert.equal(r.resumo.links_internos_quebrados, 1);
+  assert.ok(por[BASE + '/blog/orfao/'].problemas.includes('orfa-editorial'));
+  assert.ok(por[BASE + '/blog/clareamento/'].problemas.includes('imagens-sem-alt=1'));
+  assert.equal(por[BASE + '/blog/clareamento-caseiro/'].profundidade, 2);
+  assert.equal(r.links.find((l) => l.origem === '/blog/clareamento-caseiro/' && l.contexto === 'corpo').ancora, 'Consultório');
+  const avisos = Object.fromEntries(r.sitemap.map((s) => [s.loc, s.avisos]));
+  assert.deepEqual(avisos[BASE + '/removida/'], ['sem-pagina-local']);
+  assert.deepEqual(avisos[BASE + '/blog/clareamento-caseiro/'], ['fora-do-sitemap']);
+  assert.equal(r.pares.length, 1);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('seo-atom: comparar aponta canonical desviado como regressão crítica', () => {
+  const d1 = fs.mkdtempSync(path.join(os.tmpdir(), 'seo-atom-'));
+  const d2 = fs.mkdtempSync(path.join(os.tmpdir(), 'seo-atom-'));
+  montarSite(d1);
+  montarSite(d2, { alterado: true });
+  const r = comparar(inventariar({ dir: d1, base: BASE, blog: '/blog/' }).estado, inventariar({ dir: d2, base: BASE, blog: '/blog/' }).estado);
+  assert.equal(r.criticas, 1);
+  assert.equal(r.regressoes[0].para, 'canonical-para-outra-pagina');
+  assert.ok(r.mudancas.some((m) => m.item === 'canonical'));
+  for (const d of [d1, d2]) fs.rmSync(d, { recursive: true, force: true });
+});
+
+test('seo-atom: GSC conflitos com alternância e CTR agregado correto', () => {
+  const csv = ['query,page,date,clicks,impressions,position',
+    'clareamento dental,/a,2026-09-01,10,100,5', 'clareamento dental,/b,2026-09-01,1,50,8',
+    'clareamento dental,/a,2026-09-02,2,40,9', 'clareamento dental,/b,2026-09-02,6,90,6',
+    'clareamento dental,/a,2026-09-03,8,90,5', 'clareamento dental,/b,2026-09-03,1,30,9',
+    'consulta pequena,/a,2026-09-01,1,20,3', 'consulta pequena,/b,2026-09-01,1,20,3'].join('\n');
+  const r = conflitos(normalizarLinhas(lerCsv(csv)));
+  assert.equal(r.length, 1);
+  assert.equal(r[0].consulta, 'clareamento dental');
+  assert.equal(r[0].impressoes, 400);
+  assert.equal(r[0].ctr_grupo, '7.00%');
+  assert.equal(r[0].alternancias_da_url_principal, 2);
+  assert.match(r[0].classificacao, /provável/);
+});
+
+test('seo-atom: GSC oportunidades diagnostica queda por perda de posição', () => {
+  const linha = (p, c, i, pos) => ({ page: p, clicks: String(c), impressions: String(i), position: String(pos) });
+  const atual = normalizarLinhas([linha('/a', 20, 1000, 9), linha('/b', 50, 500, 2), linha('/c', 5, 300, 3)]);
+  const anterior = normalizarLinhas([linha('/a', 100, 1000, 4)]);
+  const r = oportunidades(atual, { anterior, minImpressoes: 200, minPaginasFaixa: 1 });
+  const a = r.linhas.find((l) => l.pagina === '/a');
+  assert.equal(a.diagnostico_provavel_da_queda, 'perda de posição');
+  assert.ok(a.sinais.some((s) => s.startsWith('quase-topo')));
+});
+
+// Regressão dos próprios prompts: referências existentes, limites por etapa, sem escopo histórico fixo.
+test('seo-atom: arquivos citados pela skill existem e cada fase declara seus limites', () => {
+  const md = (d) => fs.readdirSync(path.join(SKILL, d)).filter((f) => f.endsWith('.md')).map((f) => d + '/' + f);
+  const todos = ['SKILL.md', ...md('fases'), ...md('referencias')];
+  const faltando = [];
+  for (const rel of todos) {
+    const txt = fs.readFileSync(path.join(SKILL, rel), 'utf8');
+    for (const m of txt.matchAll(/`((?:fases|referencias|scripts)\/[\w./-]+\.(?:md|mjs))`/g)) {
+      if (!fs.existsSync(path.join(SKILL, m[1]))) faltando.push(rel + ' → ' + m[1]);
+    }
+    // Referências citadas só pelo nome (`semrush.md`) também precisam existir em referencias/.
+    for (const m of txt.matchAll(/`([a-z-]+\.md)`/g)) {
+      const ehReferencia = ['semrush', 'fontes-de-dados', 'capacidade-e-lotes', 'limiares-padrao', 'geo-plataformas', 'setores-regulados', 'git-aprovacoes-e-registros', 'revisao-editorial', 'fontes-oficiais'].includes(m[1].slice(0, -3));
+      if (ehReferencia && !fs.existsSync(path.join(SKILL, 'referencias', m[1]))) faltando.push(rel + ' → ' + m[1]);
+    }
+    if (rel.startsWith('fases/')) assert.match(txt, /\*\*LIMITES DESTA ETAPA\*\*[\s\S]*Pode:[\s\S]*Não pode:[\s\S]*Depende de:[\s\S]*Entrega:/, rel);
+    assert.doesNotMatch(txt, /aproximadamente 80 matérias|lotes de até cinco matérias/i, rel);
+  }
+  assert.deepEqual(faltando, []);
+  for (const f of ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'verificacao']) for (const rel of arquivosDaFase(f)) assert.ok(fs.existsSync(path.join(SKILL, rel)), f + ' → ' + rel);
+});
+
+test('seo-atom: prompt único gerado da fonte única, sem frontmatter', () => {
+  const txt = gerar('2');
+  assert.match(txt, /===== fases\/02_pesquisa\.md =====/);
+  assert.match(txt, /===== referencias\/semrush\.md =====/);
+  assert.doesNotMatch(txt, /^name: seo-atom/m);
+  assert.ok(gerar('completo').length > txt.length);
+});

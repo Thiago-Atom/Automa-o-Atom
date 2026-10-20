@@ -26,6 +26,7 @@ contrato assinado + pagamento inicial → Trello, e início da execução + 7 di
 | [docs/12_controlle_api.md](docs/12_controlle_api.md) | Integração com o Controlle (API v1) |
 | [docs/guia_pipedrive.md](docs/guia_pipedrive.md) | Guia de configuração do Pipedrive |
 | [docs/guia_n8n.md](docs/guia_n8n.md) | Guia de configuração do n8n |
+| [seo-geo-aeo/README.md](seo-geo-aeo/README.md) | Skill `seo-atom` (v4.1): auditoria SEO/GEO/AEO de blogs de clientes |
 
 ## Estrutura
 
@@ -42,13 +43,14 @@ schemas/        esquemas JSON (diagnóstico, briefing, pedido à Zayra, lançame
 sql/            esquema Postgres equivalente às Data Tables
 tests/          testes (npm test)
 scripts/        gerador de prompts/, schemas/, sql/ e docs/03
+seo-geo-aeo/    skill seo-atom (SEO/GEO/AEO de blogs de clientes), avaliações e histórico v4.0
 ```
 
 ## Comandos
 
 ```bash
 npm install
-npm test        # 61 testes, sem rede
+npm test        # 85 testes, sem rede
 npm run build   # regenera n8n/build e n8n/dist
 npm run docs    # regenera prompts/, schemas/, sql/ e docs/03
 ```
