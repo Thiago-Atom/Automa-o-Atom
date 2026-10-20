@@ -1,6 +1,6 @@
 # SEMrush via integração (MCP) — base, orçamento e relatórios
 
-Conferido na integração da Atom em 20/10/2026. Na fase 0, liste de novo o que a integração expõe: ela muda, e o plano da conta limita o acesso.
+Conferido na integração em 20/10/2026. Na fase 0, liste de novo o que a integração expõe: ela muda, e o plano da conta limita o acesso.
 
 ## Fluxo de chamada
 
@@ -8,7 +8,7 @@ Conferido na integração da Atom em 20/10/2026. Na fase 0, liste de novo o que 
 2. `get_report_schema(report)` → parâmetros. Faça uma vez por relatório e reutilize.
 3. `execute_report(report, params)` → dados. Esta é a única chamada que conta como pesquisa.
 
-Se houver duas conexões SEMrush na sessão (já aconteceu: "Semrush" e "Semrush-5d49f0c0"), use uma só e registre qual.
+Se houver mais de uma conexão SEMrush na sessão, use uma só e registre qual.
 
 ## Base geográfica (obrigatória em toda chamada)
 
@@ -16,6 +16,7 @@ Se houver duas conexões SEMrush na sessão (já aconteceu: "Semrush" e "Semrush
 - Passe `database` explicitamente em **toda** chamada. Sem região, a integração usa `us`. Resultado de base errada é descartado e refeito, nunca "ajustado".
 - O SEMrush não tem base municipal. Demanda de cidade só se infere com GSC (país + consultas com o nome da cidade), dados do cliente ou SERP observada na localidade. Não transforme volume nacional em demanda local.
 - Cliente multilíngue ou multipaís: uma base por mercado, sem somar volumes entre bases.
+- Fora do Brasil: escolha a base do país (`us`, `pt`, `mx`, `ar`, `es`…). Se o país não tiver base, registre a ausência e use GSC/SERP observada; não substitua por outro país.
 
 ## Orçamento de unidades de API
 
@@ -32,7 +33,7 @@ Cada `execute_report` consome unidades da conta, proporcionais às linhas retorn
 | Interface do SEMrush | Kit → relatório | Observação |
 |---|---|---|
 | Domain Overview | `domain_overview` → `domain_rank` (data única), `resource_rank_history` (série mensal), `domain_ranks` (todas as bases) | Totais. Não lista palavras-chave. |
-| Organic Research — posições | `organic_research` → `resource_organic` | Domínio, subdomínio, **pasta do blog** ou URL. `display_positions` = new/lost/rise/fall para movimentos. |
+| Organic Research — posições | `organic_research` → `resource_organic` | Domínio, subdomínio, **pasta** (ex.: `/blog/`, `/loja/`) ou URL. `display_positions` = new/lost/rise/fall para movimentos. |
 | Organic Research — páginas | `organic_research` → `resource_organic_unique` | Páginas com contagem de palavras e tráfego estimado. |
 | Concorrentes orgânicos | `competitors_research` → `domain_organic_organic` | Relevância e palavras em comum. |
 | Keyword Gap | `competitors_research` → `domain_domains` | Palavras compartilhadas, exclusivas e ausentes entre até 5 domínios. |
@@ -55,6 +56,7 @@ Quando a integração falha, não cobre a base, não tem dados (`no_data` é res
 | Decisão | Fonte alternativa aceitável | Status da decisão |
 |---|---|---|
 | Melhorar página existente (CTR, quase-topo, queda) | GSC | Sustentada: o GSC é a fonte principal aqui. |
+| Qualquer decisão em site de terceiro (modo D) | SEMrush + rastreio público + SERP | Estimada: nunca apresente como dado real do site. |
 | Canibalização | GSC + leitura do conteúdo + SERP observada | Sustentada pelo GSC; sem GSC, só "sobreposição editorial". |
 | Pauta nova | GSC (consultas sem página adequada), perguntas reais de atendimento/CRM autorizadas, SERP observada, Trends (interesse relativo), fontes setoriais | **Provisória**: registre que não há volume do SEMrush. |
 | Concorrentes | SERP observada nas consultas prioritárias | Provisória, com amostra declarada. |

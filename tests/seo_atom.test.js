@@ -5,7 +5,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { analisarHtml, lerCsv, numero, paraCsv } from '../seo-geo-aeo/skill/seo-atom/scripts/_comum.mjs';
-import { inventariar } from '../seo-geo-aeo/skill/seo-atom/scripts/inventario.mjs';
+import http from 'node:http';
+import { inventariar, classificarTipo, modeloDeUrl } from '../seo-geo-aeo/skill/seo-atom/scripts/inventario.mjs';
+import { rastrear, lerRobots, arquivoDoEspelho } from '../seo-geo-aeo/skill/seo-atom/scripts/rastrear.mjs';
 import { comparar } from '../seo-geo-aeo/skill/seo-atom/scripts/comparar.mjs';
 import { normalizarLinhas, conflitos, oportunidades } from '../seo-geo-aeo/skill/seo-atom/scripts/gsc.mjs';
 import { gerar, arquivosDaFase } from '../seo-geo-aeo/skill/seo-atom/scripts/gerar_prompt_unico.mjs';
@@ -64,7 +66,9 @@ test('seo-atom: inventário encontra quebrado, órfã, alt ausente, sitemap e pa
   const por = Object.fromEntries(r.paginas.map((p) => [p.url, p]));
   assert.equal(r.resumo.paginas, 6);
   assert.equal(por[BASE + '/blog/clareamento/'].tipo_heuristico, 'artigo');
-  assert.equal(por[BASE + '/blog/'].tipo_heuristico, 'blog-indice');
+  assert.equal(por[BASE + '/blog/'].tipo_heuristico, 'listagem');
+  assert.equal(por[BASE + '/contato/'].tipo_heuristico, 'institucional');
+  assert.equal(por[BASE + '/'].tipo_heuristico, 'home');
   assert.equal(r.resumo.links_internos_quebrados, 1);
   assert.ok(por[BASE + '/blog/orfao/'].problemas.includes('orfa-editorial'));
   assert.ok(por[BASE + '/blog/clareamento/'].problemas.includes('imagens-sem-alt=1'));
@@ -126,8 +130,9 @@ test('seo-atom: arquivos citados pela skill existem e cada fase declara seus lim
     }
     // Referências citadas só pelo nome (`semrush.md`) também precisam existir em referencias/.
     for (const m of txt.matchAll(/`([a-z-]+\.md)`/g)) {
-      const ehReferencia = ['semrush', 'fontes-de-dados', 'capacidade-e-lotes', 'limiares-padrao', 'geo-plataformas', 'setores-regulados', 'git-aprovacoes-e-registros', 'revisao-editorial', 'fontes-oficiais'].includes(m[1].slice(0, -3));
-      if (ehReferencia && !fs.existsSync(path.join(SKILL, 'referencias', m[1]))) faltando.push(rel + ' → ' + m[1]);
+      // Nomes de arquivos de registro do projeto do cliente não são referências da skill.
+      const registros = ['contexto-e-progresso', 'alteracoes-e-validacao', 'aprovacoes-pendentes', 'mapa-ecossistema', 'mapa-semantico', 'mapa-do-site', 'guia-editorial', 'plano-90-dias'];
+      if (!registros.includes(m[1].slice(0, -3)) && !fs.existsSync(path.join(SKILL, 'referencias', m[1]))) faltando.push(rel + ' → ' + m[1]);
     }
     if (rel.startsWith('fases/')) assert.match(txt, /\*\*LIMITES DESTA ETAPA\*\*[\s\S]*Pode:[\s\S]*Não pode:[\s\S]*Depende de:[\s\S]*Entrega:/, rel);
     assert.doesNotMatch(txt, /aproximadamente 80 matérias|lotes de até cinco matérias/i, rel);
@@ -142,4 +147,77 @@ test('seo-atom: prompt único gerado da fonte única, sem frontmatter', () => {
   assert.match(txt, /===== referencias\/semrush\.md =====/);
   assert.doesNotMatch(txt, /^name: seo-atom/m);
   assert.ok(gerar('completo').length > txt.length);
+});
+
+test('seo-atom: tipos de página e modelos de URL para qualquer segmento', () => {
+  const casos = {
+    '/': 'home', '/produto/tenis-azul-42': 'produto', '/products/blue-shoe': 'produto', '/categoria-produto/tenis/': 'categoria-produto',
+    '/collections/shoes': 'categoria-produto', '/servicos/implante-dentario/': 'servico', '/practice-areas/family-law': 'servico',
+    '/unidades/goiania/': 'local', '/blog/como-escolher/': 'artigo', '/blog/': 'listagem', '/blog/page/2/': 'listagem',
+    '/tag/seo/': 'listagem', '/sobre/': 'institucional', '/contact': 'institucional', '/planos/': 'pagina',
+  };
+  for (const [url, tipo] of Object.entries(casos)) assert.equal(classificarTipo(url), tipo, url);
+  assert.equal(classificarTipo('/x/y/', { jsonld: ['Product'] }), 'produto');
+  assert.equal(classificarTipo('/2024/05/titulo/', { jsonld: ['BlogPosting'] }), 'artigo');
+  assert.equal(modeloDeUrl('/produto/tenis-azul-42'), '/produto/*');
+  assert.equal(modeloDeUrl('/2024/05/titulo/'), '/#/#/*/');
+});
+
+test('seo-atom: robots.txt com grupo específico, Allow mais longo e curingas', () => {
+  const r = lerRobots('User-agent: *\nDisallow: /privado\nAllow: /privado/publico\nDisallow: /*?busca=\nDisallow: /*.pdf$\nSitemap: https://x.com/sm.xml\n');
+  assert.equal(r.permitido('/privado/a'), false);
+  assert.equal(r.permitido('/privado/publico/a'), true);
+  assert.equal(r.permitido('/loja?busca=x'), false);
+  assert.equal(r.permitido('/a.pdf'), false);
+  assert.equal(r.permitido('/a.pdf?x'), true);
+  assert.deepEqual(r.sitemaps, ['https://x.com/sm.xml']);
+  assert.equal(lerRobots('User-agent: SeoAtomBot\nDisallow: /\n\nUser-agent: *\nDisallow:\n').permitido('/a'), false);
+  assert.equal(arquivoDoEspelho(new URL('https://x.com/a/b')), path.join('a', 'b.html'));
+  assert.equal(arquivoDoEspelho(new URL('https://x.com/a/b/')), path.join('a', 'b', 'index.html'));
+});
+
+test('seo-atom: rastreador público (servidor local) registra status, redirecionamento, robots e alimenta o inventário', async () => {
+  const html = (corpo, extra = '') => `<html><head><title>T</title><link rel="canonical" href="CANON">${extra}</head><body><main>${corpo}</main></body></html>`;
+  let porta;
+  const rotas = {
+    '/': () => [200, html('<a href="/servicos/a/">A</a> <a href="/antigo">antigo</a> <a href="/sumiu">sumiu</a> <a href="/privado/x">p</a> <a href="/busca?q=1">b</a>')],
+    '/servicos/a/': () => [200, html('<a href="/">home</a>')],
+    '/antigo': () => [301, '', { location: '/servicos/a/' }],
+    '/sumiu': () => [404, 'não'],
+    '/so-no-sitemap': () => [200, html('<p>x</p>')],
+    '/robots.txt': () => [200, 'User-agent: *\nDisallow: /privado\n', { 'content-type': 'text/plain' }],
+    '/sitemap.xml': () => [200, `<urlset><url><loc>http://127.0.0.1:${porta}/so-no-sitemap</loc></url></urlset>`, { 'content-type': 'application/xml' }],
+  };
+  const srv = http.createServer((req, res) => {
+    const u = new URL(req.url, 'http://x');
+    const r = rotas[u.pathname];
+    const [status, corpo, headers = {}] = r ? r() : [404, 'nada'];
+    res.writeHead(status, { 'content-type': 'text/html; charset=utf-8', ...headers });
+    res.end(String(corpo).replace('CANON', `http://127.0.0.1:${porta}${u.pathname}`));
+  });
+  await new Promise((ok) => srv.listen(0, '127.0.0.1', ok));
+  porta = srv.address().port;
+  const saida = fs.mkdtempSync(path.join(os.tmpdir(), 'seo-atom-rastreio-'));
+  try {
+    const r = await rastrear({ url: `http://127.0.0.1:${porta}/`, atraso: 0, saida, max: 50 });
+    const st = Object.fromEntries(r.respostas.map((x) => [new URL(x.url).pathname + new URL(x.url).search, x]));
+    assert.equal(st['/'].status, 200);
+    assert.equal(st['/antigo'].status, 301);
+    assert.match(st['/antigo'].destino, /\/servicos\/a\/$/);
+    assert.equal(st['/sumiu'].status, 404);
+    assert.equal(st['/privado/x'].observacao, 'bloqueada no robots.txt');
+    assert.match(st['/busca?q=1'].observacao, /parâmetros/);
+    assert.equal(st['/so-no-sitemap'].descoberta, 'somente-sitemap');
+    const inv = r.inventario;
+    const sit = Object.fromEntries(inv.links.filter((l) => l.origem === '/').map((l) => [l.href, l.situacao]));
+    assert.equal(sit['/antigo'], 'redireciona');
+    assert.equal(sit['/sumiu'], 'quebrado-http-404');
+    assert.equal(sit['/privado/x'], 'bloqueado-robots');
+    assert.equal(inv.resumo.links_internos_quebrados, 1);
+    assert.equal(inv.paginas.find((p) => p.url.endsWith('/servicos/a/')).tipo_heuristico, 'servico');
+    assert.ok(inv.paginas.find((p) => p.url.endsWith('/so-no-sitemap')).problemas.includes('orfa-total'));
+  } finally {
+    srv.close();
+    fs.rmSync(saida, { recursive: true, force: true });
+  }
 });

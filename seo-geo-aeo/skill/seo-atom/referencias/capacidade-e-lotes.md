@@ -1,61 +1,87 @@
 # Capacidade, universo e lotes
 
-O objetivo é cobertura real e declarada, não aparência de cobertura total. Os números abaixo são **padrões ajustáveis**. Mudou um deles? Registre o novo valor e o motivo em `contexto-e-progresso.md`.
+O objetivo é cobertura real e declarada, não aparência de cobertura total. Os números abaixo são **padrões ajustáveis**: registre qualquer mudança e o motivo em `contexto-e-progresso.md`.
 
 ## Universo congelado
 
-Na fase 1, congele o universo da auditoria em `inventario.csv`, com a data do snapshot e a regra de inclusão/exclusão. Cada linha traz URL/arquivo, tipo, idioma, estado (publicado/rascunho/indisponível), duplicata de (se houver) e acessível (sim/não).
+Na fase 1, congele o universo em `inventario.csv`, com data do snapshot e regra de inclusão/exclusão. Cada linha traz:
+- URL e arquivo/origem;
+- tipo de página e modelo de URL;
+- idioma;
+- estado (publicado/rascunho/indisponível);
+- duplicata de (se houver);
+- acessível (sim/não).
 
-- **Artigo** = página editorial individual do blog. Não são artigos: listagens, categorias, tags, paginação, páginas de autor e redirecionamentos.
-- Páginas comerciais e institucionais entram no universo quando disputam intenção com o blog ou recebem links dele.
-- Toda cobertura é declarada contra esse universo: "auditado 120/134 artigos (14 em rascunho, fora do escopo)".
+- **Página indexável candidata** = responde 200, sem `noindex` e com canonical para si mesma. As demais entram no universo como evidência técnica, não como conteúdo a revisar.
+- Toda cobertura é declarada contra o universo, por tipo. Exemplo: "serviço 18/18, artigo 120/134, produto: 6 modelos × amostra de 10".
+- Se o rastreio atingiu o limite (`limite_atingido` em `resumo-rastreio.json`), o universo é parcial e isso aparece em todo relatório.
 
-## Níveis de revisão por item
+## Níveis de revisão
 
-| Nível | O que é | Cobertura exigida no diagnóstico global |
+| Nível | O que é | Cobertura no diagnóstico global |
 |---|---|---|
-| N1 técnico | `inventario.mjs`: metadados, links, imagens, canonical, sitemap, órfãs, profundidade | 100% do universo, sempre |
-| N2 leitura | Leitura integral do texto: tema, intenção, público, função, problemas evidentes, contribuição | 100% dos artigos ao longo das sessões (não precisa ser numa só) |
-| N3 factual | Checagem de fontes das afirmações materiais | Artigos de cada lote de alteração + todo conteúdo sensível/regulado + artigos com erro factual suspeito no N2 |
-| N4 mídia | Inspeção visual das imagens (abrir o arquivo) | Imagens dos artigos do lote, imagem candidata a LCP de cada template e imagens com alerta automático (sem alt, pesadas, repetidas) |
+| N1 técnico | `rastrear.mjs`/`inventario.mjs`: status, metadados, links, imagens, canonical, sitemap, órfãs, profundidade, modelos | 100% do universo rastreado |
+| N2 leitura | Leitura integral: tema, intenção, público, função, problemas, contribuição | Páginas únicas (home, serviço, local, institucional, artigo): 100% ao longo das sessões. Páginas em série (produto, listagem, anúncio): amostra por modelo |
+| N3 factual | Checagem das afirmações materiais | Páginas de cada lote de alteração + todo conteúdo regulado/sensível + suspeitas do N2 |
+| N4 mídia | Inspeção visual das imagens | Imagens das páginas do lote, imagem de destaque/LCP de cada modelo, imagens com alerta automático |
 
 A extração automática comprova N1, não N2–N4.
 
-## Cenário (padrão indicativo, ajuste pela maturidade)
+## Amostra por modelo (páginas em série)
 
-| Cenário | Artigos | Modo |
+Para cada modelo em `modelos.csv` com mais de 30 páginas, examine (N2 + checagens técnicas):
+- 5 páginas com mais impressões no GSC, ou as primeiras do sitemap sem GSC;
+- 3 com menos;
+- 2 aleatórias;
+- toda página do modelo marcada com problema único.
+
+Problema confirmado na amostra é tratado no modelo (template, regra, campo do CMS) e reconferido em todo o modelo por `inventario.mjs`.
+
+## Porte do site (padrão indicativo; maturidade e dados também pesam)
+
+| Porte | Páginas indexáveis | Modo de trabalho |
 |---|---|---|
-| A — novo | 0 | Base técnica, mapa mínimo, primeiro lote de rascunhos (3–5) |
-| B — crescimento | 1–50 | N2 completo numa sessão; lotes de melhoria e lacunas |
-| C — consolidado | 51–300 | N2 em lotes de leitura; priorizar recuperação e diferenciação |
-| D — grande | >300 | Igual a C + triagem por dados (GSC) para decidir a ordem de leitura |
+| Pequeno | até 50 | N2 completo numa sessão |
+| Médio | 51–500 | N2 em lotes de leitura; páginas em série por amostra |
+| Grande | 501–10.000 | Rastreio por seção (`--max` por pasta); prioridade por GSC; modelos + amostra |
+| Muito grande | > 10.000 | Rastreio por amostra de seções + sitemaps + GSC/Site Audit; diagnóstico por modelo; declarar a cobertura com clareza |
+| Novo / sem conteúdo | 0–5 | Base técnica, arquitetura mínima, primeiro lote de páginas/rascunhos |
 
 ## Tamanho dos lotes (padrão)
 
 | Tipo de lote | Tamanho |
 |---|---|
-| Leitura N2 (sem edição) | até 20 artigos por lote |
-| Revisão editorial com checagem N3 | piloto de 3 artigos representativos (não só os fáceis); depois até 5 por lote |
-| Correção técnica pontual (link, alt, metadado) | até 30 arquivos por lote, um tipo de correção por commit |
-| Mudança de template/padrão | piloto em páginas representativas do template + expansão no mesmo lote só se o piloto passar |
-| Rascunhos novos | até 3 por lote |
+| Leitura N2 (sem edição) | até 20 páginas |
+| Revisão de conteúdo com checagem N3 | piloto de 3 páginas representativas (incluindo uma difícil), depois até 5 por lote |
+| Correção técnica pontual (link, alt, metadado) | até 30 páginas por lote, um tipo de correção por commit/registro |
+| Mudança de modelo/template | piloto nas páginas representativas do modelo + expansão no mesmo lote só se o piloto passar |
+| Páginas/rascunhos novos | até 3 por lote |
 
-Antes de cada lote registre: IDs/URLs, limite, evidência mínima exigida, checkpoint e regra de parada. Não comece um lote que não cabe no que resta da sessão.
+Antes de cada lote registre:
+- IDs/URLs;
+- limite;
+- evidência mínima;
+- checkpoint;
+- regra de parada.
 
-## Ordem de prioridade quando não dá para fazer tudo
+Não comece um lote que não cabe no que resta da sessão.
 
-1. Erro técnico crítico confirmado (indexação, canonical errado, quebra de template, rascunho exposto).
-2. Afirmação factual errada ou conteúdo sensível sem fonte.
-3. Páginas com mais impressões/conversões no GSC/GA4 e problema localizado.
-4. Conflitos de canibalização com dados.
-5. Quase-topo e CTR abaixo da curva.
-6. Lacunas novas (pautas).
-7. Demais melhorias.
+## Prioridade quando não dá para fazer tudo
+
+1. Erro técnico crítico confirmado: site/seção fora do índice, spam/hack, canonical ou noindex errado em massa, quebra de template, rascunho exposto.
+2. Afirmação errada ou conteúdo regulado sem fonte.
+3. Páginas de maior valor (GSC/GA4/receita) com problema localizado.
+4. Problemas de modelo que afetam muitas páginas.
+5. Conflitos de canibalização com dados.
+6. Quase-topo e CTR abaixo da curva.
+7. Lacunas novas.
+8. Demais melhorias.
 
 ## Orçamento por execução (padrão)
 
-- SEMrush: ver `semrush.md` (40 chamadas na execução completa, 15 numa fase).
-- Pesquisa web para checagem factual: abrir a fonte de cada afirmação material do lote. Sem quota fixa, mas a afirmação sem fonte aberta fica "não verificada".
-- Testes de IA (fase 5): ver `geo-plataformas.md`.
+- SEMrush: `semrush.md` (40 chamadas na execução completa, 15 numa fase).
+- Rastreio: `--max 500` e `--atraso 300` ms no próprio cliente. Site de terceiro: `--max 200` e `--atraso 1000`. Aumente por seção quando necessário, sem sobrecarregar o servidor.
+- Checagem factual: abrir a fonte de cada afirmação material do lote.
+- Renderização por serviço externo (ex.: Apify): só amostra por modelo.
 
-Atingiu o limite: salve o estado, informe realizado/total e a próxima ação. Não reduza a profundidade sem declarar.
+Atingiu o limite: salve o estado, informe realizado/total e a próxima ação.

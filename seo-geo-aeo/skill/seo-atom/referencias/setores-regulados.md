@@ -1,12 +1,14 @@
 # Temas sensíveis e setores regulados
 
-Vale para saúde, direito, finanças, segurança, alimentos/suplementos, estética e qualquer orientação que possa causar dano. O módulo é ativado na fase 0 quando o cliente atua nesses setores.
+Vale para saúde, direito, finanças, segurança, alimentos/suplementos, estética, comércio eletrônico e qualquer orientação que possa causar dano. O módulo é ativado na fase 0 quando o site atua nesses setores (`segmentos.md`).
 
 ## Normas a conferir (Brasil)
 
+Fora do Brasil: identifique a autoridade e as regras de publicidade do setor no país do site (ex.: conselhos profissionais, agência sanitária, regulador financeiro, lei de defesa do consumidor e de proteção de dados) e registre-as com URL e data antes de revisar conteúdo.
+
 As referências abaixo são ponto de partida. **Confira o texto vigente na data** (normas são revogadas e alteradas) e registre URL e data. Não interprete juridicamente além do texto: dúvida de enquadramento vira pendência para o cliente ou o jurídico dele.
 
-| Setor | Norma de publicidade/comunicação | Pontos típicos de risco em blog |
+| Setor | Norma de publicidade/comunicação | Pontos típicos de risco no site |
 |---|---|---|
 | Medicina | CFM — Resolução 2.336/2023 (publicidade médica) | promessa de resultado, antes/depois, preço, autopromoção sensacionalista |
 | Odontologia | CFO — Resolução 196/2019 e Código de Ética Odontológica | antes/depois e selfies com paciente (condições), promessa de resultado, preço/promoção |
@@ -15,6 +17,7 @@ As referências abaixo são ponto de partida. **Confira o texto vigente na data*
 | Imobiliário | COFECI/CRECI | dados obrigatórios do anúncio |
 | Financeiro/investimentos | CVM, Banco Central, ANBIMA (autorregulação) | rentabilidade, garantia, recomendação personalizada |
 | Alimentos, suplementos, cosméticos, saneantes | ANVISA (RDCs de rotulagem e propaganda) | alegação de saúde/funcional não autorizada |
+| Comércio eletrônico | Decreto 7.962/2013 (informações obrigatórias, atendimento, direito de arrependimento) | identificação da empresa, condições de oferta, preço e frete claros |
 | Todos | CDC (Lei 8.078/1990, arts. 36–38 — publicidade enganosa/abusiva), CONAR, LGPD (Lei 13.709/2018) para depoimentos e dados de pacientes/clientes | |
 
 ## Regras de execução

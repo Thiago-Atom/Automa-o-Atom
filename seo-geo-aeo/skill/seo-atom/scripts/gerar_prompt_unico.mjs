@@ -12,13 +12,13 @@ const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 // Referências que cada fase manda ler (mesma tabela do SKILL.md).
 const REFS = {
-  0: ['fontes-de-dados', 'semrush', 'capacidade-e-lotes', 'git-aprovacoes-e-registros'],
-  1: ['capacidade-e-lotes', 'fontes-de-dados'],
+  0: ['modos-de-acesso', 'segmentos', 'fontes-de-dados', 'semrush', 'capacidade-e-lotes', 'git-aprovacoes-e-registros', 'ambiente-agencia'],
+  1: ['modos-de-acesso', 'capacidade-e-lotes', 'fontes-de-dados'],
   2: ['semrush', 'fontes-de-dados', 'limiares-padrao'],
-  3: ['limiares-padrao'],
-  4: ['revisao-editorial', 'setores-regulados'],
-  5: ['geo-plataformas'],
-  6: ['limiares-padrao', 'capacidade-e-lotes'],
+  3: ['segmentos', 'limiares-padrao'],
+  4: ['revisao-editorial', 'setores-regulados', 'modos-de-acesso'],
+  5: ['geo-plataformas', 'modos-de-acesso'],
+  6: ['segmentos', 'limiares-padrao', 'capacidade-e-lotes', 'modos-de-acesso'],
   7: ['capacidade-e-lotes'],
   8: ['git-aprovacoes-e-registros'],
   verificacao: ['git-aprovacoes-e-registros', 'limiares-padrao'],
@@ -39,7 +39,7 @@ export function gerar(fase = 'completo') {
     return '\n\n===== ' + rel + ' =====\n\n' + txt.trim();
   });
   const scripts = 'Os scripts citados (scripts/*.mjs) acompanham a skill. Sem eles, faça a mesma extração por outro meio e declare o método.';
-  return `PROMPT SEO/GEO/AEO — ATOM DIGITAL — gerado da skill seo-atom (${fase}) em ${new Date().toISOString().slice(0, 10)}\n` +
+  return `PROMPT SEO/GEO/AEO — QUALQUER SITE — gerado da skill seo-atom (${fase}) em ${new Date().toISOString().slice(0, 10)}\n` +
     `Arquivo gerado: não edite à mão. ${scripts}` + partes.join('') + '\n';
 }
 

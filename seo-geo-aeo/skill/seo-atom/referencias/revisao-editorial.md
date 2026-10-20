@@ -1,12 +1,24 @@
-# Revisão editorial (incorporada do prompt editorial original)
+# Revisão de conteúdo (qualquer tipo de página)
 
-Substitui `Prompt_Revisao_Editorial_Original` como política vigente. O tamanho do acervo e dos lotes vem de `capacidade-e-lotes.md`, não de "80 matérias" nem de "lotes de 3/5" fixos.
+Substitui o prompt editorial original (histórico). O tamanho dos lotes vem de `capacidade-e-lotes.md`. Vale para home, serviço, produto, categoria, local, institucional e artigo; o que muda por tipo está em "Por tipo de página".
 
 ## Antes de reescrever: propósito
 
 Responda no brief: quem lê e quanto já sabe; que dúvida ou decisão trouxe a pessoa; que resposta a página precisa entregar; que recorte a diferencia das vizinhas; se o tema ainda pertence ao escopo; o que o leitor saberá ou fará depois da leitura; **o que esta página permite entender ou decidir melhor que os resultados examinados, e com base em que material**.
 
-Respeite o gênero (notícia, tutorial, análise, comparação, opinião, explicativo). Notícia antiga mantém o contexto histórico; atualização entra identificada.
+Respeite o gênero (notícia, tutorial, análise, comparação, opinião, explicativo, página comercial). Notícia antiga mantém o contexto histórico; atualização entra identificada.
+
+## Por tipo de página
+
+| Tipo | O que a página precisa resolver | Erros comuns |
+|---|---|---|
+| Home | Quem é, o que oferece, para quem, onde; caminhos claros para cada oferta | Tentar ranquear para tudo; texto genérico; ofertas sem link |
+| Serviço / solução | O que é, para quem serve e para quem não serve, como funciona, prazos/condições reais, diferenciais comprovados, prova (cases, equipe, certificações reais), dúvidas de decisão, próximo passo | Página curta e genérica; serviços diferentes numa página só; promessa sem prova |
+| Produto | Especificações reais, uso, compatibilidade, diferenças entre variações, preço/disponibilidade coerentes com o feed e os dados estruturados, perguntas de compra | Descrição copiada do fabricante; avaliações inventadas; especificação divergente |
+| Categoria / listagem comercial | Ajudar a escolher dentro da categoria (critérios, tipos, guias) sem empurrar os produtos para baixo da dobra | Texto genérico só para palavra-chave; filtros indexáveis sem demanda |
+| Local / unidade | Endereço, horário, contato, serviços daquela unidade, equipe local, como chegar, informações locais úteis | Troca do nome da cidade num texto igual (doorway) |
+| Institucional | Identidade verificável: razão social, CNPJ/registro quando aplicável, endereço, responsáveis, políticas | Informação desatualizada ou inconsistente com outros canais |
+| Artigo / guia | Responder a uma dúvida real ligada ao negócio, com contribuição própria e ligação à oferta quando pertinente | Tema sem relação com o negócio; texto parafraseado de concorrentes |
 
 ## Checagem de fatos
 
@@ -38,9 +50,9 @@ Title, H1, subtítulos e meta description fiéis ao conteúdo, específicos e se
 
 ## Conteúdo produzido com IA
 
-O Claude redige os rascunhos, então o risco de **abuso de conteúdo em escala** (políticas de spam do Google) é desta operação:
+O Claude redige rascunhos e propostas, então o risco de **abuso de conteúdo em escala** (políticas de spam do Google) é desta operação:
 - Cada página nova precisa de contribuição própria registrada no brief e de revisão humana antes da publicação.
-- Não gere páginas em série a partir de um molde (uma por cidade, sinônimo ou variação de pergunta) sem utilidade própria em cada uma.
+- Não gere páginas em série a partir de um molde (uma por cidade, sinônimo, variação de produto ou de pergunta) sem utilidade própria em cada uma. Descrições de produto em massa só com dados reais de cada produto.
 - Não reescreva páginas de concorrentes nem parafraseie em escala.
 - Declarar o uso de IA segue a política do cliente; o que importa para a busca é a utilidade e a precisão.
 

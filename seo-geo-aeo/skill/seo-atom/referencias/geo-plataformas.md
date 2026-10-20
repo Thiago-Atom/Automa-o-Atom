@@ -22,7 +22,7 @@ Confira a documentação vigente de cada plataforma na data da execução (`font
 
 1. `robots.txt` publicado: regras por user-agent. Conflito com a política do cliente é registrado, nunca alterado por padrão.
 2. WAF/CDN (Cloudflare etc.): bloqueio de bots de IA ativado por padrão em alguns planos. Peça a configuração ou um log; não presuma.
-3. Conteúdo essencial no HTML servido, sem depender de JavaScript (o `inventario.mjs` lê o HTML do build; confira também a URL pública).
+3. Conteúdo essencial no HTML servido, sem depender de JavaScript (o `rastrear.mjs` lê o HTML bruto; compare com o renderizado conforme `modos-de-acesso.md`). Muitos robôs de IA não executam JavaScript.
 4. Metatags/headers de snippet (`nosnippet`, `X-Robots-Tag`).
 5. Bing Webmaster Tools: site verificado, sitemap enviado, erros. **IndexNow** é opcional e só com autorização, porque envia avisos a buscadores a cada publicação (efeito externo).
 
@@ -36,7 +36,7 @@ Ausência de citação ≠ falha de acesso. Só conclua "bloqueado" com evidênc
 
 ## Protocolo de medição de visibilidade em IA
 
-A integração SEMrush da Atom não expunha relatórios de AI Visibility em 20/10/2026. Sem eles, a medição é manual e precisa de ferramentas permitidas (conta da plataforma, navegador autorizado ou alguém da equipe). Se nada estiver disponível, entregue o protocolo pronto e marque "visibilidade em IA: não medida".
+A integração SEMrush não expunha relatórios de AI Visibility em 20/10/2026 (`ambiente-agencia.md`). Sem eles, a medição é manual e precisa de ferramentas permitidas (conta da plataforma, navegador autorizado ou alguém da equipe). Se nada estiver disponível, entregue o protocolo pronto e marque "visibilidade em IA: não medida".
 
 Parâmetros padrão (ajustáveis e registrados):
 

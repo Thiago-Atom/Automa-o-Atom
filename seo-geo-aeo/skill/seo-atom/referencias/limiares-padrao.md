@@ -11,7 +11,7 @@ Existem para que duas execuções no mesmo cliente cheguem a decisões parecidas
 | Suspeita | ≥ 2 URLs disputando | saída `classificacao` |
 | Conflito provável | suspeita + a URL principal alterna ≥ 2 vezes no período (dados diários) | saída `alternancias_da_url_principal` |
 | Mesma página ou páginas separadas (SERP) | `phrase_organic` (top 10) das duas consultas: **≥ 4 URLs em comum** → provavelmente a mesma intenção; 1–3 → avaliar tarefa e formato; 0 → intenções diferentes | SEMrush ou SERP observada |
-| Triagem textual sem GSC | Jaccard de 3-gramas ≥ 0,25 entre artigos | `inventario.mjs --similares` |
+| Triagem textual sem GSC | Jaccard de 3-gramas ≥ 0,25 entre páginas do mesmo tipo (produtos com descrição de fabricante costumam passar de 0,6) | `inventario.mjs --similares` |
 
 A confirmação sempre exige ler as duas páginas e comparar tarefa, público e informação exclusiva. "Conflito provável" + leitura confirmando a mesma tarefa → propor diferenciar ou consolidar (com aprovação). Queda de uma URL com ganho equivalente da outra não é perda para o site.
 
@@ -24,15 +24,18 @@ A confirmação sempre exige ler as duas páginas e comparar tarefa, público e 
 | Queda | cliques −30% ou mais contra período comparável, com ≥ 50 cliques no período base |
 | Diagnóstico da queda | posição piorou ≥ 2 → perda de posição; impressões −30% com posição estável → demanda/sazonalidade/consultas perdidas; impressões e posição estáveis → CTR (SERP, título, snippet) |
 
-Antes de atribuir queda ao conteúdo ou ao algoritmo, confira mudanças do site no período (`git log`), sazonalidade (mesmo período do ano anterior), país/dispositivo e mix de consultas.
+Antes de atribuir queda ao conteúdo ou ao algoritmo, confira mudanças do site no período (`git log`, histórico do CMS, troca de tema/plugin, migração), sazonalidade (mesmo período do ano anterior), país/dispositivo e mix de consultas.
 
 ## Estrutura e links
 
 | Sinal | Padrão |
 |---|---|
-| Órfã editorial | 0 links de entrada no corpo de artigos/páginas (listagens não contam) |
+| Órfã total | nenhum link interno de entrada (só sitemap ou nada) |
+| Órfã editorial | artigo, serviço, local ou página sem link contextual no corpo de outra página (listagens não contam) |
+| Modelo com problema | problema presente em ≥ 20% das páginas do modelo → tratar no template/regra |
 | Profundidade | página prioritária a mais de 3 cliques da home → justificar ou criar caminho |
-| Links por artigo | sem cota. Cada link precisa da sua justificativa na matriz |
+| Links por página | sem cota. Cada link precisa da sua justificativa na matriz |
+| Facetas/filtros/busca interna indexáveis | qualquer combinação indexável sem demanda (GSC/SEMrush) e sem conteúdo próprio é candidata a não indexação (aprovação) |
 
 ## Conteúdo
 

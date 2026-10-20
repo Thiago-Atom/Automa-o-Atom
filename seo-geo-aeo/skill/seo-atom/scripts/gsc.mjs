@@ -4,7 +4,7 @@
 // a alteração deve ser registrada em contexto-e-progresso.md.
 //
 // Uso:
-//   node gsc.mjs conflitos     --csv consulta_pagina[_data].csv [--min-impressoes 100] [--min-participacao 0.2] [--max-posicao 20] [--marca "atom|atomdigital"] [--saida pasta]
+//   node gsc.mjs conflitos     --csv consulta_pagina[_data].csv [--min-impressoes 100] [--min-participacao 0.2] [--max-posicao 20] [--marca "nomedamarca|variacao"] [--saida pasta]
 //   node gsc.mjs oportunidades --csv pagina[_consulta].csv [--anterior periodo_anterior.csv] [--min-impressoes 200] [--saida pasta]
 //
 // Colunas aceitas (maiúsculas/minúsculas indiferentes): query|consulta, page|pagina|página, clicks|cliques,

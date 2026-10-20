@@ -1,31 +1,43 @@
-# Fase 1 — Inventário, universo e baseline
+# Fase 1 — Rastreio, inventário, universo e baseline
 
 **LIMITES DESTA ETAPA**
-- Pode: gerar o build local (se não tiver efeito externo), rodar `inventario.mjs` e `gsc.mjs`, ler artigos (N2), extrair dados do GSC/GA4.
-- Não pode: editar páginas, priorizar pautas novas, consumir SEMrush além do orçamento da fase.
-- Depende de: fase 0 (pasta segura, acessos, cenário).
-- Entrega: universo congelado em `inventario.csv`, snapshot `auditoria/AAAA-MM-DD/`, baseline datado com cobertura e limites.
+- Pode: rastrear o site público dentro do orçamento, gerar build local sem efeito externo (modo A), rodar `inventario.mjs` e `gsc.mjs`, ler páginas (N2), extrair dados do GSC/GA4.
+- Não pode: alterar páginas, CMS ou servidor; priorizar pautas novas; passar do orçamento.
+- Depende de: fase 0 (modo, pasta segura, acessos, orçamento).
+- Entrega: universo congelado em `inventario.csv`, snapshots em `rastreio/` e `auditoria/`, `modelos.csv`, baseline datado com cobertura e limites.
 
-## 1.1 Mapa técnico do projeto
-Localize fontes de conteúdo, rotas, templates, componentes, imagens, menus, categorias, tags, paginação, metadados, sitemap, robots.txt, headers e configuração de hospedagem. Diferencie fonte local, build e página pública; registre divergências antes de usar uma para justificar mudanças na outra.
-
-## 1.2 Inventário automático (N1, 100%)
-Rode sobre o HTML servido (saída do build ou o site em HTML puro):
+## 1.1 Rastreio e inventário automático (N1)
+**Todos os modos — site público:**
 ```
-node <skill>/scripts/inventario.mjs --dir <build> --base https://<dominio> --blog /blog/ [--urls-limpas] --similares --saida docs/seo-atom/auditoria/<data>
+node <skill>/scripts/rastrear.mjs --url https://<dominio> --max 500 --atraso 300 --similares --saida <registros>/rastreio/<data>
 ```
-Confira a amostra de `tipo_heuristico` e corrija no inventário quando o projeto usar outro padrão de URL. Cruze com o sitemap e as URLs públicas acessíveis: conteúdo fora do sitemap, rotas sem origem, rascunhos, variantes de URL. Para status HTTP, redirecionamentos e robots publicados, confira as URLs públicas (ou o Site Audit do SEMrush, se houver projeto). O script lê HTML sem executar JavaScript: em sites que montam conteúdo no cliente, registre a limitação e confira o HTML renderizado.
+O rastreador respeita robots.txt, segue sitemaps e links internos, registra status/redirecionamentos/`X-Robots-Tag` em `respostas.csv` e gera o inventário em `<saida>/inventario/`. Site de terceiro: `--max 200 --atraso 1000`. Site grande: rode por seção ou aumente `--max` gradualmente; `limite_atingido` torna a cobertura parcial.
 
-## 1.3 Universo congelado
-Monte `inventario.csv` a partir de `paginas.csv`, com a regra de inclusão/exclusão e a data (`capacidade-e-lotes.md`). Colunas editoriais (N2): tema, entidades, necessidade atendida, intenção predominante, público, função no ecossistema, consulta/grupo (medido/estimado/hipótese), autoria, fontes, diferenciais, problemas, status por nível (N1–N4). Indexável, presente no sitemap e indexado são estados diferentes.
+**Modo A — também a saída do build** (mostra o que ainda não foi publicado e serve de base para comparar os lotes):
+```
+node <skill>/scripts/inventario.mjs --dir <build> --base https://<dominio> [--urls-limpas] --respostas <rastreio>/respostas.csv --similares --saida <registros>/auditoria/<data>
+```
+Diferencie fonte local, build e site público; registre divergências antes de usar uma para justificar mudanças na outra.
 
-## 1.4 Leitura integral (N2)
-Leia o texto completo de cada artigo, em lotes (`capacidade-e-lotes.md`), mantendo o índice global para comparar entre lotes. Título e resumo não substituem a leitura. Em acervos grandes, ordene a leitura pela prioridade (GSC), mas complete o universo ao longo das sessões. Blog sem artigos: registre zero e siga para a construção; não invente falhas.
+**Renderização:** se o site depende de JavaScript, compare uma amostra por modelo (`modos-de-acesso.md`).
 
-## 1.5 Baseline de desempenho
-Com GSC: 90 dias completos + período anterior, extraídos conforme `fontes-de-dados.md`. Rode:
+## 1.2 Universo e modelos
+- Monte `inventario.csv` a partir de `paginas.csv`, com a regra de inclusão/exclusão e a data (`capacidade-e-lotes.md`).
+- Confira `tipo_heuristico` numa amostra e corrija quando o site usar outro padrão.
+- Em `modelos.csv`, identifique os modelos de página e quantas páginas cada um tem: é a base da amostragem e da correção por template.
+- Indexável, presente no sitemap e indexado são estados diferentes.
+- Colunas de leitura (N2): tema, entidades, necessidade atendida, intenção, público, função no site, consulta/grupo (medido/estimado/hipótese), autoria, fontes, diferenciais, problemas, status por nível (N1–N4).
+
+## 1.3 Leitura (N2)
+Leia por inteiro as páginas únicas (home, serviços, locais, institucionais, artigos) em lotes, mantendo o índice global para comparar entre lotes. Páginas em série (produtos, anúncios, listagens) são lidas por amostra de modelo. Título e resumo não substituem a leitura. Ordene pela prioridade (GSC), mas complete o universo ao longo das sessões. Site sem conteúdo: registre e siga para a construção; não invente falhas.
+
+## 1.4 Baseline de desempenho
+Com GSC, 90 dias + período anterior (`fontes-de-dados.md`):
 ```
 node <skill>/scripts/gsc.mjs conflitos --csv consulta_pagina_data.csv --marca "<regex da marca>"
 node <skill>/scripts/gsc.mjs oportunidades --csv paginas_atual.csv --anterior paginas_anterior.csv
 ```
-Com GA4/CRM: conversões por página com as distinções de `fontes-de-dados.md`. Separe queda de demanda, perda de exposição, redução de cliques e piora de conversão: cada uma pede ação diferente.
+- Procure também URLs com impressões que não estão no rastreio nem no sitemap, como padrões estranhos e subdomínios esquecidos. Isso pode indicar spam injetado ou páginas geradas indevidamente.
+- Com GA4/CRM: conversões por página e por tipo de página.
+- Separe queda de demanda, perda de exposição, redução de cliques e piora de conversão.
+- Sem GSC (modo D ou sem acesso): use o baseline estimado pelo SEMrush (`domain_rank`, `resource_organic`), marcado como estimativa.

@@ -21,6 +21,13 @@ Na primeira execução de cada mês, abra as fontes usadas pelas fases que vai e
 - Robots meta / X-Robots-Tag / controles de snippet: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 - Robôs do Google (inclui Google-Extended): https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers
 - Core Web Vitals: https://developers.google.com/search/docs/appearance/core-web-vitals
+- JavaScript e SEO: https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics
+- Navegação facetada: https://developers.google.com/search/docs/crawling-indexing/crawling-managing-faceted-navigation
+- E-commerce: https://developers.google.com/search/docs/specialty/ecommerce
+- Versões localizadas / hreflang: https://developers.google.com/search/docs/specialty/international/localized-versions
+- Dados estruturados de negócio local: https://developers.google.com/search/docs/appearance/structured-data/local-business
+- Dados estruturados de produto: https://developers.google.com/search/docs/appearance/structured-data/product
+- Site hackeado / spam injetado: https://developers.google.com/search/docs/monitor-debug/security
 - Atualizações da Busca: https://developers.google.com/search/updates
 - API Search Analytics (limites): https://developers.google.com/webmaster-tools/v1/searchanalytics/query
 - Obter todos os dados do GSC: https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data

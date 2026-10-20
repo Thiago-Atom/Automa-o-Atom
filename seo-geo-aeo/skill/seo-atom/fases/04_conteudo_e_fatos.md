@@ -1,12 +1,12 @@
 # Fase 4 — Conteúdo, veracidade e experiência do leitor
 
 **LIMITES DESTA ETAPA**
-- Pode: escrever briefs, revisar páginas do lote, criar rascunhos (sem publicar), checar fontes, editar arquivos-fonte, commitar localmente.
+- Pode: escrever briefs, revisar páginas do lote, criar rascunhos (sem publicar), checar fontes. Modo A: editar fontes e commitar localmente. Modos B/C: preparar o texto final por página em `alteracoes-propostas.csv`. Modo D: só recomendações.
 - Não pode: publicar, mudar URL/slug, consolidar, inventar dados, credenciais ou casos, alterar páginas fora do lote.
 - Depende de: fase 3 (função da URL e conflitos) para a página do lote. Correção factual urgente pode vir antes, registrada.
-- Entrega: páginas revisadas e rascunhos do lote, briefs, `verificacao-factual.csv`, pendências e commits.
+- Entrega: páginas revisadas ou propostas do lote, briefs, `verificacao-factual.csv`, pendências e commits/registros.
 
-Siga `referencias/revisao-editorial.md` (propósito, checagem, fontes, escrita, conteúdo produzido com IA, autoria) e, se aplicável, `referencias/setores-regulados.md`.
+Siga `referencias/revisao-editorial.md` (propósito, por tipo de página, checagem, fontes, escrita, conteúdo produzido com IA, autoria) e, se aplicável, `referencias/setores-regulados.md`.
 
 ## 4.1 Brief antes de reestruturar
 Para reescrita ou página nova: intenção | pergunta central | público | evidência da oportunidade (IDs) | escopo e limites | relação com outras URLs | contribuição própria | fontes necessárias | estrutura | CTA | imagens | links. Ajuste pontual: registre só problema, evidência, mudança e verificação. Não reescreva página que funciona sem problema concreto.
@@ -27,4 +27,4 @@ Responda a necessidade central com clareza e desenvolva o raciocínio. Linguagem
 Pessoas, revisão técnica e credenciais reais, ligadas a informações verificáveis. Tema sensível: marque o que exige revisão profissional antes da publicação. Datas mudam só com mudança real. E-E-A-T não é pontuação de plugin.
 
 ## 4.7 Conteúdo novo
-Rascunhos do lote quando a pesquisa e as fontes bastarem, seguindo os padrões do repositório e com status de publicação explícito. Confirme como o projeto exclui rascunhos do build, sitemap, feeds e navegação; se não houver mecanismo confiável, mantenha-os fora das rotas públicas e entregue um patch de publicação separado. Pendências e prontidão explícitas no registro; fonte pendente nunca aparece como fato. Não invente acervo para aparentar autoridade.
+Rascunhos do lote quando a pesquisa e as fontes bastarem, com status de publicação explícito. Modo A: siga os padrões do repositório e confirme como o projeto exclui rascunhos do build, sitemap, feeds e navegação; sem mecanismo confiável, mantenha-os fora das rotas públicas e entregue um patch de publicação separado. Modo B: entregue o conteúdo pronto para o CMS (título, slug proposto, texto, metadados, links, imagens), sem publicar. Pendências e prontidão explícitas no registro; fonte pendente nunca aparece como fato. Não invente acervo para aparentar autoridade.

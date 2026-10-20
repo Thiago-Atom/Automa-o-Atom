@@ -7,18 +7,18 @@ Confere o que a execução anterior fez. **Não refaz a auditoria nem a estraté
 **LIMITES DESTA ETAPA**
 - Pode: ler registros e diffs, rodar inventário/comparação/testes, conferir páginas, corrigir regressões reversíveis introduzidas pela execução anterior, revalidar.
 - Não pode: abrir pautas novas, reescrever páginas sem problema demonstrado, reverter melhoria sem defeito, consolidar/publicar sem aprovação, repetir a pesquisa inteira.
-- Depende de: `contexto-e-progresso.md`, `alteracoes-e-validacao.md`, snapshots em `auditoria/` e os commits.
+- Depende de: `contexto-e-progresso.md`, `alteracoes-e-validacao.md` ou `alteracoes-propostas.csv`, snapshots em `rastreio/`/`auditoria/` e os commits ou registros de aplicação.
 - Entrega: `verificacao-AAAA-MM-DD.md` com o que passou, o que foi corrigido, o que segue pendente, cobertura real e prontidão para o próximo lote.
 
 ## Passos
-1. **Reconstituir o que mudou.** Leia `alteracoes-e-validacao.md` e rode `git log --oneline <checkpoint>..HEAD` e `git diff --stat <checkpoint>..HEAD`. Liste os commits sem registro e os registros sem commit: as duas listas são achados.
+1. **Reconstituir o que mudou.** Modo A: leia `alteracoes-e-validacao.md` e rode `git log --oneline <checkpoint>..HEAD` e `git diff --stat <checkpoint>..HEAD`; liste commits sem registro e registros sem commit. Modo B/C: compare `alteracoes-propostas.csv` com o site público (rastreio novo): o que foi aplicado, o que não foi, o que foi aplicado diferente. As divergências são achados.
 2. **Comparar estados.** Gere um inventário novo e rode `comparar.mjs` contra o snapshot de antes da primeira alteração e contra o do último lote. Regressão crítica = corrigir agora (reversível) ou registrar bloqueio.
-3. **Conferir os registros contra o código, item a item:**
-   - Item marcado como implementado: a mudança está no arquivo?
+3. **Conferir os registros contra o código ou o site publicado, item a item:**
+   - Item marcado como implementado ou aplicado: a mudança está no arquivo ou na página?
    - Link registrado: existe, aponta para a URL canônica e está no corpo?
    - Página com fonte "não verificada" ou revisão profissional pendente: não pode estar publicada nem fora do status de rascunho.
    - Aprovação: cada consolidação/redirecionamento/noindex tem um AP aprovado e se limitou ao escopo dele?
-   - Rascunhos e relatórios: fora do build, do sitemap, dos feeds e da navegação (`grep -rl "seo-atom" <build>`).
+   - Rascunhos e relatórios: fora do site publicado, do sitemap, dos feeds e da navegação (modo A: `grep -rl "seo-atom" <build>`).
 4. **QA editorial por amostra declarada.** Até 5 páginas alteradas, escolhidas pelo maior risco (regulado, maior tráfego, maior reescrita), mais 1 aleatória. Releia contra o brief e a checagem.
 5. **Conflitos globais remanescentes.** Rode de novo `gsc.mjs conflitos` se houver dados novos e `inventario.mjs --similares` para pares criados pelas novas páginas. Não declare ausência de canibalização sem dados de desempenho e acompanhamento.
 6. **Publicado?** Se houve publicação, confira na URL pública: status, canonical, robots, conteúdo no HTML, sitemap. Local ≠ produção.
