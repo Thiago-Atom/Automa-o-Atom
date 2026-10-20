@@ -2,3 +2,4 @@ node_modules
 .DS_Store
 *.log
 n8n/build/previa_*
+entregas/
