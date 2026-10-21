@@ -6,7 +6,7 @@ argument-hint: "[auditar <url> | completo | fase 0-8 | continuar | verificar]"
 
 # SEO, GEO e AEO — qualquer site (v5)
 
-Um site por execução. O procedimento é o mesmo para qualquer cliente. O que muda é decidido na fase 0 e registrado:
+Ferramenta da agência para os sites dos **clientes** (e de prospects). Um cliente e um site por execução, com acessos concedidos pelo cliente, pasta de trabalho própria e duas entregas: registros técnicos para a equipe e relatório em linguagem simples para o cliente (`referencias/onboarding-cliente.md`). O procedimento é o mesmo para qualquer cliente. O que muda é decidido na fase 0 e registrado:
 - **Modo de acesso**: código, CMS, URL pública ou site de terceiro (`referencias/modos-de-acesso.md`).
 - **Segmento e tipos de página** (`referencias/segmentos.md`).
 - **Mercado**: país, idioma e base do SEMrush.
@@ -84,7 +84,7 @@ Por execução, dois veredictos independentes:
 
 | Fase | Arquivo | Lê antes | Produz |
 |---|---|---|---|
-| 0 Contexto e acessos | `fases/00_contexto_e_acessos.md` | `modos-de-acesso.md`, `segmentos.md`, `fontes-de-dados.md`, `semrush.md`, `capacidade-e-lotes.md`, `git-aprovacoes-e-registros.md`, `ambiente-agencia.md` | modo, segmento, mercado, acessos, orçamento, pasta segura |
+| 0 Contexto e acessos | `fases/00_contexto_e_acessos.md` | `onboarding-cliente.md`, `modos-de-acesso.md`, `segmentos.md`, `fontes-de-dados.md`, `semrush.md`, `capacidade-e-lotes.md`, `git-aprovacoes-e-registros.md`, `ambiente-agencia.md` | modo, segmento, mercado, acessos (ou pedido de acessos ao cliente), orçamento, pasta do cliente |
 | 1 Inventário e baseline | `fases/01_inventario_e_baseline.md` | `modos-de-acesso.md`, `capacidade-e-lotes.md`, `fontes-de-dados.md`, `scripts/rastrear.mjs`, `scripts/inventario.mjs`, `scripts/gsc.mjs` | universo congelado, modelos de página, baseline |
 | 2 Pesquisa | `fases/02_pesquisa.md` | `semrush.md`, `fontes-de-dados.md`, `limiares-padrao.md` | evidências, oportunidades priorizadas |
 | 3 Arquitetura e canibalização | `fases/03_arquitetura_e_canibalizacao.md` | `segmentos.md`, `limiares-padrao.md` | mapa do site e do conteúdo, conflitos, backlog |
@@ -92,7 +92,7 @@ Por execução, dois veredictos independentes:
 | 5 GEO e AEO | `fases/05_geo_e_aeo.md` | `geo-plataformas.md`, `modos-de-acesso.md` | mapa pergunta→URL, acesso de robôs, protocolo de IA |
 | 6 Técnico, links e mídia | `fases/06_tecnico_links_midia.md` | `segmentos.md`, `limiares-padrao.md`, `capacidade-e-lotes.md`, `modos-de-acesso.md` | alterações ou propostas por modelo/URL |
 | 7 Aceite do lote | `fases/07_aceite.md` | `capacidade-e-lotes.md`, `scripts/comparar.mjs` | aceite A/B com evidência |
-| 8 Relatório e continuidade | `fases/08_relatorio_e_continuidade.md` | `git-aprovacoes-e-registros.md` | relatório, medição, plano, guia |
+| 8 Relatório e continuidade | `fases/08_relatorio_e_continuidade.md` | `git-aprovacoes-e-registros.md`, `onboarding-cliente.md` | registros, relatório para o cliente, medição, plano, guia |
 | Verificação | `fases/verificacao.md` | `git-aprovacoes-e-registros.md`, `limiares-padrao.md`, `scripts/comparar.mjs` | regressões, correções, pendências |
 
 Fontes oficiais para conferir na data: `referencias/fontes-oficiais.md`.

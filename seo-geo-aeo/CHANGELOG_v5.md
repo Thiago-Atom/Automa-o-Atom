@@ -52,3 +52,10 @@ Cadeia de evidência, classes medido/estimativa/inferência/hipótese, GSC como 
 | 18 | Perfil editorial sem regras de notícias | sitemap de notícias, `max-image-preview:large`, NewsArticle, Discover |
 | 19 | Controles de snippet/WAF fora da lista de aprovação | incluídos no `SKILL.md` |
 | 20 | Pequenos defeitos (lista quebrada, CNPJ, corte da similaridade) | corrigidos |
+
+## Uso pela agência nos clientes
+
+A skill é da agência, aplicada aos sites dos clientes. Ajustes:
+- `referencias/onboarding-cliente.md`: pasta de trabalho por cliente, modelo de **pedido de acessos** ao cliente (convites por e-mail, nunca senha), entrega dupla (registros técnicos + **relatório para o cliente** em linguagem simples) e diagnóstico de prospect.
+- Fase 0 gera o pedido de acessos quando faltam e segue no modo C; fase 8 produz o relatório para o cliente.
+- `ambiente-agencia.md`: os registros ficam na pasta de cada cliente; propriedades do GSC dos clientes precisam ser conectadas uma a uma.

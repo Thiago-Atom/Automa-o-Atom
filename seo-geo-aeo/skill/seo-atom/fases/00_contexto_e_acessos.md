@@ -25,6 +25,7 @@ Defina A (código), B (CMS), C (URL pública) ou D (terceiro), ou uma combinaç�
 - **Search Console, GA4, Bing Webmaster, PageSpeed:** `referencias/fontes-de-dados.md` e `referencias/ambiente-agencia.md`. Confira se a **propriedade deste site** está conectada. Sem acesso (modo D, ou C sem concessão): registre "não verificável de fora" para tudo que depende dessas contas.
 - **SEMrush:** liste os relatórios expostos e faça **uma** consulta barata (ex.: `domain_rank` do domínio na base escolhida). Consulta de conexão não é pesquisa.
 - **Site público:** `robots.txt` e sitemap respondem? O site bloqueia rastreadores (WAF/CDN)?
+- **Faltam acessos do cliente:** gere `entregas/pedido-de-acessos.md` (`referencias/onboarding-cliente.md`) e siga no modo C enquanto isso.
 - **Falhou:** registre, tente a alternativa permitida e siga. Use a tabela "O SEMrush não sustenta a decisão" de `semrush.md`.
 
 ## 0.5 Mercado, base e orçamento
@@ -32,5 +33,5 @@ Defina a `database` do SEMrush por mercado (uma por país/idioma relevante) e o 
 
 ## 0.6 Preparação segura
 - **Modo A:** branch e checkpoint (`git-aprovacoes-e-registros.md`). Identifique build/deploy e comandos com efeito externo.
-- **Todos os modos:** escolha a pasta de registros e **prove que não será publicada**. Nos modos B/C/D, ela fica fora do site e num lugar privado.
+- **Todos os modos:** use a pasta de trabalho do cliente (`onboarding-cliente.md`) e **prove que não será publicada**. Nos modos B/C/D, ela fica fora do site e num lugar privado.
 - Crie `contexto-e-progresso.md` e `aprovacoes-pendentes.md`.

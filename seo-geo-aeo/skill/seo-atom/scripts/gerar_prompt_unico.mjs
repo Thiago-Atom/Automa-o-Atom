@@ -12,7 +12,7 @@ const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 // Referências que cada fase manda ler (mesma tabela do SKILL.md).
 const REFS = {
-  0: ['modos-de-acesso', 'segmentos', 'fontes-de-dados', 'semrush', 'capacidade-e-lotes', 'git-aprovacoes-e-registros', 'ambiente-agencia'],
+  0: ['onboarding-cliente', 'modos-de-acesso', 'segmentos', 'fontes-de-dados', 'semrush', 'capacidade-e-lotes', 'git-aprovacoes-e-registros', 'ambiente-agencia'],
   1: ['modos-de-acesso', 'capacidade-e-lotes', 'fontes-de-dados'],
   2: ['semrush', 'fontes-de-dados', 'limiares-padrao'],
   3: ['segmentos', 'limiares-padrao'],
@@ -20,7 +20,7 @@ const REFS = {
   5: ['geo-plataformas', 'modos-de-acesso'],
   6: ['segmentos', 'limiares-padrao', 'capacidade-e-lotes', 'modos-de-acesso'],
   7: ['capacidade-e-lotes'],
-  8: ['git-aprovacoes-e-registros'],
+  8: ['git-aprovacoes-e-registros', 'onboarding-cliente'],
   verificacao: ['git-aprovacoes-e-registros', 'limiares-padrao'],
 };
 

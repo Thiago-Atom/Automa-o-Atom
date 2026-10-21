@@ -4,7 +4,7 @@
 - Pode: escrever relatório, plano e guia; atualizar registros; preparar o acompanhamento.
 - Não pode: criar conteúdo, alterar páginas, configurar automações ou serviços externos, publicar.
 - Depende de: fases anteriores executadas (ou explicitamente pendentes).
-- Entrega: registros completos (`git-aprovacoes-e-registros.md`), relatório executivo, `plano-90-dias.md`, `guia-editorial.md`.
+- Entrega: registros completos (`git-aprovacoes-e-registros.md`), relatório executivo interno, `entregas/relatorio-cliente-<data>.md` (`onboarding-cliente.md`), `plano-90-dias.md`, `guia-editorial.md`.
 
 ## 8.1 Registros
 Atualize os arquivos de `referencias/git-aprovacoes-e-registros.md`. A trilha precisa permitir seguir: evidência → diagnóstico → decisão → URL/arquivo/campo → lote → commit ou registro de aplicação → teste → acompanhamento. Use IDs e caminhos existentes; consolide arquivos redundantes; sem documentação ornamental.
@@ -19,6 +19,8 @@ Atualize os arquivos de `referencias/git-aprovacoes-e-registros.md`. A trilha pr
 - Aprovações pendentes (IDs), dependências e riscos concretos.
 - Próximo lote e critério para avançar.
 - Veredicto A (diagnóstico) e B (lotes): concluído no escopo autorizado · parcial · bloqueado, com o que falta exatamente. Entregar relatório não é concluir implementação.
+
+O relatório para o cliente é derivado deste: mesma verdade, sem jargão, com o que o cliente precisa decidir ou fornecer (formato em `onboarding-cliente.md`).
 
 ## 8.3 Mensuração
 - SEO: páginas elegíveis e indexação observada, desempenho por grupo de intenção, cliques, CTR contextual (curva do site), conversões verificadas, páginas alteradas.

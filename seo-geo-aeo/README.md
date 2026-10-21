@@ -1,6 +1,6 @@
 # SEO, GEO e AEO para qualquer site — skill `seo-atom` (v5)
 
-Procedimento para auditar e melhorar **qualquer site**, de qualquer cliente e segmento:
+Ferramenta da agência para auditar e melhorar o site de **qualquer cliente**, de qualquer segmento, e diagnosticar sites de prospects. Não é para o site da própria agência:
 - **tipos de site:** institucional, serviços, negócio local, e-commerce, SaaS/B2B, portal, marketplace, setores regulados, multilíngue;
 - **acesso:** com o código, com CMS (WordPress, Shopify, Wix…) ou só com a URL pública, inclusive prospects;
 - **cobertura:** rastreio, inventário, pesquisa real (Search Console + SEMrush), arquitetura, canibalização, conteúdo e fatos, links, imagens, SEO técnico, GEO/AEO, aceite por lote e continuidade.
@@ -13,7 +13,7 @@ Mudanças: [CHANGELOG_v5.md](CHANGELOG_v5.md) · [SINTESE_E_CHANGELOG_v4.1.md](S
 skill/seo-atom/
   SKILL.md                 entrada: comandos, modos, regras, estados, fases
   fases/                   00–08 + verificacao.md (cada uma com LIMITES DESTA ETAPA)
-  referencias/             modos-de-acesso, segmentos, fontes-de-dados, semrush, capacidade-e-lotes,
+  referencias/             onboarding-cliente, modos-de-acesso, segmentos, fontes-de-dados, semrush, capacidade-e-lotes,
                            limiares-padrao, revisao-editorial, setores-regulados, geo-plataformas,
                            git-aprovacoes-e-registros, fontes-oficiais, ambiente-agencia (editável)
   scripts/                 Node 18+, sem dependências
