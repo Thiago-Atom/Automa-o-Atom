@@ -65,7 +65,7 @@ export function classificarTipo(chave, { blog = '', jsonld = [] } = {}) {
   if (chave === '/') return 'home';
   if (/(^|\/)(404|500)(\.html)?$/.test(chave)) return 'erro';
   const tipos = jsonld.map((t) => String(t).toLowerCase());
-  if (tipos.includes('product')) return 'produto';
+  if (tipos.includes('product') || tipos.includes('productgroup')) return 'produto';
   if (blog && (chave === blog || chave + '/' === blog)) return 'listagem';
   if (blog && chave.startsWith(blog)) return PADROES[0][1].test(chave + '/') ? 'listagem' : 'artigo';
   const comBarra = chave.endsWith('/') ? chave : chave + '/';
@@ -177,9 +177,9 @@ export function inventariar({ dir, base, blog = '', urlsLimpas = false, sitemap 
             linha.destino = h && h.destino ? h.destino : caminho;
             if (h) { linha.situacao = h.situacao; if (h.quebrado) quebrados.push(linha); }
             else if (EXTENSOES_ARQUIVO.test(caminho)) {
-              linha.situacao = fs.existsSync(path.join(dir, caminho)) ? 'arquivo' : (respostas.length ? 'arquivo-nao-verificado' : 'arquivo-inexistente');
+              linha.situacao = fs.existsSync(path.join(dir, caminho)) ? 'arquivo' : (respostas.length || parcial ? 'arquivo-nao-verificado' : 'arquivo-inexistente');
               if (linha.situacao === 'arquivo-inexistente') quebrados.push(linha);
-            } else if (respostas.length) linha.situacao = 'nao-rastreado';
+            } else if (respostas.length || parcial) linha.situacao = 'nao-rastreado';
             else { linha.situacao = 'interno-inexistente'; quebrados.push(linha); }
           }
         }

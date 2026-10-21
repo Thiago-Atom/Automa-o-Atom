@@ -100,6 +100,8 @@ test('seo-atom: comparar aponta canonical desviado como regressão crítica', ()
   assert.equal(rp.regressoes.filter((x) => x.item === 'pagina').length, 0);
   assert.ok(rp.mudancas.some((m) => /parcial/.test(m.para)));
   assert.ok(!Object.values(parcial.paginas).some((p) => p.problemas.some((x) => x.startsWith('orfa'))));
+  // Universo parcial sem respostas: link para página ausente não vira "quebrado".
+  assert.equal(inventariar({ dir: d1, base: BASE, blog: '/blog/', parcial: true }).resumo.links_internos_quebrados, 0);
   for (const d of [d1, d2]) fs.rmSync(d, { recursive: true, force: true });
 });
 
@@ -168,6 +170,7 @@ test('seo-atom: tipos de página e modelos de URL para qualquer segmento', () =>
   };
   for (const [url, tipo] of Object.entries(casos)) assert.equal(classificarTipo(url), tipo, url);
   assert.equal(classificarTipo('/x/y/', { jsonld: ['Product'] }), 'produto');
+  assert.equal(classificarTipo('/x/y/', { jsonld: ['ProductGroup'] }), 'produto'); // Shopify
   assert.equal(classificarTipo('/2024/05/titulo/', { jsonld: ['BlogPosting'] }), 'artigo');
   assert.equal(modeloDeUrl('/produto/tenis-azul-42'), '/produto/*');
   assert.equal(modeloDeUrl('/2024/05/titulo/'), '/#/#/*/');
