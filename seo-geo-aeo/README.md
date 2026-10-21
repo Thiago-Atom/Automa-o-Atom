@@ -12,15 +12,17 @@ Mudanças: [CHANGELOG_v5.md](CHANGELOG_v5.md) · [SINTESE_E_CHANGELOG_v4.1.md](S
 ```
 skill/seo-atom/
   SKILL.md                 entrada: comandos, modos, regras, estados, fases
-  fases/                   00–08 + verificacao.md (cada uma com LIMITES DESTA ETAPA)
+  fases/                   00–08, verificacao.md e mensal.md (cada uma com LIMITES DESTA ETAPA)
+  modelos/                 planilhas e textos padrão das entregas (iguais para todos os clientes)
   referencias/             onboarding-cliente, modos-de-acesso, segmentos, fontes-de-dados, semrush, capacidade-e-lotes,
                            limiares-padrao, revisao-editorial, setores-regulados, geo-plataformas,
                            git-aprovacoes-e-registros, fontes-oficiais, ambiente-agencia (editável)
   scripts/                 Node 18+, sem dependências
+    iniciar_cliente.mjs    cria a pasta de trabalho do cliente com os modelos
     rastrear.mjs           rastreia o site público (robots, sitemaps, status, redirecionamentos) e gera o inventário
     inventario.mjs         inventário a partir de HTML local (build, HTML puro ou espelho do rastreio)
     comparar.mjs           antes × depois (código de saída 1 se houver regressão crítica)
-    gsc.mjs                conflitos (canibalização) e oportunidades a partir de CSV do Search Console
+    gsc.mjs                conflitos, oportunidades, resumo do mês e novas URLs (alerta de spam) a partir do Search Console
     gerar_prompt_unico.mjs gera um .txt único para outras IAs
 avaliacao/                 análises, parecer da Manu IA, reavaliação para uso curinga
 historico/v4.0/            pacote original (NÃO EXECUTAR)
@@ -37,12 +39,14 @@ Antes de usar em outra agência ou conta, edite `referencias/ambiente-agencia.md
 ## Uso (Claude Code)
 
 ```
+/seo-atom novo-cliente                          cria a pasta de trabalho do cliente com os modelos padrão
 /seo-atom auditar https://www.cliente.com.br    diagnóstico sem alterar nada (qualquer site, inclusive prospect)
 /seo-atom fase 0                                contexto, segmento, modo de acesso, mercado, acessos, orçamento
 /seo-atom fase 1                                rastreio + inventário + leitura + baseline
 /seo-atom                                       execução completa (alterações só nos modos que permitem)
 /seo-atom continuar                             retoma do contexto-e-progresso.md
 /seo-atom verificar                             verificação pós-aplicação
+/seo-atom mensal                                acompanhamento do mês: números, alertas, regressões, relatório mensal
 ```
 
 Para outra IA: `node skill/seo-atom/scripts/gerar_prompt_unico.mjs --fase 2 --saida prompt.txt`.

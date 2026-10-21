@@ -1,7 +1,7 @@
 ---
 name: seo-atom
 description: Auditoria e melhoria de SEO, AEO e GEO de qualquer site, de qualquer cliente e segmento — institucional, serviços, negócio local, e-commerce, SaaS/B2B, portal/editorial, marketplace, setores regulados, multilíngue. Funciona com o código do site, com CMS (WordPress, Shopify, Wix…) ou só com a URL pública (inclusive prospects e concorrentes). Cobre rastreio, inventário, pesquisa real (Search Console + SEMrush), arquitetura, canibalização, conteúdo e fatos, links, imagens, SEO técnico, visibilidade em IA, aceite por lote e continuidade. Use quando pedirem auditoria de site, diagnóstico de SEO, plano de conteúdo, canibalização, otimização para buscas com IA ou verificação depois de uma aplicação.
-argument-hint: "[auditar <url> | completo | fase 0-8 | continuar | verificar]"
+argument-hint: "[novo-cliente | auditar <url> | completo | fase 0-8 | continuar | verificar | mensal]"
 ---
 
 # SEO, GEO e AEO — qualquer site (v5)
@@ -16,11 +16,15 @@ Ferramenta da agência para os sites dos **clientes** (e de prospects). Um clien
 
 | Argumento | O que fazer |
 |---|---|
+| `novo-cliente` | Criar a pasta de trabalho do cliente com os modelos padrão: `node <skill>/scripts/iniciar_cliente.mjs --pasta <pasta privada> --cliente "<nome>" --site <url>`. Depois, fase 0. |
 | `auditar <url>` | Diagnóstico sem alterar nada: fases 0–3 + recomendações das fases 4–6 + relatório (fase 8). Serve para qualquer site, inclusive prospect. |
 | vazio ou `completo` | Fases 0–3 (diagnóstico global) → 4–7 em lotes → 8. Alterações só nos modos que permitem editar. |
 | `fase N` | Somente a fase N (`fases/0N_*.md`), dentro dos LIMITES DESTA ETAPA. |
 | `continuar` | Ler `contexto-e-progresso.md`, conferir se o estado ainda bate com o site e seguir a "próxima ação". |
 | `verificar` | Verificação pós-aplicação (`fases/verificacao.md`). Não refaz a auditoria. |
+| `mensal` | Acompanhamento do mês fechado de um cliente já diagnosticado (`fases/mensal.md`): números, alertas, regressões, plano e relatório mensal. |
+
+**Modelos padrão** (`modelos/`): planilhas com colunas fixas (`inventario.csv`, `oportunidades.csv`, `conflitos.csv`, `alteracoes-propostas.csv`, `verificacao-factual.csv`, `links-internos.csv`, `visibilidade-ia.csv`, `semrush-log.csv`) e textos (`contexto-e-progresso.md`, `aprovacoes-pendentes.md`, `pedido-de-acessos.md`, `relatorio-cliente.md`, `relatorio-mensal-cliente.md`). Use sempre estes modelos e estas colunas, para que as entregas sejam iguais entre clientes; acrescente colunas no fim, nunca renomeie.
 
 Leia somente os arquivos de que a etapa precisa (tabela abaixo). Nos comandos, `<skill>` é a pasta desta skill (ex.: `.claude/skills/seo-atom`). Configurações da agência (conectores, contas, pasta de registros): `referencias/ambiente-agencia.md`.
 
@@ -93,6 +97,7 @@ Por execução, dois veredictos independentes:
 | 6 Técnico, links e mídia | `fases/06_tecnico_links_midia.md` | `segmentos.md`, `limiares-padrao.md`, `capacidade-e-lotes.md`, `modos-de-acesso.md` | alterações ou propostas por modelo/URL |
 | 7 Aceite do lote | `fases/07_aceite.md` | `capacidade-e-lotes.md`, `scripts/comparar.mjs` | aceite A/B com evidência |
 | 8 Relatório e continuidade | `fases/08_relatorio_e_continuidade.md` | `git-aprovacoes-e-registros.md`, `onboarding-cliente.md` | registros, relatório para o cliente, medição, plano, guia |
+| Mensal | `fases/mensal.md` | `fontes-de-dados.md`, `limiares-padrao.md`, `onboarding-cliente.md`, `scripts/gsc.mjs`, `scripts/comparar.mjs` | números do mês, alertas, plano, relatório mensal |
 | Verificação | `fases/verificacao.md` | `git-aprovacoes-e-registros.md`, `limiares-padrao.md`, `scripts/comparar.mjs` | regressões, correções, pendências |
 
 Fontes oficiais para conferir na data: `referencias/fontes-oficiais.md`.

@@ -2,7 +2,7 @@
 // Gera um prompt de arquivo único a partir da skill (fonte única), para IAs que não leem skills
 // (ChatGPT, outra conta, revisão externa). Não edite o arquivo gerado: edite a skill e gere de novo.
 //
-// Uso: node gerar_prompt_unico.mjs [--fase 0-8|verificacao|completo] [--saida arquivo.txt]
+// Uso: node gerar_prompt_unico.mjs [--fase 0-8|verificacao|mensal|completo] [--saida arquivo.txt]
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,11 +22,12 @@ const REFS = {
   7: ['capacidade-e-lotes'],
   8: ['git-aprovacoes-e-registros', 'onboarding-cliente'],
   verificacao: ['git-aprovacoes-e-registros', 'limiares-padrao'],
+  mensal: ['fontes-de-dados', 'limiares-padrao', 'onboarding-cliente'],
 };
 
 export function arquivosDaFase(fase) {
   const fases = fs.readdirSync(path.join(RAIZ, 'fases')).sort();
-  const escolhidas = fase === 'completo' ? fases : fases.filter((f) => (fase === 'verificacao' ? f === 'verificacao.md' : f.startsWith('0' + fase + '_')));
+  const escolhidas = fase === 'completo' ? fases : fases.filter((f) => (/^\d$/.test(fase) ? f.startsWith('0' + fase + '_') : f === fase + '.md'));
   if (!escolhidas.length) throw new Error('fase desconhecida: ' + fase);
   const refs = fase === 'completo' ? fs.readdirSync(path.join(RAIZ, 'referencias')).map((f) => f.replace(/\.md$/, '')).sort() : REFS[fase];
   return ['SKILL.md', ...escolhidas.map((f) => 'fases/' + f), ...refs.map((r) => 'referencias/' + r + '.md')];

@@ -20,13 +20,13 @@ Atualize os arquivos de `referencias/git-aprovacoes-e-registros.md`. A trilha pr
 - Próximo lote e critério para avançar.
 - Veredicto A (diagnóstico) e B (lotes): concluído no escopo autorizado · parcial · bloqueado, com o que falta exatamente. Entregar relatório não é concluir implementação.
 
-O relatório para o cliente é derivado deste: mesma verdade, sem jargão, com o que o cliente precisa decidir ou fornecer (formato em `onboarding-cliente.md`).
+O relatório para o cliente parte de `modelos/relatorio-cliente.md` e é derivado deste: mesma verdade, sem jargão, com o que o cliente precisa decidir ou fornecer (formato em `onboarding-cliente.md`).
 
 ## 8.3 Mensuração
 - SEO: páginas elegíveis e indexação observada, desempenho por grupo de intenção, cliques, CTR contextual (curva do site), conversões verificadas, páginas alteradas.
 - AEO: perguntas cobertas e respostas revisadas; recursos de busca só quando observados.
 - GEO: menções/citações pelo protocolo, URLs citadas, correção da informação, tráfego/conversões atribuíveis quando houver. Tráfego referido por IA é parcial.
-Use só relatórios que as contas expõem. Registre baseline e a data real de publicação (quando autorizada e feita). Acompanhamento em 30/60/90 dias, ajustado a volume e sazonalidade: repita `gsc.mjs oportunidades --anterior` com o mesmo recorte. Com volume suficiente, acompanhe um grupo comparável de páginas não alteradas, registrando diferenças (ajuda a interpretar, não prova causalidade). Site novo ou pequeno: observe descoberta, indexação e primeiras consultas, sem conclusões estatísticas. Defina antes o que é regressão técnica (reverter código) e o que é oscilação orgânica (revisar hipótese). Não configure automações só porque existe o plano.
+Use só relatórios que as contas expõem. Registre baseline e a data real de publicação (quando autorizada e feita). Acompanhamento em 30/60/90 dias, ajustado a volume e sazonalidade: repita `gsc.mjs oportunidades --anterior` com o mesmo recorte. Com volume suficiente, acompanhe um grupo comparável de páginas não alteradas, registrando diferenças (ajuda a interpretar, não prova causalidade). Site novo ou pequeno: observe descoberta, indexação e primeiras consultas, sem conclusões estatísticas. Defina antes o que é regressão técnica (reverter código) e o que é oscilação orgânica (revisar hipótese). Não configure automações só porque existe o plano. O acompanhamento recorrente segue `fases/mensal.md`.
 
 ## 8.4 Guia para novas páginas e conteúdos
 - Antes de criar: consultar o GSC e a pesquisa, inventário e mapa; definir contribuição, intenção e formato; verificar sobreposição; conferir fontes; planejar ligações e próximo passo.

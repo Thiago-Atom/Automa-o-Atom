@@ -9,7 +9,8 @@ import http from 'node:http';
 import { inventariar, classificarTipo, modeloDeUrl } from '../seo-geo-aeo/skill/seo-atom/scripts/inventario.mjs';
 import { rastrear, lerRobots, arquivoDoEspelho } from '../seo-geo-aeo/skill/seo-atom/scripts/rastrear.mjs';
 import { comparar, configuracaoIncompativel } from '../seo-geo-aeo/skill/seo-atom/scripts/comparar.mjs';
-import { normalizarLinhas, conflitos, oportunidades } from '../seo-geo-aeo/skill/seo-atom/scripts/gsc.mjs';
+import { normalizarLinhas, conflitos, oportunidades, resumo, novasUrls } from '../seo-geo-aeo/skill/seo-atom/scripts/gsc.mjs';
+import { iniciarCliente, slug } from '../seo-geo-aeo/skill/seo-atom/scripts/iniciar_cliente.mjs';
 import { gerar, arquivosDaFase } from '../seo-geo-aeo/skill/seo-atom/scripts/gerar_prompt_unico.mjs';
 
 const SKILL = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'seo-geo-aeo', 'skill', 'seo-atom');
@@ -144,13 +145,13 @@ test('seo-atom: arquivos citados pela skill existem e cada fase declara seus lim
     for (const m of txt.matchAll(/`([a-z-]+\.md)`/g)) {
       // Nomes de arquivos de registro do projeto do cliente não são referências da skill.
       const registros = ['contexto-e-progresso', 'alteracoes-e-validacao', 'aprovacoes-pendentes', 'mapa-ecossistema', 'mapa-semantico', 'mapa-do-site', 'guia-editorial', 'plano-90-dias'];
-      if (!registros.includes(m[1].slice(0, -3)) && !fs.existsSync(path.join(SKILL, 'referencias', m[1]))) faltando.push(rel + ' → ' + m[1]);
+      if (!registros.includes(m[1].slice(0, -3)) && !fs.existsSync(path.join(SKILL, 'referencias', m[1])) && !fs.existsSync(path.join(SKILL, 'modelos', m[1]))) faltando.push(rel + ' → ' + m[1]);
     }
     if (rel.startsWith('fases/')) assert.match(txt, /\*\*LIMITES DESTA ETAPA\*\*[\s\S]*Pode:[\s\S]*Não pode:[\s\S]*Depende de:[\s\S]*Entrega:/, rel);
     assert.doesNotMatch(txt, /aproximadamente 80 matérias|lotes de até cinco matérias/i, rel);
   }
   assert.deepEqual(faltando, []);
-  for (const f of ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'verificacao']) for (const rel of arquivosDaFase(f)) assert.ok(fs.existsSync(path.join(SKILL, rel)), f + ' → ' + rel);
+  for (const f of ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'verificacao', 'mensal']) for (const rel of arquivosDaFase(f)) assert.ok(fs.existsSync(path.join(SKILL, rel)), f + ' → ' + rel);
 });
 
 test('seo-atom: prompt único gerado da fonte única, sem frontmatter', () => {
@@ -242,7 +243,7 @@ test('seo-atom: rastreador público (servidor local) registra status, redirecion
 
 test('seo-atom: tabela "Lê antes" do SKILL.md coincide com as referências do gerador de prompt único', () => {
   const skill = fs.readFileSync(path.join(SKILL, 'SKILL.md'), 'utf8');
-  for (const fase of ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'verificacao']) {
+  for (const fase of ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'verificacao', 'mensal']) {
     const arquivoFase = arquivosDaFase(fase).find((f) => f.startsWith('fases/'));
     const linha = skill.split('\n').findLast((l) => l.startsWith('|') && l.includes('`' + arquivoFase + '`'));
     assert.ok(linha, 'linha da fase ' + fase);
@@ -250,4 +251,57 @@ test('seo-atom: tabela "Lê antes" do SKILL.md coincide com as referências do g
       assert.ok(linha.includes('`' + ref.slice('referencias/'.length) + '`'), `fase ${fase}: SKILL.md não cita ${ref}`);
     }
   }
+});
+
+test('seo-atom: iniciar_cliente cria a pasta com os modelos, não sobrescreve e recusa o repositório da skill', () => {
+  const base = fs.mkdtempSync(path.join(os.tmpdir(), 'seo-atom-clientes-'));
+  try {
+    const r = iniciarCliente({ pasta: base, cliente: 'Clínica Sorriso & Cia', site: 'https://www.clinicasorriso.com.br', agencia: 'Agência X', hoje: '2026-10-21' });
+    assert.equal(r.destino, path.join(base, 'clientes', 'clinica-sorriso-cia', 'www.clinicasorriso.com.br'));
+    assert.equal(r.criados.length, 11);
+    const ctx = fs.readFileSync(path.join(r.destino, 'contexto-e-progresso.md'), 'utf8');
+    assert.match(ctx, /Clínica Sorriso & Cia · https:\/\/www\.clinicasorriso\.com\.br/);
+    assert.match(ctx, /Criado em 2026-10-21/);
+    for (const d of ['rastreio', 'auditoria', 'evidencias/gsc', 'entregas']) assert.ok(fs.existsSync(path.join(r.destino, d)), d);
+    assert.ok(fs.existsSync(path.join(r.destino, 'entregas', 'pedido-de-acessos.md')));
+    fs.writeFileSync(path.join(r.destino, 'oportunidades.csv'), 'editado pela equipe\n');
+    const r2 = iniciarCliente({ pasta: base, cliente: 'Clínica Sorriso & Cia', site: 'https://www.clinicasorriso.com.br' });
+    assert.equal(r2.criados.length, 0);
+    assert.equal(fs.readFileSync(path.join(r.destino, 'oportunidades.csv'), 'utf8'), 'editado pela equipe\n');
+    assert.throws(() => iniciarCliente({ pasta: path.join(SKILL, '..'), cliente: 'x', site: 'https://x.com' }), /repositório da skill/);
+    assert.equal(slug('  Ótica  São João!! '), 'otica-sao-joao');
+  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+});
+
+test('seo-atom: modelos padrão existem e as planilhas têm cabeçalho único', () => {
+  const pasta = path.join(SKILL, 'modelos');
+  for (const nome of ['inventario.csv', 'oportunidades.csv', 'conflitos.csv', 'alteracoes-propostas.csv', 'verificacao-factual.csv', 'links-internos.csv', 'visibilidade-ia.csv', 'semrush-log.csv',
+    'contexto-e-progresso.md', 'aprovacoes-pendentes.md', 'pedido-de-acessos.md', 'relatorio-cliente.md', 'relatorio-mensal-cliente.md']) {
+    const txt = fs.readFileSync(path.join(pasta, nome), 'utf8');
+    if (nome.endsWith('.csv')) {
+      const cols = txt.trim().split(',');
+      assert.equal(new Set(cols).size, cols.length, nome + ': colunas repetidas');
+      assert.ok(cols.every((c) => /^[a-z0-9_]+$/.test(c)), nome + ': nome de coluna fora do padrão');
+    }
+  }
+});
+
+test('seo-atom: GSC resumo mensal e alerta de URLs desconhecidas (spam injetado)', () => {
+  const l = (p, c, i, pos) => ({ page: p, clicks: String(c), impressions: String(i), position: String(pos) });
+  const mes = normalizarLinhas([l('https://x.com/a', 80, 1000, 5), l('https://x.com/b', 10, 500, 9)]);
+  const ant = normalizarLinhas([l('https://x.com/a', 50, 900, 6), l('https://x.com/b', 40, 600, 7)]);
+  const r = resumo(mes, { anterior: ant });
+  const cliques = r.indicadores.find((x) => x.indicador === 'cliques');
+  assert.equal(cliques.atual, 90);
+  assert.equal(cliques.anterior, 90);
+  assert.equal(cliques.variacao_vs_anterior, 0);
+  assert.equal(r.ganhos[0].pagina, 'https://x.com/a');
+  assert.equal(r.perdas[0].pagina, 'https://x.com/b');
+  const spam = Array.from({ length: 60 }, (_, i) => l(`https://loja.x.com/product-similar-image/?${1000 + i}`, 0, 3, 40));
+  const g = novasUrls(normalizarLinhas([l('https://x.com/a', 1, 10, 5), l('https://x.com/blog/novo', 0, 5, 30), ...spam]), ['https://x.com/a', 'https://x.com/blog/antigo']);
+  const alerta = g.find((x) => x.host === 'loja.x.com');
+  assert.equal(alerta.urls, 60);
+  assert.match(alerta.alerta, /spam/);
+  const blog = g.find((x) => x.modelo === '/blog/*');
+  assert.equal(blog.alerta, ''); // página nova num padrão conhecido não é alerta
 });

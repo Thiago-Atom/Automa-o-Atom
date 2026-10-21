@@ -6,6 +6,14 @@
 // Uso:
 //   node gsc.mjs conflitos     --csv consulta_pagina[_data].csv [--min-impressoes 100] [--min-participacao 0.2] [--max-posicao 20] [--marca "nomedamarca|variacao"] --saida <pasta privada>
 //   node gsc.mjs oportunidades --csv pagina[_consulta].csv [--anterior periodo_anterior.csv] [--min-impressoes 200] --saida <pasta privada>
+//   node gsc.mjs resumo        --csv mes.csv --anterior mes_anterior.csv [--ano-anterior mesmo_mes_ano_passado.csv] --saida <pasta privada>
+//   node gsc.mjs novas-urls    --csv pagina.csv --inventario <rastreio>/inventario/paginas.csv [--min-impressoes 1] --saida <pasta privada>
+//
+// resumo: totais do período (cliques, impressões, CTR, posição ponderada) contra os períodos de comparação e as
+//         páginas que mais ganharam/perderam cliques. Totais vindos de linhas por página; para o total exato da
+//         propriedade, exporte também sem dimensões.
+// novas-urls: URLs com impressões que não estão no inventário do site, agrupadas por modelo de URL e com sinais
+//         de suspeita (spam injetado, parâmetros aleatórios, outro host, padrão inexistente no site).
 //
 // Colunas aceitas (maiúsculas/minúsculas indiferentes): query|consulta, page|pagina|página, clicks|cliques,
 // impressions|impressoes|impressões, position|posicao|posição, date|data (opcional).
@@ -14,6 +22,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { lerArgs, lerCsv, numero, paraCsv, gravar } from './_comum.mjs';
+import { modeloDeUrl } from './inventario.mjs';
 
 const ALIAS = {
   consulta: ['query', 'consulta', 'search query', 'top queries', 'consultas principais'],
@@ -130,11 +139,69 @@ export function oportunidades(linhas, { anterior = null, minImpressoes = 200, mi
   return { linhas: saida.sort((a, b) => b.impressoes - a.impressoes), curva: Object.fromEntries([...curva].map(([f, v]) => [f, v === null ? 'insuficiente' : pct(v)])) };
 }
 
+const variacao = (a, b) => (a === null || b === null || b === 0 ? null : a / b - 1);
+
+export function resumo(atual, { anterior = null, anoAnterior = null, top = 10 } = {}) {
+  const tot = (ls) => (ls ? agregar(ls) : null);
+  const t = { atual: tot(atual), anterior: tot(anterior), ano_anterior: tot(anoAnterior) };
+  const indicadores = ['cliques', 'impressoes', 'ctr', 'posicao'].map((k) => ({
+    indicador: k,
+    atual: t.atual[k],
+    anterior: t.anterior ? t.anterior[k] : null,
+    variacao_vs_anterior: t.anterior ? (k === 'posicao' ? (t.atual[k] ?? 0) - (t.anterior[k] ?? 0) : variacao(t.atual[k], t.anterior[k])) : null,
+    ano_anterior: t.ano_anterior ? t.ano_anterior[k] : null,
+    variacao_vs_ano_anterior: t.ano_anterior ? (k === 'posicao' ? (t.atual[k] ?? 0) - (t.ano_anterior[k] ?? 0) : variacao(t.atual[k], t.ano_anterior[k])) : null,
+  }));
+  let movimentos = [];
+  if (anterior) {
+    const porPag = (ls) => new Map([...agrupar(ls, (l) => l.pagina)].map(([p, lp]) => [p, agregar(lp)]));
+    const a = porPag(atual), b = porPag(anterior);
+    movimentos = [...new Set([...a.keys(), ...b.keys()])].map((p) => {
+      const x = a.get(p) || { cliques: 0, impressoes: 0, posicao: null }, y = b.get(p) || { cliques: 0, impressoes: 0, posicao: null };
+      return { pagina: p, cliques: x.cliques, cliques_antes: y.cliques, diferenca: x.cliques - y.cliques, impressoes: x.impressoes, impressoes_antes: y.impressoes, posicao: r2(x.posicao), posicao_antes: r2(y.posicao) };
+    }).filter((m) => m.diferenca !== 0).sort((m, n) => n.diferenca - m.diferenca);
+  }
+  return { indicadores, ganhos: movimentos.filter((m) => m.diferenca > 0).slice(0, top), perdas: movimentos.filter((m) => m.diferenca < 0).reverse().slice(0, top) };
+}
+
+// URLs que o Google mostrou e que não fazem parte do site inventariado: spam injetado, páginas geradas, subdomínios esquecidos.
+export function novasUrls(linhas, urlsInventario, { minImpressoes = 1 } = {}) {
+  const conhecidas = new Set([...urlsInventario].map((u) => u.replace(/\/$/, '')));
+  const modelosConhecidos = new Set([...urlsInventario].map((u) => { try { return new URL(u).host + modeloDeUrl(new URL(u).pathname); } catch { return ''; } }));
+  const hosts = new Set([...urlsInventario].map((u) => { try { return new URL(u).host; } catch { return ''; } }));
+  const grupos = new Map();
+  for (const [pagina, lp] of agrupar(linhas, (l) => l.pagina)) {
+    if (conhecidas.has(String(pagina).replace(/\/$/, ''))) continue;
+    const ag = agregar(lp);
+    if (ag.impressoes < minImpressoes) continue;
+    let u;
+    try { u = new URL(pagina); } catch { continue; }
+    const modelo = modeloDeUrl(u.pathname);
+    const chave = u.host + modelo;
+    if (!grupos.has(chave)) {
+      const sinais = [];
+      if (!hosts.has(u.host)) sinais.push('host fora do inventário');
+      if (!modelosConhecidos.has(chave)) sinais.push('padrão de URL inexistente no site');
+      grupos.set(chave, { host: u.host, modelo, urls: 0, impressoes: 0, cliques: 0, com_parametros: 0, exemplos: [], sinais });
+    }
+    const g = grupos.get(chave);
+    g.urls++; g.impressoes += ag.impressoes; g.cliques += ag.cliques;
+    if (u.search) g.com_parametros++;
+    if (g.exemplos.length < 3) g.exemplos.push(pagina);
+  }
+  return [...grupos.values()].map((g) => {
+    if (g.com_parametros > 10 && g.com_parametros / g.urls > 0.5) g.sinais.push('muitas URLs com parâmetros');
+    if (g.urls >= 50) g.sinais.push('volume alto de URLs desconhecidas');
+    const alerta = g.sinais.includes('padrão de URL inexistente no site') && (g.urls >= 50 || g.sinais.includes('muitas URLs com parâmetros'));
+    return { ...g, alerta: alerta ? 'ALERTA: possível spam injetado ou páginas geradas indevidamente' : '' };
+  }).sort((a, b) => b.impressoes - a.impressoes);
+}
+
 function main() {
   const a = lerArgs(process.argv.slice(2));
   const cmd = a._[0];
-  if (!['conflitos', 'oportunidades'].includes(cmd) || typeof a.csv !== 'string' || typeof a.saida !== 'string') {
-    console.error('uso: node gsc.mjs conflitos|oportunidades --csv arquivo.csv --saida <pasta privada> [opções]  (ver cabeçalho do script)');
+  if (!['conflitos', 'oportunidades', 'resumo', 'novas-urls'].includes(cmd) || typeof a.csv !== 'string' || typeof a.saida !== 'string') {
+    console.error('uso: node gsc.mjs conflitos|oportunidades|resumo|novas-urls --csv arquivo.csv --saida <pasta privada> [opções]  (ver cabeçalho do script)');
     process.exit(2);
   }
   const ler = (f) => normalizarLinhas(lerCsv(fs.readFileSync(f, 'utf8')));
@@ -145,6 +212,17 @@ function main() {
       maxPosicao: Number(a['max-posicao'] || 20), marca: typeof a.marca === 'string' ? a.marca : '',
     });
     console.log(gravar(saida, 'conflitos-gsc.csv', paraCsv(r, ['consulta', 'marca', 'impressoes', 'cliques', 'ctr_grupo', 'posicao_grupo', 'urls_disputando', 'urls', 'alternancias_da_url_principal', 'classificacao'])), '→', r.length, 'grupos');
+  } else if (cmd === 'resumo') {
+    if (typeof a.anterior !== 'string') { console.error('resumo exige --anterior'); process.exit(2); }
+    const r = resumo(ler(a.csv), { anterior: ler(a.anterior), anoAnterior: typeof a['ano-anterior'] === 'string' ? ler(a['ano-anterior']) : null });
+    gravar(saida, 'resumo-gsc.json', JSON.stringify(r, null, 2) + '\n');
+    gravar(saida, 'ganhos-perdas-gsc.csv', paraCsv([...r.ganhos, ...r.perdas], ['pagina', 'cliques', 'cliques_antes', 'diferenca', 'impressoes', 'impressoes_antes', 'posicao', 'posicao_antes']));
+    console.log(JSON.stringify(r.indicadores, null, 2));
+  } else if (cmd === 'novas-urls') {
+    if (typeof a.inventario !== 'string') { console.error('novas-urls exige --inventario <paginas.csv>'); process.exit(2); }
+    const urls = lerCsv(fs.readFileSync(a.inventario, 'utf8')).map((l) => l.url).filter(Boolean);
+    const r = novasUrls(ler(a.csv), urls, { minImpressoes: Number(a['min-impressoes'] || 1) });
+    console.log(gravar(saida, 'novas-urls-gsc.csv', paraCsv(r, ['alerta', 'host', 'modelo', 'urls', 'impressoes', 'cliques', 'com_parametros', 'sinais', 'exemplos'])), '→', r.length, 'grupos;', r.filter((g) => g.alerta).length, 'com alerta');
   } else {
     const r = oportunidades(ler(a.csv), { anterior: typeof a.anterior === 'string' ? ler(a.anterior) : null, minImpressoes: Number(a['min-impressoes'] || 200) });
     console.log(gravar(saida, 'oportunidades-gsc.csv', paraCsv(r.linhas, ['pagina', 'impressoes', 'cliques', 'ctr', 'posicao', 'sinais', 'diagnostico_provavel_da_queda'])), '→', r.linhas.length, 'páginas');

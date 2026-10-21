@@ -50,7 +50,7 @@ seo-geo-aeo/    skill seo-atom (SEO/GEO/AEO de qualquer site), avaliações e hi
 
 ```bash
 npm install
-npm test        # 88 testes, sem rede
+npm test        # 92 testes, sem rede
 npm run build   # regenera n8n/build e n8n/dist
 npm run docs    # regenera prompts/, schemas/, sql/ e docs/03
 ```

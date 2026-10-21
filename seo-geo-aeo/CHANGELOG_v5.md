@@ -59,3 +59,11 @@ A skill é da agência, aplicada aos sites dos clientes. Ajustes:
 - `referencias/onboarding-cliente.md`: pasta de trabalho por cliente, modelo de **pedido de acessos** ao cliente (convites por e-mail, nunca senha), entrega dupla (registros técnicos + **relatório para o cliente** em linguagem simples) e diagnóstico de prospect.
 - Fase 0 gera o pedido de acessos quando faltam e segue no modo C; fase 8 produz o relatório para o cliente.
 - `ambiente-agencia.md`: os registros ficam na pasta de cada cliente; propriedades do GSC dos clientes precisam ser conectadas uma a uma.
+
+## Modelos padrão e rotina mensal
+
+- `modelos/`: planilhas com colunas fixas (inventário, oportunidades, conflitos, alterações propostas, verificação factual, links internos, visibilidade em IA, log do SEMrush) e textos (contexto e progresso, aprovações, pedido de acessos, relatório para o cliente, relatório mensal). As entregas ficam iguais entre clientes.
+- `scripts/iniciar_cliente.mjs` (`/seo-atom novo-cliente`): cria `clientes/<cliente>/<site>/` com os modelos, sem sobrescrever, e recusa gravar dentro do repositório da skill.
+- `fases/mensal.md` (`/seo-atom mensal`): mês fechado contra mês anterior e mesmo mês do ano anterior, regressões técnicas, alertas com critérios, plano e relatório mensal; visibilidade em IA trimestral.
+- `gsc.mjs resumo` (totais e páginas que mais ganharam/perderam) e `gsc.mjs novas-urls` (URLs com impressões fora do inventário, com alerta de possível spam injetado).
+- Testes: 15 da skill (92 no repositório).

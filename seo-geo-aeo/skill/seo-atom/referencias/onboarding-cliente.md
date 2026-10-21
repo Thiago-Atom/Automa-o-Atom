@@ -4,14 +4,14 @@ A skill é usada pela agência nos sites dos **clientes**. Cada execução é pa
 
 ## Pasta de trabalho por cliente
 
-`<pasta privada da agência>/clientes/<cliente>/<site>/`, com `contexto-e-progresso.md`, `aprovacoes-pendentes.md`, `rastreio/`, `auditoria/`, `evidencias/` e `entregas/`.
+`<pasta privada da agência>/clientes/<cliente>/<site>/`, criada por `node <skill>/scripts/iniciar_cliente.mjs --pasta <pasta privada> --cliente "<nome>" --site <url>` com os modelos padrão (`modelos/`): `contexto-e-progresso.md`, `aprovacoes-pendentes.md`, planilhas, `rastreio/`, `auditoria/`, `evidencias/`, `entregas/` e, na rotina mensal, `mensal/AAAA-MM/`.
 - Nunca misture dados de clientes diferentes numa pasta, numa planilha ou numa comparação.
 - Nunca use dados, textos ou casos de um cliente no trabalho de outro.
 - Modo A: os registros podem ir para o repositório do próprio cliente, se a fase 0 provar que não são publicados e o cliente concordar. Caso contrário, ficam na pasta da agência.
 
 ## Pedido de acessos (fase 0)
 
-Peça só o necessário para o modo de trabalho combinado, com prazo e o motivo de cada acesso. Gere `entregas/pedido-de-acessos.md` com este modelo, adaptado:
+Peça só o necessário para o modo de trabalho combinado, com prazo e o motivo de cada acesso. A pasta criada por `scripts/iniciar_cliente.mjs` já traz `entregas/pedido-de-acessos.md` (de `modelos/`); complete os campos. Conteúdo do modelo:
 
 ```
 Para começarmos a auditoria de SEO de <site>, precisamos destes acessos:
@@ -39,7 +39,8 @@ Enquanto os acessos não chegam, já analisamos o que é público do site.
 | Entrega | Para quem | Conteúdo |
 |---|---|---|
 | Registros técnicos (`contexto-e-progresso.md`, CSVs, evidências) | equipe da agência | tudo o que as fases pedem |
-| `entregas/relatorio-cliente-<data>.md` | cliente | linguagem simples, sem jargão nem nomes de ferramentas internas |
+| `entregas/relatorio-cliente-<data>.md` (de `modelos/relatorio-cliente.md`) | cliente | linguagem simples, sem jargão nem nomes de ferramentas internas |
+| `mensal/AAAA-MM/relatorio-mensal-cliente.md` (de `modelos/relatorio-mensal-cliente.md`) | cliente | o mês fechado (`fases/mensal.md`) |
 
 O relatório para o cliente tem:
 1. O que analisamos e quando.
