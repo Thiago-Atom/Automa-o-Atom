@@ -33,8 +33,11 @@ const ALIAS = {
   data: ['date', 'data'],
 };
 
+// Linhas de URL com #fragmento (links para seções da página no resultado) repetem as impressões da própria página:
+// somá-las infla impressões, derruba o CTR e cria falsos "conflitos" e "URLs novas". São descartadas e contadas
+// em linhas.fragmentos (o volume aparece no aviso do script).
 export function normalizarLinhas(brutas) {
-  return brutas.map((b) => {
+  const linhas = brutas.map((b) => {
     const l = {};
     for (const [campo, nomes] of Object.entries(ALIAS)) {
       const k = nomes.find((n) => n in b);
@@ -46,6 +49,9 @@ export function normalizarLinhas(brutas) {
     l.consulta = l.consulta === null ? null : String(l.consulta).trim().toLowerCase();
     return l;
   }).filter((l) => l.impressoes > 0);
+  const semFragmento = linhas.filter((l) => !String(l.pagina ?? '').includes('#'));
+  semFragmento.fragmentos = linhas.length - semFragmento.length;
+  return semFragmento;
 }
 
 // Posição média ponderada por impressões; CTR = cliques totais / impressões totais (nunca média de percentuais).
@@ -204,7 +210,11 @@ function main() {
     console.error('uso: node gsc.mjs conflitos|oportunidades|resumo|novas-urls --csv arquivo.csv --saida <pasta privada> [opções]  (ver cabeçalho do script)');
     process.exit(2);
   }
-  const ler = (f) => normalizarLinhas(lerCsv(fs.readFileSync(f, 'utf8')));
+  const ler = (f) => {
+    const ls = normalizarLinhas(lerCsv(fs.readFileSync(f, 'utf8')));
+    if (ls.fragmentos) console.error(`${path.basename(f)}: ${ls.fragmentos} linhas de URL com #fragmento descartadas (seções da mesma página)`);
+    return ls;
+  };
   const saida = a.saida;
   if (cmd === 'conflitos') {
     const r = conflitos(ler(a.csv), {

@@ -70,3 +70,4 @@ A skill é da agência, aplicada aos sites dos clientes. Ajustes:
 
 ## Correção após o primeiro uso real
 - `analisarHtml`: a contagem de palavras e a similaridade usavam o primeiro `<article>` da página. Em sites WordPress, esse costuma ser um card de "posts relacionados", o que gerava falsos pares quase idênticos (Jaccard 1,0). Agora vale a maior região entre `<main>` e os `<article>`. Há um teste novo que cobre isso.
+- `gsc.mjs`: o Google lista links para seções da página (`#ancora`) como URLs próprias, repetindo as impressões da página. Isso inflava as impressões, criava "oportunidades" duplicadas e zerava a curva de CTR (no site da Atom eram 34 linhas, numa só página). Agora essas linhas são descartadas na leitura, e o script avisa quantas foram ignoradas. Há um teste novo que cobre isso.

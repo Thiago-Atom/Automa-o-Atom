@@ -306,6 +306,14 @@ test('seo-atom: GSC resumo mensal e alerta de URLs desconhecidas (spam injetado)
   assert.equal(blog.alerta, ''); // página nova num padrão conhecido não é alerta
 });
 
+test('seo-atom: GSC descarta URLs com #fragmento (seções da mesma página)', () => {
+  const l = (p, c, i, pos) => ({ page: p, clicks: String(c), impressions: String(i), position: String(pos) });
+  const ls = normalizarLinhas([l('https://x.com/a', 40, 1000, 7), l('https://x.com/a#secao-1', 0, 900, 8), l('https://x.com/a#secao-2', 0, 900, 8)]);
+  assert.equal(ls.length, 1);
+  assert.equal(ls.fragmentos, 2);
+  assert.equal(novasUrls(ls, ['https://x.com/a']).length, 0); // seção de página conhecida não é URL nova
+});
+
 test('seo-atom: região principal ignora card de "relacionados" em <article> antes do conteúdo', () => {
   const card = '<article><h3>Leia também</h3><p>Outro post da casa</p></article>';
   const pagina = (assunto, corpo) => `<html><body><main>${card}<h1>${assunto}</h1><p>${corpo}</p></main></body></html>`;
