@@ -67,3 +67,6 @@ A skill é da agência, aplicada aos sites dos clientes. Ajustes:
 - `fases/mensal.md` (`/seo-atom mensal`): mês fechado contra mês anterior e mesmo mês do ano anterior, regressões técnicas, alertas com critérios, plano e relatório mensal; visibilidade em IA trimestral.
 - `gsc.mjs resumo` (totais e páginas que mais ganharam/perderam) e `gsc.mjs novas-urls` (URLs com impressões fora do inventário, com alerta de possível spam injetado).
 - Testes: 15 da skill (92 no repositório).
+
+## Correção após o primeiro uso real
+- `analisarHtml`: a contagem de palavras e a similaridade usavam o primeiro `<article>` da página. Em sites WordPress, esse costuma ser um card de "posts relacionados", o que gerava falsos pares quase idênticos (Jaccard 1,0). Agora vale a maior região entre `<main>` e os `<article>`. Há um teste novo que cobre isso.

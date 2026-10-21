@@ -106,13 +106,13 @@ function semCodigo(html) {
     .replace(/<(script|style|noscript|template|svg)\b[\s\S]*?<\/\1\s*>/gi, ' ');
 }
 
-// Região principal para contagem de palavras e similaridade: <article>, senão <main>, senão <body>.
+// Região principal para contagem de palavras e similaridade: a maior entre <main> e os <article>
+// (cards de "posts relacionados" também usam <article>; o primeiro nem sempre é o conteúdo); senão <body>.
 function regiaoPrincipal(html) {
-  for (const tag of ['article', 'main', 'body']) {
-    const m = html.match(new RegExp('<' + tag + '\\b[^>]*>([\\s\\S]*?)<\\/' + tag + '\\s*>', 'i'));
-    if (m) return m[1];
-  }
-  return html;
+  const candidatas = [...html.matchAll(/<(main|article)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi)].map((m) => m[2]);
+  if (candidatas.length) return candidatas.reduce((a, b) => (textoLimpo(b).length > textoLimpo(a).length ? b : a));
+  const corpo = html.match(/<body\b[^>]*>([\s\S]*?)<\/body\s*>/i);
+  return corpo ? corpo[1] : html;
 }
 
 const NAVEGACAO = new Set(['nav', 'header', 'footer', 'aside']);

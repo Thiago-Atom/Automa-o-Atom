@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { analisarHtml, lerCsv, numero, paraCsv } from '../seo-geo-aeo/skill/seo-atom/scripts/_comum.mjs';
+import { analisarHtml, lerCsv, numero, paraCsv, shingles, jaccard } from '../seo-geo-aeo/skill/seo-atom/scripts/_comum.mjs';
 import http from 'node:http';
 import { inventariar, classificarTipo, modeloDeUrl } from '../seo-geo-aeo/skill/seo-atom/scripts/inventario.mjs';
 import { rastrear, lerRobots, arquivoDoEspelho } from '../seo-geo-aeo/skill/seo-atom/scripts/rastrear.mjs';
@@ -304,4 +304,13 @@ test('seo-atom: GSC resumo mensal e alerta de URLs desconhecidas (spam injetado)
   assert.match(alerta.alerta, /spam/);
   const blog = g.find((x) => x.modelo === '/blog/*');
   assert.equal(blog.alerta, ''); // página nova num padrão conhecido não é alerta
+});
+
+test('seo-atom: região principal ignora card de "relacionados" em <article> antes do conteúdo', () => {
+  const card = '<article><h3>Leia também</h3><p>Outro post da casa</p></article>';
+  const pagina = (assunto, corpo) => `<html><body><main>${card}<h1>${assunto}</h1><p>${corpo}</p></main></body></html>`;
+  const a = analisarHtml(pagina('Modo IA do Google', 'O modo de inteligência artificial do buscador responde perguntas longas com fontes citadas, '.repeat(1) + Array.from({ length: 60 }, (_, i) => `resposta${i} buscador fonte${i}`).join(' ')));
+  const b = analisarHtml(pagina('SEO para ChatGPT', 'Ser recomendado pelo assistente depende de menções confiáveis e páginas claras, '.repeat(1) + Array.from({ length: 60 }, (_, i) => `assistente${i} recomendacao marca${i}`).join(' ')));
+  assert.ok(a.palavras > 200);
+  assert.ok(jaccard(shingles(a.texto), shingles(b.texto)) < 0.2);
 });
