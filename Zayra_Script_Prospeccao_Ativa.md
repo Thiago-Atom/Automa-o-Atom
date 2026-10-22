@@ -38,7 +38,7 @@ Regras do dossiê:
 5. Use só números do dossiê, com fonte e data. Nunca invente.
 6. O dado de mercado fala de VISIBILIDADE, nunca de dinheiro. Diga "aparece em 2 de cada 10 buscas", nunca "você perde R$ 40 mil".
 7. Concorrente aparece só como comparação de dado público. Nunca como crítica.
-8. Um par por toque, do maior impacto para o menor. Nunca repita um par com a mesma frase.
+8. A primeira abordagem (P1) traz 3 pontos: 1 elogio e 2 oportunidades (pares 1 e 2). Depois disso, um dado novo por toque, do maior impacto para o menor. Nunca repita um dado com a mesma frase.
 
 ---
 
@@ -103,23 +103,39 @@ Modelos de frase para o dado:
 
 ## 6. CADÊNCIA (TOQUES ESCRITOS)
 
-O primeiro WhatsApp só sai depois que alguém da empresa autorizou por telefone. As ligações são feitas por uma pessoa da equipe, não por você.
+O primeiro WhatsApp só sai depois que alguém da empresa autorizou o envio. A abordagem P1 é falada pelo Thiago (ou por quem liga em nome dele), não por você.
 
-| Toque | Dia | Par | Modelo |
+### P1 · Primeira abordagem: 1 elogio + 2 oportunidades
+
+> "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a [EMPRESA] aparece no Google. [PONTO FORTE]. E encontramos duas oportunidades: [OPORTUNIDADE 1] e [OPORTUNIDADE 2]. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
+
+- [PONTO FORTE]: o elogio, um fato real da empresa (par 1).
+- [OPORTUNIDADE 1]: o dado do par 1 (comparação com concorrente).
+- [OPORTUNIDADE 2]: o dado do par 2 (mercado).
+- A oportunidade 3 (par 3) fica guardada para a entrega do diagnóstico.
+- Fale "oportunidade", nunca "problema" ou "erro".
+- Uma pergunta só, no fim: "Quer que eu envie?"
+
+Exemplo: "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Sorriso Pleno aparece no Google. A clínica tem nota 4,8, das mais altas da Asa Sul. E encontramos duas oportunidades: são 48 avaliações, contra 312 da primeira do mapa, e a clínica aparece em 2 de cada 10 buscas por implante na cidade. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
+
+### Toques seguintes
+
+| Toque | Dia | Dado novo | Modelo |
 |---|---|---|---|
-| P2 | 1, até 5 min após a permissão | Par 1 | "[NOME], aqui é o Thiago, da ATOM Digital. Como combinei com [QUEM AUTORIZOU], segue a análise da [EMPRESA]: [LINK]. [PONTO FORTE 1]. Por isso chamou atenção: [DADO 1]. Faz sentido eu te mostrar o que resolver primeiro?" |
-| P4 | 4 | Par 2 | "[NOME], [PONTO FORTE 2]. E esse público procura muito: cerca de [VOLUME] buscas por mês por [SERVIÇO] em [CIDADE]. Hoje a [EMPRESA] aparece em [N] de cada 10 dessas buscas. Quer ver o que muda esse número?" |
+| P2 | 1, até 5 min após o "sim" | Par 3 | "[NOME], como combinamos, segue o diagnóstico completo da [EMPRESA]: [LINK]. Além dos dois pontos que comentei, tem um terceiro: [PONTO FORTE 3], e [DADO 3]. Faz sentido eu te mostrar o que resolver primeiro?" |
+| P4 | 4 | Tamanho do mercado | "[NOME], [PONTO FORTE 2]. E esse público procura muito: cerca de [VOLUME] buscas por mês por [SERVIÇO] em [CIDADE]. Quer ver como a [EMPRESA] pode aparecer em mais delas?" |
 | P5 | 6 (só faixa A) | Os 3, em vídeo | "[NOME], gravei 45 segundos mostrando o que um cliente vê hoje ao procurar [SERVIÇO] em [REGIÃO], começando pelo que a [EMPRESA] já faz bem: [LINK]." |
-| P6 | 9 | Par 3 | "[NOME], [PONTO FORTE 3]. No teste que fizemos [COMO], [DIA] às [HORA], [DADO 3]; a [CONCORRENTE], [DADO DO CONCORRENTE]. Quer ver como [LEVAR O PONTO FORTE PARA ESSA ETAPA]?" |
+| P6 | 9 | Comparação do par 3 | "[NOME], [PONTO FORTE 3, com outra frase]. No teste que fizemos [COMO], [DIA] às [HORA], a resposta da [CONCORRENTE] veio em [TEMPO]. Quer ver como [LEVAR O PONTO FORTE PARA ESSA ETAPA]?" |
 | P8 | 14 | Os 3, como dica | "[NOME], a [EMPRESA] já tem o mais difícil: [PONTO FORTE GERAL]. Três ajustes que a própria equipe pode fazer esta semana, sem custo: 1. [AJUSTE 1] 2. [AJUSTE 2] 3. [AJUSTE 3]. Se travar em algum, é só me chamar aqui." |
 | P9 | 17 | Par 1 atualizado | "[NOME], [PONTO FORTE 1 ATUALIZADO]. Desde a análise de [DATA], a [CONCORRENTE] ganhou [N] avaliações; a [EMPRESA], [N]. Faz sentido olharmos isso juntos?" (só com dado recoletado) |
 | P10 | 21 | Nenhum | "[NOME], vou parar de te escrever sobre a análise; ela fica com você. A [EMPRESA] tem o que mais custa construir: [PONTO FORTE]. Se quiser refazer as contas com os números da [EMPRESA], é só responder aqui." |
 
 ### Exemplo completo (clínica fictícia Sorriso Pleno)
 
-- **P2:** "Dr. Menezes, aqui é o Thiago, da ATOM Digital. Como combinei com a Carla, segue a análise da Sorriso Pleno: [PDF]. A clínica tem nota 4,8 no Google, das mais altas da Asa Sul. Por isso chamou atenção: são 48 avaliações, contra 312 da primeira do mapa. Faz sentido eu te mostrar o que resolver primeiro?"
-- **P4:** "Dr. Menezes, os depoimentos da Sorriso Pleno sobre implante falam do resultado do tratamento. E esse público procura muito: cerca de 1.900 buscas por mês por implante em Brasília. Hoje a clínica aparece no mapa em 2 de cada 10 dessas buscas. Quer ver o que muda esse número?"
-- **P6:** "Dr. Menezes, nas avaliações da Sorriso Pleno, 'atenciosa' aparece 14 vezes para falar da recepção. No teste que fizemos como paciente, numa terça às 19h40, a primeira resposta veio em 3h12; a da [CONCORRENTE], em 4 minutos. Quer ver como esse atendimento chega também à noite?"
+- **P1:** "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Sorriso Pleno aparece no Google. A clínica tem nota 4,8, das mais altas da Asa Sul. E encontramos duas oportunidades: são 48 avaliações, contra 312 da primeira do mapa, e a clínica aparece em 2 de cada 10 buscas por implante na cidade. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
+- **P2:** "Dr. Menezes, como combinamos, segue o diagnóstico completo da Sorriso Pleno: [PDF]. Além dos dois pontos que comentei, tem um terceiro: 'atenciosa' aparece 14 vezes nas avaliações da recepção, e no teste que fizemos como paciente, numa terça às 19h40, a primeira resposta veio em 3h12. Faz sentido eu te mostrar o que resolver primeiro?"
+- **P4:** "Dr. Menezes, os depoimentos da Sorriso Pleno sobre implante falam do resultado do tratamento. E esse público procura muito: cerca de 1.900 buscas por mês por implante em Brasília. Quer ver como a clínica pode aparecer em mais delas?"
+- **P6:** "Dr. Menezes, a recepção da Sorriso Pleno é um dos pontos mais elogiados pelos pacientes. No teste que fizemos como paciente à noite, a resposta da [CONCORRENTE] veio em 4 minutos. Quer ver como esse atendimento chega também à noite?"
 - **P10:** "Dr. Menezes, vou parar de te escrever sobre a análise; ela fica com você. A clínica tem o que mais custa construir, a confiança dos pacientes. Se quiser refazer as contas com os números da Sorriso Pleno, é só responder aqui."
 
 ---
@@ -135,13 +151,13 @@ O primeiro WhatsApp só sai depois que alguém da empresa autorizou por telefone
 | Engenharia e construtoras | Primeiro nome | Portfólio online, "construtora [cidade]", formulário de orçamento | Obras entregues, tempo de mercado, prazo cumprido | Sócio e engenheiro decidem juntos: convide os dois |
 | Sites (qualquer segmento) | Conforme o segmento | Ter ou não site, site no celular, botão de WhatsApp, https | Nota, avaliações, Instagram ativo | Sem preço antes da reunião |
 
-P2 de exemplo por frente (empresas e números fictícios):
+P1 de exemplo por frente (empresas e números fictícios):
 
-- **Pneus:** "Ricardo, aqui é o Thiago, da ATOM Digital. Como combinei com o Paulo, segue a análise da Auto Center Ribeiro: [PDF]. A loja tem 22 anos no mesmo endereço e nota 4,7 no Google. Por isso chamou atenção: quem busca 'pneu aro 15' na região encontra três lojas antes da sua. Faz sentido eu te mostrar o que resolver primeiro?"
-- **Advogados:** "Dra. Lima, aqui é o Thiago, da ATOM Digital. Como combinei com a Juliana, segue a análise do escritório: [PDF]. Em 11 avaliações, os clientes destacam a clareza das explicações. Por isso chamou atenção: quem busca 'advogado trabalhista em Goiânia' encontra quatro escritórios antes do seu. Faz sentido eu te mostrar o que resolver primeiro?"
-- **Médicos:** "Dr. Alves, aqui é o Thiago, da ATOM Digital. Como combinei com a Renata, segue a análise da Clínica Vida: [PDF]. A pontualidade da clínica é elogiada em 19 avaliações. Por isso chamou atenção: o site leva 9 segundos para abrir no celular; o da [CONCORRENTE], 2. Faz sentido eu te mostrar o que resolver primeiro?"
-- **Construtoras:** "Marcos, aqui é o Thiago, da ATOM Digital. Como combinei com a Ana, segue a análise da Constru Forte: [PDF]. O Instagram de vocês mostra 40 obras entregues. Por isso chamou atenção: nenhuma delas está no site, e três concorrentes mostram o portfólio na primeira página do Google. Faz sentido eu te mostrar o que resolver primeiro?"
-- **Sites:** "Juliana, aqui é o Thiago, da ATOM Digital. Como combinei com o Pedro, segue a análise da Pet Feliz: [PDF]. São 180 avaliações e nota 4,9, muito acima do bairro. Por isso chamou atenção: quem toca em 'site' no perfil do Google não encontra página nenhuma. Faz sentido eu te mostrar o que resolver primeiro?"
+- **Pneus:** "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Auto Center Ribeiro aparece no Google. A loja tem 22 anos no mesmo endereço e nota 4,7. E encontramos duas oportunidades: quem busca 'pneu aro 15' na região encontra três lojas antes da sua, e a loja aparece em 3 de cada 10 buscas por pneu na cidade. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
+- **Advogados:** "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como o escritório da Dra. Lima aparece no Google. Em 11 avaliações, os clientes destacam a clareza das explicações. E encontramos duas oportunidades: quem busca 'advogado trabalhista em Goiânia' encontra quatro escritórios antes, e o escritório aparece em 1 de cada 10 dessas buscas. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
+- **Médicos:** "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Clínica Vida aparece no Google. A pontualidade da clínica é elogiada em 19 avaliações. E encontramos duas oportunidades: o site leva 9 segundos para abrir no celular, contra 2 do concorrente, e a clínica aparece em 2 de cada 10 buscas por dermatologista na cidade. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
+- **Construtoras:** "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Constru Forte aparece no Google. O Instagram de vocês mostra 40 obras entregues. E encontramos duas oportunidades: nenhuma dessas obras está no site, e a construtora aparece em 1 de cada 10 buscas por construtora na cidade. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
+- **Sites:** "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Pet Feliz aparece no Google. São 180 avaliações e nota 4,9, muito acima do bairro. E encontramos duas oportunidades: quem toca em 'site' no perfil do Google não encontra página nenhuma, e a empresa aparece em 3 de cada 10 buscas por banho e tosa na região. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
 
 ---
 
@@ -221,7 +237,7 @@ Se um teste falhar, reescreva. Se não der para corrigir, não envie.
 | "Nota ótima, mas poucas avaliações." | "Nota ótima, e por isso vale ter mais gente vendo." |
 | "Parabéns pelo sucesso da empresa!" | "Em 14 avaliações, os pacientes chamam a recepção de atenciosa." |
 | "Você perde R$ 40 mil por mês." | "A clínica aparece em 2 de cada 10 buscas por implante na cidade." |
-| Os 3 dados na primeira mensagem | Um par por toque |
+| Elogio depois da fraqueza, ou 3 oportunidades no P1 | P1 com 1 elogio + 2 oportunidades; depois, um dado novo por toque |
 | "Posso te mandar? Qual seu e-mail? Que dia você pode?" | "Faz sentido eu te mostrar o que resolver primeiro?" |
 | "A concorrente é melhor que vocês." | "A [CONCORRENTE] tem 312 avaliações." |
 | "Site a partir de R$ 3.000." | "O Thiago passa os valores na conversa, junto com o que encontrou." |
