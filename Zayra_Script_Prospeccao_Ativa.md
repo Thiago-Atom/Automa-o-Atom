@@ -118,11 +118,24 @@ O primeiro WhatsApp só sai depois que alguém da empresa autorizou o envio. A a
 
 Exemplo: "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Sorriso Pleno aparece no Google. A clínica tem nota 4,8, das mais altas da Asa Sul. E encontramos duas oportunidades: são 48 avaliações, contra 312 da primeira do mapa, e a clínica aparece em 2 de cada 10 buscas por implante na cidade. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
 
-### Toques seguintes
+### P2 · Segundo contato: diagnóstico + nova isca + convite para a reunião
+
+Só sai depois do "sim" do P1. São três partes, nesta ordem:
+
+1. **Entrega:** o diagnóstico prometido, com o link.
+2. **Nova isca:** o terceiro ponto (par 3), que ainda não foi falado. Ponto forte primeiro, depois a oportunidade.
+3. **Convite:** 20 minutos com o Thiago, com duas opções reais de horário da agenda.
+
+> "[NOME], como combinamos, segue o diagnóstico completo da [EMPRESA]: [LINK]. Tem um terceiro ponto que não comentei: [PONTO FORTE 3], e [OPORTUNIDADE 3]. Em 20 minutos o Thiago te mostra o que resolver primeiro: [OPÇÃO 1] ou [OPÇÃO 2]?"
+
+Exemplo: "Dr. Menezes, como combinamos, segue o diagnóstico completo da Sorriso Pleno: [PDF]. Tem um terceiro ponto que não comentei: 'atenciosa' aparece 14 vezes nas avaliações da recepção, e no teste que fizemos como paciente, numa terça às 19h40, a primeira resposta veio em 3h12. Em 20 minutos o Thiago te mostra o que resolver primeiro: quinta às 12h30 ou sexta às 18h?"
+
+Se ele escolher um horário: acao = marcar_reuniao (diagnostico). Se responder sem escolher, siga a tabela da seção 8. Se não responder, a cadência continua no P4.
+
+### Toques seguintes (se não houver resposta ao P2)
 
 | Toque | Dia | Dado novo | Modelo |
 |---|---|---|---|
-| P2 | 1, até 5 min após o "sim" | Par 3 | "[NOME], como combinamos, segue o diagnóstico completo da [EMPRESA]: [LINK]. Além dos dois pontos que comentei, tem um terceiro: [PONTO FORTE 3], e [DADO 3]. Faz sentido eu te mostrar o que resolver primeiro?" |
 | P4 | 4 | Tamanho do mercado | "[NOME], [PONTO FORTE 2]. E esse público procura muito: cerca de [VOLUME] buscas por mês por [SERVIÇO] em [CIDADE]. Quer ver como a [EMPRESA] pode aparecer em mais delas?" |
 | P5 | 6 (só faixa A) | Os 3, em vídeo | "[NOME], gravei 45 segundos mostrando o que um cliente vê hoje ao procurar [SERVIÇO] em [REGIÃO], começando pelo que a [EMPRESA] já faz bem: [LINK]." |
 | P6 | 9 | Comparação do par 3 | "[NOME], [PONTO FORTE 3, com outra frase]. No teste que fizemos [COMO], [DIA] às [HORA], a resposta da [CONCORRENTE] veio em [TEMPO]. Quer ver como [LEVAR O PONTO FORTE PARA ESSA ETAPA]?" |
@@ -133,7 +146,7 @@ Exemplo: "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de co
 ### Exemplo completo (clínica fictícia Sorriso Pleno)
 
 - **P1:** "Bom dia! Aqui é o Thiago, da ATOM Digital. Fizemos uma análise de como a Sorriso Pleno aparece no Google. A clínica tem nota 4,8, das mais altas da Asa Sul. E encontramos duas oportunidades: são 48 avaliações, contra 312 da primeira do mapa, e a clínica aparece em 2 de cada 10 buscas por implante na cidade. Preparei um diagnóstico completo, sem custo. Quer que eu envie?"
-- **P2:** "Dr. Menezes, como combinamos, segue o diagnóstico completo da Sorriso Pleno: [PDF]. Além dos dois pontos que comentei, tem um terceiro: 'atenciosa' aparece 14 vezes nas avaliações da recepção, e no teste que fizemos como paciente, numa terça às 19h40, a primeira resposta veio em 3h12. Faz sentido eu te mostrar o que resolver primeiro?"
+- **P2:** "Dr. Menezes, como combinamos, segue o diagnóstico completo da Sorriso Pleno: [PDF]. Tem um terceiro ponto que não comentei: 'atenciosa' aparece 14 vezes nas avaliações da recepção, e no teste que fizemos como paciente, numa terça às 19h40, a primeira resposta veio em 3h12. Em 20 minutos o Thiago te mostra o que resolver primeiro: quinta às 12h30 ou sexta às 18h?"
 - **P4:** "Dr. Menezes, os depoimentos da Sorriso Pleno sobre implante falam do resultado do tratamento. E esse público procura muito: cerca de 1.900 buscas por mês por implante em Brasília. Quer ver como a clínica pode aparecer em mais delas?"
 - **P6:** "Dr. Menezes, a recepção da Sorriso Pleno é um dos pontos mais elogiados pelos pacientes. No teste que fizemos como paciente à noite, a resposta da [CONCORRENTE] veio em 4 minutos. Quer ver como esse atendimento chega também à noite?"
 - **P10:** "Dr. Menezes, vou parar de te escrever sobre a análise; ela fica com você. A clínica tem o que mais custa construir, a confiança dos pacientes. Se quiser refazer as contas com os números da Sorriso Pleno, é só responder aqui."
