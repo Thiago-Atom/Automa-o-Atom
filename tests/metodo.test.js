@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { carregarMetodo } from '../lib/metodo.js';
 
-const { AREAS, TIPOS, PLANEJAMENTO_PADRAO: PLAN, ROTEIROS, MOTOR } = carregarMetodo();
+const { AREAS, TIPOS, PLANEJAMENTO_PADRAO: PLAN, ROTEIROS, PAGINAS, MOTOR } = carregarMetodo();
 
 function rascunho(tipos, marcadas = {}) {
   const marc = {}, dentro = {};
@@ -21,16 +21,16 @@ test('régua: 2 pontos por critério e faixas 0–4, 5–7, 8–10', () => {
   assert.equal(MOTOR.faixa(8), 'Funciona');
 });
 
-test('diagnóstico Site: áreas do tipo, nota geral e 3 urgências pelas notas mais baixas', () => {
-  const r = rascunho(['site'], { sit: 4, conv: 1, est: 2, loja: 3 });
+test('diagnóstico Site: áreas do tipo (com páginas de destino), nota geral e 3 urgências pelas notas mais baixas', () => {
+  const r = rascunho(['site'], { sit: 4, conv: 1, est: 2, loja: 3, pag: 5 });
   const d = MOTOR.diagnostico(r);
-  assert.deepEqual([...d.areas].sort(), ['conv', 'est', 'loja', 'sit']);
-  assert.equal(d.geral, (8 + 2 + 4 + 6) / 4);
+  assert.deepEqual([...d.areas].sort(), ['conv', 'est', 'loja', 'pag', 'sit']);
+  assert.equal(d.geral, (8 + 2 + 4 + 6 + 10) / 5);
   assert.deepEqual(d.urg, ['conv', 'est', 'loja']);
 });
 
 test('área fora da medição não entra na nota nem nas urgências', () => {
-  const r = rascunho(['site'], { sit: 4, conv: 1, est: 2, loja: 3 });
+  const r = rascunho(['site'], { sit: 4, conv: 1, est: 2, loja: 3, pag: 5 });
   r.dentro.conv = false;
   const d = MOTOR.diagnostico(r);
   assert.ok(!d.med.includes('conv'));
@@ -53,7 +53,7 @@ test('quanto vale: arredonda a cada etapa (procura × contato × fechamento × t
 });
 
 test('proposta Site: R$ 2.300 à vista, validade de 10 dias, escopo vem das urgências', () => {
-  const r = rascunho(['site'], { sit: 4, conv: 1, est: 2, loja: 3 });
+  const r = rascunho(['site'], { sit: 4, conv: 1, est: 2, loja: 3, pag: 5 });
   const p = MOTOR.proposta(r, MOTOR.diagnostico(r), PLAN, '2026-10-15');
   assert.equal(p.ofertas.length, 1);
   assert.equal(p.ofertas[0].preco, 2300);
@@ -179,4 +179,66 @@ test('script: nenhum preço antes da etapa Proposta', () => {
   for (const t of TIPOS) for (const [nome, texto] of ROTEIROS[t.id].etapas)
     if (!/^Proposta/.test(nome)) assert.doesNotMatch(texto, preco, `${t.id} · ${nome}`);
   for (const [, resp] of ROTEIROS.comum.objecoes) assert.doesNotMatch(resp, /R\$|\d+ ?mil|parcela/i);
+});
+
+// ---------- Páginas de destino (briefing de Google Ads fundido ao diagnóstico Site) ----------
+const LP = '<html><head><title>Implantes em Goiânia</title></head><body><h1>Implantes dentários em Goiânia</h1><form><input type="text" name="nome"><input type="tel" name="tel"><input type="hidden" name="origem"><button type="submit">Enviar</button></form><a href="/politica-de-privacidade">Privacidade</a><h2>Perguntas frequentes</h2></body></html>';
+
+test('lerSite lê o que a página de destino precisa: H1 único com o serviço, formulário, privacidade e FAQ', () => {
+  const s = MOTOR.lerSite([], LP, { cidade: 'Goiânia', segmento: 'implantes' }, 'https://clinicaexemplo.com.br/', '2026-10-28');
+  assert.equal(s.h1Qtd, 1);
+  assert.equal(s.h1Servico, true);
+  assert.equal(s.campos, 2);            // hidden e submit não contam
+  assert.equal(s.privacidade, true);
+  assert.equal(s.faq, true);
+  const dois = MOTOR.lerSite([], '<h1>A</h1><h1 class="x">B</h1>', { segmento: 'implantes' }, 'https://x.com.br/', '2026-10-28');
+  assert.equal(dois.h1Qtd, 2);
+});
+
+test('lerAnuncios: palavras, páginas de destino e quantas caem na página inicial; vazio não vira "não anuncia"', () => {
+  const A = MOTOR.lerAnuncios([
+    { keyword: 'implante dentario goiania', position: 1, volume: 590, cpc: 4.2, url: 'https://clinicaexemplo.com.br/implantes', ad_title: 'Implantes em Goiânia' },
+    { keyword: 'dentista goiania', position: 2, volume: 2400, cpc: 3.1, url: 'https://clinicaexemplo.com.br/' }
+  ], 'https://clinicaexemplo.com.br/', '2026-10-28');
+  assert.equal(A.anuncia, true);
+  assert.equal(A.palavras, 2);
+  assert.equal(A.urls.length, 2);
+  assert.equal(A.naInicial, 1);
+  const vazio = MOTOR.lerAnuncios([], 'https://x.com.br/', '2026-10-28');
+  assert.equal(vazio.anuncia, false);
+});
+
+test('aplicarColetas marca páginas de destino com evidência; anúncio na página inicial reprova o 1º critério', () => {
+  const r = rascunho(['site']);
+  const C = { site: MOTOR.lerSite([], LP, { cidade: 'Goiânia', segmento: 'implantes' }, 'https://clinicaexemplo.com.br/', '2026-10-28'),
+    anuncios: MOTOR.lerAnuncios([{ keyword: 'dentista goiania', url: 'https://clinicaexemplo.com.br/' }], 'https://clinicaexemplo.com.br/', '2026-10-28') };
+  MOTOR.aplicarColetas(r, C);
+  assert.equal(r.marc.pag[0], false);
+  assert.equal(r.marc.pag[1], true);
+  assert.equal(r.marc.pag[4], true);
+  assert.equal(r.marc.conv[1], true);   // formulário de 2 campos
+  assert.match(r.evid.pag, /28\/10\/2026/);
+  assert.match(r.evid.pag, /página inicial/);
+  const sem = rascunho(['site']);
+  MOTOR.aplicarColetas(sem, { anuncios: MOTOR.lerAnuncios([], 'https://clinicaexemplo.com.br/', '2026-10-28') });
+  assert.match(sem.evid.pag, /não encontrou anúncios/);
+  assert.doesNotMatch(sem.evid.pag, /não anuncia/);
+});
+
+test('método de páginas: 5 decisões, ficha, checklist e os dois prompts sem inventar dados', () => {
+  assert.deepEqual(PAGINAS.decisoes.map((d) => d[0]), ['Manter', 'Melhorar', 'Agrupar', 'Criar', 'Não criar']);
+  assert.equal(PAGINAS.prompts.length, 2);
+  assert.match(PAGINAS.prompts[0][1], /NÃO escreva páginas/);
+  for (const [, texto] of PAGINAS.prompts) { assert.match(texto, /Não publique/); assert.match(texto, /\[CONFIRMAR\]/); }
+  assert.ok(TIPOS.find((t) => t.id === 'site').areas.includes('pag'));
+});
+
+test('lerAnuncios lê o CSV real da API do Semrush; página em subdomínio não conta como página inicial', () => {
+  const csv = 'Keyword;Position;Search Volume;CPC;Url;Title;Timestamp\nhapi vida;1;1300;0.92;https://saudedigital-pf.hapvida.com.br/lqi/inicio;Hapvida: Plano de Saúde;1788641969\nhapi vida;2;1300;0.92;https://saudedigital-pf.hapvida.com.br/lqi/inicio;Hapvida: Plano de Saúde;1788641969\nhapvida + odonto;1;110;0.30;https://planos-odonto.hapvida.com.br/;Hapvida Mais Odonto;1791628842\n';
+  const A = MOTOR.lerAnuncios(csv, 'https://www.hapvida.com.br/', '2026-10-28');
+  assert.equal(A.palavras, 2);           // "hapi vida" aparece em 2 posições: conta uma vez
+  assert.equal(A.urls.length, 2);
+  assert.equal(A.naInicial, 0);
+  assert.equal(A.top[0].volume, 1300);
+  assert.equal(A.top[0].titulo, 'Hapvida: Plano de Saúde');
 });

@@ -109,6 +109,9 @@ const MOTOR = (function () {
     const cidade = normal(String(ctx.cidade || "").split("/")[0]), seg = normal(ctx.segmento || "").split(" ")[0] || "";
     const tit = p => p["metadata.title"] ?? (p.metadata || {}).title, desc = p => p["metadata.description"] ?? (p.metadata || {}).description;
     const metaDesc = ((html.match(/<meta[^>]+name=["']description["'][^>]*content=["']([^"']{10,300})/i) || [])[1] || "").trim();
+    // Página de destino: quantos H1, se o H1 diz o serviço, campos visíveis de formulário, privacidade e perguntas frequentes.
+    const h1Qtd = (html.match(/<h1[\s>]/gi) || []).length;
+    const campos = (html.match(/<(input|textarea|select)\b[^>]*>/gi) || []).filter(t => !/type=["']?(hidden|submit|button|checkbox|radio|search)/i.test(t)).length;
     return {
       fonte: "Apify · Website Content Crawler", url, data: dataISO,
       paginas: pags.length, semDescricao: pags.filter(p => !desc(p)).length, semTitulo: pags.filter(p => !tit(p)).length,
@@ -116,8 +119,31 @@ const MOTOR = (function () {
       whatsapp: /wa\.me\/|api\.whatsapp\.com|whatsapp:\/\//.test(low), tel: /href=["']tel:/.test(low),
       ga4: /gtag\/js\?id=g-|googletagmanager\.com\/gtag/.test(low), gtm: /googletagmanager\.com\/gtm\.js|gtm-[a-z0-9]{4,}/.test(low), pixel: /connect\.facebook\.net|fbq\(/.test(low),
       cms: /wp-content|wp-includes/.test(low) ? "WordPress" : /wix\.com|wixstatic/.test(low) ? "Wix" : /cdn\.shopify/.test(low) ? "Shopify" : /nuvemshop|lojanuvem/.test(low) ? "Nuvemshop" : "",
-      citaCidade: cidade ? texto.includes(cidade) : null, citaSegmento: seg ? texto.includes(seg) : null, instagram: insta
+      citaCidade: cidade ? texto.includes(cidade) : null, citaSegmento: seg ? texto.includes(seg) : null, instagram: insta,
+      h1Qtd, h1Servico: seg ? normal(h1).includes(seg) : null, campos, temForm: /<form\b/i.test(html),
+      privacidade: /href=["'][^"']*(privacidade|privacy|lgpd|protecao-de-dados|politica-de-dados)/i.test(low),
+      faq: /faqpage|perguntas frequentes|d[uú]vidas frequentes/i.test(low)
     };
+  }
+  // Anúncios no Google pelo Semrush (relatório resource_adwords, base br). Aceita o CSV da API ("Keyword;Position;Search Volume;CPC;Url;Title;Timestamp")
+  // ou linhas já lidas { keyword, position, volume, cpc, url, ad_title }. Sem linhas = o Semrush não encontrou anúncios do domínio na data,
+  // o que não quer dizer que a empresa não anuncia.
+  const COL_SEMRUSH = { "keyword": "keyword", "position": "position", "search volume": "volume", "cpc": "cpc", "url": "url", "title": "ad_title", "timestamp": "timestamp" };
+  function linhasSemrush(csv) {
+    const L = String(csv || "").trim().split(/\r?\n/).filter(Boolean);
+    if (L.length < 2) return [];
+    const cab = L[0].split(";").map(c => COL_SEMRUSH[c.trim().toLowerCase()] || c.trim());
+    return L.slice(1).map(l => { const v = l.split(";"), o = {}; cab.forEach((c, i) => { o[c] = ["position", "volume", "cpc"].includes(c) ? Number(v[i]) : (v[i] ?? "").trim(); }); return o; });
+  }
+  function lerAnuncios(linhas, url, dataISO) {
+    linhas = (typeof linhas === "string" ? linhasSemrush(linhas) : linhas || []).filter(l => l && l.keyword);
+    const host = u => String(u).toLowerCase().replace(/^[a-z]+:\/\//, "").split(/[/?#]/)[0].replace(/^www\./, "");
+    const caminho = u => (String(u).replace(/^[a-z]+:\/\/[^/?#]+/i, "").replace(/[?#].*$/, "").replace(/\/+$/, "") || "/");
+    const urls = [...new Set(linhas.map(l => l.url).filter(Boolean))], dom = host(url);
+    const vistas = new Set(), unicas = linhas.filter(l => !vistas.has(l.keyword) && vistas.add(l.keyword));
+    return { fonte: "Semrush · anúncios no Google (base Brasil)", url, data: dataISO, anuncia: linhas.length > 0,
+      palavras: unicas.length, urls, naInicial: urls.filter(u => host(u) === dom && caminho(u) === "/").length,
+      top: unicas.slice(0, 5).map(l => ({ palavra: l.keyword, posicao: l.position, volume: l.volume, cpc: l.cpc, url: l.url, titulo: l.ad_title || "" })) };
   }
   // p: Instagram Profile Scraper (username, biography, externalUrl, followersCount, postsCount, isBusinessAccount, latestPosts…)
   function lerInsta(p, dataISO) {
@@ -131,7 +157,7 @@ const MOTOR = (function () {
       ultimoDias: posts[0] ? diasEntre(posts[0].timestamp, dataISO) : null, mes: em30.length, reelsMes: em30.filter(x => x.productType === "clips" || x.type === "Video").length,
       engajamento: eng, link: !!p.externalUrl, whatsappBio: /wa\.me|whatsapp|api\.whatsapp/.test(bio), bio: p.biography || "" };
   }
-  // Marca os critérios que a coleta prova e escreve a evidência com fonte e data. C = { mapa, site, insta }.
+  // Marca os critérios que a coleta prova e escreve a evidência com fonte e data. C = { mapa, site, insta, anuncios }.
   function aplicarColetas(r, C) {
     const areas = areasDe(r.tipos), tem = a => areas.includes(a);
     r.evid = r.evid || {};
@@ -154,6 +180,22 @@ const MOTOR = (function () {
         r.evid.est = `${f}: ${s.semDescricao} de ${s.paginas} páginas sem descrição; dados estruturados: ${s.tipos.length ? s.tipos.join(", ") : "nenhum"}.`; }
       if (tem("conv")) { r.marc.conv[3] = s.ga4 || s.gtm; r.dentro.conv = true;
         r.evid.conv = `${f}: ${[s.ga4 && "GA4", s.gtm && "Tag Manager", s.pixel && "Meta Pixel"].filter(Boolean).join(", ") || "nenhuma tag de medição"} instalado(s). Conferir se as conversões estão configuradas.`; }
+    }
+    const A = C.anuncios;
+    if (tem("pag") && (s || A)) {
+      r.dentro.pag = true;
+      const partes = [];
+      if (s) {
+        r.marc.pag[1] = s.h1Qtd === 1 && !!s.h1Servico; r.marc.pag[4] = s.privacidade;
+        partes.push(`Apify · ${dominio(s.url)}, ${dataBR(s.data)}: ${s.h1Qtd} H1${s.h1 ? ` ("${s.h1}")` : ""}${s.h1Servico === false ? ", sem o serviço" : ""}; ${s.temForm ? `formulário com ${s.campos} campo(s)` : "sem formulário na página inicial"}; política de privacidade ${s.privacidade ? "com link" : "sem link"}; perguntas frequentes ${s.faq ? "presentes" : "não encontradas"}`);
+        if (tem("conv") && s.temForm && s.campos >= 1 && s.campos <= 3) r.marc.conv[1] = true;
+      }
+      if (A) {
+        r.marc.pag[0] = A.anuncia && A.urls.length > 0 && A.naInicial === 0;
+        partes.push(A.anuncia ? `${A.fonte}, ${dataBR(A.data)}: ${A.palavras} palavra(s) compradas, ${A.urls.length} página(s) de destino, ${A.naInicial} delas na página inicial; ${A.top.map(t => `"${t.palavra}" → ${t.url}`).join("; ")}`
+          : `${A.fonte}, ${dataBR(A.data)}: o Semrush não encontrou anúncios do domínio. Conferir na navegação se cada serviço tem página própria`);
+      }
+      r.evid.pag = partes.join(". ") + ". Ação visível sem rolar e dúvidas respondidas: conferir no celular.";
     }
     const g = C.insta;
     if (g && tem("ins")) {
@@ -198,5 +240,5 @@ const MOTOR = (function () {
   const brl = v => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 2 });
   function somaDias(iso, n) { const d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
 
-  return { ORDEM, rapido, txt, nota, faixa, areasDe, diagnostico, proposta, OFERTAS_DO_TIPO, brl, normal, dominio, dataBR, acharEmpresa, lerMapa, lerSite, lerInsta, aplicarColetas, tresFatos, mensagemAbordagem, regraDoNegocio, rascunhoAutomatico };
+  return { ORDEM, rapido, txt, nota, faixa, areasDe, diagnostico, proposta, OFERTAS_DO_TIPO, brl, normal, dominio, dataBR, acharEmpresa, lerMapa, lerSite, lerInsta, lerAnuncios, linhasSemrush, aplicarColetas, tresFatos, mensagemAbordagem, regraDoNegocio, rascunhoAutomatico };
 })();

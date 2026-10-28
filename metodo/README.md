@@ -31,7 +31,7 @@ Os diagnósticos se somam para o mesmo cliente: as áreas se unem e a coleta com
 
 ### 2.1 Áreas e régua
 
-- **17 áreas**, por exemplo: reputação, busca no Google, Google Maps, avaliações, site, Instagram, busca com IA, estrutura para SEO, conversão, loja, mídia paga, medição, WhatsApp, CRM, fechamento, pós-venda e números do negócio.
+- **18 áreas**, por exemplo: reputação, busca no Google, Google Maps, avaliações, site, Instagram, busca com IA, estrutura para SEO, conversão, páginas de destino, loja, mídia paga, medição, WhatsApp, CRM, fechamento, pós-venda e números do negócio.
 - **Critérios:** cada área tem 5 critérios, e cada critério atendido vale 2 pontos. A nota da área vai de 0 a 10.
 - **Faixas da nota:**
 
@@ -179,6 +179,7 @@ Para abrir localmente com tudo funcionando (menos conectores): `npm run metodo` 
 
 | Data | Mudança |
 |---|---|
+| 28/10/2026 | Diagnóstico Site fundido com o briefing de páginas de destino (Google Ads): nova área **Páginas de destino** (18ª), anúncios e URLs de destino pelo Semrush (`resource_adwords`, base Brasil, 20 unidades por linha, medido), mapa de páginas (manter, melhorar, agrupar, criar, não criar), método e prompts em duas etapas em `PAGINAS` (`dados.js`), novo ponto "Mesma promessa da busca ao botão". Motor lê H1, formulário, privacidade e FAQ e o CSV do Semrush. Ver `docs/16_paginas_destino.md` |
 | 15/10/2026 | Script e método de cada diagnóstico: aba "Script e método" com o método em uma tela, o script etapa por etapa (abordagem D1 a D12, entrega, reunião e proposta; no Total, da oferta à ponte para o projeto), perguntas de descoberta, objeções aprovadas (W08) e regras. Conteúdo em `ROTEIROS` (`dados.js`); teste garante que nenhum preço aparece antes da etapa Proposta |
 | 15/10/2026 | Leitura das coletas (mapa, site, Instagram), marcação dos critérios e as 3 informações da abordagem com a primeira mensagem passam para `motor.js` (as mesmas no n8n); a tela Coleta mostra as 3 informações |
 | 15/10/2026 | Início do SaaS (fase 1): motor único `metodo/motor.js` usado pela página e pelo n8n; passo Proposta no Gerar (modo 2); plano em `docs/14_saas_propostas.md` |

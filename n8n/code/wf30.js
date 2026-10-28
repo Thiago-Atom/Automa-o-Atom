@@ -43,7 +43,7 @@ const site = String(rot(cf[F.dominio]) || org.website || '').trim();
 const segmento = String(rot(cf[F.nicho]) || '').trim();
 const empresa = { nome: String(org.name || deal.title || '').trim(), site, cidade, uf, segmento };
 const areas = MOTOR.areasDe(regra.tipos);
-const usaMapa = areas.includes('map') || areas.includes('ava'), usaSite = ['sit', 'est', 'conv'].some((a) => areas.includes(a)) && !!site;
+const usaMapa = areas.includes('map') || areas.includes('ava'), usaSite = ['sit', 'est', 'conv', 'pag'].some((a) => areas.includes(a)) && !!site;
 const faltas = [];
 if (!empresa.nome) faltas.push('nome da organização');
 if (usaMapa && (!segmento || !cidade)) faltas.push('nicho e cidade da organização (para o Google Maps)');

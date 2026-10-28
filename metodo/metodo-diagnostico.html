@@ -424,7 +424,7 @@ table.t input { width: 100px; padding: 6px 8px; border: 1px solid var(--fio-fort
 .numeros-r span { font-size: var(--fs-h4); font-weight: 500; font-variant-numeric: tabular-nums; }
 .numeros-r small { font-size: var(--fs-caption); color: var(--suave); line-height: 1.4; }
 .paineis-c { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
-.painel-c { background: var(--fundo); border-top: 3px solid var(--verde); box-shadow: var(--sombra); padding: 14px 16px; display: grid; gap: 6px; }
+.painel-c { background: var(--fundo); border-top: 3px solid var(--verde); box-shadow: var(--sombra); padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
 .painel-c .dl div { padding: 6px 0; }
 .conectado { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--verde-texto); }
 
@@ -448,11 +448,11 @@ footer .url { font-family: var(--mono); font-size: 12px; letter-spacing: .3em; p
 .msg-r .topo { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .msg-r .topo b { font-size: var(--fs-small); }
 .msg-r .fala { margin: 0; white-space: pre-wrap; }
-.msg-r .fala mark, table.t mark { background: var(--lavanda); color: var(--tinta); padding: 0 3px; border-radius: 3px; }
+mark { background: var(--lavanda); color: var(--tinta); padding: 0 3px; border-radius: 3px; }
 .msg-r .btn { padding: 6px 12px; }
 .metodo-r { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .metodo-r > div { border-top: 3px solid var(--fio-forte); padding-top: 10px; display: grid; gap: 4px; align-content: start; }
-@media (max-width: 760px) { .metodo-r { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) { .metodo-r { grid-template-columns: 1fr 1fr !important; } }
 </style>
 
 <header class="topo">
@@ -912,9 +912,35 @@ function telaScript(t) {
   <section class="secao"><div class="cab"><span class="over">Objeções</span><h2>Respostas <b>aprovadas</b></h2><p class="lead">Valem para todos os diagnósticos.</p></div>
     <div class="rolar"><table class="t"><thead><tr><th>O lead diz</th><th>Responder</th><th>Cuidado</th></tr></thead><tbody>
     ${C.objecoes.map(([q, r, n]) => `<tr><td><b>${esc(q)}</b></td><td>${marcaCampos(r)}</td><td class="suave small">${esc(n || "")}</td></tr>`).join("")}</tbody></table></div>
-    <div class="cab" style="margin-top:24px"><span class="over">Regras do script</span></div><ul class="setas">${C.regras.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></section>` + fimTipo();
+    <div class="cab" style="margin-top:24px"><span class="over">Regras do script</span></div><ul class="setas">${C.regras.map(x => `<li><span>${esc(x)}</span></li>`).join("")}</ul></section>` + (t.paginas ? paginasHTML() : "") + fimTipo();
+}
+function paginasHTML() {
+  const P = PAGINAS, lista = a => `<ul class="setas">${a.map(x => `<li><span>${marcaCampos(x)}</span></li>`).join("")}</ul>`;
+  return `
+  <section class="secao"><div class="cab"><span class="over">Páginas de destino</span><h2>Uma página por intenção, <b>não por palavra-chave</b></h2><p class="lead">${esc(P.regra)}</p></div>
+    <div class="metodo-r" style="grid-template-columns:repeat(5,minmax(0,1fr))">${P.decisoes.map(([d, x]) => `<div><b>${esc(d)}</b><span class="small suave">${esc(x)}</span></div>`).join("")}</div>
+    <div class="tres" style="margin-top:20px">
+      <div><span class="over">Criar página nova quando</span><h4>Pelo menos uma é verdadeira</h4>${lista(P.quandoCriar)}<span class="cap">${esc(P.naoCriar)}</span></div>
+      <div><span class="over">Ficha de cada página recomendada</span><h4>O que a análise entrega</h4>${lista(P.ficha)}</div>
+      <div><span class="over">Com acesso à conta do Google Ads</span><h4>Exportações que pedimos</h4>${lista(P.conta)}<span class="cap">Sem a conta, vale o Semrush, e o que faltar sai como [NÃO VERIFICADO].</span></div>
+    </div></section>
+  <section class="secao"><div class="cab"><span class="over">Estrutura</span><h2>Como a página é <b>montada</b></h2></div>
+    <div class="rolar"><table class="t"><thead><tr><th>Bloco</th><th>Função</th><th>Critério de qualidade</th></tr></thead><tbody>${P.estrutura.map(([b, f, c]) => `<tr><td><b>${esc(b)}</b></td><td>${esc(f)}</td><td class="suave">${esc(c)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="tres" style="margin-top:20px">
+      <div><span class="over">Requisitos</span><h4>Em toda página</h4>${lista(P.elementos)}</div>
+      <div><span class="over">Marcadores</span><h4>Nada inventado</h4><ul class="setas">${P.marcadores.map(([m, x]) => `<li><span><mark>${esc(m)}</mark> ${esc(x)}</span></li>`).join("")}</ul><span class="over" style="margin-top:12px">Cauda longa</span><span class="small">${esc(P.caudaLonga)}</span></div>
+      <div><span class="over">Medição</span><h4>Provar a melhoria</h4><span class="small">${esc(P.medicao)}</span><span class="cap">${esc(P.nota)}</span></div>
+    </div></section>
+  <section class="secao"><div class="cab"><span class="over">Prompts para a Claude</span><h2>Duas etapas, <b>nessa ordem</b></h2><p class="lead">A etapa 1 faz parte do diagnóstico e termina no mapa de páginas aprovado. A etapa 2 é a entrega do projeto vendido: uma ficha aprovada por vez.</p></div>
+    <div class="roteiro">${P.prompts.map(([nome, texto], i) => `<div class="msg-r"><div class="topo"><b>${esc(nome)}</b><button type="button" class="btn sec" data-copiar-p="${i}">Copiar</button></div><p class="fala">${marcaCampos(texto)}</p></div>`).join("")}</div>
+    <span class="msg" id="msg-p" role="status"></span>
+    <div class="cab" style="margin-top:24px"><span class="over">Antes de publicar qualquer página</span></div>${lista(P.checklist)}</section>`;
 }
 function ligarScript(t) {
+  document.querySelectorAll("[data-copiar-p]").forEach(b => b.onclick = async () => {
+    const m = document.getElementById("msg-p"), p = PAGINAS.prompts[Number(b.dataset.copiarP)];
+    try { await navigator.clipboard.writeText(p[1]); m.textContent = `"${p[0]}" copiado.`; } catch (x) { m.textContent = "Não foi possível copiar aqui."; }
+  });
   document.querySelectorAll("[data-copiar-r]").forEach(b => b.onclick = async () => {
     const m = document.getElementById("msg-r"), e = ROTEIROS[t.id].etapas[Number(b.dataset.copiarR)];
     try { await navigator.clipboard.writeText(e[1]); m.textContent = `"${e[0]}" copiado.`; } catch (x) { m.textContent = "Não foi possível copiar aqui."; }
@@ -1321,6 +1347,16 @@ async function coletarInsta(user, msgEl) {
   if (!g) throw { code: "run", message: `Instagram: perfil @${user} não encontrado ou privado.` };
   return { ...g, data: hoje(), runId: run.runId };
 }
+const SEMRUSH = "Semrush";
+// Anúncios no Google (Semrush, base Brasil): 20 palavras, 20 unidades por linha, da franquia. "no_data" = nada encontrado, não "não anuncia".
+async function coletarAnuncios(url) {
+  let p;
+  try { p = (await mcp.callTool(SEMRUSH, "execute_report", { report: "resource_adwords", params: { target: dominio(url), database: "br", display_limit: 20, display_sort: "traffic_desc", export_columns: ["keyword", "position", "volume", "cpc", "url", "ad_title", "timestamp"] } }, { cache: false })).payload; }
+  catch (e) { if (/no_data/.test(e?.message || "")) p = { code: "no_data" }; else throw e; }
+  if (typeof p === "string") { try { p = JSON.parse(p); } catch (e) { p = { data: p }; } }
+  if (p && p.code && p.code !== "no_data") throw { code: "tool_error", message: p.message || p.code };
+  return { ...MOTOR.lerAnuncios(p && typeof p.data === "string" ? p.data : [], url, hoje()), unidades: p?.metadata?.usage?.api_units || 0 };
+}
 function aplicarColetas(r) { MOTOR.aplicarColetas(r, coletasDe(r)); }
 
 function fatosHTML(r) {
@@ -1332,25 +1368,26 @@ function fatosHTML(r) {
     ${msg ? `<div class="msg-ab"><span class="cap">Primeira mensagem (sem preço, você aprova antes de enviar)</span><p>${esc(msg)}</p></div>` : ""}</div>`;
 }
 function coletaHTML(r, areas) {
-  const usaMapa = areas.includes("map") || areas.includes("ava"), usaSite = ["sit", "est", "conv"].some(a => areas.includes(a)), usaInsta = areas.includes("ins");
+  const usaMapa = areas.includes("map") || areas.includes("ava"), usaSite = ["sit", "est", "conv", "pag"].some(a => areas.includes(a)), usaInsta = areas.includes("ins"), usaAds = areas.includes("pag");
   if (!usaMapa && !usaSite && !usaInsta) return "";
-  const C = coletasDe(r), m = C.mapa, s = C.site, g = C.insta;
+  const C = coletasDe(r), m = C.mapa, s = C.site, g = C.insta, A = C.anuncios;
   const custoEst = (usaMapa ? (r.apN ?? 20) * 0.003 : 0) + (usaSite ? 0.002 : 0) + (usaInsta ? 0.0023 : 0);
   const sim = v => v ? `<b style="color:var(--verde-texto)">sim</b>` : `<b style="color:var(--ruim)">não</b>`;
   const linha = (k, v) => `<div><dt>${k}</dt><dd>${v}</dd></div>`;
   const pMapa = m && m.itens?.length ? `<div class="rolar"><table class="t"><thead><tr><th class="r">Pos.</th><th>Empresa no mapa</th><th class="r">Nota</th><th class="r">Avaliações</th><th class="r">Fotos</th><th>Perfil</th><th></th></tr></thead><tbody>
     ${m.itens.map((x, i) => `<tr class="${i === m.alvo ? "alvo" : ""}"><td class="r num">${i + 1}º</td><td>${esc(x.title)}<br><span class="cap">${esc(x.categoryName || "")}</span></td><td class="r num">${x.totalScore != null ? n1(x.totalScore) : "—"}</td><td class="r num">${x.reviewsCount != null ? n0(x.reviewsCount) : "—"}</td><td class="r num">${x.imagesCount != null ? n0(x.imagesCount) : "—"}</td><td class="small">${x.claimThisBusiness ? "não reivindicado" : "reivindicado"}</td><td>${i === m.alvo ? `<span class="conectado">é a empresa</span>` : `<button type="button" class="btn sec" data-alvo="${i}" style="padding:6px 10px">É esta</button>`}</td></tr>`).join("")}</tbody></table></div>
     <p class="cap">Google Maps · "${esc(m.busca)}" em ${esc(m.cidade)} · ${dataBR(m.data)} · ${m.itens.length} lugares · custo ${brl(emBRL(m.custoUSD, "USD"), 2)}${m.alvo < 0 ? " · a empresa não está nesta lista" : ""}</p>` : "";
-  const pSite = s ? `<div class="painel-c"><span class="over">Site · ${esc(dominio(s.url))}</span><dl class="dl">${linha("Páginas lidas", s.paginas)}${linha("Título da home", esc(s.titulo || "—"))}${linha("H1 da home", esc(s.h1 || "sem H1"))}${linha("Cita o segmento / a cidade", `${sim(s.citaSegmento)} / ${sim(s.citaCidade)}`)}${linha("Link de WhatsApp", sim(s.whatsapp))}${linha("Telefone clicável", sim(s.tel))}${linha("Páginas sem descrição", `${s.semDescricao} de ${s.paginas}`)}${linha("Dados estruturados", esc(s.tipos.join(", ") || "nenhum"))}${linha("Medição", [s.ga4 && "GA4", s.gtm && "Tag Manager", s.pixel && "Meta Pixel"].filter(Boolean).join(", ") || `<b style="color:var(--ruim)">nenhuma</b>`)}${linha("Plataforma", esc(s.cms || "não identificada"))}</dl><p class="cap">${dataBR(s.data)} · custo ${brl(emBRL(s.custoUSD, "USD"), 3)}</p></div>` : "";
+  const pSite = s ? `<div class="painel-c"><span class="over">Site · ${esc(dominio(s.url))}</span><dl class="dl">${linha("Páginas lidas", s.paginas)}${linha("Título da home", esc(s.titulo || "—"))}${linha("H1 da home", esc(s.h1 || "sem H1"))}${linha("Cita o segmento / a cidade", `${sim(s.citaSegmento)} / ${sim(s.citaCidade)}`)}${linha("Link de WhatsApp", sim(s.whatsapp))}${linha("Telefone clicável", sim(s.tel))}${linha("Páginas sem descrição", `${s.semDescricao} de ${s.paginas}`)}${linha("Dados estruturados", esc(s.tipos.join(", ") || "nenhum"))}${linha("Medição", [s.ga4 && "GA4", s.gtm && "Tag Manager", s.pixel && "Meta Pixel"].filter(Boolean).join(", ") || `<b style="color:var(--ruim)">nenhuma</b>`)}${linha("Plataforma", esc(s.cms || "não identificada"))}${s.h1Qtd != null ? linha("H1 na página / com o serviço", `${s.h1Qtd} / ${sim(s.h1Servico)}`) + linha("Formulário", s.temForm ? `${s.campos} campo(s)` : "não há na página inicial") + linha("Política de privacidade", sim(s.privacidade)) + linha("Perguntas frequentes", sim(s.faq)) : ""}</dl><p class="cap">${dataBR(s.data)} · custo ${brl(emBRL(s.custoUSD, "USD"), 3)}</p></div>` : "";
+  const pAds = A ? `<div class="painel-c"><span class="over">Anúncios no Google · Semrush</span>${A.anuncia ? `<dl class="dl">${linha("Palavras compradas", A.palavras)}${linha("Páginas de destino", A.urls.length)}${linha("Caem na página inicial", A.naInicial ? `<b style="color:var(--ruim)">${A.naInicial}</b>` : `<b style="color:var(--verde-texto)">nenhuma</b>`)}</dl><ul class="setas">${A.top.map(t => `<li><span>"${esc(t.palavra)}"${t.volume ? ` · ${n0(t.volume)}/mês` : ""} → <span class="cap">${esc(t.url)}</span></span></li>`).join("")}</ul>` : `<p class="small">O Semrush não encontrou anúncios do domínio na base Brasil. Isso não prova que a empresa não anuncia: confirmar na reunião.</p>`}<p class="cap">${dataBR(A.data)} · ${A.unidades ? n0(A.unidades) + " unidades da franquia" : "franquia Semrush"}</p></div>` : "";
   const pInsta = g ? `<div class="painel-c"><span class="over">Instagram · @${esc(g.usuario)}</span><dl class="dl">${linha("Seguidores", n0(g.seguidores || 0))}${linha("Último post", g.ultimoDias != null ? `há ${g.ultimoDias} dias` : "—")}${linha("Posts em 30 dias", g.mes)}${linha("Reels em 30 dias", g.reelsMes)}${linha("Engajamento médio", g.engajamento != null ? n1(g.engajamento) + "%" : "—")}${linha("Link na bio", sim(g.link))}${linha("WhatsApp na bio", sim(g.whatsappBio))}${linha("Conta comercial", sim(g.comercial))}</dl><p class="cap">${dataBR(g.data)} · custo ${brl(emBRL(g.custoUSD, "USD"), 3)}</p></div>` : "";
-  return `<div class="bloco-g"><h4>Coleta automática · Apify</h4>
-    <div class="coleta"><p class="small">Uma coleta lê o que importa em ${[usaMapa && "Google Maps", usaSite && "site", usaInsta && "Instagram"].filter(Boolean).join(", ")} e preenche sozinha os critérios que dá para provar com dado, com fonte e data na evidência. O resto fica para conferência humana.</p>
+  return `<div class="bloco-g"><h4>Coleta automática · Apify${usaAds ? " e Semrush" : ""}</h4>
+    <div class="coleta"><p class="small">Uma coleta lê o que importa em ${[usaMapa && "Google Maps", usaSite && "site", usaAds && "anúncios no Google", usaInsta && "Instagram"].filter(Boolean).join(", ")} e preenche sozinha os critérios que dá para provar com dado, com fonte e data na evidência. O resto fica para conferência humana.</p>
       <div class="linha">${usaMapa ? `<div class="campo"><label for="ap-busca">Busca principal</label><input id="ap-busca" value="${esc(r.apBusca ?? (r.segmento || ""))}" placeholder="ex.: dentista"></div><div class="campo"><label for="ap-cidade">Cidade</label><input id="ap-cidade" value="${esc(r.apCidade ?? (r.cidade || "").split("/")[0])}" placeholder="ex.: Goiânia"></div><div class="campo n"><label for="ap-n">Lugares</label><input id="ap-n" type="number" min="3" max="50" value="${r.apN ?? 20}"></div>` : ""}
         ${usaSite ? `<div class="campo"><label for="ap-site">Site</label><input id="ap-site" value="${esc(r.apSite ?? r.site ?? "")}" placeholder="empresa.com.br"></div>` : ""}
         ${usaInsta ? `<div class="campo"><label for="ap-insta">Instagram</label><input id="ap-insta" value="${esc(r.apInsta ?? "")}" placeholder="@empresa (ou vem do site)"></div>` : ""}
-        <button class="btn" type="button" id="b-apify"${mcp ? "" : " disabled"}>Coletar no Apify</button></div>
-      <p class="estado-msg" id="ap-msg">${mcp ? `Custo estimado desta coleta: ${brl(emBRL(custoEst, "USD"), 2)}. Na primeira vez, o claude.ai pede para você permitir o Apify nesta página.` : "Conector indisponível nesta visualização. Abra a página logado no claude.ai com o conector Apify adicionado."}</p>
-      ${pMapa}${pSite || pInsta ? `<div class="paineis-c">${pSite}${pInsta}</div>` : ""}
+        <button class="btn" type="button" id="b-apify"${mcp ? "" : " disabled"}>${usaAds ? "Coletar" : "Coletar no Apify"}</button></div>
+      <p class="estado-msg" id="ap-msg">${mcp ? `Custo estimado desta coleta: ${brl(emBRL(custoEst, "USD"), 2)}. Na primeira vez, o claude.ai pede para você permitir o Apify${usaAds ? " e o Semrush" : ""} nesta página.${usaAds ? " Anúncios: 20 linhas × 20 unidades da franquia Semrush." : ""}` : `Conector indisponível nesta visualização. Abra a página logado no claude.ai com o conector Apify${usaAds ? " e o Semrush" : ""} adicionado.`}</p>
+      ${pMapa}${pSite || pInsta || pAds ? `<div class="paineis-c">${pSite}${pAds}${pInsta}</div>` : ""}
       ${fatosHTML(r)}
       ${custoColetas(r) ? `<p class="cap"><b>Custo real das coletas deste diagnóstico: ${brl(emBRL(custoColetas(r), "USD"), 2)}</b></p>` : ""}</div></div>`;
 }
@@ -1428,20 +1465,21 @@ const ERRO_MCP = {
   blocked_by_policy: "A política da organização bloqueia o Apify nesta página.",
   not_granted: "Esta visualização não tem acesso a conectores.", capability_disabled: "Esta visualização não tem acesso a conectores."
 };
-const textoErro = e => ERRO_MCP[e?.code] || (e?.code === "tool_error" ? `O Apify recusou: ${e.message}` : e?.code === "run" ? e.message : e?.retryable ? "O Apify não respondeu agora. Tente de novo em instantes." : `Não foi possível coletar (${e?.code || "erro"}).`);
+const textoErro = (e, nome = "Apify") => (ERRO_MCP[e?.code] || (e?.code === "tool_error" ? `O Apify recusou: ${e.message}` : e?.code === "run" ? e.message : e?.retryable ? "O Apify não respondeu agora. Tente de novo em instantes." : `Não foi possível coletar (${e?.code || "erro"}).`)).replace(/Apify/g, nome);
 async function coletarApify() {
   if (coletando || !mcp) return;
   const r = rascunho, msg = document.getElementById("ap-msg"), b = document.getElementById("b-apify"), C = coletasDe(r), areas = areasDe(r);
   const val = id => document.getElementById(id)?.value?.trim() ?? "";
   r.apBusca = val("ap-busca"); r.apCidade = val("ap-cidade"); r.apN = Math.min(50, Math.max(3, parseInt(val("ap-n"), 10) || 20)); r.apSite = val("ap-site"); r.apInsta = val("ap-insta");
-  const usaMapa = areas.includes("map") || areas.includes("ava"), usaSite = ["sit", "est", "conv"].some(a => areas.includes(a)), usaInsta = areas.includes("ins");
+  const usaMapa = areas.includes("map") || areas.includes("ava"), usaSite = ["sit", "est", "conv", "pag"].some(a => areas.includes(a)), usaInsta = areas.includes("ins"), usaAds = areas.includes("pag");
   coletando = true; b.disabled = true; msg.className = "estado-msg";
   const feitos = [], erros = [];
-  const etapa = async (rotulo, fn) => { msg.textContent = `${rotulo}: coletando…`; try { await fn(); feitos.push(rotulo); } catch (e) { erros.push(`${rotulo}: ${textoErro(e)}`); if (["server_not_connected", "needs_reauth", "not_in_manifest", "approval_required", "blocked_by_policy", "not_granted", "capability_disabled", "selection_required"].includes(e?.code)) throw e; } };
+  const etapa = async (rotulo, fn, nome) => { msg.textContent = `${rotulo}: coletando…`; try { await fn(); feitos.push(rotulo); } catch (e) { erros.push(`${rotulo}: ${textoErro(e, nome)}`); if (["server_not_connected", "needs_reauth", "not_in_manifest", "approval_required", "blocked_by_policy", "not_granted", "capability_disabled", "selection_required"].includes(e?.code)) throw e; } };
   try {
     if (usaMapa) { if (!r.apBusca || !r.apCidade) erros.push("Google Maps: preencha a busca principal e a cidade."); else await etapa("Google Maps", async () => { C.mapa = await coletarMapa(r, r.apBusca, r.apCidade, r.apN, msg); }); }
     if (usaSite) { const u = urlSite(r.apSite || r.site); if (!u) erros.push("Site: informe o endereço do site."); else await etapa("Site", async () => { C.site = await coletarSite(r, u, msg); if (!r.apInsta && C.site.instagram) r.apInsta = C.site.instagram; }); }
     if (usaInsta) { const u = arroba(r.apInsta); if (!u) erros.push("Instagram: informe o @ (ou colete o site primeiro, que costuma trazer o link)."); else await etapa("Instagram", async () => { C.insta = await coletarInsta(u, msg); }); }
+    if (usaAds) { const u = urlSite(r.apSite || r.site); if (u) await etapa("Anúncios no Google", async () => { C.anuncios = await coletarAnuncios(u); }, "Semrush"); }
   } catch (e) { /* erro de acesso: para tudo e mostra o motivo */ }
   aplicarColetas(r);
   coletando = false;
