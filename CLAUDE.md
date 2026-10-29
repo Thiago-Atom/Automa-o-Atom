@@ -23,6 +23,7 @@ Dono: Thiago Mota (thiago@atomdigital.com.br). Idioma do projeto: português do 
 - Aprovação humana antes de contato, diagnóstico enviado, cobrança ou publicação.
 - Assinatura pela Autentique (nunca Clicksign). Cobrança pelo Asaas. CRM é o Pipedrive.
 - Sem preço antes da proposta nas mensagens de prospecção.
+- Site feito pela Atom (rodapé "Feito por Atom Digital"): os erros dele nunca aparecem em material para o cliente (proposta, apresentação, mensagem). Ficam só no diagnóstico interno e viram tarefa interna da Atom.
 - Ao mudar o método, atualizar `metodo/README.md` (histórico) e republicar a página no mesmo link.
 - Ao mudar um workflow no n8n, exportar de novo para `n8n/instancia/` e registrar no INVENTARIO.
 

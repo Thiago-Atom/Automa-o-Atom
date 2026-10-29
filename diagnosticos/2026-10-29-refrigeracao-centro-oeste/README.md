@@ -2,7 +2,8 @@
 
 - Página (rascunho interno, nada enviado ao cliente): https://claude.ai/artifact/4Ga5wCQmfpoZnRK9x1Bqq8 (v2)
 - Também salvo em **Gerados** na página do Método (documento `diagnosticos/rco-2026-10-29`), para completar com a entrevista e o cliente oculto.
-- Atenção: o site atual foi feito pela Atom em 2024 (rodapé "Feito por Atom Digital").
+- **Documento interno.** O site atual foi feito pela Atom em 2024 (rodapé "Feito por Atom Digital"): nenhum erro do site vai para o cliente. O material do cliente é `proposta.md`.
+- **Proposta fechada (29/10/2026):** site novo R$ 2.300 à vista + Plano SEO, presença nas IAs e Google Ads R$ 12.000 em 6× R$ 2.000. Total R$ 14.300; primeiro mês R$ 4.300. Válida até 08/11/2026.
 
 ## Resultado
 
@@ -16,7 +17,8 @@
 
 | Arquivo | O que é |
 |---|---|
-| `diagnostico.html` | A página publicada |
+| `diagnostico.html` | A página publicada (interna) |
+| `proposta.md` | Proposta final para o cliente, sem erros do site; base da apresentação |
 | `resultado.json` | Critérios marcados, evidências e saída do motor (`MOTOR.diagnostico` e `MOTOR.proposta`) |
 | `ias-placar.json` | Placar das IAs: 9 perguntas × ChatGPT, Gemini, AI Mode, Perplexity e AI Overview × 2 rodadas |
 | `cliente-oculto-e-entrevista.json` | Roteiro do cliente oculto e perguntas da entrevista, cada uma ligada a um critério |
@@ -32,5 +34,6 @@
 
 | Versão | Mudança |
 |---|---|
+| v3 | Proposta fechada (site + plano SEO e IA). Página marcada como interna; regra: erros de site feito pela Atom não vão para o cliente |
 | v2 | Semrush completo (projeto, auditoria, tracking, orgânico com AI Overview), posicionamento por serviço em Goiânia e Aparecida, placar nas IAs, Instagram real, Reclame Aqui, Lighthouse, roteiro do cliente oculto e da entrevista. Nota de 4,0 para 5,0. Correção: o Maps passou a ser coletado um serviço por vez, porque a coleta combinada descartava empresas repetidas |
 | v1 | Coleta pública inicial: site, Maps, avaliações, Facebook, Semrush básico. Nota 4,0 em 8 áreas |
