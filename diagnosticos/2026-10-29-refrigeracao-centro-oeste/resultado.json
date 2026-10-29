@@ -1,0 +1,431 @@
+{
+ "tipos": [
+  "completo",
+  "site"
+ ],
+ "data": "2026-10-29",
+ "marc": {
+  "rep": [
+   true,
+   true,
+   false,
+   false,
+   false
+  ],
+  "bus": [
+   true,
+   true,
+   true,
+   false,
+   false
+  ],
+  "map": [
+   false,
+   true,
+   false,
+   true,
+   true
+  ],
+  "ava": [
+   false,
+   true,
+   true,
+   false,
+   false
+  ],
+  "sit": [
+   false,
+   true,
+   true,
+   false,
+   false
+  ],
+  "ins": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "ia": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "est": [
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "conv": [
+   true,
+   false,
+   false,
+   false,
+   false
+  ],
+  "pag": [
+   true,
+   false,
+   true,
+   false,
+   false
+  ],
+  "loja": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "mid": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "med": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "wha": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "crm": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "fec": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "pos": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "num": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "dentro": {
+  "rep": true,
+  "bus": true,
+  "map": true,
+  "ava": true,
+  "sit": true,
+  "ins": false,
+  "ia": false,
+  "est": true,
+  "conv": true,
+  "pag": true,
+  "loja": false,
+  "mid": false,
+  "med": false,
+  "wha": false,
+  "crm": false,
+  "fec": false,
+  "pos": false,
+  "num": false
+ },
+ "evid": {
+  "rep": "Semrush (base Brasil, 29/10/2026): \"refrigeração centro oeste\" em 1º com o próprio site. Google Maps (Apify, 29/10/2026): perfil da assistência com nota 3,4 em 476 avaliações. Nenhuma das 20 avaliações mais recentes tem resposta da empresa, inclusive reclamações graves (cobrança de visita, técnico que não apareceu). Painel do Google na busca pelo nome: conferir.",
+  "bus": "Semrush (29/10/2026): \"conserto de geladeira goiania\" em 4º (320/mês), \"assistencia tecnica electrolux perto de mim\" em 1º (480/mês), \"conserto de maquina de lavar goiania\" em 3º; uma página por serviço em /servicos/. Visitas orgânicas caíram de 4.148 (out/2025) para 2.738 (set/2026), −34%, e as palavras no top 100 de 1.296 para 676. As buscas que mais trazem visitas são pelo nome e pela loja de peças.",
+  "map": "Apify · Google Maps, busca \"assistência técnica Electrolux\" em Goiânia (29/10/2026): a empresa não aparece entre os 20 primeiros. Pela busca do nome: perfil reivindicado, categoria \"Assistência técnica de eletrodomésticos\", 57 fotos, telefone (62) 3291-9028. Existe um 3º perfil \"Refrigeração Centro Oeste\" (nota 2,9, 7 avaliações) com o site escrito errado (\"refrigeracaocentrooete.com.br\"). Horário: conferir.",
+  "ava": "Apify · Google Maps (29/10/2026): nota 3,4 com 476 avaliações, 137 de 1 estrela (29%). Mais volume que os 3 primeiros da busca (VPA 141, Solutions 139, Zero Grau 127). Das 20 mais recentes (11/02 a 22/10/2026): 10 de 1 estrela, 0 respondidas. 1 estrela em 22/10, 16/10 e 28/09.",
+  "sit": "Leitura do HTML (Apify, 29/10/2026): a primeira tela diz \"Assistência Técnica em Goiânia | Electrolux e Brastemp Autorizada\" e \"Referência em Goiânia e Aparecida de Goiânia\"; botões flutuantes de WhatsApp (Serviços e Peças). A home não tem telefone clicável; o fixo do Google (3291-9028) não aparece nela. Velocidade e saúde técnica: o PageSpeed não respondeu, medir de novo.",
+  "conv": "Leitura do HTML (29/10/2026): WhatsApp repetido como ação principal (Falar agora, Solicitar orçamento, Fale conosco). Sem formulário na home; o de contato tem 4 campos. Nenhuma avaliação ou prova perto dos botões. Tag do Google instalada (GT-MQXZ4K3, Site Kit): conversões de clique no WhatsApp não verificadas.",
+  "est": "Apify (29/10/2026): páginas por serviço, mas nenhuma por cidade (Aparecida é citada sem página). Páginas duplicadas: /servicos/conserto-de-geladeira/ e /consertos/conserto-de-geladeira/. Semrush: a busca pelo nome cai em 5 URLs diferentes (home, blog, contato, freezers, trabalhe conosco). 6 de 14 páginas sem descrição. Dados estruturados: Organization e WebSite (Yoast), sem LocalBusiness nem serviços. Sitemap existe (Yoast, 5 mapas); envio e indexação: conferir no Search Console.",
+  "pag": "Leitura do HTML (29/10/2026): as buscas de serviço caem na página do serviço (Semrush). A home não tem H1 (o título está em H2) e a página de geladeira tem 2 H1. WhatsApp flutuante visível sem rolar. Nada sobre taxa de visita, prazo de atendimento ou garantia do conserto, justamente as queixas das avaliações. Sem link de política de privacidade. Semrush não encontrou anúncios do domínio no Google."
+ },
+ "D": {
+  "areas": [
+   "rep",
+   "bus",
+   "map",
+   "ava",
+   "sit",
+   "ins",
+   "ia",
+   "est",
+   "conv",
+   "pag",
+   "loja",
+   "mid",
+   "med",
+   "wha",
+   "crm",
+   "fec",
+   "pos",
+   "num"
+  ],
+  "med": [
+   "rep",
+   "bus",
+   "map",
+   "ava",
+   "sit",
+   "est",
+   "conv",
+   "pag"
+  ],
+  "notas": {
+   "rep": 4,
+   "bus": 6,
+   "map": 6,
+   "ava": 4,
+   "sit": 4,
+   "est": 2,
+   "conv": 2,
+   "pag": 4
+  },
+  "geral": 4,
+  "faixa": "Perdendo cliente",
+  "porTipo": [
+   {
+    "id": "completo",
+    "n": 4
+   },
+   {
+    "id": "site",
+    "n": 3
+   }
+  ],
+  "urg": [
+   "est",
+   "conv",
+   "rep"
+  ],
+  "plano": {
+   "hoje": [
+    {
+     "area": "rep",
+     "texto": "Reputação da marca: nenhuma reclamação grave sem resposta"
+    },
+    {
+     "area": "map",
+     "texto": "Google Maps: telefone e horário certos"
+    },
+    {
+     "area": "ava",
+     "texto": "Avaliações: responde 80% ou mais"
+    },
+    {
+     "area": "sit",
+     "texto": "Site: telefone certo e clicável"
+    },
+    {
+     "area": "pag",
+     "texto": "Páginas de destino: h1 único que diz o serviço"
+    },
+    {
+     "area": "pag",
+     "texto": "Páginas de destino: política de privacidade ligada ao formulário"
+    }
+   ],
+   "d90": [
+    {
+     "area": "rep",
+     "texto": "Reputação da marca: perfil do Google aparece na busca pelo nome"
+    },
+    {
+     "area": "rep",
+     "texto": "Reputação da marca: nota no Google 4,5 ou mais"
+    },
+    {
+     "area": "bus",
+     "texto": "Busca no Google: visitas crescendo em 12 meses"
+    },
+    {
+     "area": "bus",
+     "texto": "Busca no Google: maioria das visitas de quem não buscou pelo nome"
+    },
+    {
+     "area": "map",
+     "texto": "Google Maps: top 3 na busca principal"
+    },
+    {
+     "area": "ava",
+     "texto": "Avaliações: nota 4,5 ou mais"
+    },
+    {
+     "area": "ava",
+     "texto": "Avaliações: nenhuma 1 estrela nos últimos 3 meses"
+    },
+    {
+     "area": "sit",
+     "texto": "Site: abre em até 3 s no celular"
+    },
+    {
+     "area": "sit",
+     "texto": "Site: saúde técnica 80/100 ou mais"
+    },
+    {
+     "area": "est",
+     "texto": "Estrutura para SEO: uma página por serviço e por cidade"
+    },
+    {
+     "area": "est",
+     "texto": "Estrutura para SEO: sem duas páginas disputando a mesma busca"
+    },
+    {
+     "area": "est",
+     "texto": "Estrutura para SEO: título e descrição em todas as páginas"
+    },
+    {
+     "area": "est",
+     "texto": "Estrutura para SEO: sitemap enviado e páginas indexadas"
+    },
+    {
+     "area": "conv",
+     "texto": "Conversão do site: formulário curto"
+    },
+    {
+     "area": "conv",
+     "texto": "Conversão do site: prova social perto do botão"
+    },
+    {
+     "area": "conv",
+     "texto": "Conversão do site: conversões medidas (WhatsApp e formulário)"
+    },
+    {
+     "area": "conv",
+     "texto": "Conversão do site: página de obrigado com próximo passo"
+    },
+    {
+     "area": "pag",
+     "texto": "Páginas de destino: responde prazo, condições e dúvidas antes do contato"
+    }
+   ],
+   "m6": []
+  },
+  "valor": {
+   "contatos": 0,
+   "clientes": 0,
+   "total": 0
+  },
+  "temValor": true
+ },
+ "Pr": {
+  "data": "2026-10-29",
+  "validade": "2026-11-08",
+  "ofertas": [
+   {
+    "id": "geral",
+    "nome": "Setup de marketing e vendas com site incluído",
+    "diagnostico": "Geral",
+    "preco": 0,
+    "parcelas": 1,
+    "mensal": 0,
+    "condicao": "à vista",
+    "resolve": [
+     {
+      "area": "rep",
+      "nome": "Reputação da marca",
+      "nota": 4,
+      "solucao": "SEO, GEO e AEO"
+     }
+    ],
+    "entregas": [
+     "Reputação da marca: nenhuma reclamação grave sem resposta",
+     "Google Maps: telefone e horário certos",
+     "Avaliações: responde 80% ou mais",
+     "Site: telefone certo e clicável",
+     "Reputação da marca: perfil do Google aparece na busca pelo nome",
+     "Reputação da marca: nota no Google 4,5 ou mais",
+     "Busca no Google: visitas crescendo em 12 meses",
+     "Busca no Google: maioria das visitas de quem não buscou pelo nome"
+    ]
+   },
+   {
+    "id": "site",
+    "nome": "Novo site de alto padrão, orientado à conversão",
+    "diagnostico": "Site",
+    "preco": 2300,
+    "parcelas": 1,
+    "mensal": 2300,
+    "condicao": "à vista",
+    "resolve": [
+     {
+      "area": "est",
+      "nome": "Estrutura para SEO",
+      "nota": 2,
+      "solucao": "SEO, GEO e AEO"
+     },
+     {
+      "area": "conv",
+      "nome": "Conversão do site",
+      "nota": 2,
+      "solucao": "Sites e landing pages"
+     }
+    ],
+    "entregas": [
+     "Site: telefone certo e clicável",
+     "Páginas de destino: h1 único que diz o serviço",
+     "Páginas de destino: política de privacidade ligada ao formulário",
+     "Site: abre em até 3 s no celular",
+     "Site: saúde técnica 80/100 ou mais",
+     "Estrutura para SEO: uma página por serviço e por cidade",
+     "Estrutura para SEO: sem duas páginas disputando a mesma busca",
+     "Estrutura para SEO: título e descrição em todas as páginas"
+    ]
+   }
+  ],
+  "total": 2300,
+  "pendencias": [
+   "Preço de venda de \"Geral\" não definido (Metas e custos → Receita e lucro)."
+  ],
+  "pronta": false,
+  "porque": [
+   {
+    "area": "est",
+    "nome": "Estrutura para SEO",
+    "nota": 2,
+    "faixa": "Perdendo cliente"
+   },
+   {
+    "area": "conv",
+    "nome": "Conversão do site",
+    "nota": 2,
+    "faixa": "Perdendo cliente"
+   },
+   {
+    "area": "rep",
+    "nome": "Reputação da marca",
+    "nota": 4,
+    "faixa": "Perdendo cliente"
+   }
+  ],
+  "valorEmJogo": 0,
+  "proximos": [
+   "Aceite pela página da proposta",
+   "Contrato para assinatura (Autentique)",
+   "Cobrança (Asaas)",
+   "Início do projeto"
+  ]
+ }
+}

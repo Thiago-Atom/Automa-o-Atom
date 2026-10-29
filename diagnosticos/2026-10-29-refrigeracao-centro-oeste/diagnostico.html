@@ -1,0 +1,205 @@
+<title>Diagnóstico Refrigeração Centro Oeste</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+/* Identidade do Método de Diagnóstico Atom (página branca de propósito, um tema só): títulos Roboto finos com final em negrito,
+   etiquetas IBM Plex Mono, cartões brancos com fio verde, destaque roxo. Relatório de leitura: coluna de até 1080px. */
+:root {
+  color-scheme: light;
+  --sans: Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", "Courier New", monospace;
+  --roxo: #461b77; --verde: #00c864; --verde-texto: #08804a;
+  --tinta: #1e1e1e; --suave: #5f5a66; --fio: #e9e6ee; --fundo: #ffffff; --tom: #f7f6fa; --lavanda: #f1edf8;
+  --ruim: #c62828; --medio: #b26a00; --bom: #08804a; --branco: #ffffff;
+  --sombra: 0 1px 2px rgba(30, 30, 30, .06), 0 4px 16px rgba(30, 30, 30, .06);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fundo); color: var(--tinta); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.pagina { max-width: 1080px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 56px; }
+h1, h2, h3, h4, p { margin: 0; }
+h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.12; font-weight: 300; text-wrap: balance; }
+h2 { font-size: clamp(24px, 3vw, 32px); line-height: 1.2; font-weight: 300; text-wrap: balance; }
+h1 b, h2 b { font-weight: 700; }
+h4 { font-size: 14px; font-weight: 700; }
+.over { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--roxo); }
+.cap { font-size: 12px; color: var(--suave); }
+.lead { color: var(--suave); max-width: 66ch; }
+.num { font-variant-numeric: tabular-nums; }
+.cab { display: grid; gap: 10px; }
+section { display: grid; gap: 22px; min-width: 0; }
+.capa { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; border-bottom: 1px solid var(--fio); padding-bottom: 32px; }
+.placa { background: var(--roxo); color: var(--branco); padding: 22px 26px; display: grid; gap: 4px; min-width: 220px; }
+.placa .over { color: var(--lavanda); }
+.placa .g { font-size: 64px; font-weight: 300; line-height: 1; }
+.placa .g small { font-size: 22px; }
+.placa .f { font-weight: 700; }
+.placa .m { font-size: 12px; opacity: .85; }
+.aviso { background: var(--lavanda); border-left: 3px solid var(--roxo); padding: 18px 22px; display: grid; gap: 8px; }
+.aviso ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.urgc { background: var(--fundo); box-shadow: var(--sombra); border-top: 3px solid var(--ruim); padding: 20px; display: grid; gap: 10px; align-content: start; }
+.urgc .over { color: var(--ruim); }
+.rolar { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--suave); text-align: left; font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--tinta); }
+td { padding: 14px 10px; border-bottom: 1px solid var(--fio); vertical-align: top; }
+td.r, th.r { text-align: right; }
+.areas td:first-child { width: 34%; }
+.crit { display: grid; gap: 2px; margin-top: 8px; font-size: 12px; }
+.crit .ok { color: var(--verde-texto); }
+.crit .no { color: var(--suave); }
+.nota { width: 96px; white-space: nowrap; }
+.nota .num { font-size: 28px; font-weight: 300; }
+.nota .de { font-size: 12px; color: var(--suave); }
+.nota.ruim .num { color: var(--ruim); } .nota.medio .num { color: var(--medio); } .nota.bom .num { color: var(--bom); }
+.barra { height: 4px; background: var(--fio); margin-top: 6px; }
+.barra i { display: block; height: 100%; background: currentColor; }
+.nota.ruim .barra i { background: var(--ruim); } .nota.medio .barra i { background: var(--medio); } .nota.bom .barra i { background: var(--bom); }
+.ev { color: var(--suave); font-size: 13px; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; vertical-align: 2px; }
+.pill.urg { background: var(--ruim); color: var(--branco); }
+.pill.pend { background: var(--lavanda); color: var(--roxo); }
+.placar td.n { font-variant-numeric: tabular-nums; text-align: right; }
+.placar td.n.melhor { font-weight: 700; color: var(--verde-texto); }
+.hoje { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 28px; padding: 0; margin: 0; list-style: none; }
+.hoje li { display: grid; grid-template-columns: 22px 1fr; gap: 4px; border-top: 1px solid var(--fio); padding-top: 12px; }
+.hoje li::before { content: "→"; color: var(--verde-texto); font-weight: 700; }
+.hoje b { display: block; }
+.hoje span { color: var(--suave); font-size: 14px; }
+.d90 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.g90 { border-top: 3px solid var(--verde); padding-top: 10px; display: grid; gap: 6px; align-content: start; }
+.g90 ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--suave); display: grid; gap: 4px; }
+.falta td:first-child { width: 26%; }
+.fontes { font-size: 13px; color: var(--suave); display: grid; gap: 6px; }
+.fontes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+@media (max-width: 760px) {
+  .capa { grid-template-columns: 1fr; }
+  .tres, .d90, .hoje { grid-template-columns: 1fr; }
+  .areas td:first-child { width: auto; }
+}
+</style>
+
+<div class="pagina">
+  <header class="capa">
+    <div class="cab">
+      <span class="over">Diagnóstico Total + Site · rascunho interno para aprovação · 29/10/2026</span>
+      <h1>Refrigeração Centro Oeste <b>(RCO)</b></h1>
+      <p class="lead">Assistência técnica autorizada Electrolux e Continental em Goiânia, com loja de peças. Rua P-15, 271, Setor dos Funcionários. O site diz "mais de 30 anos". Tudo abaixo vem de dados públicos coletados hoje, com a fonte em cada linha.</p>
+    </div>
+    <div class="placa">
+      <span class="over">Nota geral</span>
+      <span class="g num">4,0<small>/10</small></span>
+      <span class="f">Perdendo cliente</span>
+      <span class="m">8 de 18 áreas medidas com dados públicos. 10 dependem de entrevista, cliente oculto ou acesso.</span>
+    </div>
+  </header>
+
+  <div class="aviso">
+    <span class="over">Antes de usar · para o Thiago</span>
+    <ul>
+      <li><b>O site foi feito pela Atom.</b> O rodapé diz "Copyright© 2024 | Feito por Atom Digital". As falhas do site são, em parte, nossas: a conversa é de revisão do que entregamos, e a proposta de "novo site" precisa da sua decisão.</li>
+      <li><b>Não está no Pipedrive.</b> Nenhum negócio nem organização com esse nome (busca em 29/10/2026).</li>
+      <li><b>Conferir antes de mostrar:</b> a home diz "Electrolux e Brastemp Autorizada", mas o texto, os logos e o Facebook falam em Electrolux e Continental. [CONFIRMAR] com o cliente.</li>
+      <li>Nada foi enviado ao cliente.</li>
+    </ul>
+  </div>
+
+  <section>
+    <div class="cab"><span class="over">As 3 urgências</span><h2>Onde a RCO <b>perde cliente hoje</b></h2></div>
+    <div class="tres"><div class="urgc"><span class="over">Estrutura para SEO · 2/10</span><p>O Google não entende quais páginas mostrar: a busca pelo nome cai em 5 endereços diferentes, há páginas de conserto repetidas e nenhuma página por cidade. No mesmo período, as visitas orgânicas caíram 34% em 12 meses (Semrush).</p><span class="cap">Quem resolve na Atom: SEO, GEO e AEO</span></div><div class="urgc"><span class="over">Conversão do site · 2/10</span><p>Quem chega ao site não encontra nada que tire a dúvida antes de chamar: nenhuma avaliação perto do botão, nada sobre taxa de visita ou prazo, e o fixo que está no Google não aparece na home.</p><span class="cap">Quem resolve na Atom: Sites e landing pages</span></div><div class="urgc"><span class="over">Reputação da marca · 4/10</span><p>A nota 3,4 com 137 avaliações de 1 estrela é o primeiro contato de quem busca pelo nome. Nenhuma das 20 avaliações mais recentes foi respondida, nem as que acusam cobrança indevida.</p><span class="cap">Quem resolve na Atom: SEO, GEO e AEO</span></div></div>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Achados de correção imediata</span><h2>O que dá para resolver <b>esta semana, sem custo</b></h2></div>
+    <ul class="hoje">
+      <li><div><b>Corrigir o link do Instagram</b><span>O site e os dados estruturados apontam para @refrigcentrooesteserv, e o Instagram responde que o perfil não existe (Apify, 29/10/2026).</span></div></li>
+      <li><div><b>Fechar o perfil duplicado no Google</b><span>Um 3º perfil "Refrigeração Centro Oeste" (nota 2,9, 7 avaliações) leva a "refrigeracaocentrooete.com.br", com o nome do site errado.</span></div></li>
+      <li><div><b>Responder as avaliações, começando pelas de 1 estrela</b><span>0 de 20 respondidas. As mais recentes: 22/10, 16/10 e 28/09/2026, todas de 1 estrela.</span></div></li>
+      <li><div><b>Telefone clicável na home</b><span>O fixo do Google, (62) 3291-9028, não aparece na home; só os dois WhatsApp. Uma avaliação diz: "o atendimento por telefone não existe".</span></div></li>
+      <li><div><b>Um H1 por página, com o serviço</b><span>A home não tem H1 (o título está em H2) e a página de conserto de geladeira tem 2.</span></div></li>
+      <li><div><b>Política de privacidade ligada aos formulários</b><span>Os formulários de contato e de serviço pedem nome, e-mail e telefone sem link de privacidade.</span></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Placar contra o concorrente mais forte na busca</span><h2>RCO × <b>VPA Assistência Técnica Electrolux</b></h2><p class="lead">A VPA aparece entre os 3 primeiros do Google Maps para "assistência técnica Electrolux" em Goiânia e é a autorizada Electrolux com mais avaliações nessa lista.</p></div>
+    <div class="rolar"><table class="placar">
+      <thead><tr><th>Indicador</th><th class="r">RCO</th><th class="r">VPA</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr><td>Aparece no Google Maps em "assistência técnica Electrolux"</td><td class="n">fora dos 20 primeiros</td><td class="n melhor">entre os 3 primeiros</td><td class="cap">Apify · Google Maps, 29/10/2026</td></tr>
+        <tr><td>Nota no Google</td><td class="n">3,4</td><td class="n melhor">4,5</td><td class="cap">Apify · Google Maps, 29/10/2026</td></tr>
+        <tr><td>Avaliações</td><td class="n melhor">476</td><td class="n">141</td><td class="cap">Apify · Google Maps, 29/10/2026</td></tr>
+        <tr><td>Visitas orgânicas por mês (estimativa)</td><td class="n">2.695</td><td class="n melhor">3.008</td><td class="cap">Semrush, base Brasil, 29/10/2026</td></tr>
+        <tr><td>Palavras no top 100 do Google</td><td class="n melhor">627</td><td class="n">173</td><td class="cap">Semrush, base Brasil, 29/10/2026</td></tr>
+        <tr><td>Authority Score</td><td class="n melhor">21</td><td class="n">10</td><td class="cap">Semrush, 29/10/2026</td></tr>
+        <tr><td>Domínios que apontam para o site</td><td class="n melhor">378</td><td class="n">104</td><td class="cap">Semrush, 29/10/2026</td></tr>
+      </tbody></table></div>
+    <p class="cap">Leitura: a RCO tem mais autoridade, mais avaliações e mais palavras no Google, mas recebe menos visitas e some do mapa na busca que traz cliente. A base existe; ela não está virando visita nem contato. Visitas, autoridade e backlinks do Semrush são estimativas de mercado, não o Analytics da empresa.</p>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Notas por área · régua Atom (5 critérios de 2 pontos)</span><h2>As 8 áreas medidas, <b>da pior para a melhor</b></h2></div>
+    <div class="rolar"><table class="areas"><thead><tr><th>Área e critérios</th><th>Nota</th><th>Evidência (fonte e data)</th></tr></thead><tbody>
+  <tr><td><b>Estrutura para SEO</b> <span class="pill urg">urgência</span><div class="crit"><span class="no">✕ Uma página por serviço e por cidade</span><span class="no">✕ Sem duas páginas disputando a mesma busca</span><span class="no">✕ Título e descrição em todas as páginas</span><span class="ok">✓ Dados estruturados de empresa e serviços</span><span class="no">✕ Sitemap enviado e páginas indexadas</span></div></td>
+  <td class="nota ruim"><span class="num">2</span><span class="de">/10</span><div class="barra"><i style="width:20%"></i></div></td>
+  <td class="ev">Apify (29/10/2026): páginas por serviço, mas nenhuma por cidade (Aparecida é citada sem página). Páginas duplicadas: /servicos/conserto-de-geladeira/ e /consertos/conserto-de-geladeira/. Semrush: a busca pelo nome cai em 5 URLs diferentes (home, blog, contato, freezers, trabalhe conosco). 6 de 14 páginas sem descrição. Dados estruturados: Organization e WebSite (Yoast), sem LocalBusiness nem serviços. Sitemap existe (Yoast, 5 mapas); envio e indexação: conferir no Search Console.</td></tr>
+  <tr><td><b>Conversão do site</b> <span class="pill urg">urgência</span><div class="crit"><span class="ok">✓ Uma ação principal repetida na página</span><span class="no">✕ Formulário curto</span><span class="no">✕ Prova social perto do botão</span><span class="no">✕ Conversões medidas (WhatsApp e formulário)</span><span class="no">✕ Página de obrigado com próximo passo</span></div></td>
+  <td class="nota ruim"><span class="num">2</span><span class="de">/10</span><div class="barra"><i style="width:20%"></i></div></td>
+  <td class="ev">Leitura do HTML (29/10/2026): WhatsApp repetido como ação principal (Falar agora, Solicitar orçamento, Fale conosco). Sem formulário na home; o de contato tem 4 campos. Nenhuma avaliação ou prova perto dos botões. Tag do Google instalada (GT-MQXZ4K3, Site Kit): conversões de clique no WhatsApp não verificadas.</td></tr>
+  <tr><td><b>Reputação da marca</b> <span class="pill urg">urgência</span><div class="crit"><span class="ok">✓ 1º na busca pelo nome</span><span class="ok">✓ Site é o 1º resultado, não um agregador</span><span class="no">✕ Perfil do Google aparece na busca pelo nome</span><span class="no">✕ Nota no Google 4,5 ou mais</span><span class="no">✕ Nenhuma reclamação grave sem resposta</span></div></td>
+  <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
+  <td class="ev">Semrush (base Brasil, 29/10/2026): "refrigeração centro oeste" em 1º com o próprio site. Google Maps (Apify, 29/10/2026): perfil da assistência com nota 3,4 em 476 avaliações. Nenhuma das 20 avaliações mais recentes tem resposta da empresa, inclusive reclamações graves (cobrança de visita, técnico que não apareceu). Painel do Google na busca pelo nome: conferir.</td></tr>
+  <tr><td><b>Avaliações</b><div class="crit"><span class="no">✕ Nota 4,5 ou mais</span><span class="ok">✓ Volume de pelo menos metade do líder</span><span class="ok">✓ Avaliação nova no último mês</span><span class="no">✕ Responde 80% ou mais</span><span class="no">✕ Nenhuma 1 estrela nos últimos 3 meses</span></div></td>
+  <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
+  <td class="ev">Apify · Google Maps (29/10/2026): nota 3,4 com 476 avaliações, 137 de 1 estrela (29%). Mais volume que os 3 primeiros da busca (VPA 141, Solutions 139, Zero Grau 127). Das 20 mais recentes (11/02 a 22/10/2026): 10 de 1 estrela, 0 respondidas. 1 estrela em 22/10, 16/10 e 28/09.</td></tr>
+  <tr><td><b>Site</b><div class="crit"><span class="no">✕ Abre em até 3 s no celular</span><span class="ok">✓ Diz o que faz e onde na primeira tela</span><span class="ok">✓ WhatsApp sempre visível</span><span class="no">✕ Telefone certo e clicável</span><span class="no">✕ Saúde técnica 80/100 ou mais</span></div></td>
+  <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
+  <td class="ev">Leitura do HTML (Apify, 29/10/2026): a primeira tela diz "Assistência Técnica em Goiânia | Electrolux e Brastemp Autorizada" e "Referência em Goiânia e Aparecida de Goiânia"; botões flutuantes de WhatsApp (Serviços e Peças). A home não tem telefone clicável; o fixo do Google (3291-9028) não aparece nela. Velocidade e saúde técnica: o PageSpeed não respondeu, medir de novo.</td></tr>
+  <tr><td><b>Páginas de destino</b><div class="crit"><span class="ok">✓ Anúncio e busca levam à página do mesmo serviço</span><span class="no">✕ H1 único que diz o serviço</span><span class="ok">✓ Ação principal visível sem rolar no celular</span><span class="no">✕ Responde prazo, condições e dúvidas antes do contato</span><span class="no">✕ Política de privacidade ligada ao formulário</span></div></td>
+  <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
+  <td class="ev">Leitura do HTML (29/10/2026): as buscas de serviço caem na página do serviço (Semrush). A home não tem H1 (o título está em H2) e a página de geladeira tem 2 H1. WhatsApp flutuante visível sem rolar. Nada sobre taxa de visita, prazo de atendimento ou garantia do conserto, justamente as queixas das avaliações. Sem link de política de privacidade. Semrush não encontrou anúncios do domínio no Google.</td></tr>
+  <tr><td><b>Busca no Google</b><div class="crit"><span class="ok">✓ 1ª página na busca principal</span><span class="ok">✓ Alguma busca de serviço no top 20</span><span class="ok">✓ Página própria para cada serviço</span><span class="no">✕ Visitas crescendo em 12 meses</span><span class="no">✕ Maioria das visitas de quem não buscou pelo nome</span></div></td>
+  <td class="nota medio"><span class="num">6</span><span class="de">/10</span><div class="barra"><i style="width:60%"></i></div></td>
+  <td class="ev">Semrush (29/10/2026): "conserto de geladeira goiania" em 4º (320/mês), "assistencia tecnica electrolux perto de mim" em 1º (480/mês), "conserto de maquina de lavar goiania" em 3º; uma página por serviço em /servicos/. Visitas orgânicas caíram de 4.148 (out/2025) para 2.738 (set/2026), −34%, e as palavras no top 100 de 1.296 para 676. As buscas que mais trazem visitas são pelo nome e pela loja de peças.</td></tr>
+  <tr><td><b>Google Maps</b><div class="crit"><span class="no">✕ Top 3 na busca principal</span><span class="ok">✓ Perfil verificado</span><span class="no">✕ Telefone e horário certos</span><span class="ok">✓ 50 fotos ou mais</span><span class="ok">✓ Categoria principal certa</span></div></td>
+  <td class="nota medio"><span class="num">6</span><span class="de">/10</span><div class="barra"><i style="width:60%"></i></div></td>
+  <td class="ev">Apify · Google Maps, busca "assistência técnica Electrolux" em Goiânia (29/10/2026): a empresa não aparece entre os 20 primeiros. Pela busca do nome: perfil reivindicado, categoria "Assistência técnica de eletrodomésticos", 57 fotos, telefone (62) 3291-9028. Existe um 3º perfil "Refrigeração Centro Oeste" (nota 2,9, 7 avaliações) com o site escrito errado ("refrigeracaocentrooete.com.br"). Horário: conferir.</td></tr></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Plano de 90 dias</span><h2>O que entra <b>no projeto</b></h2><p class="lead">Critérios reprovados que não se resolvem em um dia, agrupados por área.</p></div>
+    <div class="d90"><div class="g90"><h4>Reputação da marca</h4><ul><li>Perfil do Google aparece na busca pelo nome</li><li>Nota no Google 4,5 ou mais</li></ul></div><div class="g90"><h4>Busca no Google</h4><ul><li>Visitas crescendo em 12 meses</li><li>Maioria das visitas de quem não buscou pelo nome</li></ul></div><div class="g90"><h4>Google Maps</h4><ul><li>Top 3 na busca principal</li></ul></div><div class="g90"><h4>Avaliações</h4><ul><li>Nota 4,5 ou mais</li><li>Nenhuma 1 estrela nos últimos 3 meses</li></ul></div><div class="g90"><h4>Site</h4><ul><li>Abre em até 3 s no celular</li><li>Saúde técnica 80/100 ou mais</li></ul></div><div class="g90"><h4>Estrutura para SEO</h4><ul><li>Uma página por serviço e por cidade</li><li>Sem duas páginas disputando a mesma busca</li><li>Título e descrição em todas as páginas</li><li>Sitemap enviado e páginas indexadas</li></ul></div><div class="g90"><h4>Conversão do site</h4><ul><li>Formulário curto</li><li>Prova social perto do botão</li><li>Conversões medidas (WhatsApp e formulário)</li><li>Página de obrigado com próximo passo</li></ul></div><div class="g90"><h4>Páginas de destino</h4><ul><li>Responde prazo, condições e dúvidas antes do contato</li></ul></div></div>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Ainda não medido</span><h2>O que falta para fechar <b>o Diagnóstico Total</b></h2><p class="lead">Estas áreas ficaram fora da nota. Nenhuma foi chutada.</p></div>
+    <div class="rolar"><table class="falta"><thead><tr><th>Área</th><th>O que já sabemos</th><th>Como medir</th></tr></thead><tbody>
+      <tr><td><b>WhatsApp</b></td><td>Sinais nas avaliações: "são lerdos pra responder WhatsApp", "não agendam, você tem que ficar à disposição o dia todo".</td><td>Cliente oculto em 3 horários, na RCO e em 3 concorrentes.</td></tr>
+      <tr><td><b>Instagram</b></td><td>O perfil ligado no site não existe. A conta real, se houver, não foi encontrada.</td><td>Perguntar o @ na entrevista e coletar no Apify.</td></tr>
+      <tr><td><b>Busca com IA</b></td><td>Não consultado.</td><td>Placar nas IAs: 10 perguntas × ChatGPT e Gemini, 2 rodadas.</td></tr>
+      <tr><td><b>Mídia paga</b></td><td>A página do Facebook informa que não está veiculando anúncios. O Semrush não encontrou anúncios do domínio no Google, o que não prova que não anunciem.</td><td>Confirmar na entrevista; com acesso, ler a conta.</td></tr>
+      <tr><td><b>Processo e CRM, Proposta e fechamento, Pós-venda, Números do negócio, Medição da mídia</b></td><td>Avaliações citam cobrança de visita (R$ 100 e R$ 120), técnico que não apareceu e peça que sumiu: sinais de processo, não medição.</td><td>Entrevista de 45 minutos. Inclui ticket médio e taxa de fechamento, necessários para calcular quanto vale a procura.</td></tr>
+      <tr><td><b>Site: velocidade e saúde técnica</b></td><td>O PageSpeed não respondeu hoje.</td><td>Rodar o PageSpeed nas 3 páginas com mais visitas.</td></tr>
+      <tr><td><b>Loja de peças</b></td><td>pecas.refrigeracaocentrooeste.com.br leva a palavra que mais traz visitas ao domínio, 17,5% das visitas estimadas (Semrush), e tem perfil próprio no Google (nota 4,0, 393 avaliações).</td><td>Fora deste diagnóstico. Merece um diagnóstico de loja à parte.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Rascunho da proposta · não enviado</span><h2>O que a proposta <b>levaria</b></h2><p class="lead">Pela regra do método, o Diagnóstico Total leva à proposta Geral + Site. Vale até 08/11/2026, se for enviada hoje.</p></div>
+    <div class="rolar"><table><thead><tr><th>Oferta</th><th class="r">Investimento</th></tr></thead><tbody><tr><td><b>Setup de marketing e vendas com site incluído</b><br><span class="cap">resolve: Reputação da marca (4/10)</span></td><td class="r num"><span class="pill pend">preço a definir</span></td></tr><tr><td><b>Novo site de alto padrão, orientado à conversão</b><br><span class="cap">resolve: Estrutura para SEO (2/10), Conversão do site (2/10)</span></td><td class="r num">R$ 2.300,00 à vista</td></tr></tbody></table></div>
+    <p class="cap">Pendências: o preço do Geral não está definido no método. E o site atual é da Atom (2024): decidir se a oferta é um site novo ou a revisão do atual.</p>
+  </section>
+
+  <footer class="fontes">
+    <span class="over">Fontes desta coleta · 29/10/2026</span>
+    <ul>
+      <li>Site: Apify Website Content Crawler (14 páginas) e Web Fetch (HTML completo da home e sitemap).</li>
+      <li>Google Maps: Apify, buscas "assistência técnica Electrolux" (20 lugares) e "Refrigeração Centro Oeste RCO" (4 lugares); 20 avaliações mais recentes da assistência.</li>
+      <li>Facebook: Apify Facebook Pages (1.301 seguidores, 88% recomendam em 29 avaliações, sem anúncios ativos).</li>
+      <li>Semrush, base Brasil: visão do domínio, histórico de 13 meses, 25 palavras orgânicas, backlinks, anúncios e o domínio da VPA. 480 unidades registradas, da franquia.</li>
+      <li>Pipedrive: busca por negócio e organização.</li>
+    </ul>
+  </footer>
+</div>
