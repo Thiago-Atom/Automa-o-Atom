@@ -1,0 +1,204 @@
+{
+ "placar": {
+  "Onde consertar geladeira em Goiânia com técnico de confiança?": {
+   "ChatGPT": [
+    false,
+    false
+   ],
+   "Gemini": [
+    true,
+    true
+   ],
+   "AI Mode": [
+    false,
+    false
+   ],
+   "Perplexity": [
+    false,
+    false
+   ]
+  },
+  "Onde comprar peças originais para geladeira Electrolux em Goiânia?": {
+   "ChatGPT": [
+    true,
+    true
+   ],
+   "Gemini": [
+    true,
+    true
+   ],
+   "AI Mode": [
+    true,
+    false
+   ],
+   "Perplexity": [
+    true,
+    true
+   ]
+  },
+  "Preciso de conserto de ar condicionado em Goiânia, quem você recomenda?": {
+   "ChatGPT": [
+    false,
+    false
+   ],
+   "Gemini": [
+    false,
+    false
+   ],
+   "AI Mode": [
+    false,
+    false
+   ],
+   "Perplexity": [
+    false,
+    false
+   ],
+   "AI Overview": [
+    false
+   ]
+  },
+  "Melhor empresa para consertar fogão e forno Electrolux em Goiânia": {
+   "ChatGPT": [
+    true,
+    true
+   ],
+   "Gemini": [
+    true,
+    true
+   ],
+   "AI Mode": [
+    true,
+    false
+   ],
+   "Perplexity": [
+    true,
+    true
+   ],
+   "AI Overview": [
+    true,
+    true
+   ]
+  },
+  "Indique uma assistência técnica autorizada Electrolux em Aparecida de Goiânia": {
+   "ChatGPT": [
+    false,
+    true
+   ],
+   "Gemini": [
+    true,
+    false
+   ],
+   "AI Mode": [
+    false,
+    false
+   ],
+   "Perplexity": [
+    true,
+    true
+   ],
+   "AI Overview": [
+    false
+   ]
+  },
+  "Assistência técnica de eletrodomésticos bem avaliada em Goiânia": {
+   "ChatGPT": [
+    false,
+    false
+   ],
+   "Gemini": [
+    false,
+    false
+   ],
+   "AI Mode": [
+    false,
+    false
+   ],
+   "Perplexity": [
+    false,
+    false
+   ]
+  },
+  "Qual empresa conserta lava e seca em Goiânia?": {
+   "ChatGPT": [
+    false,
+    false
+   ],
+   "Gemini": [
+    false,
+    false
+   ],
+   "AI Mode": [
+    false,
+    false
+   ],
+   "Perplexity": [
+    false,
+    false
+   ],
+   "AI Overview": [
+    false
+   ]
+  },
+  "Quem conserta máquina de lavar Electrolux em Goiânia?": {
+   "ChatGPT": [
+    false,
+    false
+   ],
+   "Gemini": [
+    true,
+    true
+   ],
+   "AI Mode": [
+    false,
+    false
+   ],
+   "Perplexity": [
+    true,
+    true
+   ]
+  },
+  "Qual a melhor assistência técnica Electrolux em Goiânia?": {
+   "ChatGPT": [
+    true,
+    true
+   ],
+   "Gemini": [
+    true,
+    true
+   ],
+   "AI Mode": [
+    true,
+    false
+   ],
+   "Perplexity": [
+    true,
+    true
+   ],
+   "AI Overview": [
+    true
+   ]
+  }
+ },
+ "tot": {
+  "ChatGPT": [
+   7,
+   18
+  ],
+  "Gemini": [
+   11,
+   18
+  ],
+  "AI Mode": [
+   3,
+   18
+  ],
+  "Perplexity": [
+   10,
+   18
+  ],
+  "AI Overview": [
+   3,
+   6
+  ]
+ }
+}

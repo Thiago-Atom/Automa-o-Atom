@@ -1,0 +1,30 @@
+import { writeFileSync } from 'node:fs';
+import { carregarMetodo } from '/home/user/Automa-o-Atom/lib/metodo.js';
+const { AREAS, MOTOR, PLANEJAMENTO_PADRAO: P } = carregarMetodo();
+const tipos = ['completo', 'site'];
+const r = MOTOR.rascunhoAutomatico(tipos);
+const F = '29/10/2026';
+const M = {
+  rep: [[1,1,1,0,0], `Semrush (base Brasil, ${F}): o próprio site em 1º nas buscas pelo nome e o perfil do Google no pacote local (1º). Google em Goiânia: o 1º resultado é o Instagram da própria empresa e o 2º, o site. Nota 3,4 com 476 avaliações. Nenhuma das 20 avaliações mais recentes respondida. Reclame Aqui: duas páginas da empresa, sem reputação calculada (menos de 10 reclamações avaliadas); o AI Overview do Google resume as queixas como atrasos, diagnósticos divergentes e dificuldade de contato.`],
+  bus: [[1,1,1,0,0], `Google no celular, Goiânia (${F}): conserto de geladeira 5º, máquina de lavar 2º, lava-louças 1º, assistência Electrolux 2º; ar-condicionado, fogão e lava e seca fora da 1ª página. Uma página por serviço em /servicos/. Semrush: visitas orgânicas de 4.148 (out/2025) para 2.738 (set/2026), −34%; palavras de 1.296 para 676. 68,8% das visitas vêm de buscas pelo nome e 47% vão para a loja de peças.`],
+  map: [[0,1,1,1,1], `Apify · Google Maps, uma busca por serviço em Goiânia (${F}): assistência técnica Electrolux 3º (numa coleta anterior do mesmo dia, fora dos 20); conserto de geladeira, máquina de lavar, lava e seca, ar-condicionado, fogão, freezer e lava-louças: fora dos 20 lugares. Em Aparecida de Goiânia, fora dos 20 nos 9 serviços. Perfil reivindicado, categoria "Assistência técnica de eletrodomésticos", 57 fotos, telefone (62) 3291-9028 e horário (seg–sex 7h30–17h30, sáb 8h–12h), iguais ao Facebook. Existe um 3º perfil com o nome da empresa (nota 2,9) que leva a "refrigeracaocentrooete.com.br".`],
+  ava: [[0,1,1,0,0], `Apify · Google Maps (${F}): nota 3,4 com 476 avaliações, 137 de 1 estrela (29%). Mais volume que os concorrentes do top 3 (VPA 141, Zero Grau 127). Das 20 mais recentes (11/02 a 22/10/2026): 10 de 1 estrela, 0 respondidas. 1 estrela em 22/10, 16/10 e 28/09.`],
+  sit: [[0,1,1,0,1], `Lighthouse no celular (${F}): maior elemento da tela em 6,4 s na home, 9,1 s na página de geladeira e 6,0 s na de máquina de lavar; performance 69, 34 e 40. Semrush Site Audit (${F}, 176 páginas): saúde técnica 80/100. A primeira tela diz o serviço e a cidade; WhatsApp flutuante em todas as páginas. A home não tem telefone clicável.`],
+  conv: [[1,1,0,0,0], `HTML (${F}): WhatsApp repetido como ação principal; formulário de nome e telefone nas páginas de serviço. Nenhuma avaliação perto dos botões. Tag do Google (GT-MQXZ4K3, Site Kit) instalada; conversões de clique no WhatsApp e página de obrigado: não verificadas.`],
+  est: [[0,0,0,1,0], `Semrush Site Audit (${F}): 73 páginas sem meta description, 12 sem H1, 53 com mais de um H1, 4 páginas erradas no sitemap, 21 imagens internas quebradas. Páginas duplicadas /servicos/conserto-de-geladeira/ e /consertos/conserto-de-geladeira/; nenhuma página por cidade (Aparecida citada sem página). Dados estruturados: Organization e WebSite, sem LocalBusiness. Um subdomínio de teste com "Lorem ipsum" está indexado no Google.`],
+  pag: [[1,0,1,0,0], `Google (${F}): as buscas de serviço caem na página do serviço. Semrush: 12 páginas sem H1 e 53 com mais de um. WhatsApp flutuante visível sem rolar. Nada sobre taxa de visita, prazo ou garantia do conserto, as queixas das avaliações. Sem política de privacidade. Sem anúncios do domínio.`],
+  ins: [[0,0,1,0,1], `Apify · Instagram @rco.electrolux.go (${F}): 1.879 seguidores, 1.006 posts, último post em 09/10 (19 dias), 1 post e 1 Reels em 30 dias, engajamento médio 6,8%. Bio sem WhatsApp; o link (Linktree) leva ao WhatsApp de peças. O site aponta para @refrigcentrooesteserv, que não existe.`],
+  ia: [[1,1,1,0,0], `Apify · Google Search com ChatGPT, Gemini, AI Mode, Perplexity e AI Overview, 9 perguntas sem o nome da empresa × 2 rodadas (${F}): citada em 34 de 78 respostas (44%): Gemini 11/18, Perplexity 10/18, ChatGPT 7/18, AI Mode 3/18 (só na 1ª rodada), AI Overview 3/6. Nenhuma cita em ar-condicionado, lava e seca ou "bem avaliada". ChatGPT e Gemini dão o endereço e o WhatsApp da loja de peças para quem quer conserto; o AI Overview cita uma unidade em Aparecida (Av. Rudá) e um guia cita outra (Av. Rio Verde). Sem llms.txt (Semrush).`],
+};
+for (const [a, [c, ev]] of Object.entries(M)) { r.marc[a] = c.map(Boolean); r.dentro[a] = true; r.evid[a] = ev; }
+r.evid.mid = `Não se aplica hoje: as duas páginas do Facebook (serviços e peças) não estão veiculando anúncios (Meta, ${F}); nenhum anúncio da RCO nas 35 buscas coletadas no Google e o Semrush não encontrou anúncios do domínio.`;
+r.evid.med = 'Não se aplica sem mídia paga ativa. Perguntar na entrevista se já anunciaram e com que resultado.';
+r.evid.loja = `Fora da nota (loja de peças, diagnóstico à parte). pecas.refrigeracaocentrooeste.com.br (${F}): sem cálculo de frete na página do produto; 1 avaliação em toda a vitrine; texto de modelo "resumo da categoria aqui.." no ar; Semrush sem dados de Google Shopping. Pix, parcelamento e carrinho abandonado: conferir.`;
+for (const a of ['wha','crm','fec','pos','num']) r.evid[a] = 'Depende do cliente: ' + (a === 'wha' ? 'cliente oculto pelo WhatsApp (roteiro na página).' : 'entrevista de 45 minutos (perguntas na página).');
+r.valor = { procura: 1270 };
+const D = MOTOR.diagnostico(r);
+const Pr = MOTOR.proposta(r, D, P, '2026-10-29');
+writeFileSync(process.argv[2], JSON.stringify({ tipos, data: '2026-10-29', marc: r.marc, dentro: r.dentro, evid: r.evid, valor: r.valor, D, Pr }, null, 1));
+console.log('geral', D.geral, D.faixa, '|', D.med.map(a => a + ':' + D.notas[a]).join(' '), '| urg', D.urg.join(','));
+console.log('hoje', D.plano.hoje.map(x => x.texto).join(' || '));
+console.log('d90', D.plano.d90.length, '| ofertas', Pr.ofertas.map(o => o.nome + ' ' + o.preco + ' ' + o.resolve.map(x => x.area)).join(' ; '), Pr.validade);

@@ -30,7 +30,7 @@ h4 { font-size: 14px; font-weight: 700; }
 .cab { display: grid; gap: 10px; }
 section { display: grid; gap: 22px; min-width: 0; }
 .capa { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; border-bottom: 1px solid var(--fio); padding-bottom: 32px; }
-.placa { background: var(--roxo); color: var(--branco); padding: 22px 26px; display: grid; gap: 4px; min-width: 220px; }
+.placa { background: var(--roxo); color: var(--branco); padding: 22px 26px; display: grid; gap: 4px; min-width: 220px; max-width: 320px; }
 .placa .over { color: var(--lavanda); }
 .placa .g { font-size: 64px; font-weight: 300; line-height: 1; }
 .placa .g small { font-size: 22px; }
@@ -79,126 +79,212 @@ td.r, th.r { text-align: right; }
   .tres, .d90, .hoje { grid-template-columns: 1fr; }
   .areas td:first-child { width: auto; }
 }
+.dots { font-family: var(--mono); letter-spacing: .1em; }
+.dots .s { color: var(--verde-texto); } .dots .n { color: var(--suave); }
+.pos-bom { color: var(--verde-texto); font-weight: 700; } .pos-mal { color: var(--ruim); } .pos-neu { color: var(--suave); }
+.citas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cita { border-left: 3px solid var(--roxo); padding: 4px 0 4px 14px; display: grid; gap: 6px; }
+.cita q { font-size: 15px; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.kpis > div { border-top: 3px solid var(--fio); padding-top: 10px; display: grid; gap: 2px; }
+.kpis .v { font-size: 28px; font-weight: 300; font-variant-numeric: tabular-nums; }
+.duas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.lista-q { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; }
+.lista-q .cap { display: block; }
+.mudou { font-size: 13px; color: var(--suave); border-top: 1px solid var(--fio); padding-top: 12px; }
+@media (max-width: 760px) { .citas, .duas { grid-template-columns: 1fr; } .kpis { grid-template-columns: 1fr 1fr; } }
 </style>
 
 <div class="pagina">
   <header class="capa">
     <div class="cab">
-      <span class="over">Diagnóstico Total + Site · rascunho interno para aprovação · 29/10/2026</span>
+      <span class="over">Diagnóstico Total + Site · rascunho interno para aprovação · 29/10/2026 · v2</span>
       <h1>Refrigeração Centro Oeste <b>(RCO)</b></h1>
-      <p class="lead">Assistência técnica autorizada Electrolux e Continental em Goiânia, com loja de peças. Rua P-15, 271, Setor dos Funcionários. O site diz "mais de 30 anos". Tudo abaixo vem de dados públicos coletados hoje, com a fonte em cada linha.</p>
+      <p class="lead">Assistência técnica autorizada Electrolux (Top Service desde 2001) e loja de peças em Goiânia, fundada em outubro de 1996. Serviços na Rua P-15, 271, Setor dos Funcionários; peças na Rua Senador Jaime, 894/910. Tudo abaixo vem de dados públicos coletados hoje, com a fonte em cada linha.</p>
     </div>
     <div class="placa">
       <span class="over">Nota geral</span>
-      <span class="g num">4,0<small>/10</small></span>
-      <span class="f">Perdendo cliente</span>
-      <span class="m">8 de 18 áreas medidas com dados públicos. 10 dependem de entrevista, cliente oculto ou acesso.</span>
+      <span class="g num">5,0<small>/10</small></span>
+      <span class="f">Pode melhorar</span>
+      <span class="m">10 de 18 áreas medidas. 2 não se aplicam (sem mídia paga), 1 fica para o diagnóstico da loja e 5 dependem do cliente: roteiro pronto abaixo.</span>
     </div>
   </header>
 
   <div class="aviso">
     <span class="over">Antes de usar · para o Thiago</span>
     <ul>
-      <li><b>O site foi feito pela Atom.</b> O rodapé diz "Copyright© 2024 | Feito por Atom Digital". As falhas do site são, em parte, nossas: a conversa é de revisão do que entregamos, e a proposta de "novo site" precisa da sua decisão.</li>
+      <li><b>O site foi feito pela Atom.</b> O rodapé diz "Copyright© 2024 | Feito por Atom Digital". A conversa é de revisão do que entregamos, e a proposta de site precisa da sua decisão.</li>
       <li><b>Não está no Pipedrive.</b> Nenhum negócio nem organização com esse nome (busca em 29/10/2026).</li>
-      <li><b>Conferir antes de mostrar:</b> a home diz "Electrolux e Brastemp Autorizada", mas o texto, os logos e o Facebook falam em Electrolux e Continental. [CONFIRMAR] com o cliente.</li>
-      <li>Nada foi enviado ao cliente.</li>
+      <li><b>[CONFIRMAR] com o cliente:</b> se é autorizada Brastemp (a home diz que sim; texto, logos e Facebook falam em Electrolux e Continental); se existe unidade em Aparecida de Goiânia (o AI Overview cita a Av. Rudá; um guia cita a Av. Rio Verde).</li>
+      <li>Nada foi enviado ao cliente. Este diagnóstico também está salvo em <b>Gerados</b> na página do Método, para completar com a entrevista e o cliente oculto.</li>
     </ul>
   </div>
 
   <section>
     <div class="cab"><span class="over">As 3 urgências</span><h2>Onde a RCO <b>perde cliente hoje</b></h2></div>
-    <div class="tres"><div class="urgc"><span class="over">Estrutura para SEO · 2/10</span><p>O Google não entende quais páginas mostrar: a busca pelo nome cai em 5 endereços diferentes, há páginas de conserto repetidas e nenhuma página por cidade. No mesmo período, as visitas orgânicas caíram 34% em 12 meses (Semrush).</p><span class="cap">Quem resolve na Atom: SEO, GEO e AEO</span></div><div class="urgc"><span class="over">Conversão do site · 2/10</span><p>Quem chega ao site não encontra nada que tire a dúvida antes de chamar: nenhuma avaliação perto do botão, nada sobre taxa de visita ou prazo, e o fixo que está no Google não aparece na home.</p><span class="cap">Quem resolve na Atom: Sites e landing pages</span></div><div class="urgc"><span class="over">Reputação da marca · 4/10</span><p>A nota 3,4 com 137 avaliações de 1 estrela é o primeiro contato de quem busca pelo nome. Nenhuma das 20 avaliações mais recentes foi respondida, nem as que acusam cobrança indevida.</p><span class="cap">Quem resolve na Atom: SEO, GEO e AEO</span></div></div>
+    <div class="tres"><div class="urgc"><span class="over">Estrutura para SEO · 2/10</span><p>O Google não sabe que página mostrar: há páginas de conserto duplicadas, nenhuma página por cidade, 73 páginas sem descrição e um subdomínio de teste com "Lorem ipsum" indexado. No mesmo período, as visitas orgânicas caíram 34% e 68,8% das que restam vêm de quem já buscou pelo nome.</p><span class="cap">Quem resolve na Atom: SEO, GEO e AEO</span></div><div class="urgc"><span class="over">Avaliações · 4/10</span><p>Nota 3,4 com 137 avaliações de 1 estrela, nenhuma das 20 mais recentes respondida. É o que o cliente vê no Maps e o que a IA do Google repete: "avaliações mistas dos consumidores".</p><span class="cap">Quem resolve na Atom: Agentes de IA (pedido de avaliação)</span></div><div class="urgc"><span class="over">Instagram · 4/10</span><p>O site manda para um Instagram que não existe. O perfil real (@rco.electrolux.go) postou 1 vez em 30 dias, não tem WhatsApp na bio e o Linktree leva ao WhatsApp de peças.</p><span class="cap">Quem resolve na Atom: Estratégia e conteúdo</span></div></div>
   </section>
 
   <section>
-    <div class="cab"><span class="over">Achados de correção imediata</span><h2>O que dá para resolver <b>esta semana, sem custo</b></h2></div>
-    <ul class="hoje">
-      <li><div><b>Corrigir o link do Instagram</b><span>O site e os dados estruturados apontam para @refrigcentrooesteserv, e o Instagram responde que o perfil não existe (Apify, 29/10/2026).</span></div></li>
-      <li><div><b>Fechar o perfil duplicado no Google</b><span>Um 3º perfil "Refrigeração Centro Oeste" (nota 2,9, 7 avaliações) leva a "refrigeracaocentrooete.com.br", com o nome do site errado.</span></div></li>
-      <li><div><b>Responder as avaliações, começando pelas de 1 estrela</b><span>0 de 20 respondidas. As mais recentes: 22/10, 16/10 e 28/09/2026, todas de 1 estrela.</span></div></li>
-      <li><div><b>Telefone clicável na home</b><span>O fixo do Google, (62) 3291-9028, não aparece na home; só os dois WhatsApp. Uma avaliação diz: "o atendimento por telefone não existe".</span></div></li>
-      <li><div><b>Um H1 por página, com o serviço</b><span>A home não tem H1 (o título está em H2) e a página de conserto de geladeira tem 2.</span></div></li>
-      <li><div><b>Política de privacidade ligada aos formulários</b><span>Os formulários de contato e de serviço pedem nome, e-mail e telefone sem link de privacidade.</span></div></li>
+    <div class="cab"><span class="over">Posicionamento por serviço · Goiânia e Aparecida de Goiânia</span><h2>Aparece na busca, <b>some no mapa</b></h2>
+      <p class="lead">Google no celular com a localização de cada cidade e Google Maps com uma coleta por serviço. A RCO aparece bem na lista de resultados em 6 dos 10 serviços em Goiânia, mas no mapa, onde ficam as ligações e as rotas, só aparece em assistência Electrolux e em peças. Em Aparecida de Goiânia não aparece no mapa em nenhum serviço.</p></div>
+    <div class="rolar"><table class="placar">
+      <thead><tr><th>Serviço</th><th class="r">Buscas/mês Goiânia</th><th>Google · Goiânia</th><th>Maps · Goiânia</th><th class="r">Buscas/mês Aparecida</th><th>Google · Aparecida</th><th>Maps · Aparecida</th><th>1º no Maps · Goiânia</th></tr></thead>
+      <tbody><tr><td><b>Conserto de geladeira</b></td><td class="n">640</td><td class="pos-neu">5º</td><td class="pos-mal">fora dos 20</td><td class="n">30</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="cap">MC Refrigeração (5,0 · 12)</td></tr><tr><td><b>Conserto de máquina de lavar</b></td><td class="n">110</td><td class="pos-bom">2º</td><td class="pos-mal">fora dos 20</td><td class="n">20</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="cap">MC Refrigeração (5,0 · 12)</td></tr><tr><td><b>Assistência técnica Electrolux</b></td><td class="n">170</td><td class="pos-bom">2º</td><td class="pos-bom">3º</td><td class="n">20</td><td class="pos-bom">2º</td><td class="pos-mal">fora dos 20</td><td class="cap">VPA (4,5 · 141)</td></tr><tr><td><b>Conserto de lava e seca</b></td><td class="n">20</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="n">—</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="cap">IN TEC (4,9 · 358)</td></tr><tr><td><b>Conserto de ar-condicionado</b></td><td class="n">20 (instalação: 260)</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="n">—</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="cap">Golden Ar (5,0 · 22)</td></tr><tr><td><b>Conserto de fogão</b></td><td class="n">90</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="n">—</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="cap">Real Fogões (5,0 · 502)</td></tr><tr><td><b>Conserto de forno elétrico</b></td><td class="n">20</td><td class="pos-neu">7º</td><td class="pos-neu">não coletado</td><td class="n">—</td><td class="pos-bom">3º</td><td class="pos-neu">não coletado</td><td class="cap">—</td></tr><tr><td><b>Conserto de freezer</b></td><td class="n">20</td><td class="pos-neu">5º (página de geladeira)</td><td class="pos-mal">fora dos 20</td><td class="n">—</td><td class="pos-mal">fora da 1ª página</td><td class="pos-mal">fora dos 20</td><td class="cap">MC Refrigeração (5,0 · 12)</td></tr><tr><td><b>Conserto de lava-louças</b></td><td class="n">—</td><td class="pos-bom">1º</td><td class="pos-mal">fora dos 20</td><td class="n">—</td><td class="pos-neu">6º</td><td class="pos-mal">fora dos 20</td><td class="cap">IN TEC (4,9 · 358)</td></tr><tr><td><b>Peças para geladeira</b></td><td class="n">20</td><td class="pos-bom">1º (loja)</td><td class="pos-bom">1º (loja)</td><td class="n">—</td><td class="pos-neu">Facebook da loja em 3º</td><td class="pos-mal">fora dos 20</td><td class="cap">RCO Loja de Peças (4,0 · 393)</td></tr></tbody></table></div>
+    <p class="cap">Buscas/mês: Semrush, base Brasil, frase exata com o nome da cidade (as variações somam mais). Google: Apify, celular, localização da cidade, 29/10/2026, sem contar o mapa. Maps: Apify, 20 lugares por serviço, 29/10/2026; a ordem do mapa varia entre coletas (em assistência Electrolux a RCO ficou em 3º numa coleta e fora dos 20 em outra no mesmo dia).</p>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Inteligência artificial</span><h2>O que as IAs dizem <b>sobre a RCO</b></h2>
+      <p class="lead">9 perguntas de quem procura o serviço, sem citar o nome da empresa, feitas 2 vezes a cada IA com a localização de Goiânia. A RCO é citada em 34 de 78 respostas. Domina quando a pergunta tem "Electrolux" ou "peças"; não aparece em ar-condicionado, lava e seca nem em "bem avaliada".</p></div>
+    <div class="rolar"><table>
+      <thead><tr><th>Pergunta</th><th>ChatGPT</th><th>Gemini</th><th>AI Mode</th><th>Perplexity</th><th>AI Overview</th></tr></thead>
+      <tbody><tr><td>Onde consertar geladeira em Goiânia com técnico de confiança?</td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">—</span></td></tr><tr><td>Onde comprar peças originais para geladeira Electrolux em Goiânia?</td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="n">○</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="n">—</span></td></tr><tr><td>Preciso de conserto de ar condicionado em Goiânia, quem você recomenda?</td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span></td></tr><tr><td>Melhor empresa para consertar fogão e forno Electrolux em Goiânia</td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="n">○</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td></tr><tr><td>Indique uma assistência técnica autorizada Electrolux em Aparecida de Goiânia</td><td class="dots"><span class="n">○</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="n">○</span></td></tr><tr><td>Assistência técnica de eletrodomésticos bem avaliada em Goiânia</td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">—</span></td></tr><tr><td>Qual empresa conserta lava e seca em Goiânia?</td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="n">○</span></td></tr><tr><td>Quem conserta máquina de lavar Electrolux em Goiânia?</td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="n">○</span><span class="n">○</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="n">—</span></td></tr><tr><td>Qual a melhor assistência técnica Electrolux em Goiânia?</td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span><span class="n">○</span></td><td class="dots"><span class="s">●</span><span class="s">●</span></td><td class="dots"><span class="s">●</span></td></tr><tr class="total"><td><b>Respostas que citam a RCO</b></td><td class="n"><b>7/18</b></td><td class="n"><b>11/18</b></td><td class="n"><b>3/18</b></td><td class="n"><b>10/18</b></td><td class="n"><b>3/6</b></td></tr></tbody></table></div>
+    <p class="cap">● cita a RCO · ○ não cita · — a IA não respondeu. Apify · Google Search com ChatGPT, Gemini, AI Mode, Perplexity e AI Overview, 29/10/2026, 2 rodadas.</p>
+    <div class="citas">
+      <div class="cita"><q>A principal assistência técnica autorizada da Electrolux em Goiânia é a Refrigeração Centro Oeste, operando como rede Top Service Electrolux desde 2001, embora conte com avaliações mistas dos consumidores.</q><span class="cap">Google AI Overview · "Qual a melhor assistência técnica Electrolux em Goiânia?"</span></div>
+      <div class="cita"><q>É a opção que eu consultaria primeiro para um serviço autorizado. Endereço: Rua Senador Jaime, 910. Telefone/WhatsApp: (62) 99170-3496.</q><span class="cap">ChatGPT · mesma pergunta. Endereço e WhatsApp são da loja de peças, não da assistência.</span></div>
+      <div class="cita"><q>Unidade Aparecida de Goiânia: Avenida Rudá, Vila Brasília.</q><span class="cap">Google AI Overview · "O que você sabe sobre a Refrigeração Centro Oeste?". [CONFIRMAR]</span></div>
+      <div class="cita"><q>Atrasos e não cumprimento de prazos · Falhas no atendimento e diagnóstico · dificuldades de contato via canais como WhatsApp.</q><span class="cap">Google AI Overview · "Refrigeração Centro Oeste reclame aqui"</span></div>
+    </div>
+    <div class="kpis">
+      <div><span class="cap">Palavras da RCO com AI Overview</span><span class="v">239</span><span class="cap">de 627 (Semrush)</span></div>
+      <div><span class="cap">AI Overviews que citam a RCO</span><span class="v">11</span><span class="cap">10 de peças, 1 do blog</span></div>
+      <div><span class="cap">llms.txt</span><span class="v">não tem</span><span class="cap">Semrush Site Audit</span></div>
+      <div><span class="cap">Instagram ligado no site</span><span class="v">não existe</span><span class="cap">@refrigcentrooesteserv</span></div>
+    </div>
+    <ul class="lista-q">
+      <li><b>As IAs confundem os canais.</b> ChatGPT e Gemini mandam quem quer conserto para o endereço e o WhatsApp da loja de peças. O Linktree dos dois Instagrams também leva ao WhatsApp de peças.<span class="cap">Corrigir: um nome, endereço e telefone por unidade, iguais no site, no Google, no Instagram, no Linktree e no llms.txt.</span></li>
+      <li><b>O blog já ranqueia, mas não é citado.</b> "Como limpar ar condicionado" (4.400 buscas/mês), "como limpar a máquina de lavar" (2.400) e "como tirar o cheiro da geladeira" (1.600) têm AI Overview; a RCO está entre a 30ª e a 65ª posição e fora dos resumos.<span class="cap">Corrigir: reescrever esses posts com resposta direta no início, passo a passo e autoria técnica.</span></li>
+      <li><b>Há um homônimo no Instagram.</b> @refrigeracaocentrooeste (2,2 mil seguidores) parece ser de outra empresa, de equipamentos para cozinha industrial. [CONFIRMAR]</li>
     </ul>
   </section>
 
   <section>
-    <div class="cab"><span class="over">Placar contra o concorrente mais forte na busca</span><h2>RCO × <b>VPA Assistência Técnica Electrolux</b></h2><p class="lead">A VPA aparece entre os 3 primeiros do Google Maps para "assistência técnica Electrolux" em Goiânia e é a autorizada Electrolux com mais avaliações nessa lista.</p></div>
-    <div class="rolar"><table class="placar">
-      <thead><tr><th>Indicador</th><th class="r">RCO</th><th class="r">VPA</th><th>Fonte</th></tr></thead>
-      <tbody>
-        <tr><td>Aparece no Google Maps em "assistência técnica Electrolux"</td><td class="n">fora dos 20 primeiros</td><td class="n melhor">entre os 3 primeiros</td><td class="cap">Apify · Google Maps, 29/10/2026</td></tr>
-        <tr><td>Nota no Google</td><td class="n">3,4</td><td class="n melhor">4,5</td><td class="cap">Apify · Google Maps, 29/10/2026</td></tr>
-        <tr><td>Avaliações</td><td class="n melhor">476</td><td class="n">141</td><td class="cap">Apify · Google Maps, 29/10/2026</td></tr>
-        <tr><td>Visitas orgânicas por mês (estimativa)</td><td class="n">2.695</td><td class="n melhor">3.008</td><td class="cap">Semrush, base Brasil, 29/10/2026</td></tr>
-        <tr><td>Palavras no top 100 do Google</td><td class="n melhor">627</td><td class="n">173</td><td class="cap">Semrush, base Brasil, 29/10/2026</td></tr>
-        <tr><td>Authority Score</td><td class="n melhor">21</td><td class="n">10</td><td class="cap">Semrush, 29/10/2026</td></tr>
-        <tr><td>Domínios que apontam para o site</td><td class="n melhor">378</td><td class="n">104</td><td class="cap">Semrush, 29/10/2026</td></tr>
-      </tbody></table></div>
-    <p class="cap">Leitura: a RCO tem mais autoridade, mais avaliações e mais palavras no Google, mas recebe menos visitas e some do mapa na busca que traz cliente. A base existe; ela não está virando visita nem contato. Visitas, autoridade e backlinks do Semrush são estimativas de mercado, não o Analytics da empresa.</p>
+    <div class="cab"><span class="over">Correções imediatas</span><h2>O que dá para resolver <b>esta semana, sem custo</b></h2></div>
+    <ul class="hoje">
+      <li><div><b>Trocar o link do Instagram no site e nos dados estruturados</b><span>De @refrigcentrooesteserv (não existe) para @rco.electrolux.go.</span></div></li>
+      <li><div><b>Tirar do ar o subdomínio de teste</b><span>conserto-geladeira.refrigeracaocentrooeste.com.br está indexado com "Título do banner" e "Lorem ipsum".</span></div></li>
+      <li><div><b>Fechar o perfil duplicado no Google</b><span>Um 3º perfil "Refrigeração Centro Oeste" (nota 2,9) leva a "refrigeracaocentrooete.com.br", com o nome do site errado.</span></div></li>
+      <li><div><b>Responder as avaliações, começando pelas de 1 estrela</b><span>0 de 20 respondidas. As mais recentes: 22/10, 16/10 e 28/09/2026.</span></div></li>
+      <li><div><b>WhatsApp de serviços na bio e no Linktree</b><span>Hoje os dois Instagrams levam ao WhatsApp de peças, (62) 99170-3496.</span></div></li>
+      <li><div><b>Telefone clicável na home</b><span>O fixo do Google, (62) 3291-9028, não aparece na home. Uma avaliação diz: "o atendimento por telefone não existe".</span></div></li>
+      <li><div><b>Um H1 por página, com o serviço</b><span>12 páginas sem H1 e 53 com mais de um (Semrush).</span></div></li>
+      <li><div><b>Política de privacidade nos formulários</b><span>Os formulários pedem nome e telefone sem link de privacidade.</span></div></li>
+      <li><div><b>Publicar um llms.txt</b><span>Com nome, unidades, endereços, telefones por unidade, serviços e marcas autorizadas.</span></div></li>
+      <li><div><b>Apagar o texto de modelo da loja</b><span>A home da loja de peças mostra "resumo da categoria aqui.." em várias categorias.</span></div></li>
+    </ul>
   </section>
 
   <section>
-    <div class="cab"><span class="over">Notas por área · régua Atom (5 critérios de 2 pontos)</span><h2>As 8 áreas medidas, <b>da pior para a melhor</b></h2></div>
+    <div class="cab"><span class="over">Semrush · projeto da RCO</span><h2>Auditoria, orgânico e <b>acompanhamento</b></h2></div>
+    <div class="kpis">
+      <div><span class="cap">Saúde técnica</span><span class="v">80/100</span><span class="cap">176 páginas · 29/10/2026</span></div>
+      <div><span class="cap">Visitas orgânicas/mês</span><span class="v">2.695</span><span class="cap">−34% em 12 meses</span></div>
+      <div><span class="cap">Visitas de quem buscou o nome</span><span class="v">68,8%</span><span class="cap">47% vão para a loja de peças</span></div>
+      <div><span class="cap">Palavras acompanhadas no top 100</span><span class="v">35/100</span><span class="cap">Position Tracking, Brasil</span></div>
+    </div>
+    <div class="duas">
+      <div><h4>Site Audit: o que mais pesa</h4><ul class="lista-q">
+        <li>31 erros: 21 imagens internas quebradas, 6 páginas com conteúdo HTTP, 4 páginas erradas no sitemap.</li>
+        <li>4.264 avisos: 388 links externos quebrados, 2.477 arquivos JS/CSS sem cache, 1.133 sem minificar, 80 páginas com pouco texto, 73 sem descrição, 39 títulos longos, 12 sem H1.</li>
+        <li>638 notas: 298 redirecionamentos, 53 páginas com mais de um H1, 41 páginas bloqueadas, 24 páginas a mais de 3 cliques, sem llms.txt.</li>
+      </ul></div>
+      <div><h4>Lighthouse no celular</h4><ul class="lista-q">
+        <li>Home: performance 69, maior elemento em 6,4 s, acessibilidade 100, SEO 100.</li>
+        <li>Conserto de geladeira: performance 34, maior elemento em 9,1 s.</li>
+        <li>Conserto de máquina de lavar: performance 40, maior elemento em 6,0 s.</li>
+        <li>O critério do método é abrir em até 3 s.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Placar contra o concorrente mais forte</span><h2>RCO × <b>VPA Assistência Técnica Electrolux</b></h2></div>
+    <div class="rolar"><table class="placar">
+      <thead><tr><th>Indicador</th><th class="r">RCO</th><th class="r">VPA</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr><td>Maps em "assistência técnica Electrolux", Goiânia</td><td class="n">3º</td><td class="n melhor">1º</td><td class="cap">Apify · Google Maps, 29/10/2026</td></tr>
+        <tr><td>Nota no Google</td><td class="n">3,4</td><td class="n melhor">4,5</td><td class="cap">Apify · Google Maps</td></tr>
+        <tr><td>Avaliações</td><td class="n melhor">476</td><td class="n">141</td><td class="cap">Apify · Google Maps</td></tr>
+        <tr><td>Visitas orgânicas por mês (estimativa)</td><td class="n">2.695</td><td class="n melhor">3.008</td><td class="cap">Semrush, base Brasil</td></tr>
+        <tr><td>Palavras no top 100</td><td class="n melhor">627</td><td class="n">173</td><td class="cap">Semrush, base Brasil</td></tr>
+        <tr><td>Authority Score</td><td class="n melhor">21</td><td class="n">10</td><td class="cap">Semrush</td></tr>
+        <tr><td>Domínios que apontam para o site</td><td class="n melhor">378</td><td class="n">104</td><td class="cap">Semrush</td></tr>
+        <tr><td>Indicada pelas IAs em "melhor assistência Electrolux"</td><td class="n melhor">as 5 (1ª rodada)</td><td class="n">alternativa no AI Overview</td><td class="cap">Apify · ChatGPT, Gemini, AI Mode, Perplexity, AI Overview</td></tr>
+      </tbody></table></div>
+    <p class="cap">A RCO tem a marca, a autoridade e a preferência das IAs; perde no que o cliente vê primeiro no mapa: a nota.</p>
+  </section>
+
+  <section>
+    <div class="cab"><span class="over">Notas por área · régua Atom (5 critérios de 2 pontos)</span><h2>As 10 áreas medidas, <b>da pior para a melhor</b></h2></div>
     <div class="rolar"><table class="areas"><thead><tr><th>Área e critérios</th><th>Nota</th><th>Evidência (fonte e data)</th></tr></thead><tbody>
   <tr><td><b>Estrutura para SEO</b> <span class="pill urg">urgência</span><div class="crit"><span class="no">✕ Uma página por serviço e por cidade</span><span class="no">✕ Sem duas páginas disputando a mesma busca</span><span class="no">✕ Título e descrição em todas as páginas</span><span class="ok">✓ Dados estruturados de empresa e serviços</span><span class="no">✕ Sitemap enviado e páginas indexadas</span></div></td>
   <td class="nota ruim"><span class="num">2</span><span class="de">/10</span><div class="barra"><i style="width:20%"></i></div></td>
-  <td class="ev">Apify (29/10/2026): páginas por serviço, mas nenhuma por cidade (Aparecida é citada sem página). Páginas duplicadas: /servicos/conserto-de-geladeira/ e /consertos/conserto-de-geladeira/. Semrush: a busca pelo nome cai em 5 URLs diferentes (home, blog, contato, freezers, trabalhe conosco). 6 de 14 páginas sem descrição. Dados estruturados: Organization e WebSite (Yoast), sem LocalBusiness nem serviços. Sitemap existe (Yoast, 5 mapas); envio e indexação: conferir no Search Console.</td></tr>
-  <tr><td><b>Conversão do site</b> <span class="pill urg">urgência</span><div class="crit"><span class="ok">✓ Uma ação principal repetida na página</span><span class="no">✕ Formulário curto</span><span class="no">✕ Prova social perto do botão</span><span class="no">✕ Conversões medidas (WhatsApp e formulário)</span><span class="no">✕ Página de obrigado com próximo passo</span></div></td>
-  <td class="nota ruim"><span class="num">2</span><span class="de">/10</span><div class="barra"><i style="width:20%"></i></div></td>
-  <td class="ev">Leitura do HTML (29/10/2026): WhatsApp repetido como ação principal (Falar agora, Solicitar orçamento, Fale conosco). Sem formulário na home; o de contato tem 4 campos. Nenhuma avaliação ou prova perto dos botões. Tag do Google instalada (GT-MQXZ4K3, Site Kit): conversões de clique no WhatsApp não verificadas.</td></tr>
-  <tr><td><b>Reputação da marca</b> <span class="pill urg">urgência</span><div class="crit"><span class="ok">✓ 1º na busca pelo nome</span><span class="ok">✓ Site é o 1º resultado, não um agregador</span><span class="no">✕ Perfil do Google aparece na busca pelo nome</span><span class="no">✕ Nota no Google 4,5 ou mais</span><span class="no">✕ Nenhuma reclamação grave sem resposta</span></div></td>
+  <td class="ev">Semrush Site Audit (29/10/2026): 73 páginas sem meta description, 12 sem H1, 53 com mais de um H1, 4 páginas erradas no sitemap, 21 imagens internas quebradas. Páginas duplicadas /servicos/conserto-de-geladeira/ e /consertos/conserto-de-geladeira/; nenhuma página por cidade (Aparecida citada sem página). Dados estruturados: Organization e WebSite, sem LocalBusiness. Um subdomínio de teste com "Lorem ipsum" está indexado no Google.</td></tr>
+  <tr><td><b>Avaliações</b> <span class="pill urg">urgência</span><div class="crit"><span class="no">✕ Nota 4,5 ou mais</span><span class="ok">✓ Volume de pelo menos metade do líder</span><span class="ok">✓ Avaliação nova no último mês</span><span class="no">✕ Responde 80% ou mais</span><span class="no">✕ Nenhuma 1 estrela nos últimos 3 meses</span></div></td>
   <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
-  <td class="ev">Semrush (base Brasil, 29/10/2026): "refrigeração centro oeste" em 1º com o próprio site. Google Maps (Apify, 29/10/2026): perfil da assistência com nota 3,4 em 476 avaliações. Nenhuma das 20 avaliações mais recentes tem resposta da empresa, inclusive reclamações graves (cobrança de visita, técnico que não apareceu). Painel do Google na busca pelo nome: conferir.</td></tr>
-  <tr><td><b>Avaliações</b><div class="crit"><span class="no">✕ Nota 4,5 ou mais</span><span class="ok">✓ Volume de pelo menos metade do líder</span><span class="ok">✓ Avaliação nova no último mês</span><span class="no">✕ Responde 80% ou mais</span><span class="no">✕ Nenhuma 1 estrela nos últimos 3 meses</span></div></td>
+  <td class="ev">Apify · Google Maps (29/10/2026): nota 3,4 com 476 avaliações, 137 de 1 estrela (29%). Mais volume que os concorrentes do top 3 (VPA 141, Zero Grau 127). Das 20 mais recentes (11/02 a 22/10/2026): 10 de 1 estrela, 0 respondidas. 1 estrela em 22/10, 16/10 e 28/09.</td></tr>
+  <tr><td><b>Instagram</b> <span class="pill urg">urgência</span><div class="crit"><span class="no">✕ Post nos últimos 7 dias</span><span class="no">✕ 8 posts ou mais no mês</span><span class="ok">✓ Reels no mês</span><span class="no">✕ WhatsApp na bio</span><span class="ok">✓ Link na bio</span></div></td>
   <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
-  <td class="ev">Apify · Google Maps (29/10/2026): nota 3,4 com 476 avaliações, 137 de 1 estrela (29%). Mais volume que os 3 primeiros da busca (VPA 141, Solutions 139, Zero Grau 127). Das 20 mais recentes (11/02 a 22/10/2026): 10 de 1 estrela, 0 respondidas. 1 estrela em 22/10, 16/10 e 28/09.</td></tr>
-  <tr><td><b>Site</b><div class="crit"><span class="no">✕ Abre em até 3 s no celular</span><span class="ok">✓ Diz o que faz e onde na primeira tela</span><span class="ok">✓ WhatsApp sempre visível</span><span class="no">✕ Telefone certo e clicável</span><span class="no">✕ Saúde técnica 80/100 ou mais</span></div></td>
+  <td class="ev">Apify · Instagram @rco.electrolux.go (29/10/2026): 1.879 seguidores, 1.006 posts, último post em 09/10 (19 dias), 1 post e 1 Reels em 30 dias, engajamento médio 6,8%. Bio sem WhatsApp; o link (Linktree) leva ao WhatsApp de peças. O site aponta para @refrigcentrooesteserv, que não existe.</td></tr>
+  <tr><td><b>Conversão do site</b><div class="crit"><span class="ok">✓ Uma ação principal repetida na página</span><span class="ok">✓ Formulário curto</span><span class="no">✕ Prova social perto do botão</span><span class="no">✕ Conversões medidas (WhatsApp e formulário)</span><span class="no">✕ Página de obrigado com próximo passo</span></div></td>
   <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
-  <td class="ev">Leitura do HTML (Apify, 29/10/2026): a primeira tela diz "Assistência Técnica em Goiânia | Electrolux e Brastemp Autorizada" e "Referência em Goiânia e Aparecida de Goiânia"; botões flutuantes de WhatsApp (Serviços e Peças). A home não tem telefone clicável; o fixo do Google (3291-9028) não aparece nela. Velocidade e saúde técnica: o PageSpeed não respondeu, medir de novo.</td></tr>
+  <td class="ev">HTML (29/10/2026): WhatsApp repetido como ação principal; formulário de nome e telefone nas páginas de serviço. Nenhuma avaliação perto dos botões. Tag do Google (GT-MQXZ4K3, Site Kit) instalada; conversões de clique no WhatsApp e página de obrigado: não verificadas.</td></tr>
   <tr><td><b>Páginas de destino</b><div class="crit"><span class="ok">✓ Anúncio e busca levam à página do mesmo serviço</span><span class="no">✕ H1 único que diz o serviço</span><span class="ok">✓ Ação principal visível sem rolar no celular</span><span class="no">✕ Responde prazo, condições e dúvidas antes do contato</span><span class="no">✕ Política de privacidade ligada ao formulário</span></div></td>
   <td class="nota ruim"><span class="num">4</span><span class="de">/10</span><div class="barra"><i style="width:40%"></i></div></td>
-  <td class="ev">Leitura do HTML (29/10/2026): as buscas de serviço caem na página do serviço (Semrush). A home não tem H1 (o título está em H2) e a página de geladeira tem 2 H1. WhatsApp flutuante visível sem rolar. Nada sobre taxa de visita, prazo de atendimento ou garantia do conserto, justamente as queixas das avaliações. Sem link de política de privacidade. Semrush não encontrou anúncios do domínio no Google.</td></tr>
+  <td class="ev">Google (29/10/2026): as buscas de serviço caem na página do serviço. Semrush: 12 páginas sem H1 e 53 com mais de um. WhatsApp flutuante visível sem rolar. Nada sobre taxa de visita, prazo ou garantia do conserto, as queixas das avaliações. Sem política de privacidade. Sem anúncios do domínio.</td></tr>
+  <tr><td><b>Reputação da marca</b><div class="crit"><span class="ok">✓ 1º na busca pelo nome</span><span class="ok">✓ Site é o 1º resultado, não um agregador</span><span class="ok">✓ Perfil do Google aparece na busca pelo nome</span><span class="no">✕ Nota no Google 4,5 ou mais</span><span class="no">✕ Nenhuma reclamação grave sem resposta</span></div></td>
+  <td class="nota medio"><span class="num">6</span><span class="de">/10</span><div class="barra"><i style="width:60%"></i></div></td>
+  <td class="ev">Semrush (base Brasil, 29/10/2026): o próprio site em 1º nas buscas pelo nome e o perfil do Google no pacote local (1º). Google em Goiânia: o 1º resultado é o Instagram da própria empresa e o 2º, o site. Nota 3,4 com 476 avaliações. Nenhuma das 20 avaliações mais recentes respondida. Reclame Aqui: duas páginas da empresa, sem reputação calculada (menos de 10 reclamações avaliadas); o AI Overview do Google resume as queixas como atrasos, diagnósticos divergentes e dificuldade de contato.</td></tr>
   <tr><td><b>Busca no Google</b><div class="crit"><span class="ok">✓ 1ª página na busca principal</span><span class="ok">✓ Alguma busca de serviço no top 20</span><span class="ok">✓ Página própria para cada serviço</span><span class="no">✕ Visitas crescendo em 12 meses</span><span class="no">✕ Maioria das visitas de quem não buscou pelo nome</span></div></td>
   <td class="nota medio"><span class="num">6</span><span class="de">/10</span><div class="barra"><i style="width:60%"></i></div></td>
-  <td class="ev">Semrush (29/10/2026): "conserto de geladeira goiania" em 4º (320/mês), "assistencia tecnica electrolux perto de mim" em 1º (480/mês), "conserto de maquina de lavar goiania" em 3º; uma página por serviço em /servicos/. Visitas orgânicas caíram de 4.148 (out/2025) para 2.738 (set/2026), −34%, e as palavras no top 100 de 1.296 para 676. As buscas que mais trazem visitas são pelo nome e pela loja de peças.</td></tr>
-  <tr><td><b>Google Maps</b><div class="crit"><span class="no">✕ Top 3 na busca principal</span><span class="ok">✓ Perfil verificado</span><span class="no">✕ Telefone e horário certos</span><span class="ok">✓ 50 fotos ou mais</span><span class="ok">✓ Categoria principal certa</span></div></td>
+  <td class="ev">Google no celular, Goiânia (29/10/2026): conserto de geladeira 5º, máquina de lavar 2º, lava-louças 1º, assistência Electrolux 2º; ar-condicionado, fogão e lava e seca fora da 1ª página. Uma página por serviço em /servicos/. Semrush: visitas orgânicas de 4.148 (out/2025) para 2.738 (set/2026), −34%; palavras de 1.296 para 676. 68,8% das visitas vêm de buscas pelo nome e 47% vão para a loja de peças.</td></tr>
+  <tr><td><b>Site</b><div class="crit"><span class="no">✕ Abre em até 3 s no celular</span><span class="ok">✓ Diz o que faz e onde na primeira tela</span><span class="ok">✓ WhatsApp sempre visível</span><span class="no">✕ Telefone certo e clicável</span><span class="ok">✓ Saúde técnica 80/100 ou mais</span></div></td>
   <td class="nota medio"><span class="num">6</span><span class="de">/10</span><div class="barra"><i style="width:60%"></i></div></td>
-  <td class="ev">Apify · Google Maps, busca "assistência técnica Electrolux" em Goiânia (29/10/2026): a empresa não aparece entre os 20 primeiros. Pela busca do nome: perfil reivindicado, categoria "Assistência técnica de eletrodomésticos", 57 fotos, telefone (62) 3291-9028. Existe um 3º perfil "Refrigeração Centro Oeste" (nota 2,9, 7 avaliações) com o site escrito errado ("refrigeracaocentrooete.com.br"). Horário: conferir.</td></tr></tbody></table></div>
+  <td class="ev">Lighthouse no celular (29/10/2026): maior elemento da tela em 6,4 s na home, 9,1 s na página de geladeira e 6,0 s na de máquina de lavar; performance 69, 34 e 40. Semrush Site Audit (29/10/2026, 176 páginas): saúde técnica 80/100. A primeira tela diz o serviço e a cidade; WhatsApp flutuante em todas as páginas. A home não tem telefone clicável.</td></tr>
+  <tr><td><b>Busca com IA</b><div class="crit"><span class="ok">✓ Citado no ChatGPT</span><span class="ok">✓ Citado no Gemini</span><span class="ok">✓ Citado no Google Modo IA</span><span class="no">✕ Site identifica empresa e unidades</span><span class="no">✕ Mesmo nome, endereço e telefone em todo lugar</span></div></td>
+  <td class="nota medio"><span class="num">6</span><span class="de">/10</span><div class="barra"><i style="width:60%"></i></div></td>
+  <td class="ev">Apify · Google Search com ChatGPT, Gemini, AI Mode, Perplexity e AI Overview, 9 perguntas sem o nome da empresa × 2 rodadas (29/10/2026): citada em 34 de 78 respostas (44%): Gemini 11/18, Perplexity 10/18, ChatGPT 7/18, AI Mode 3/18 (só na 1ª rodada), AI Overview 3/6. Nenhuma cita em ar-condicionado, lava e seca ou "bem avaliada". ChatGPT e Gemini dão o endereço e o WhatsApp da loja de peças para quem quer conserto; o AI Overview cita uma unidade em Aparecida (Av. Rudá) e um guia cita outra (Av. Rio Verde). Sem llms.txt (Semrush).</td></tr>
+  <tr><td><b>Google Maps</b><div class="crit"><span class="no">✕ Top 3 na busca principal</span><span class="ok">✓ Perfil verificado</span><span class="ok">✓ Telefone e horário certos</span><span class="ok">✓ 50 fotos ou mais</span><span class="ok">✓ Categoria principal certa</span></div></td>
+  <td class="nota bom"><span class="num">8</span><span class="de">/10</span><div class="barra"><i style="width:80%"></i></div></td>
+  <td class="ev">Apify · Google Maps, uma busca por serviço em Goiânia (29/10/2026): assistência técnica Electrolux 3º (numa coleta anterior do mesmo dia, fora dos 20); conserto de geladeira, máquina de lavar, lava e seca, ar-condicionado, fogão, freezer e lava-louças: fora dos 20 lugares. Em Aparecida de Goiânia, fora dos 20 nos 9 serviços. Perfil reivindicado, categoria "Assistência técnica de eletrodomésticos", 57 fotos, telefone (62) 3291-9028 e horário (seg–sex 7h30–17h30, sáb 8h–12h), iguais ao Facebook. Existe um 3º perfil com o nome da empresa (nota 2,9) que leva a "refrigeracaocentrooete.com.br".</td></tr></tbody></table></div>
+    <p class="mudou">Mudou da v1 (4,0) para a v2 (5,0): Instagram e Busca com IA passaram a ser medidas; quatro critérios foram comprovados com dados novos (perfil no pacote local na busca pelo nome, telefone e horário no Google, saúde técnica 80/100, formulário curto); a loja de peças saiu da nota e terá diagnóstico próprio.</p>
   </section>
 
   <section>
     <div class="cab"><span class="over">Plano de 90 dias</span><h2>O que entra <b>no projeto</b></h2><p class="lead">Critérios reprovados que não se resolvem em um dia, agrupados por área.</p></div>
-    <div class="d90"><div class="g90"><h4>Reputação da marca</h4><ul><li>Perfil do Google aparece na busca pelo nome</li><li>Nota no Google 4,5 ou mais</li></ul></div><div class="g90"><h4>Busca no Google</h4><ul><li>Visitas crescendo em 12 meses</li><li>Maioria das visitas de quem não buscou pelo nome</li></ul></div><div class="g90"><h4>Google Maps</h4><ul><li>Top 3 na busca principal</li></ul></div><div class="g90"><h4>Avaliações</h4><ul><li>Nota 4,5 ou mais</li><li>Nenhuma 1 estrela nos últimos 3 meses</li></ul></div><div class="g90"><h4>Site</h4><ul><li>Abre em até 3 s no celular</li><li>Saúde técnica 80/100 ou mais</li></ul></div><div class="g90"><h4>Estrutura para SEO</h4><ul><li>Uma página por serviço e por cidade</li><li>Sem duas páginas disputando a mesma busca</li><li>Título e descrição em todas as páginas</li><li>Sitemap enviado e páginas indexadas</li></ul></div><div class="g90"><h4>Conversão do site</h4><ul><li>Formulário curto</li><li>Prova social perto do botão</li><li>Conversões medidas (WhatsApp e formulário)</li><li>Página de obrigado com próximo passo</li></ul></div><div class="g90"><h4>Páginas de destino</h4><ul><li>Responde prazo, condições e dúvidas antes do contato</li></ul></div></div>
+    <div class="d90"><div class="g90"><h4>Reputação da marca</h4><ul><li>Nota no Google 4,5 ou mais</li></ul></div><div class="g90"><h4>Busca no Google</h4><ul><li>Visitas crescendo em 12 meses</li><li>Maioria das visitas de quem não buscou pelo nome</li></ul></div><div class="g90"><h4>Google Maps</h4><ul><li>Top 3 na busca principal</li></ul></div><div class="g90"><h4>Avaliações</h4><ul><li>Nota 4,5 ou mais</li><li>Nenhuma 1 estrela nos últimos 3 meses</li></ul></div><div class="g90"><h4>Site</h4><ul><li>Abre em até 3 s no celular</li></ul></div><div class="g90"><h4>Instagram</h4><ul><li>Post nos últimos 7 dias</li><li>8 posts ou mais no mês</li></ul></div><div class="g90"><h4>Estrutura para SEO</h4><ul><li>Uma página por serviço e por cidade</li><li>Sem duas páginas disputando a mesma busca</li><li>Título e descrição em todas as páginas</li><li>Sitemap enviado e páginas indexadas</li></ul></div><div class="g90"><h4>Conversão do site</h4><ul><li>Prova social perto do botão</li><li>Conversões medidas (WhatsApp e formulário)</li><li>Página de obrigado com próximo passo</li></ul></div><div class="g90"><h4>Páginas de destino</h4><ul><li>Responde prazo, condições e dúvidas antes do contato</li></ul></div></div>
   </section>
 
   <section>
-    <div class="cab"><span class="over">Ainda não medido</span><h2>O que falta para fechar <b>o Diagnóstico Total</b></h2><p class="lead">Estas áreas ficaram fora da nota. Nenhuma foi chutada.</p></div>
-    <div class="rolar"><table class="falta"><thead><tr><th>Área</th><th>O que já sabemos</th><th>Como medir</th></tr></thead><tbody>
-      <tr><td><b>WhatsApp</b></td><td>Sinais nas avaliações: "são lerdos pra responder WhatsApp", "não agendam, você tem que ficar à disposição o dia todo".</td><td>Cliente oculto em 3 horários, na RCO e em 3 concorrentes.</td></tr>
-      <tr><td><b>Instagram</b></td><td>O perfil ligado no site não existe. A conta real, se houver, não foi encontrada.</td><td>Perguntar o @ na entrevista e coletar no Apify.</td></tr>
-      <tr><td><b>Busca com IA</b></td><td>Não consultado.</td><td>Placar nas IAs: 10 perguntas × ChatGPT e Gemini, 2 rodadas.</td></tr>
-      <tr><td><b>Mídia paga</b></td><td>A página do Facebook informa que não está veiculando anúncios. O Semrush não encontrou anúncios do domínio no Google, o que não prova que não anunciem.</td><td>Confirmar na entrevista; com acesso, ler a conta.</td></tr>
-      <tr><td><b>Processo e CRM, Proposta e fechamento, Pós-venda, Números do negócio, Medição da mídia</b></td><td>Avaliações citam cobrança de visita (R$ 100 e R$ 120), técnico que não apareceu e peça que sumiu: sinais de processo, não medição.</td><td>Entrevista de 45 minutos. Inclui ticket médio e taxa de fechamento, necessários para calcular quanto vale a procura.</td></tr>
-      <tr><td><b>Site: velocidade e saúde técnica</b></td><td>O PageSpeed não respondeu hoje.</td><td>Rodar o PageSpeed nas 3 páginas com mais visitas.</td></tr>
-      <tr><td><b>Loja de peças</b></td><td>pecas.refrigeracaocentrooeste.com.br leva a palavra que mais traz visitas ao domínio, 17,5% das visitas estimadas (Semrush), e tem perfil próprio no Google (nota 4,0, 393 avaliações).</td><td>Fora deste diagnóstico. Merece um diagnóstico de loja à parte.</td></tr>
-    </tbody></table></div>
+    <div class="cab"><span class="over">Para chegar a 18 de 18</span><h2>O que só o cliente <b>pode responder</b></h2>
+      <p class="lead">WhatsApp, Processo e CRM, Proposta e fechamento, Pós-venda, Números do negócio: 25 critérios. Abra este diagnóstico em Gerados, na página do Método, marque cada critério com a resposta e salve: a nota se recalcula.</p></div>
+    <div class="duas">
+      <div><h4>Cliente oculto · WhatsApp</h4>
+        <p class="small">Uma pessoa da Atom, pelo WhatsApp pessoal, com aprovação do Thiago. Nada de agendar visita: agradecer e encerrar quando a pergunta for respondida.</p>
+        <p class="small"><b>Mensagem:</b> "Boa tarde! Minha geladeira Electrolux frost free parou de gelar na parte de baixo. Vocês atendem no Setor Bueno? Quanto fica a visita?"</p>
+        <ul class="lista-q"><li>Dia útil às 10h (horário comercial)</li><li>Dia útil às 19h30 (depois do fechamento, 17h30)</li><li>Sábado às 14h (depois do fechamento, 12h)</li></ul>
+        <div class="rolar"><table><thead><tr><th>Para quem</th><th>Número</th><th>Por quê</th></tr></thead><tbody><tr><td><b>RCO · Serviços</b></td><td class="num">(62) 99169-5280</td><td class="cap">WhatsApp do site e do Google</td></tr><tr><td><b>VPA Assistência Técnica Electrolux</b></td><td class="num">(62) 3624-9158</td><td class="cap">1º no Maps em assistência Electrolux</td></tr><tr><td><b>BRADIZA Assistência Técnica</b></td><td class="num">(62) 98224-8282</td><td class="cap">4,9 com 357 avaliações</td></tr><tr><td><b>Zero Grau Assistência Técnica Electrolux</b></td><td class="num">(62) 3157-8874</td><td class="cap">entre os 3 do Maps</td></tr></tbody></table></div>
+        <ul class="lista-q"><li>Hora do envio e da 1ª resposta<span class="cap">Critério: Respondeu em até 5 min</span></li><li>A resposta trouxe se atende o bairro e o valor ou a regra da visita<span class="cap">Critério: Respondeu à pergunta feita</span></li><li>Houve resposta nos envios de 19h30 e de sábado<span class="cap">Critério: Respondeu fora do horário</span></li><li>Pediu o nome ou ofereceu um horário<span class="cap">Critério: Pediu o nome ou ofereceu agendar</span></li><li>Mandou endereço, link do Google ou próximo passo claro<span class="cap">Critério: Mandou endereço ou link útil</span></li></ul>
+      </div>
+      <div><h4>Entrevista · 45 minutos</h4>
+        <p class="small" style="margin-top:10px"><b>Processo e CRM</b></p><ol class="lista-q"><li>Onde ficam registrados os pedidos que chegam por WhatsApp, telefone, site e Electrolux?<span class="cap">Todo contato registrado em CRM</span></li><li>Quais são as etapas de um pedido, do primeiro contato ao conserto concluído?<span class="cap">Etapas do funil definidas</span></li><li>Quem pediu orçamento e não respondeu recebe novo contato em quanto tempo?<span class="cap">Follow-up em até 24 h</span></li><li>Cada pedido tem uma pessoa responsável, com nome?<span class="cap">Um responsável por lead</span></li><li>Existe uma reunião semanal para olhar os pedidos em aberto?<span class="cap">Revisão semanal do funil</span></li></ol><p class="small" style="margin-top:10px"><b>Proposta e fechamento</b></p><ol class="lista-q"><li>De cada 10 orçamentos fora da garantia, quantos viram conserto?<span class="cap">Sabe a taxa de fechamento</span></li><li>Quanto tempo vai da visita técnica ao orçamento na mão do cliente?<span class="cap">Proposta enviada em até 48 h</span></li><li>Quando o cliente não aprova, o motivo fica anotado? Onde?<span class="cap">Registra o motivo de perda</span></li><li>Quantos dias, em média, do pedido ao conserto concluído?<span class="cap">Acompanha o tempo até fechar</span></li><li>O orçamento segue um modelo padrão?<span class="cap">Tem apresentação padrão</span></li></ol><p class="small" style="margin-top:10px"><b>Pós-venda</b></p><ol class="lista-q"><li>Depois do conserto, vocês pedem avaliação no Google? Como e quando?<span class="cap">Pede avaliação depois do atendimento</span></li><li>Pedem indicação aos clientes satisfeitos?<span class="cap">Pede indicação</span></li><li>Falam com clientes antigos (revisão, garantia acabando, troca de peça)?<span class="cap">Reativa clientes antigos</span></li><li>Sabem quantos clientes voltam no ano?<span class="cap">Mede recompra</span></li><li>Qual o canal do cliente depois do serviço, para garantia ou dúvida?<span class="cap">Tem canal de contato pós-venda</span></li></ol><p class="small" style="margin-top:10px"><b>Números do negócio</b></p><ol class="lista-q"><li>De onde veio cada cliente do mês passado: Google, Electrolux, indicação, loja?<span class="cap">Sabe de onde vem cada cliente</span></li><li>Qual o ticket médio do conserto fora da garantia? E o valor da visita?<span class="cap">Conhece o ticket médio</span></li><li>Quanto custa conseguir um cliente particular?<span class="cap">Conhece o custo por cliente</span></li><li>Existe meta mensal de consertos ou de faturamento?<span class="cap">Tem meta mensal de vendas</span></li><li>Esses números ficam num painel que vocês olham toda semana?<span class="cap">Acompanha os números em painel</span></li></ol><p class="small" style="margin-top:10px"><b>Para fechar o diagnóstico</b></p><ol class="lista-q"><li>Qual a parte dos atendimentos que vem da Electrolux (garantia) e qual é particular?<span class="cap">Contexto</span></li><li>Quantos técnicos e quantas visitas por dia vocês conseguem fazer?<span class="cap">Capacidade</span></li><li>Existe unidade em Aparecida de Goiânia? Em qual endereço?<span class="cap">[CONFIRMAR] Av. Rudá × Av. Rio Verde</span></li><li>Vocês são autorizados Brastemp, como diz a home do site?<span class="cap">[CONFIRMAR]</span></li><li>Qual o Instagram oficial de serviços e qual o de peças?<span class="cap">[CONFIRMAR] @rco.electrolux.go e @rco.electrolux_go</span></li><li>Já anunciaram no Google ou na Meta? Com que resultado?<span class="cap">Mídia paga e medição</span></li></ol>
+      </div>
+    </div>
   </section>
 
   <section>
     <div class="cab"><span class="over">Rascunho da proposta · não enviado</span><h2>O que a proposta <b>levaria</b></h2><p class="lead">Pela regra do método, o Diagnóstico Total leva à proposta Geral + Site. Vale até 08/11/2026, se for enviada hoje.</p></div>
-    <div class="rolar"><table><thead><tr><th>Oferta</th><th class="r">Investimento</th></tr></thead><tbody><tr><td><b>Setup de marketing e vendas com site incluído</b><br><span class="cap">resolve: Reputação da marca (4/10)</span></td><td class="r num"><span class="pill pend">preço a definir</span></td></tr><tr><td><b>Novo site de alto padrão, orientado à conversão</b><br><span class="cap">resolve: Estrutura para SEO (2/10), Conversão do site (2/10)</span></td><td class="r num">R$ 2.300,00 à vista</td></tr></tbody></table></div>
-    <p class="cap">Pendências: o preço do Geral não está definido no método. E o site atual é da Atom (2024): decidir se a oferta é um site novo ou a revisão do atual.</p>
+    <div class="rolar"><table><thead><tr><th>Oferta</th><th class="r">Investimento</th></tr></thead><tbody><tr><td><b>Setup de marketing e vendas com site incluído</b><br><span class="cap">resolve: Avaliações (4/10), Instagram (4/10)</span></td><td class="r num"><span class="pill pend">preço a definir</span></td></tr><tr><td><b>Novo site de alto padrão, orientado à conversão</b><br><span class="cap">resolve: Estrutura para SEO (2/10)</span></td><td class="r num">R$ 2.300,00 à vista</td></tr></tbody></table></div>
+    <p class="cap">Pendências: o preço do Geral não está definido no método; o site atual é da Atom (2024), então decidir se a oferta é um site novo ou a revisão do atual. Procura nas 6 buscas principais de Goiânia: 1.270 por mês (Semrush); o valor em reais depende do ticket e da taxa de fechamento da entrevista.</p>
   </section>
 
   <footer class="fontes">
     <span class="over">Fontes desta coleta · 29/10/2026</span>
     <ul>
-      <li>Site: Apify Website Content Crawler (14 páginas) e Web Fetch (HTML completo da home e sitemap).</li>
-      <li>Google Maps: Apify, buscas "assistência técnica Electrolux" (20 lugares) e "Refrigeração Centro Oeste RCO" (4 lugares); 20 avaliações mais recentes da assistência.</li>
-      <li>Facebook: Apify Facebook Pages (1.301 seguidores, 88% recomendam em 29 avaliações, sem anúncios ativos).</li>
-      <li>Semrush, base Brasil: visão do domínio, histórico de 13 meses, 25 palavras orgânicas, backlinks, anúncios e o domínio da VPA. 480 unidades registradas, da franquia.</li>
+      <li>Semrush (projeto 31794688): Site Audit de 29/10/2026, Position Tracking (100 palavras), 627 palavras orgânicas, histórico de 13 meses, backlinks, volumes por cidade, anúncios e Google Shopping (sem dados). Cerca de 42,5 mil unidades da franquia de 2 milhões.</li>
+      <li>Apify: site (crawler, HTML completo e sitemap), Lighthouse no celular (3 páginas), Google Maps (busca pelo nome, 20 avaliações e uma coleta por serviço em Goiânia e em Aparecida), Google no celular (20 buscas locais e 6 de marca e reputação), 2 rodadas de IAs, Instagram (3 perfis), Facebook (2 páginas), Linktree e loja de peças.</li>
       <li>Pipedrive: busca por negócio e organização.</li>
     </ul>
   </footer>
